@@ -24,6 +24,8 @@ const config = {
         damion: ["Damion", "cursive"],
       },
       colors: {
+        lavender: "#ecbfff",
+        reddish: "#ff4a48",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
