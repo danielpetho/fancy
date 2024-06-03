@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { cotham, overusedGrotesk } from "./fonts";
 import "./globals.css";
-import { Header } from "./components/Header/Header";
+import { Header } from "@/components/Header/Header";
 
 
 export const metadata: Metadata = {
