@@ -80,14 +80,14 @@
 @font-face {
   font-family: "Overused Grotesk";
   src:
-    url("../public/fonts/OverusedGrotesk-VF.woff2") format("woff2 supports variations"),
-    url("../public/fonts/OverusedGrotesk-VF.woff2") format("woff2-variations");
+    url("../../public/fonts/OverusedGrotesk-VF.woff2") format("woff2 supports variations"),
+    url("../../public/fonts/OverusedGrotesk-VF.woff2") format("woff2-variations");
   font-weight: 300 900;
 }
 
 @font-face {
   font-family: "Cotham";
   src:
-    url("../public/fonts/CothamSans.otf") format("otf");
+    url("../../public/fonts/CothamSans.otf") format("otf");
   font-weight: 400;
 }

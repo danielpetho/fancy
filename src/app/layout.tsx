@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
-import { cotham, overusedGrotesk } from "./fonts";
 import "./globals.css";
 import { Header } from "@/components/Header/Header";
-
 
 export const metadata: Metadata = {
   title: "Fancy Components",
@@ -16,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${overusedGrotesk.className}`}>
+      <body className={`font-overused`}>
         <Header />
         {children}
       </body>
