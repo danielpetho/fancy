@@ -10,7 +10,7 @@ export function Header() {
                         <div className=" bg-lavender w-8 h-8 rounded-lg flex  justify-center items-center">
                         <p className=" text-reddish rounded-xl text-[10px] tracking-tight font-cotham">fancy</p>
                         </div>
-                        <Link href="/Components" className="text-lg">Components</Link>
+                        <Link href="/docs" className="text-lg">Components</Link>
                     </div>
                     <div className="flex flex-row gap-x-6">
                         <a href="https://github.com" className="text rounded-full"><Github /></a>

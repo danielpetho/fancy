@@ -21,7 +21,6 @@ const config = {
       fontFamily: {
         overusedGrotesk: ["Overused Grotesk", "sans-serif"],
         cotham: ["Cotham Sans", "sans-serif"],
-        damion: ["Damion", "cursive"],
       },
       colors: {
         lavender: "#ecbfff",
