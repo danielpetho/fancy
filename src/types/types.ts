@@ -10,7 +10,7 @@ export type Doc = {
     component: boolean
     toc: boolean
     /** MDX file body */
-    body: MDX
+    body: any
     slug: string
     slugAsParams: string
   }  

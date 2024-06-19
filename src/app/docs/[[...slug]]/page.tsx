@@ -1,11 +1,13 @@
 import { siteConfig } from "@/lib/site";
-import { absoluteUrl } from "@/lib/utils";
+import { absoluteUrl, cn } from "@/lib/utils";
 import { useMDXComponents } from "@/mdx-components";
 import { Doc } from "@/types/types";
+import { ChevronRightIcon } from "lucide-react";
 import { Metadata } from "next";
 import { compileMDX } from "next-mdx-remote/rsc";
 import fs from "node:fs";
 import path from "node:path";
+import Balancer from "react-wrap-balancer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
@@ -43,7 +45,7 @@ export async function generateMetadata({
       title: doc.title,
       description: doc.description,
       images: [siteConfig.ogImage],
-      creator: "@shadcn",
+      creator: "@nonzeroexitcode",
     },
   }
 }
@@ -100,32 +102,48 @@ export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
     components,
   });
 
-  // Ensure the returned object conforms to the Doc type
   return {
-    ...frontmatter,
-    content,
     slug: params.slug.join("/"),
     slugAsParams: params.slug.join("/"),
+    _id: params.slug.join("/"),
     type: 'Doc',
-    published: frontmatter.published || false,
-    featured: frontmatter.featured || false,
-    component: frontmatter.component || false,
-    toc: frontmatter.toc || false,
-    body: content // Assuming body is equivalent to content here
+    title: String(frontmatter.title),
+    description: String(frontmatter.description),
+    published: Boolean(frontmatter.published),
+    featured: Boolean(frontmatter.featured),
+    component: Boolean(frontmatter.component),
+    toc: Boolean(frontmatter.toc),
+    body: content
   }
 }
 
 export default async function DocPage({ params }: DocPageProps) {
 
-  const { body } = await getDocFromParams({ params })
+  const doc = await getDocFromParams({ params })
 
   return (
     <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
       <div className="mx-auto w-full min-w-0">
         <div className="mb-4 flex items-center space-x-1 text-sm text-muted-foreground">
-          <div>
-            {body}
+          <div className="overflow-hidden text-ellipsis whitespace-nowrap">
+            Docs
           </div>
+          <ChevronRightIcon className="h-4 w-4" />
+          <div className="font-medium text-foreground">{doc.title}</div>
+        </div>
+        <div className="space-y-2">
+          <h1 className={cn("scroll-m-20 text-4xl font-bold tracking-tight")}>
+            {doc.title}
+          </h1>
+          {doc.description && (
+            <p className="text-lg text-muted-foreground">
+              <Balancer>{doc.description}</Balancer>
+            </p>
+          )}
+        </div>
+
+        <div className="pb-12 pt-8">
+          {doc.body}
         </div>
       </div>
     </main>

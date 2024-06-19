@@ -21,6 +21,22 @@ export const docsConfig = [
             href: "/docs/components/text/underline",
             items: [],
           },
+          {
+            title: "Vertical Hover",
+            href: "/docs/components/text/vertical-hover",
+            items: [],
+          },
+        ],
+      },
+      {
+        title: "Button",
+        href: "/docs/components/text",
+        items: [
+          {
+            title: "Background Hover",
+            href: "/docs/components/text/underline",
+            items: [],
+          },
         ],
       },
     ],

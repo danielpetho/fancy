@@ -1,7 +1,7 @@
 export const siteConfig = {
     name: "fancy",
     url: "https://fancycomponents.dev",
-    ogImage: "https://ui.shadcn.com/og.jpg",
+    ogImage: "https://fancycomponents.dev/og.jpg",
     description:
       "A collection of obscure and fancy components and microinteractions for creative developers.",
     links: {
