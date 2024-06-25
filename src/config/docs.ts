@@ -30,11 +30,11 @@ export const docsConfig = [
       },
       {
         title: "Button",
-        href: "/docs/components/text",
+        href: "/docs/components/button",
         items: [
           {
             title: "Background Hover",
-            href: "/docs/components/text/underline",
+            href: "/docs/components/button/background-hover",
             items: [],
           },
         ],

@@ -1,3 +1,4 @@
+import { DocsPager } from "@/components/doc-pager";
 import { siteConfig } from "@/lib/site";
 import { absoluteUrl, cn } from "@/lib/utils";
 import { useMDXComponents } from "@/mdx-components";
@@ -144,6 +145,9 @@ export default async function DocPage({ params }: DocPageProps) {
 
         <div className="pb-12 pt-8">
           {doc.body}
+        </div>
+        <div>
+          <DocsPager doc={doc} />
         </div>
       </div>
     </main>
