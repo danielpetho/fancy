@@ -88,7 +88,7 @@ export function generateStaticParams() {
   }));
 }
 
-export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
+/* export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
   const source = fs.readFileSync(
     path.join(process.cwd(), CONTENT_DIRECTORY, params.slug.join("/")) + ".mdx",
     "utf8",
@@ -116,7 +116,7 @@ export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
     toc: Boolean(frontmatter.toc),
     body: content
   }
-}
+} */
 
 export default async function DocPage({ params }: DocPageProps) {
 
