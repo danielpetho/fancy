@@ -19,11 +19,11 @@ const config = {
     },
     extend: {
       fontFamily: {
-        overusedGrotesk: ["Overused Grotesk", "sans-serif"],
-        cotham: ["Cotham Sans", "sans-serif"],
+        overusedGrotesk: ["var(--font-overusedGrotesk)", "sans-serif"],
+        cotham: ["var(--font-cotham)"],
       },
       colors: {
-        lavender: "#ecbfff",
+        lavender: "#eccfff",
         reddish: "#ff4a48",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
