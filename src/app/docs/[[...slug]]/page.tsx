@@ -15,7 +15,7 @@ export const dynamic = "force-static";
 
 const CONTENT_DIRECTORY = "/src/content/docs/";
 
-export async function generateMetadata({
+/* export async function generateMetadata({
   params,
 }: DocPageProps): Promise<Metadata> {
   const doc = await getDocFromParams({ params })
@@ -50,7 +50,7 @@ export async function generateMetadata({
     },
   }
 }
-
+ */
 
 interface DocPageProps {
   params: {
