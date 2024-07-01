@@ -5,7 +5,7 @@ const components = {
     "underline": {
       name: "underline",
       type: "component/text",
-      component: React.lazy(() => import("@/fancy/components/text/underline")),
+      //component: React.lazy(() => import("@/fancy/components/text/underline")),
     }
   }
 }
