@@ -7,7 +7,7 @@ export function SimpleCompCard({
 }) {
   return (
     <div>
-      <div className="flex flex-col w-[420px] aspect-square items-center justify-center gap-y-4">
+      <div className="flex flex-col max-w-[420px]  aspect-square items-center justify-center gap-y-4">
       <iframe
         src={link}
         width="100%"

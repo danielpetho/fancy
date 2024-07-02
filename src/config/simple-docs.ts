@@ -1,5 +1,3 @@
-import { url } from 'inspector'
-
 export const simpleDocs = [
   {
     title: "Vertical Hover By Letter Text — Forward Animation",
@@ -10,8 +8,12 @@ export const simpleDocs = [
     url: "https://codesandbox.io/embed/2wzrd2?view=preview&module=%2Fsrc%2FApp.tsx&hidenavigation=1&hidedevtools=1",
   },
   {
-    title: "Simple Text Underline",
-    url: "https://codesandbox.io/embed/k38f4x?view=preview&module=%2Fsrc%2Findex.tsx&hidenavigation=1&hidedevtools=1",
+    title: "Vertical Hover By Random Letter Text — Forward Animation",
+    url: "https://codesandbox.io/embed/5r8mhq?view=preview&module=%2Fsrc%2Fvertical-hover-by-random-letter-forward-anim.tsx&hidenavigation=1hidedevtools=1",
+  },
+  {
+    title: "Vertical Hover By Random Letter Text — Ping Pong Animation",
+    url: "https://codesandbox.io/embed/r96pxm?view=preview&module=%2Fsrc%2FApp.tsx&hidenavigation=1&hidedevtools=1",
   },
   {
     title: "Background Hover Button",

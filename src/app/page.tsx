@@ -1,7 +1,6 @@
 import { SimpleCompCard } from "@/components/simple-comp-card";
 import { Grid } from "@/components/simple-grid";
 import { simpleDocs } from "@/config/simple-docs";
-import { Analytics } from '@vercel/analytics/react';
 
 export default function Home() {
   return (
