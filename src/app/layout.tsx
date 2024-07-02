@@ -3,6 +3,7 @@ import localFont from 'next/font/local'
 import "./globals.css";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer"
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
   title: "Fancy Components",
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className={`${overusedGrotesk.variable} ${cotham.variable} min-h-screen bg-background antialiased`}>
         <Header />
         {children}
+        <Analytics />
         {/* <Footer /> */}
       </body>
     </html>

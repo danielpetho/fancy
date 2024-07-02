@@ -17,7 +17,7 @@ export function SimpleCompCard({
         allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
       />
       </div>
-      <h2 className="text-lg mt-2 font-semibold">{title}</h2>
+      <h2 className="text-md mt-2 font-semibold">{title}</h2>
     </div>
   );
 }
