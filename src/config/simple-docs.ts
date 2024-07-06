@@ -1,10 +1,14 @@
 export const simpleDocs = [
   {
-    title: "Vertical Hover By Letter Text — Forward Animation",
+    title: "Drag Elements",
+    url: "https://codesandbox.io/embed/rfz88c?view=preview&module=%2Fsrc%2Fdrag-elements.tsx&hidenavigation=1&hidedevtools=1",
+  },
+  {
+    title: "Vertical Hover Text — Forward Animation",
     url: "https://codesandbox.io/embed/kdqpng?view=preview&module=%2Fsrc%2FApp.tsx&hidenavigation=1&hidedevtools=1",
   },
   {
-    title: "Vertical Hover By Letter Text — Ping Pong Animation",
+    title: "Vertical Hover Text — Ping Pong Animation",
     url: "https://codesandbox.io/embed/2wzrd2?view=preview&module=%2Fsrc%2FApp.tsx&hidenavigation=1&hidedevtools=1",
   },
   {
