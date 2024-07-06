@@ -17,11 +17,6 @@ export const docsConfig = [
         href: "/docs/components/text",
         items: [
           {
-            title: "Underline",
-            href: "/docs/components/text/underline",
-            items: [],
-          },
-          {
             title: "Vertical Hover",
             href: "/docs/components/text/vertical-hover",
             items: [],
@@ -29,12 +24,12 @@ export const docsConfig = [
         ],
       },
       {
-        title: "Button",
-        href: "/docs/components/button",
+        title: "Blocks",
+        href: "/docs/components/blocks",
         items: [
           {
-            title: "Background Hover",
-            href: "/docs/components/button/background-hover",
+            title: "Drag Elements",
+            href: "/docs/components/blocks/drag-elements",
             items: [],
           },
         ],

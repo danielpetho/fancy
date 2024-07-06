@@ -1,13 +1,50 @@
-import * as React from "react"
+import * as React from "react";
 
-const components = {
-  "text": {
-    "underline": {
-      name: "underline",
-      type: "component/text",
-      component: React.lazy(() => import("@/fancy/components/text/underline")),
+import { Registry } from "@/fancy/schema";
+
+const fancy: Registry = {
+    "vertical-hover-text-forward-animation": {
+      name: "vertical-hover-by-letter-forward-animation", 
+      type: "components:fancy",
+      files: ["@/fancy/components/text/vertical-hover-text-forward-anim.tsx"]
+    },
+    "vertical-hover-text-pingpong-animation": {
+      name: "vertical-hover-by-letter-pingpong-animation", 
+      type: "components:fancy",
+      files: ["@/fancy/components/text/vertical-hover-text-pingpong-anim.tsx"]
+    },
+    "vertical-hover-text-by-random-letter-forward-animation": {
+      name: "vertical-hover-text-by-random-letter-forward-animation", 
+      type: "components:fancy",
+      files: ["@/fancy/components/text/vertical-hover-text-by-random-letter-forward-anim.tsx"]
+    },
+    "vertical-hover-text-by-random-letter-pingpong-animation": {
+      name: "vertical-hover-text-by-random-letter-pingpong-animation", 
+      type: "components:fancy",
+      files: ["@/fancy/components/text/vertical-hover-text-by-random-letter-pingpong-anim.tsx"]
     }
+}
+
+const example: Registry = {
+  "vertical-hover-demo": {
+    name: "vertical-hover-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/vertical-hover-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/vertical-hover-demo")
+    ),
+  },
+  "drag-elements-demo": {
+    name: "drag-elements-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/drag-elements-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/drag-elements-demo")
+    ),
   }
 }
 
-export default components
+export const registry = {
+  ...fancy,
+  ...example,
+};

@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils"
 import { CopyButton } from "@/components/copy-button"
 import { Icons } from "@/components/icons"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { registry } from "@/fancy/index"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -30,7 +31,7 @@ export function ComponentPreview({
   const Code = Codes[0]
 
   const Preview = React.useMemo(() => {
-    const Component = FancyComponentsIndex[name]?.component
+    const Component = registry[name]?.component
 
     if (!Component) {
       return (
