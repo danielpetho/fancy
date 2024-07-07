@@ -1,5 +1,5 @@
 import React from 'react';
-import { DragElements } from '../components/blocks/drag-elements';
+import { DragElements } from '@/fancy/components/blocks/drag-elements';
 
 const DragElementsDemo: React.FC = () => {
     return (

@@ -3,7 +3,9 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { CopyButton } from "@/components/copy-button"
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import {  materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { CopyButton } from "./copy-button";
 import { Icons } from "@/components/icons"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { registry } from "@/fancy/index"
@@ -27,8 +29,22 @@ export function ComponentPreview({
   ...props
 }: ComponentPreviewProps) {
 
-  const Codes = React.Children.toArray(children) as React.ReactElement[]
-  const Code = Codes[0]
+  const [sourceCode, setSourceCode] = React.useState('');
+
+  React.useEffect(() => {
+    async function loadSourceCode() {
+      try {
+        const module = await import(`../../.component-sources/${name}.json`);
+        const sourceCodeJSON = module.default;
+        setSourceCode(sourceCodeJSON.sourceCode);
+        console.log(sourceCodeJSON.sourceCode)
+      } catch (error) {
+        console.error(`Failed to load source for ${name}:`, error);
+        setSourceCode('');
+      }
+    }
+    loadSourceCode();
+  }, [name]);
 
   const Preview = React.useMemo(() => {
     const Component = registry[name]?.component
@@ -47,17 +63,6 @@ export function ComponentPreview({
 
     return <Component />
   }, [name])
-
-  const codeString = React.useMemo(() => {
-    if (
-      typeof Code?.props["data-rehype-pretty-code-fragment"] !== "undefined"
-    ) {
-      const [Button] = React.Children.toArray(
-        Code.props.children
-      ) as React.ReactElement[]
-      return Button?.props?.value || Button?.props?.__rawString__ || null
-    }
-  }, [Code])
 
   return (
     <div
@@ -84,40 +89,41 @@ export function ComponentPreview({
         <TabsContent value="preview" className="relative rounded-md border">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-2">
-              
-              <CopyButton
-                value={codeString}
+            <CopyButton
+                value={sourceCode}
                 variant="outline"
                 className="h-7 w-7 text-foreground opacity-100 hover:bg-muted hover:text-foreground [&_svg]:size-3.5"
               />
             </div>
           </div>
-            <div
-              className={cn(
-                "preview flex min-h-[350px] w-full justify-center p-10",
-                {
-                  "items-center": align === "center",
-                  "items-start": align === "start",
-                  "items-end": align === "end",
-                }
-              )}
+          <div
+            className={cn(
+              "preview flex min-h-[350px] w-full justify-center p-10",
+              {
+                "items-center": align === "center",
+                "items-start": align === "start",
+                "items-end": align === "end",
+              }
+            )}
+          >
+            <React.Suspense
+              fallback={
+                <div className="flex items-center text-sm text-muted-foreground">
+                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  Loading...
+                </div>
+              }
             >
-              <React.Suspense
-                fallback={
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                    Loading...
-                  </div>
-                }
-              >
-                {Preview}
-              </React.Suspense>
-            </div>
+              {Preview}
+            </React.Suspense>
+          </div>
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">
             <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
-              {Code}
+              <SyntaxHighlighter language="javascript" style={materialDark}>
+                {sourceCode}
+              </SyntaxHighlighter>
             </div>
           </div>
         </TabsContent>

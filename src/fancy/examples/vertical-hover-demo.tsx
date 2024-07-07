@@ -1,4 +1,4 @@
-import { VerticalHoverTextForward } from "../components/text/vertical-hover-text-forward-anim";
+import { VerticalHoverTextForward } from "@/fancy/components/text/vertical-hover-text-forward-anim";
 
 export default async function VerticalHoverDemo() {
   return (

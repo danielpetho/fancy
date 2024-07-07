@@ -15,10 +15,10 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
   const pathname = usePathname()
 
   return items.length ? (
-    <div className="w-full px-2 h-full"> 
+    <div className="w-full h-full py-8"> 
       {items.map((item, index) => (
-        <div key={index} className="pb-4">
-          <h4 className="mb-1 rounded-md  text-2xl font-semibold">
+        <div key={index} className=" px-6 ">
+          <h4 className="mb-1 rounded-md  text-2xl font-semibold ">
             {item.title}
           </h4>
           {item?.items?.length && (
@@ -41,11 +41,11 @@ export function DocsSidebarNavItems({
   level = 0, // Add a new parameter to track the level of nesting
 }: DocsSidebarNavItemsProps & { level?: number }) {
   return items?.length ? (
-    <div className="flex flex-col px-1 pb-4">
+    <div className="flex flex-col pb-4 ">
       {items.map((item, index) => {
         const isClickable = !item.items || item.items.length === 0;
         const itemClasses = cn(
-          "flex flex-col rounded-md font-medium",
+          "flex flex-col rounded-md font-medium ",
           isClickable ? "hover:underline" : "cursor-default",
           item.disabled && "cursor-not-allowed opacity-60",
           pathname === item.href ? "text-foreground" : "text-muted-foreground"
@@ -71,7 +71,7 @@ export function DocsSidebarNavItems({
               <span className="flex my-2 w-full items-center text-lg text-foreground ">
                 {item.title}
                 {item.label && (
-                  <span className="ml-2 rounded-md bg-muted px-1.5 py-0.5 text-xs leading-none text-muted-foreground">
+                  <span className="rounded-md bg-muted py-0.5 text-xs leading-none text-muted-foreground">
                     {item.label}
                   </span>
                 )}
