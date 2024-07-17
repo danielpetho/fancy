@@ -5,7 +5,7 @@ import { Footer } from "@/components/footer"
 
 export const metadata: Metadata = {
   title: "Fancy Components",
-  description: "Ready to use, fancy and obscure components for creative developers. Free & Open Source.",
+  description: "Ready to use, fancy and fun components to make the web fun again. Free & Open Source.",
 };
 
 export default function RootLayout({

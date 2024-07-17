@@ -15,11 +15,11 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
   const pathname = usePathname()
 
   return items.length ? (
-    <div className="w-full h-full py-8"> 
+    <div className="w-full h-full py-8 ">
       {items.map((item, index) => (
-        <div key={index} className=" px-6 ">
-          <h4 className="mb-1 rounded-md  text-2xl font-semibold ">
-            {item.title}
+        <div key={index} className="mb-3 pb-3 border-b-2 border-black px-6">
+          <h4 className="text-2xl font-medium mb-2">
+            {item.title} <span className="align-super text-sm">{item.title !== "Getting Started" ? `(${item.items?.length})` : ""}</span>
           </h4>
           {item?.items?.length && (
             <DocsSidebarNavItems items={item.items} pathname={pathname} />
@@ -38,51 +38,30 @@ interface DocsSidebarNavItemsProps {
 export function DocsSidebarNavItems({
   items,
   pathname,
-  level = 0, // Add a new parameter to track the level of nesting
-}: DocsSidebarNavItemsProps & { level?: number }) {
+}: DocsSidebarNavItemsProps) {
   return items?.length ? (
-    <div className="flex flex-col pb-4 ">
-      {items.map((item, index) => {
-        const isClickable = !item.items || item.items.length === 0;
-        const itemClasses = cn(
-          "flex flex-col rounded-md font-medium ",
-          isClickable ? "hover:underline" : "cursor-default",
-          item.disabled && "cursor-not-allowed opacity-60",
-          pathname === item.href ? "text-foreground" : "text-muted-foreground"
-        );
-
-        return (
-          <div key={index} className={itemClasses}>
-            {isClickable ? (
-              <Link
-                href={item.href}
-                className="flex w-full py-1 text-muted-foreground/70 items-center text-lg"
-                target={item.external ? "_blank" : ""}
-                rel={item.external ? "noreferrer" : ""}
-              >
-                {item.title}
-                {item.label && (
-                  <span className="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000]">
-                    {item.label}
-                  </span>
-                )}
-              </Link>
-            ) : (
-              <span className="flex my-2 w-full items-center text-lg text-foreground ">
-                {item.title}
-                {item.label && (
-                  <span className="rounded-md bg-muted py-0.5 text-xs leading-none text-muted-foreground">
-                    {item.label}
-                  </span>
-                )}
-              </span>
-            )}
-            {item.items && (
-              <DocsSidebarNavItems items={item.items} pathname={pathname} level={level + 1} />
-            )}
-          </div>
-        );
-      })}
+    <div className="flex flex-col space-y-1">
+      {items.map((item, index) => (
+        <Link
+          key={index}
+          href={item.href}
+          className={cn(
+            " text-lg hover:bg-gray-100 text-muted-foreground/70",
+            pathname === item.href && "bg-gray-100 font-medium",
+            item.disabled && "opacity-60 cursor-not-allowed"
+          )}
+          target={item.external ? "_blank" : ""}
+          rel={item.external ? "noreferrer" : ""}
+        >
+          {item.title}
+          {item.label && (
+            <span className="ml-2 rounded-md bg-[#adfa1d] px-1.5 py-0.5 text-xs leading-none text-[#000000]">
+              {item.label}
+            </span>
+          )}
+        </Link>
+      ))}
     </div>
-  ) : null;
+  ) : null
 }
+

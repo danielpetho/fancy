@@ -19,8 +19,9 @@ const config = {
     },
     extend: {
       fontFamily: {
+        calendas: ["Calendas Plus", "sans-serif"],
         overusedGrotesk: ["Overused Grotesk", "sans-serif"],
-        cotham: ["Cotham Sans", "sans-serif"],
+        cotham: ["Cotham Sans"],
       },
       colors: {
         lavender: "#ecbfff",

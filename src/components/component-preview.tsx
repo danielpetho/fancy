@@ -51,7 +51,7 @@ export function ComponentPreview({
 
     if (!Component) {
       return (
-        <p className="text-sm text-muted-foreground">
+        <p className="text text-muted-foreground">
           Component{" "}
           <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
             {name}
@@ -70,23 +70,23 @@ export function ComponentPreview({
       {...props}
     >
       <Tabs defaultValue="preview" className="relative mr-auto w-full">
-        <div className="flex items-center justify-between pb-3">
-          <TabsList className="w-full justify-start rounded-none border-b bg-transparent p-0">
+        <div className="flex items-center  justify-between">
+          <TabsList className="w-full justify-start rounded-none p-0 h-14 bg-transparent">
             <TabsTrigger
               value="preview"
-              className="relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none"
+              className="relative h-14 text-xl  rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
             >
               Preview
             </TabsTrigger>
             <TabsTrigger
               value="code"
-              className="relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none"
+              className="relative text-xl h-14 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
             >
               Code
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="preview" className="relative rounded-md border">
+        <TabsContent value="preview" className="relative border border-black-500">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-2">
             <CopyButton
@@ -120,7 +120,7 @@ export function ComponentPreview({
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">
-            <div className="w-full rounded-md [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
+            <div className="w-full [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
               <SyntaxHighlighter language="javascript" style={materialDark}>
                 {sourceCode}
               </SyntaxHighlighter>

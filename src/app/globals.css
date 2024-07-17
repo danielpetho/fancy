@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 96%;
     --foreground: 20 14.3% 4.1%;
 
     --card: 0 0% 100%;
@@ -89,6 +89,12 @@
   @font-face {
     font-family: "Cotham Sans";
     src: url("../../public/fonts/CothamSans.otf") format("otf");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Calendas Plus";
+    src: url("../../public/fonts/calendas_plus-webfont.woff") format("woff");
     font-weight: 400;
   }
 }
