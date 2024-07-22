@@ -37,7 +37,6 @@ export function ComponentPreview({
         const module = await import(`../../.component-sources/${name}.json`);
         const sourceCodeJSON = module.default;
         setSourceCode(sourceCodeJSON.sourceCode);
-        console.log(sourceCodeJSON.sourceCode)
       } catch (error) {
         console.error(`Failed to load source for ${name}:`, error);
         setSourceCode('');
