@@ -15,6 +15,7 @@ import {
   CollapsibleTrigger,
 } from "./ui/collapsible";
 import { Button } from "./ui/button";
+import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 interface ComponentSourceProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -58,7 +59,7 @@ export function ComponentSource({
               !isOpened ? "[&_pre]:overflow-hidden" : "[&_pre]:overflow-auto]"
             )}
           >
-            <SyntaxHighlighter language="javascript" style={materialDark}>
+            <SyntaxHighlighter language="javascript" style={hybrid} customStyle={{ borderRadius: "var(--radius)", padding: "1rem", backgroundColor: "#000000" }}>
               {sourceCode}
             </SyntaxHighlighter>
           </div>

@@ -3,12 +3,12 @@ import Link from "next/link";
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-50 w-full flex justify-center items-center bg-background border-b-2 border-black">
-      <div className="h-24 px-4 flex  flex-row w-full items-center ">
+    <header className="z-50 w-full flex justify-center items-center ">
+      <div className="h-24 px-4 flex mx-4 mt-4 bg-background flex-row w-full items-center rounded-xl">
         <nav className="flex items-center justify-between w-full gap-x-4">
           <div className="flex flex-row items-center gap-x-12">
             <Link href="/" className="flex items-center gap-x-2">
-              <p className=" text-3xl px-2 tracking-tight font-calendas scale-y-[110%] align-text-top" >
+              <p className=" text-3xl px-2 tracking-tight font-calendas scale-y-[120%] align-text-top" >
                 fancy components*
               </p>
             </Link>

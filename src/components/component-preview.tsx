@@ -4,11 +4,11 @@ import * as React from "react"
 
 import { cn } from "@/lib/utils"
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import {  materialDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { CopyButton } from "./copy-button";
 import { Icons } from "@/components/icons"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { registry } from "@/fancy/index"
+import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -85,7 +85,7 @@ export function ComponentPreview({
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="preview" className="relative border border-black-500">
+        <TabsContent value="preview" className="relative border border-black-500 rounded-lg">
           <div className="flex items-center justify-between p-4">
             <div className="flex items-center gap-2">
             <CopyButton
@@ -119,8 +119,8 @@ export function ComponentPreview({
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">
-            <div className="w-full [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto">
-              <SyntaxHighlighter language="javascript" style={materialDark}>
+            <div className="w-full [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto rounded-lg">
+              <SyntaxHighlighter language="javascript" style={hybrid} customStyle={{ borderRadius: "var(--radius)", padding: "1rem", backgroundColor: "#000000" }}>
                 {sourceCode}
               </SyntaxHighlighter>
             </div>

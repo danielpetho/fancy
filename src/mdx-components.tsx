@@ -148,19 +148,11 @@ export function useMDXComponents(components?: MDXComponents): MDXComponents {
       __src__?: string;
       __event__?: Event["name"];
     } & NpmCommands) => {
-      console.log(__rawString__)
-      console.log(__npmCommand__)
-      console.log(__yarnCommand__)
-      console.log(__pnpmCommand__)
-      console.log(__bunCommand__)
-      console.log(__withMeta__)
-      console.log(__src__)
-      console.log(__event__)
       return (
         <>
           <pre
             className={cn(
-              "p-4 mb-4 mt-6 max-h-[650px] overflow-x-auto border text-white bg-zinc-950 py-4 dark:bg-zinc-900",
+              "p-4 mb-4 mt-6 max-h-[650px] overflow-x-auto border rounded-lg text-white bg-zinc-950 py-4 dark:bg-zinc-900",
               className
             )}
             {...props}

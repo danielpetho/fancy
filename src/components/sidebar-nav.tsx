@@ -17,7 +17,7 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
   return items.length ? (
     <div className="w-full h-full py-8 ">
       {items.map((item, index) => (
-        <div key={index} className="mb-3 pb-3 border-b-2 border-black px-6">
+        <div key={index} className="mb-3 pb-3  border-black px-6">
           <h4 className="text-2xl font-medium mb-2">
             {item.title} <span className="align-super text-sm">{item.title !== "Getting Started" ? `(${item.items?.length})` : ""}</span>
           </h4>
@@ -46,8 +46,8 @@ export function DocsSidebarNavItems({
           key={index}
           href={item.href}
           className={cn(
-            " text-lg hover:bg-gray-100 text-muted-foreground/70",
-            pathname === item.href && "bg-gray-100 font-medium",
+            " text-lg  text-muted-foreground/70",
+            pathname === item.href && "font-medium",
             item.disabled && "opacity-60 cursor-not-allowed"
           )}
           target={item.external ? "_blank" : ""}
