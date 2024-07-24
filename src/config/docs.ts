@@ -20,8 +20,13 @@ export const docsConfig = [
     href: "/docs/components/text",
     items: [
       {
-        title: "Vertical Hover",
-        href: "/docs/components/text/vertical-hover",
+        title: "Letter Swap",
+        href: "/docs/components/text/letter-swap",
+        items: [],
+      },
+      {
+        title: "Random Letter Swap",
+        href: "/docs/components/text/random-letter-swap",
         items: [],
       },
     ],

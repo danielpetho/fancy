@@ -17,7 +17,7 @@ import {
     onClick?: () => void;
   }
   
-  export const VerticalHoverTextPingPong = ({
+  export const LetterSwapPingPong = ({
     label,
     reverse = true,
     transition = {

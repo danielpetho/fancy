@@ -1,0 +1,51 @@
+---
+title: Letter Swap Text
+description: A text component that swaps the letters vertically on hover.
+component: true
+---
+
+<ComponentPreview name="letter-swap-demo" />
+
+There are two types of animations available for this component:
+
+1. Forward animation — plays the animation timeline once forward.
+2. Ping Pong animation — plays the animation timeline in a ping pong fashion. 
+
+## Installation
+
+### Only forward animation
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="letter-swap-forward-anim" />
+
+</Steps>
+
+### Ping Pong animation
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+```bash
+npm install lodash
+```
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="letter-swap-pingpong-anim" />
+
+</Steps>
+
+## Examples
+
+With the staggerFrom prop, you can control the index of the letter where the stagger animation starts.
+
+<ComponentPreview name="letter-swap-pingpong-anim" staggerFrom="center" />
+
+
+
+
+

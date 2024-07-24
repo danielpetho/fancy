@@ -11,7 +11,7 @@ interface TextProps {
   onClick?: () => void;
 }
 
-export const VerticalHoverTextByRandomLetterForward = ({
+export const RandomLetterSwapForward = ({
   label,
   reverse = true,
   transition = {

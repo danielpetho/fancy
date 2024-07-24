@@ -6,9 +6,6 @@ import { cn } from "@/lib/utils";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CopyButton } from "./copy-button";
-import { Icons } from "@/components/icons";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { registry } from "@/fancy/index";
 import {
   Collapsible,
   CollapsibleContent,
@@ -47,27 +44,30 @@ export function ComponentSource({
   }, [name]);
 
   return (
-    <Collapsible open={isOpened} onOpenChange={setIsOpened}>
+    <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
       <div className={cn("relative overflow-hidden", className)} {...props}>
         <CollapsibleContent
           forceMount
-          className={cn("overflow-hidden", !isOpened && "max-h-32")}
+          className={cn("overflow-scroll rounded-lg max-h-[640px]", !isOpened && "max-h-40")}
         >
-          <div
-            className={cn(
-              "[&_pre]:my-0 [&_pre]:max-h-[650px] [&_pre]:pb-[100px]",
-              !isOpened ? "[&_pre]:overflow-hidden" : "[&_pre]:overflow-auto]"
-            )}
+          <SyntaxHighlighter
+            language="javascript"
+            style={hybrid}
+            customStyle={{
+              borderRadius: "var(--radius) var(--radius)",
+              padding: "1rem",
+              backgroundColor: "#000000",
+            }}
           >
-            <SyntaxHighlighter language="javascript" style={hybrid} customStyle={{ borderRadius: "var(--radius)", padding: "1rem", backgroundColor: "#000000" }}>
-              {sourceCode}
-            </SyntaxHighlighter>
-          </div>
+            {sourceCode}
+          </SyntaxHighlighter>
         </CollapsibleContent>
         <div
           className={cn(
-            "absolute flex items-center justify-center bg-gradient-to-b from-zinc-700/30 to-zinc-950/90 p-2",
-            isOpened ? "inset-x-0 bottom-0 h-12" : "inset-0"
+            "absolute flex items-center justify-center bg-gradient-to-b  p-2 rounded-lg",
+            isOpened
+              ? "inset-x-0 bottom-0"
+              : "inset-0 from-black/30 to-black/60"
           )}
         >
           <CollapsibleTrigger asChild>

@@ -50,12 +50,12 @@ export function ComponentPreview({
 
     if (!Component) {
       return (
-        <p className="text text-muted-foreground">
+        <p className="text text-muted-foreground justify-center items-center flex w-full h-full whitespace-pre">
           Component{" "}
-          <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm">
+          <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm whitespace-pre">
             {name}
-          </code>{" "}
-          not found.
+          </code>
+          {" "}not found.
         </p>
       )
     }
@@ -65,7 +65,7 @@ export function ComponentPreview({
 
   return (
     <div
-      className={cn("group relative my-4 flex flex-col space-y-2", className)}
+      className={cn("group relative my-4 flex flex-col space-y-2 h-full", className)}
       {...props}
     >
       <Tabs defaultValue="preview" className="relative mr-auto w-full">
@@ -85,29 +85,12 @@ export function ComponentPreview({
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="preview" className="relative border border-black-500 rounded-lg">
-          <div className="flex items-center justify-between p-4">
-            <div className="flex items-center gap-2">
-            <CopyButton
-                value={sourceCode}
-                variant="outline"
-                className="h-7 w-7 text-foreground opacity-100 hover:bg-muted hover:text-foreground [&_svg]:size-3.5"
-              />
-            </div>
-          </div>
-          <div
-            className={cn(
-              "preview flex min-h-[350px] w-full justify-center p-10",
-              {
-                "items-center": align === "center",
-                "items-start": align === "start",
-                "items-end": align === "end",
-              }
-            )}
-          >
+        <TabsContent value="preview" className="relative border border-black-500 min-h-[420px]  rounded-lg  ">
+            
+          <div className="w-full h-full flex items-center justify-between min-h-[420px]">
             <React.Suspense
               fallback={
-                <div className="flex items-center text-sm text-muted-foreground">
+                <div className="flex items-center justify-center w-full h-full text-sm text-muted-foreground">
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                   Loading...
                 </div>

@@ -3,35 +3,35 @@ import * as React from "react";
 import { Registry } from "@/fancy/schema";
 
 const fancy: Registry = {
-  "vertical-hover-text-forward-animation": {
-    name: "vertical-hover-by-letter-forward-animation",
+  "letter-swap-forward-animation": {
+    name: "letter-swap-forward-animation",
     type: "components:fancy",
-    files: ["@/fancy/components/text/vertical-hover-text-forward-anim.tsx"]
+    files: ["@/fancy/components/text/letter-swap-text-forward-anim.tsx"]
   },
-  "vertical-hover-text-pingpong-animation": {
-    name: "vertical-hover-by-letter-pingpong-animation",
+  "letter-swap-pingpong-animation": {
+    name: "letter-swap-pingpong-animation",
     type: "components:fancy",
-    files: ["@/fancy/components/text/vertical-hover-text-pingpong-anim.tsx"]
+    files: ["@/fancy/components/text/letter-swap-pingpong-anim.tsx"]
   },
-  "vertical-hover-text-by-random-letter-forward-animation": {
-    name: "vertical-hover-text-by-random-letter-forward-animation",
+  "letter-swap-text-by-random-letter-forward-animation": {
+    name: "letter-swap-text-by-random-letter-forward-animation",
     type: "components:fancy",
-    files: ["@/fancy/components/text/vertical-hover-text-by-random-letter-forward-anim.tsx"]
+    files: ["@/fancy/components/text/random-letter-swap-forward-anim.tsx"]
   },
-  "vertical-hover-text-by-random-letter-pingpong-animation": {
-    name: "vertical-hover-text-by-random-letter-pingpong-animation",
+  "letter-swap-text-by-random-letter-pingpong-animation": {
+    name: "random-letter-swap-pingpong-animation",
     type: "components:fancy",
-    files: ["@/fancy/components/text/vertical-hover-text-by-random-letter-pingpong-anim.tsx"]
+    files: ["@/fancy/components/text/random-letter-swap-pingpong-anim.tsx"]
   }
 }
 
 const example: Registry = {
-  "vertical-hover-demo": {
-    name: "vertical-hover-demo",
+  "letter-swap-demo": {
+    name: "letter-swap-demo",
     type: "components:example",
-    files: ["@/fancy/examples/vertical-hover-demo.tsx"],
+    files: ["@/fancy/examples/letter-swap-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/vertical-hover-demo")
+      () => import("@/fancy/examples/letter-swap-demo")
     ),
   },
   "drag-elements-demo": {

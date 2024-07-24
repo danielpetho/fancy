@@ -11,7 +11,7 @@ interface TextProps {
   onClick?: () => void;
 }
 
-export const VerticalHoverTextByRandomLetterPingPong = ({
+export const RandomLetterSwapPingPong = ({
   label,
   reverse = true,
   transition = {
