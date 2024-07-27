@@ -1,4 +1,9 @@
+import { redirect } from "next/navigation";
+
 export default function Home() {
+
+  redirect("/docs/introduction");
+  
   return (
     <main className="flex h-screen flex-col items-center justify-center p-24 ">
       <div className="w-full h-full flex flex-col items-center mt-32 gap-y-12 max-w-screen-xl">
