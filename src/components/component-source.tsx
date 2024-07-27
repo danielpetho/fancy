@@ -60,7 +60,7 @@ export function ComponentSource({
             />
           </div>}
           <ReactSyntaxHighlighter
-            language="javascript"
+            language="typescript"
             style={hybrid}
             customStyle={{
               borderRadius: "var(--radius) var(--radius)",
