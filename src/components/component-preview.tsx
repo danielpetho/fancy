@@ -34,8 +34,8 @@ export function ComponentPreview({
   React.useEffect(() => {
     async function loadSourceCode() {
       try {
-        const module = await import(`../../.component-sources/${name}.json`);
-        const sourceCodeJSON = module.default;
+        const mod = await import(`../../.component-sources/${name}.json`);
+        const sourceCodeJSON = mod.default;
         setSourceCode(sourceCodeJSON.sourceCode);
       } catch (error) {
         console.error(`Failed to load source for ${name}:`, error);
