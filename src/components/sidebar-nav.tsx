@@ -44,7 +44,7 @@ export function DocsSidebarNavItems({
       {items.map((item, index) => (
         <Link
           key={index}
-          href={item.href}
+          href={item.href ?? '#'}
           className={cn(
             " text-lg  text-muted-foreground/70",
             pathname === item.href && "font-medium",
