@@ -1,6 +1,8 @@
 import { mdxComponents } from "@/mdx-components";
 import { Doc, DocPageProps } from "@/types/types";
 import { compileMDX } from "next-mdx-remote/rsc";
+import fs from "node:fs";
+import path from "node:path";
 
 export const CONTENT_DIRECTORY = "/src/content/docs/";
 
