@@ -18,7 +18,7 @@ const CONTENT_DIRECTORY = "/src/content/docs/";
 export async function generateMetadata({
   params,
 }: DocPageProps): Promise<Metadata> {
-  const doc = await getDocFromParams({ params })
+  const doc = await useGetDocFromParams({ params })
 
   if (!doc) {
     return {}
@@ -88,7 +88,7 @@ export function generateStaticParams() {
   }));
 }
 
-export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
+export async function useGetDocFromParams({ params }: DocPageProps): Promise<Doc> {
   const source = fs.readFileSync(
     path.join(process.cwd(), CONTENT_DIRECTORY, params.slug.join("/")) + ".mdx",
     "utf8",
@@ -120,7 +120,7 @@ export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
 
 export default async function DocPage({ params }: DocPageProps) {
 
-  const doc = await getDocFromParams({ params })
+  const doc = await useGetDocFromParams({ params })
 
   return (
     <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
