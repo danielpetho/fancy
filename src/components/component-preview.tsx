@@ -3,12 +3,15 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import ReactSyntaxHighlighter, { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { CopyButton } from "./copy-button";
 import { Icons } from "@/components/icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { registry } from "@/fancy/index";
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { obsidian } from "react-syntax-highlighter/dist/cjs/styles/hljs";
+import { obsidian as obi } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -114,17 +117,17 @@ export function ComponentPreview({
                   event={"copy_npm_command"}
                 />
               </div>
-              <SyntaxHighlighter
+              <ReactSyntaxHighlighter
                 language="javascript"
                 style={hybrid}
                 customStyle={{
                   borderRadius: "var(--radius)",
                   padding: "1rem",
-                  backgroundColor: "#000000",
+                  //backgroundColor: "#000000",
                 }}
               >
                 {sourceCode}
-              </SyntaxHighlighter>
+              </ReactSyntaxHighlighter>
             </div>
           </div>
         </TabsContent>

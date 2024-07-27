@@ -3,8 +3,7 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import ReactSyntaxHighlighter from "react-syntax-highlighter";
 import { CopyButton } from "./copy-button";
 import {
   Collapsible,
@@ -13,7 +12,6 @@ import {
 } from "./ui/collapsible";
 import { Button } from "./ui/button";
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { Copy } from "lucide-react";
 
 interface ComponentSourceProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -61,17 +59,17 @@ export function ComponentSource({
               event={"copy_npm_command"}
             />
           </div>}
-          <SyntaxHighlighter
+          <ReactSyntaxHighlighter
             language="javascript"
             style={hybrid}
             customStyle={{
               borderRadius: "var(--radius) var(--radius)",
               padding: "1rem",
-              backgroundColor: "#000000",
+              // backgroundColor: "#000000",
             }}
           >
             {sourceCode}
-          </SyntaxHighlighter>
+          </ReactSyntaxHighlighter>
         </CollapsibleContent>
         <div
           className={cn(
