@@ -1,7 +1,7 @@
 import { DocsPager } from "@/components/doc-pager";
 import { siteConfig } from "@/lib/site";
 import { absoluteUrl, cn } from "@/lib/utils";
-import { useMDXComponents } from "@/mdx-components";
+import { mdxComponents } from "@/mdx-components";
 import { Doc } from "@/types/types";
 import { ChevronRightIcon } from "lucide-react";
 import { Metadata } from "next";
@@ -18,10 +18,10 @@ const CONTENT_DIRECTORY = "/src/content/docs/";
 export async function generateMetadata({
   params,
 }: DocPageProps): Promise<Metadata> {
-  const doc = await useGetDocFromParams({ params })
+  const doc = await getDocFromParams({ params });
 
   if (!doc) {
-    return {}
+    return {};
   }
 
   return {
@@ -48,14 +48,13 @@ export async function generateMetadata({
       images: [siteConfig.ogImage],
       creator: "@nonzeroexitcode",
     },
-  }
+  };
 }
-
 
 interface DocPageProps {
   params: {
-    slug: string[]
-  }
+    slug: string[];
+  };
 }
 
 export function generateStaticParams() {
@@ -71,7 +70,7 @@ export function generateStaticParams() {
     if (
       fs
         .lstatSync(
-          path.join(process.cwd(), CONTENT_DIRECTORY, target.toString()),
+          path.join(process.cwd(), CONTENT_DIRECTORY, target.toString())
         )
         .isDirectory()
     ) {
@@ -88,14 +87,14 @@ export function generateStaticParams() {
   }));
 }
 
-export async function useGetDocFromParams({ params }: DocPageProps): Promise<Doc> {
+export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
   const source = fs.readFileSync(
     path.join(process.cwd(), CONTENT_DIRECTORY, params.slug.join("/")) + ".mdx",
-    "utf8",
+    "utf8"
   );
 
   // Use the Next.js component mappings
-  const components = useMDXComponents();
+  const components = mdxComponents();
 
   const { content, frontmatter } = await compileMDX({
     source,
@@ -107,20 +106,19 @@ export async function useGetDocFromParams({ params }: DocPageProps): Promise<Doc
     slug: params.slug.join("/"),
     slugAsParams: params.slug.join("/"),
     _id: params.slug.join("/"),
-    type: 'Doc',
+    type: "Doc",
     title: String(frontmatter.title),
     description: String(frontmatter.description),
     published: Boolean(frontmatter.published),
     featured: Boolean(frontmatter.featured),
     component: Boolean(frontmatter.component),
     toc: Boolean(frontmatter.toc),
-    body: content
-  }
+    body: content,
+  };
 }
 
 export default async function DocPage({ params }: DocPageProps) {
-
-  const doc = await useGetDocFromParams({ params })
+  const doc = await getDocFromParams({ params });
 
   return (
     <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
@@ -133,7 +131,9 @@ export default async function DocPage({ params }: DocPageProps) {
           <div className="font-medium text-foreground">{doc.title}</div>
         </div>
         <div className="space-y-2">
-          <h1 className={cn("scroll-m-20 text-5xl font-calendas tracking-tight")}>
+          <h1
+            className={cn("scroll-m-20 text-5xl font-calendas tracking-tight")}
+          >
             {doc.title}
           </h1>
           {!!doc.description && doc.description !== "null" && (
@@ -143,13 +143,11 @@ export default async function DocPage({ params }: DocPageProps) {
           )}
         </div>
 
-        <div className="pb-12 pt-8">
-          {doc.body}
-        </div>
+        <div className="pb-12 pt-8">{doc.body}</div>
         <div>
           <DocsPager doc={doc} />
         </div>
       </div>
     </main>
-  )
+  );
 }

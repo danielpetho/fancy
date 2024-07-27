@@ -8,7 +8,7 @@ import { CopyButton, CopyNpmCommandButton } from "./components/copy-button";
 import { NpmCommands } from "./types/types";
 import { Event } from "./lib/events";
 
-export function useMDXComponents(components?: MDXComponents): MDXComponents {
+export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
     h1: ({ className, ...props }: React.ComponentProps<"h1">) => (
       <h1

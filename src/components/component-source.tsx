@@ -13,6 +13,7 @@ import {
 } from "./ui/collapsible";
 import { Button } from "./ui/button";
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { Copy } from "lucide-react";
 
 interface ComponentSourceProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -48,8 +49,18 @@ export function ComponentSource({
       <div className={cn("relative overflow-hidden", className)} {...props}>
         <CollapsibleContent
           forceMount
-          className={cn("overflow-scroll rounded-lg max-h-[640px]", !isOpened && "max-h-40")}
+          className={cn(
+            "overflow-scroll rounded-lg max-h-[640px]",
+            !isOpened && "max-h-40"
+          )}
         >
+          { isOpened && <div className="absolute right-4 top-4">
+            <CopyButton
+              value={sourceCode}
+              src={name}
+              event={"copy_npm_command"}
+            />
+          </div>}
           <SyntaxHighlighter
             language="javascript"
             style={hybrid}
