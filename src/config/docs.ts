@@ -40,11 +40,11 @@ export const docsConfig = [
         href: "/docs/components/blocks/drag-elements",
         items: [],
       },
-      {
-        title: "Menu Variant 1",
-        href: "/docs/components/blocks/menu-variant-1",
-        items: [],
-      },
+      // {
+      //   title: "Menu Variant 1",
+      //   href: "/docs/components/blocks/menu-variant-1",
+      //   items: [],
+      // },
     ],
   },
 ];

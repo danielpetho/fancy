@@ -2,3 +2,38 @@
 title: Installation
 description: 
 ---
+
+<Steps>
+
+<Step>Installation</Step>
+The components are built with React, TypeScript, Tailwind CSS, and Framer Motion. In order to use the components, you need to install the following dependencies:
+
+```bash
+npm install tailwindcss@latest framer-motion
+```
+
+Or follow the [Tailwind CSS installation guide](https://tailwindcss.com/docs/installation) to setup Tailwind CSS in your project.
+
+<Step>Importing</Step>
+
+Go to any of the components you want to use and copy the code from the "Installation" section. Then, paste it into your project.
+
+<Step>Example</Step>
+
+```jsx
+import { LetterSwapForward } from "@/fancy/components/text/letter-swap-forward-anim";
+
+export default function MyComponent() {
+  return (
+    <div className="w-full h-full flex justify-center items-center">
+      <LetterSwapForward label="Hover me!" reverse={true} className="italic" />
+    </div>
+  );
+}
+```
+
+<Step>Notes</Step>
+
+If you prefer javascript instead of typescript, you can easily convert the code with a tool like [this](https://transform.tools/typescript-to-javascript).
+
+</Steps>

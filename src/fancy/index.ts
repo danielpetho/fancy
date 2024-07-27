@@ -34,6 +34,30 @@ const example: Registry = {
       () => import("@/fancy/examples/letter-swap-demo")
     ),
   },
+  "letter-swap-demo-stagger": {
+    name: "letter-swap-demo-stagger",
+    type: "components:example",
+    files: ["@/fancy/examples/letter-swap-demo-stagger.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/letter-swap-demo-stagger")
+    ),
+  },
+  "letter-swap-demo-line": {
+    name: "letter-swap-demo-line",
+    type: "components:example",
+    files: ["@/fancy/examples/letter-swap-demo-line.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/letter-swap-demo-line")
+    ),
+  },
+  "random-letter-swap-demo": {
+    name: "random-letter-swap-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/random-letter-swap-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/random-letter-swap-demo")
+    )
+  },
   "drag-elements-demo": {
     name: "drag-elements-demo",
     type: "components:example",

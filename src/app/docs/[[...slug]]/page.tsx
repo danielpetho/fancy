@@ -133,10 +133,10 @@ export default async function DocPage({ params }: DocPageProps) {
           <div className="font-medium text-foreground">{doc.title}</div>
         </div>
         <div className="space-y-2">
-          <h1 className={cn("scroll-m-20 text-4xl tracking-tight")}>
+          <h1 className={cn("scroll-m-20 text-5xl font-calendas tracking-tight")}>
             {doc.title}
           </h1>
-          {doc.description && (
+          {!!doc.description && doc.description !== "null" && (
             <p className="text-lg text-muted-foreground">
               <Balancer>{doc.description}</Balancer>
             </p>

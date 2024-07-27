@@ -11,9 +11,10 @@ There are two types of animations available for this component:
 1. Forward animation — plays the animation timeline once forward.
 2. Ping Pong animation — plays the animation timeline in a ping pong fashion. 
 
+
 ## Installation
 
-### Only forward animation
+#### Only forward animation
 
 <Steps>
 
@@ -23,7 +24,7 @@ There are two types of animations available for this component:
 
 </Steps>
 
-### Ping Pong animation
+#### Ping Pong animation
 
 <Steps>
 
@@ -41,9 +42,19 @@ npm install lodash
 
 ## Examples
 
+### Stagger
+
 With the staggerFrom prop, you can control the index of the letter where the stagger animation starts.
 
-<ComponentPreview name="letter-swap-pingpong-anim" staggerFrom="center" />
+<ComponentPreview name="letter-swap-demo-stagger" />
+
+### Line swap
+
+By setting the staggerDelay prop to zero, you can create a line swap effect.
+
+<ComponentPreview name="letter-swap-demo-line" />
+
+
 
 
 
