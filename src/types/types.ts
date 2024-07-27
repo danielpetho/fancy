@@ -20,4 +20,11 @@ export type NpmCommands = {
   __bunCommand__?: string;
 };
 
+export interface DocPageProps {
+  params: {
+    slug: string[];
+  };
+}
+
+
 

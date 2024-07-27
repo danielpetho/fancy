@@ -1,19 +1,15 @@
 import { DocsPager } from "@/components/doc-pager";
+import { CONTENT_DIRECTORY, getDocFromParams } from "@/lib/get-docs";
 import { siteConfig } from "@/lib/site";
 import { absoluteUrl, cn } from "@/lib/utils";
-import { mdxComponents } from "@/mdx-components";
-import { Doc } from "@/types/types";
-import { ChevronRightIcon } from "lucide-react";
+import { DocPageProps } from "@/types/types";
 import { Metadata } from "next";
-import { compileMDX } from "next-mdx-remote/rsc";
 import fs from "node:fs";
 import path from "node:path";
 import Balancer from "react-wrap-balancer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
-
-const CONTENT_DIRECTORY = "/src/content/docs/";
 
 export async function generateMetadata({
   params,
@@ -51,12 +47,6 @@ export async function generateMetadata({
   };
 }
 
-interface DocPageProps {
-  params: {
-    slug: string[];
-  };
-}
-
 export function generateStaticParams() {
   const targets = fs.readdirSync(path.join(process.cwd(), CONTENT_DIRECTORY), {
     // Read nested directories and files
@@ -85,36 +75,6 @@ export function generateStaticParams() {
   return files.map((file) => ({
     slug: file.toString().replace(".mdx", "").split("/"),
   }));
-}
-
-export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
-  const source = fs.readFileSync(
-    path.join(process.cwd(), CONTENT_DIRECTORY, params.slug.join("/")) + ".mdx",
-    "utf8"
-  );
-
-  // Use the Next.js component mappings
-  const components = mdxComponents();
-
-  const { content, frontmatter } = await compileMDX({
-    source,
-    options: { parseFrontmatter: true },
-    components,
-  });
-
-  return {
-    slug: params.slug.join("/"),
-    slugAsParams: params.slug.join("/"),
-    _id: params.slug.join("/"),
-    type: "Doc",
-    title: String(frontmatter.title),
-    description: String(frontmatter.description),
-    published: Boolean(frontmatter.published),
-    featured: Boolean(frontmatter.featured),
-    component: Boolean(frontmatter.component),
-    toc: Boolean(frontmatter.toc),
-    body: content,
-  };
 }
 
 export default async function DocPage({ params }: DocPageProps) {
