@@ -1,21 +1,21 @@
-"use client"
+"use client";
 
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { cn } from "@/lib/utils";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { CopyButton } from "./copy-button";
-import { Icons } from "@/components/icons"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { registry } from "@/fancy/index"
+import { Icons } from "@/components/icons";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { registry } from "@/fancy/index";
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
-  name: string
-  extractClassname?: boolean
-  extractedClassNames?: string
-  align?: "center" | "start" | "end"
-  description?: string
+  name: string;
+  extractClassname?: boolean;
+  extractedClassNames?: string;
+  align?: "center" | "start" | "end";
+  description?: string;
 }
 
 export function ComponentPreview({
@@ -28,8 +28,7 @@ export function ComponentPreview({
   description,
   ...props
 }: ComponentPreviewProps) {
-
-  const [sourceCode, setSourceCode] = React.useState('');
+  const [sourceCode, setSourceCode] = React.useState("");
 
   React.useEffect(() => {
     async function loadSourceCode() {
@@ -39,14 +38,14 @@ export function ComponentPreview({
         setSourceCode(sourceCodeJSON.sourceCode);
       } catch (error) {
         console.error(`Failed to load source for ${name}:`, error);
-        setSourceCode('');
+        setSourceCode("");
       }
     }
     loadSourceCode();
   }, [name]);
 
   const Preview = React.useMemo(() => {
-    const Component = registry[name]?.component
+    const Component = registry[name]?.component;
 
     if (!Component) {
       return (
@@ -54,18 +53,21 @@ export function ComponentPreview({
           Component{" "}
           <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm whitespace-pre">
             {name}
-          </code>
-          {" "}not found.
+          </code>{" "}
+          not found.
         </p>
-      )
+      );
     }
 
-    return <Component />
-  }, [name])
+    return <Component />;
+  }, [name]);
 
   return (
     <div
-      className={cn("group relative my-4 flex flex-col space-y-2 h-full", className)}
+      className={cn(
+        "group relative my-4 flex flex-col space-y-2 h-full",
+        className
+      )}
       {...props}
     >
       <Tabs defaultValue="preview" className="relative mr-auto w-full">
@@ -85,8 +87,10 @@ export function ComponentPreview({
             </TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="preview" className="relative border border-black-500 min-h-[420px]  rounded-lg  ">
-            
+        <TabsContent
+          value="preview"
+          className="relative border border-black-500 min-h-[420px]  rounded-lg  "
+        >
           <div className="w-full h-full flex items-center justify-between min-h-[420px]">
             <React.Suspense
               fallback={
@@ -102,8 +106,23 @@ export function ComponentPreview({
         </TabsContent>
         <TabsContent value="code">
           <div className="flex flex-col space-y-4">
-            <div className="w-full [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto rounded-lg">
-              <SyntaxHighlighter language="javascript" style={hybrid} customStyle={{ borderRadius: "var(--radius)", padding: "1rem", backgroundColor: "#000000" }}>
+            <div className="w-full [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto relative rounded-lg">
+              <div className="absolute right-4 top-4">
+                <CopyButton
+                  value={sourceCode}
+                  src={name}
+                  event={"copy_npm_command"}
+                />
+              </div>
+              <SyntaxHighlighter
+                language="javascript"
+                style={hybrid}
+                customStyle={{
+                  borderRadius: "var(--radius)",
+                  padding: "1rem",
+                  backgroundColor: "#000000",
+                }}
+              >
                 {sourceCode}
               </SyntaxHighlighter>
             </div>
@@ -111,5 +130,5 @@ export function ComponentPreview({
         </TabsContent>
       </Tabs>
     </div>
-  )
+  );
 }
