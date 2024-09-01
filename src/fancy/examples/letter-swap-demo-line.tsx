@@ -3,7 +3,7 @@ import { LetterSwapPingPong } from "../components/text/letter-swap-pingpong-anim
 
 export default function Preview() {
   return (
-    <div className="w-full h-full  min-h-[420px] text-3xl flex flex-row gap-12 items-center justify-center font-calendas">
+    <div className="w-full h-full text-3xl flex flex-row gap-12 items-center justify-center font-calendas">
       <div className="flex flex-col items-center justify-center gap-y-8">
         <LetterSwapForward label="oh, wow!" staggerDuration={0} />
         <LetterSwapForward label="nice!" staggerDuration={0} reverse={false} />

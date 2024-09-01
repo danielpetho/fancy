@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation"
 import { SidebarNavItem } from "@/types/nav"
 
 import { cn } from "@/lib/utils"
-import { Separator } from "./ui/separator"
+import { motion } from "framer-motion"
 
 export interface DocsSidebarNavProps {
   items: SidebarNavItem[]
@@ -42,11 +42,12 @@ export function DocsSidebarNavItems({
   return items?.length ? (
     <div className="flex flex-col space-y-1">
       {items.map((item, index) => (
+        <motion.p whileHover={{ x: 5 }} key={index} className="">
         <Link
           key={index}
           href={item.href ?? '#'}
           className={cn(
-            " text-lg  text-muted-foreground/70",
+            " text-lg  text-foreground/50",
             pathname === item.href && "font-medium",
             item.disabled && "opacity-60 cursor-not-allowed"
           )}
@@ -60,6 +61,7 @@ export function DocsSidebarNavItems({
             </span>
           )}
         </Link>
+        </motion.p>
       ))}
     </div>
   ) : null

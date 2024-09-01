@@ -22,6 +22,11 @@ const fancy: Registry = {
     name: "random-letter-swap-pingpong-animation",
     type: "components:fancy",
     files: ["@/fancy/components/text/random-letter-swap-pingpong-anim.tsx"]
+  },
+  "expanding-menu": {
+    name: "expanding-menu",
+    type: "components:fancy",
+    files: ["@/fancy/components/menu/expanding-menu.tsx"]
   }
 }
 
@@ -66,12 +71,12 @@ const example: Registry = {
       () => import("@/fancy/examples/drag-elements-demo")
     )
   },
-  "menu-variant-1-demo": {
+  "expanding-menu-demo": {
     name: "menu-variant-1-demo",
     type: "components:example",
-    files: ["@/fancy/examples/menu-variant-1-demo.tsx"],
+    files: ["@/fancy/examples/expanding-menu.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/menu-variant-1-demo")
+      () => import("@/fancy/examples/expanding-menu-demo")
     ),
   }
 }

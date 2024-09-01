@@ -2,7 +2,7 @@ import { LetterSwapForward } from "@/fancy/components/text/letter-swap-forward-a
 
 export default function Preview() {
   return (
-    <div className="w-full h-full  min-h-[420px] text-2xl flex flex-row items-center justify-center font-calendas gap-x-12">
+    <div className="w-full h-full text-2xl flex flex-row items-center justify-center font-calendas gap-x-12">
       <LetterSwapForward label="First" staggerFrom={"first"} />
       <LetterSwapForward label="Center" staggerFrom={"center"} className="" />
       <LetterSwapForward label="Last" staggerFrom={"last"} />

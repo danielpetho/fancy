@@ -92,10 +92,14 @@ export function ComponentPreview({
         </div>
         <TabsContent
           value="preview"
-          className="relative border border-black-500 min-h-[420px]  rounded-lg  "
+          className="relative border border-black-500 flex rounded-lg  "
         >
-          <div className="w-full h-full flex items-center justify-between min-h-[420px]">
+          <div className="w-full flex items-center justify-between rounded-lg min-h-[420px]  overflow-hidden">
+            {/* <div className="absolute top-4 right-4 rounded-full border">
+
+            </div> */}
             <React.Suspense
+
               fallback={
                 <div className="flex items-center justify-center w-full h-full text-sm text-muted-foreground">
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

@@ -3,7 +3,7 @@ import { DragElements } from '@/fancy/components/blocks/drag-elements';
 
 const DragElementsDemo: React.FC = () => {
     return (
-        <div className="w-full h-full bg-[#fefefe] min-h-[420px]">
+        <div className="w-full h-full bg-[#fefefe] ">
             <DragElements dragElastic={0.1} className="p-40">
                 <div className="text-[80px] font-mono text-[#f0be59] rotate-[4deg]">
                     ✹

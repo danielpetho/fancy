@@ -161,7 +161,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       __event__?: Event["name"];
     } & NpmCommands) => {
       return (
-        <div className="relative">
+        <div className="relative w-full h-full">
           <pre
             className={cn(
               "p-4 mb-4 mt-6 max-h-[650px] overflow-x-auto border rounded-lg text-[#c5c8c6] bg-[#1d1f21] py-4 dark:bg-zinc-900",

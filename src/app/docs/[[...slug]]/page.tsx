@@ -1,6 +1,9 @@
 import { DocsPager } from "@/components/doc-pager";
+import { DashboardTableOfContents } from "@/components/toc";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { CONTENT_DIRECTORY, getDocFromParams } from "@/lib/get-docs";
 import { siteConfig } from "@/lib/site";
+import { getTableOfContents } from "@/lib/toc";
 import { absoluteUrl, cn } from "@/lib/utils";
 import { DocPageProps } from "@/types/types";
 import { Metadata } from "next";
@@ -80,6 +83,11 @@ export function generateStaticParams() {
 export default async function DocPage({ params }: DocPageProps) {
   const doc = await getDocFromParams({ params });
 
+
+  const toc = await getTableOfContents(doc.body)
+
+  console.log(doc)
+
   return (
     <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
       <div className="w-full min-w-0">
@@ -108,6 +116,17 @@ export default async function DocPage({ params }: DocPageProps) {
           <DocsPager doc={doc} />
         </div>
       </div>
+      {doc.toc && (
+        <div className="hidden text-sm xl:block">
+          <div className="sticky top-16 -mt-10 pt-4">
+            <ScrollArea className="pb-10">
+              <div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
+                <DashboardTableOfContents toc={toc} />
+              </div>
+            </ScrollArea>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
