@@ -40,6 +40,11 @@ export const docsConfig = [
         href: "/docs/components/blocks/drag-elements",
         items: [],
       },
+      {
+        title: "Circling Elements",
+        href: "/docs/components/blocks/circling-elements",
+        items: [],
+      }
       // {
       //   title: "Menu Variant 1",
       //   href: "/docs/components/blocks/menu-variant-1",

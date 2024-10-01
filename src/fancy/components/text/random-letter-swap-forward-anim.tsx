@@ -92,7 +92,7 @@ export const RandomLetterSwapForward = ({
 
   return (
     <motion.span
-      className={`flex justify-center items-center relative overflow-hidden  ${className} `}
+      className={`flex justify-center items-center relative overflow-hidden ${className}`}
       onHoverStart={hoverStart}
       onClick={onClick}
       ref={scope}

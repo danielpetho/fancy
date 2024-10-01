@@ -9,9 +9,6 @@ import { Icons } from "@/components/icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { registry } from "@/fancy/index";
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { obsidian } from "react-syntax-highlighter/dist/cjs/styles/hljs";
-import { obsidian as obi } from "react-syntax-highlighter/dist/esm/styles/hljs";
-
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -92,9 +89,9 @@ export function ComponentPreview({
         </div>
         <TabsContent
           value="preview"
-          className="relative border border-black-500 flex rounded-lg  "
+          className="border border-black-500 flex rounded-lg"
         >
-          <div className="w-full flex items-center justify-between rounded-lg min-h-[420px]  overflow-hidden">
+          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px]  overflow-auto relative">
             {/* <div className="absolute top-4 right-4 rounded-full border">
 
             </div> */}

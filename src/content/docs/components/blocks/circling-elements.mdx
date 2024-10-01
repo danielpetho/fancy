@@ -1,0 +1,47 @@
+---
+title: Circling Elements
+description: A component that creates a circling effect on its children.
+component: true
+---
+
+<ComponentPreview name="circling-elements-demo" />
+
+## Installation
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="circling-elements" />
+
+<Step>
+  Add the following animation and keyframes to your tailwind.config.js file:
+</Step>
+
+<CodeBlockWrapper language="typescript">
+{`module.exports = {
+  // ...
+  theme: {
+    // ...
+    animation: {
+      "circling": "circling calc(var(--duration)*1s) linear infinite",
+    },
+    keyframes: {
+      "circling": {
+        "0%": {
+          transform:
+            "rotate(calc(var(--offset) * 1deg)) translate(calc(var(--radius) * 1px), 0) rotate(calc(var(--offset) * -1deg))",
+        },
+        "100%": {
+          transform:
+            "rotate(calc(360deg + (var(--offset) * 1deg))) translate(calc(var(--radius) * 1px), 0) rotate(calc(-360deg + (var(--offset) * -1deg)))",
+        },
+      },
+    },
+  },
+};
+`}
+
+</CodeBlockWrapper>
+
+</Steps>

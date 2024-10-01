@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import {
@@ -9,43 +8,65 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible"
+import ReactSyntaxHighlighter from "react-syntax-highlighter"
+import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
+import { CopyButton } from "./copy-button"
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
   expandButtonTitle?: string
+  language?: string
 }
 
 export function CodeBlockWrapper({
-  expandButtonTitle = "View Code",
+  expandButtonTitle = "Expand",
+  language = "typescript",
   className,
   children,
   ...props
 }: CodeBlockProps) {
   const [isOpened, setIsOpened] = React.useState(false)
+  const codeString = React.Children.toArray(children)[0]?.toString() || ""
 
   return (
-    <Collapsible open={isOpened} onOpenChange={setIsOpened}>
+    <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
       <div className={cn("relative overflow-hidden", className)} {...props}>
         <CollapsibleContent
           forceMount
-          className={cn("overflow-hidden", !isOpened && "max-h-32")}
+          className={cn(
+            "overflow-scroll rounded-lg max-h-[640px]",
+            !isOpened && "max-h-40"
+          )}
         >
-          <div
-            className={cn(
-              "[&_pre]:my-0 [&_pre]:max-h-[650px] [&_pre]:pb-[100px]",
-              !isOpened ? "[&_pre]:overflow-hidden" : "[&_pre]:overflow-auto]"
-            )}
+          {isOpened && (
+            <div className="absolute right-4 top-4">
+              <CopyButton
+                value={codeString}
+                src="code-block"
+                //event="copy_code_block"
+              />
+            </div>
+          )}
+          <ReactSyntaxHighlighter
+            language={language}
+            style={hybrid}
+            customStyle={{
+              borderRadius: "var(--radius) var(--radius)",
+              padding: "1rem",
+            }}
           >
-            {children}
-          </div>
+            {codeString}
+          </ReactSyntaxHighlighter>
         </CollapsibleContent>
         <div
           className={cn(
-            "absolute flex items-center justify-center bg-gradient-to-b from-zinc-700/30 to-zinc-950/90 p-2",
-            isOpened ? "inset-x-0 bottom-0 h-12" : "inset-0"
+            "absolute flex items-center justify-center bg-gradient-to-b p-2 rounded-lg",
+            isOpened
+              ? "inset-x-0 bottom-0"
+              : "inset-0 from-black/30 to-black/60"
           )}
         >
           <CollapsibleTrigger asChild>
-            <Button variant="secondary" className="h-8 text-xs ">
+            <Button variant="secondary" className="h-8 text-xs">
               {isOpened ? "Collapse" : expandButtonTitle}
             </Button>
           </CollapsibleTrigger>
