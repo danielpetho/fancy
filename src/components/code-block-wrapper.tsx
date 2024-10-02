@@ -26,6 +26,30 @@ export function CodeBlockWrapper({
 }: CodeBlockProps) {
   const [isOpened, setIsOpened] = React.useState(false)
   const codeString = React.Children.toArray(children)[0]?.toString() || ""
+  const lineCount = codeString.split('\n').length
+
+  if (lineCount < 20) {
+    return (
+      <div className={cn("relative overflow-hidden", className)} {...props}>
+        <div className="absolute right-4 top-4">
+          <CopyButton
+            value={codeString}
+            src="code-block"
+          />
+        </div>
+        <ReactSyntaxHighlighter
+          language={language}
+          style={hybrid}
+          customStyle={{
+            borderRadius: "var(--radius) var(--radius)",
+            padding: "1rem",
+          }}
+        >
+          {codeString}
+        </ReactSyntaxHighlighter>
+      </div>
+    )
+  }
 
   return (
     <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
@@ -42,7 +66,6 @@ export function CodeBlockWrapper({
               <CopyButton
                 value={codeString}
                 src="code-block"
-                //event="copy_code_block"
               />
             </div>
           )}

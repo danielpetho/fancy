@@ -1,52 +1,64 @@
-import React from 'react';
-import { DragElements } from '@/fancy/components/blocks/drag-elements';
+import React from "react";
+import { DragElements } from "@/fancy/components/blocks/drag-elements";
+import Image from "next/image";
+import { random } from "lodash";
+
+const urls = [
+  "https://images.unsplash.com/photo-1683746531526-3bca2bc901b8?q=80&w=1820&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1631561729243-9b3291efceae?q=80&w=1885&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1635434002329-8ab192fe01e1?q=80&w=2828&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1719586799413-3f42bb2a132d?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1720561467986-ca3d408ca30b?q=80&w=2048&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+  "https://images.unsplash.com/photo-1724403124996-64115f38cd3f?q=80&w=3082&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+];
+
+const randomInt = (min: number, max: number) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
 
 const DragElementsDemo: React.FC = () => {
-    return (
-        <div className="w-full h-full bg-[#fefefe] ">
-            <DragElements dragElastic={0.1} className="p-40">
-                <div className="text-[80px] font-mono text-[#f0be59] rotate-[4deg]">
-                    ✹
-                </div>
+  return (
+    <div className="w-full h-full relative bg-[#eeeeee] overflow-hidden">
+      <h1 className="absolute text-4xl ml-36 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-muted-foreground uppercase w-full">
+        all your<span className="font-bold text-foreground"> memories. </span>
+      </h1>
+      <DragElements dragMomentum={false} className="p-40">
+        {urls.map((url, index) => {
+          const rotation = randomInt(-12, 12);
+          const width = randomInt(120, 150); 
+          const height = randomInt(150, 180);
 
-                {/* <div>
-                    <img
-                        src="/poster.jpg"
-                        className="w-48 rotate-[-10deg]"
-                        draggable={false}
-                    />
-                </div> */}
-
-                <div className="text-[50px] font-mono text-transparent bg-clip-text bg-gradient-to-br from-[#4543c6] to-[#f0be59] rotate-[4deg]">
-                    🌐
-                </div>
-
-                <div className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#4543c6] to-[#f0be59] rotate-[-12deg]">
-                    AWESOME
-                </div>
-
-                <div className="px-12 py-4 rounded-[100%] bg-gradient-to-r from-[#4543c6] to-[#f0be59] font-mono text-3xl rotate-[-12deg]">
-                    <span className="text-white">DISCO!</span>
-                </div>
-
-                <div className="p-1  rounded-full bg-gradient-to-r from-[#4543c6] to-[#f0be59] rotate-[4deg]">
-                    <div className="bg-[#fefefe] rounded-full px-8 py-2">
-                        <div className="text-2xl text-transparent bg-clip-text bg-gradient-to-r from-[#4543c6] to-[#f0be59] font-mono">
-                            LOVELY!
-                        </div>
-                    </div>
-                </div>
-
-                <div className="text-[150px] font-mono text-transparent bg-clip-text bg-gradient-to-br from-[#4543c6] to-[#f0be59] rotate-[4deg]">
-                    ★
-                </div>
-
-                <p className="text-6xl italic  text-[#4543c6] rotate-[-3deg] font-serif cursor-grab ">
-                    funky time!
-                </p>
-            </DragElements>
-        </div>
-    );
+          return (
+            <div
+              key={index}
+              className={`flex items-start justify-center bg-white shadow-2xl p-4`}
+              style={{
+                transform: `rotate(${rotation}deg)`,
+                width: `${width}px`,
+                height: `${height}px`,
+              }}
+            >
+              <div
+                className={`relative overflow-hidden`}
+                style={{
+                  width: `${width - 4}px`,
+                  height: `${height - 30}px`,
+                }}
+              >
+                <Image
+                  src={url}
+                  fill
+                  alt={`Analog photo ${index + 1}`}
+                  className="object-cover"
+                  draggable={false}
+                />
+              </div>
+            </div>
+          );
+        })}
+      </DragElements>
+    </div>
+  );
 };
 
 export default DragElementsDemo;
