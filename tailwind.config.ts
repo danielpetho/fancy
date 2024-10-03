@@ -22,6 +22,7 @@ const config = {
         calendas: ["Calendas Plus", "sans-serif"],
         overusedGrotesk: ["Overused Grotesk", "sans-serif"],
         cotham: ["Cotham Sans"],
+        tiny5: ["Tiny5"],
       },
       colors: {
         lavender: "#ecbfff",

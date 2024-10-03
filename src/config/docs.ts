@@ -32,6 +32,17 @@ export const docsConfig = [
     ],
   },
   {
+    title: "Background",
+    href: "/docs/components/background",
+    items: [
+      {
+        title: "Pixel Trail",
+        href: "/docs/components/background/pixel-trail",
+        items: [],
+      }
+    ],
+  },
+  {
     title: "Blocks",
     href: "/docs/components/blocks",
     items: [

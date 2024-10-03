@@ -97,4 +97,10 @@
     src: url("../../public/fonts/calendas_plus-webfont.woff") format("woff");
     font-weight: 400;
   }
+
+  @font-face {
+    font-family: "Tiny5";
+    src: url("../../public/fonts/Tiny5-Regular.ttf") format("truetype");
+    font-weight: 400;
+  }
 }
