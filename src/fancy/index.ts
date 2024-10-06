@@ -92,6 +92,14 @@ const example: Registry = {
       () => import("@/fancy/examples/pixel-trail-demo")
     )
   },
+  "pixel-trail-no-fade-demo": {
+    name: "pixel-trail-no-fade-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/pixel-trail-no-fade-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/pixel-trail-no-fade-demo")
+    )
+  },
   "expanding-menu-demo": {
     name: "menu-variant-1-demo",
     type: "components:example",

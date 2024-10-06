@@ -99,8 +99,8 @@
   }
 
   @font-face {
-    font-family: "Tiny5";
-    src: url("../../public/fonts/Tiny5-Regular.ttf") format("truetype");
+    font-family: "VT323";
+    src: url("../../public/fonts/VT323-Regular.ttf") format("truetype");
     font-weight: 400;
   }
 }

@@ -6,20 +6,24 @@ import React, {
   useMemo,
 } from "react";
 import { motion, useAnimationControls } from "framer-motion";
+import { v4 as uuidv4 } from "uuid";
 
 interface PixelTrailProps {
   pixelColor: string; // hex, rgb, rgba, hsl, etc.
   pixelSize: number; // px
-  fadeDuration: number; // ms
+  fadeDuration?: number; // ms
+  delay?: number; // New prop for delay before fading
 }
 
 export const PixelTrail: React.FC<PixelTrailProps> = ({
   pixelColor = "#000",
   pixelSize = 20,
   fadeDuration = 500,
+  delay = 0,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const trailId = useRef(uuidv4()); // Generate a unique ID for this trail instance
 
   useEffect(() => {
     const updateDimensions = () => {
@@ -44,7 +48,9 @@ export const PixelTrail: React.FC<PixelTrailProps> = ({
       const x = Math.floor((e.clientX - rect.left) / pixelSize);
       const y = Math.floor((e.clientY - rect.top) / pixelSize);
 
-      const pixelElement = document.getElementById(`pixel-${x}-${y}`);
+      const pixelElement = document.getElementById(
+        `${trailId.current}-pixel-${x}-${y}`
+      );
       if (pixelElement) {
         const animatePixel = (pixelElement as any).__animatePixel;
         if (animatePixel) animatePixel();
@@ -73,10 +79,11 @@ export const PixelTrail: React.FC<PixelTrailProps> = ({
           {Array.from({ length: columns }).map((_, colIndex) => (
             <PixelDot
               key={`${colIndex}-${rowIndex}`}
-              id={`pixel-${colIndex}-${rowIndex}`}
+              id={`${trailId.current}-pixel-${colIndex}-${rowIndex}`}
               color={pixelColor}
               size={pixelSize}
               fadeDuration={fadeDuration}
+              delay={delay}
             />
           ))}
         </div>
@@ -90,16 +97,17 @@ interface PixelDotProps {
   color: string;
   size: number;
   fadeDuration: number;
+  delay: number;
 }
 
 const PixelDot: React.FC<PixelDotProps> = React.memo(
-  ({ id, color, size, fadeDuration }) => {
+  ({ id, color, size, fadeDuration, delay }) => {
     const controls = useAnimationControls();
 
     const animatePixel = useCallback(() => {
       controls.start({
         opacity: [1, 0],
-        transition: { duration: fadeDuration / 1000 },
+        transition: { duration: fadeDuration / 1000, delay: delay / 1000 },
       });
     }, []);
 
