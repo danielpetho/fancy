@@ -34,10 +34,9 @@ const PixelTrailDemo: React.FC = () => {
           <h2 className="text-8xl ml-8">purity</h2>
         </div>
         <p className="mt-3 text-4xl">
-          we deliver more than just hydration — we offer nature's purest
-          refreshment, untouched by modern contaminants. Our water is sourced
-          from deep, protected aquifers and naturally filtered through ancient
-          rock layers, with unmatched clarity and taste.
+          {
+            "we deliver more than just hydration — we offer nature's purest refreshment, untouched by modern contaminants. Our water is sourced from deep, protected aquifers and naturally filtered through ancient rock layers, with unmatched clarity and taste."
+          }
         </p>
       </div>
     </div>
