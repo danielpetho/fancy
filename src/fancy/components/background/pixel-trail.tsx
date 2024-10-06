@@ -12,7 +12,7 @@ interface PixelTrailProps {
   pixelColor: string; // hex, rgb, rgba, hsl, etc.
   pixelSize: number; // px
   fadeDuration?: number; // ms
-  delay?: number; // New prop for delay before fading
+  delay?: number; // ms
 }
 
 export const PixelTrail: React.FC<PixelTrailProps> = ({
