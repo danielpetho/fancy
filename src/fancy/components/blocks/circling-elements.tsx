@@ -24,9 +24,9 @@ export const CirclingElements: React.FC<CirclingElementsProps> = ({
             className="transform-gpu absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-circling"
             style={
               {
-                "--duration": duration,
-                "--radius": radius,
-                "--offset": offset,
+                "--circling-duration": duration,
+                "--circling-radius": radius,
+                "--circling-offset": offset,
               } as React.CSSProperties
             }
           >

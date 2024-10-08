@@ -28,6 +28,16 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/blocks/circling-elements.tsx"]
   },
+  "pixel-trail": {
+    name: "pixel-trail",
+    type: "components:fancy",
+    files: ["@/fancy/components/background/pixel-trail.tsx"]
+  },
+  "animated-gradient": {
+    name: "animated-gradient",
+    type: "components:fancy",
+    files: ["@/fancy/components/background/animated-gradient.tsx"]
+  },
   "expanding-menu": {
     name: "expanding-menu",
     type: "components:fancy",
@@ -98,6 +108,14 @@ const example: Registry = {
     files: ["@/fancy/examples/pixel-trail-no-fade-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/pixel-trail-no-fade-demo")
+    )
+  },
+  "animated-gradient-demo": {
+    name: "animated-gradient-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/animated-gradient-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/animated-gradient-demo")
     )
   },
   "expanding-menu-demo": {

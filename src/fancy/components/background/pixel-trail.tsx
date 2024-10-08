@@ -23,8 +23,7 @@ export const PixelTrail: React.FC<PixelTrailProps> = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
-  const trailId = useRef(uuidv4()); // Generate a unique ID for this trail instance
-
+  const trailId = useRef(uuidv4());
   useEffect(() => {
     const updateDimensions = () => {
       if (containerRef.current) {
