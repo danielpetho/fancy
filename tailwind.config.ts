@@ -23,6 +23,7 @@ const config = {
         overusedGrotesk: ["Overused Grotesk", "sans-serif"],
         cotham: ["Cotham Sans"],
         VT323: ["VT323"],
+        azeretMono: ["Azeret Mono"],
       },
       colors: {
         lavender: "#ecbfff",

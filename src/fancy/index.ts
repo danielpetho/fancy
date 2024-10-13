@@ -38,6 +38,16 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/background/animated-gradient.tsx"]
   },
+  "basic-number-ticker": {
+    name: "basic-number-ticker",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/basic-number-ticker.tsx"]
+  },
+  "slot-number-ticker": {
+    name: "slot-number-ticker",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/slot-number-ticker.tsx"]
+  },
   "expanding-menu": {
     name: "expanding-menu",
     type: "components:fancy",
@@ -116,6 +126,30 @@ const example: Registry = {
     files: ["@/fancy/examples/animated-gradient-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/animated-gradient-demo")
+    )
+  },
+  "basic-number-ticker-demo": {
+    name: "basic-number-ticker-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/basic-number-ticker-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/basic-number-ticker-demo")
+    )
+  },
+  "fancy-basic-number-ticker-demo": {
+    name: "fancy-basic-number-ticker-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/fancy-basic-number-ticker-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/fancy-basic-number-ticker-demo")
+    )
+  },
+  "slot-number-ticker-demo": {
+    name: "slot-number-ticker-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/slot-number-ticker-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/slot-number-ticker-demo")
     )
   },
   "expanding-menu-demo": {

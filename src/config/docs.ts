@@ -29,6 +29,16 @@ export const docsConfig = [
         href: "/docs/components/text/random-letter-swap",
         items: [],
       },
+      {
+        title: "Basic Number Ticker",
+        href: "/docs/components/text/basic-number-ticker",
+        items: [],
+      },
+      // {
+      //   title: "Slot Number Ticker",
+      //   href: "/docs/components/text/slot-number-ticker",
+      //   items: [],
+      // },
     ],
   },
   {

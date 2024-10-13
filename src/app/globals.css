@@ -103,4 +103,10 @@
     src: url("../../public/fonts/VT323-Regular.ttf") format("truetype");
     font-weight: 400;
   }
+
+  @font-face {
+    font-family: "Azeret Mono";
+    src: url("../../public/fonts/AzeretMono-Variable.woff2") format("woff2-variations");
+    font-weight: 100 900;
+  }
 }
