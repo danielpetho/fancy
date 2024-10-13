@@ -58,6 +58,9 @@ export const NumberTicker = forwardRef<NumberTickerRef, NumberTickerProps>(
     const startAnimation = useCallback(() => {
       if (controls) controls.stop();
       onStart?.();
+
+      count.set(from);
+      
       const newControls = animate(count, target, {
         ...transition,
         onComplete: () => {
@@ -74,7 +77,6 @@ export const NumberTicker = forwardRef<NumberTickerRef, NumberTickerProps>(
 
     useEffect(() => {
       if (autoStart) {
-        console.log("auto start");
         startAnimation();
       }
       return () => controls?.stop();

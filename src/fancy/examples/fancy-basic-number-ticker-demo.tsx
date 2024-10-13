@@ -14,7 +14,6 @@ import {
   LucideIcon,
 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
-import { delay } from "lodash";
 
 const cards = [
   {
@@ -80,27 +79,30 @@ const cards = [
 ];
 
 interface CardProps {
-    title: string;
-    icon: LucideIcon;
-    from: number;
-    target: number;
-    prefix: string;
-    suffix: string;
-    gradient: string;
-    size: string;
-  };
+  title: string;
+  icon: LucideIcon;
+  from: number;
+  target: number;
+  prefix: string;
+  suffix: string;
+  gradient: string;
+  size: string;
+}
 
-const Card = ({
-  card,
-  index,
-}: {
-  card: CardProps;
-  index: number;
-}) => {
+const Card = ({ card, index }: { card: CardProps; index: number }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
   const tickerRef = useRef<NumberTickerRef>(null);
+  const inView = useInView(cardRef, { once: false });
+
+  useEffect(() => {
+    if (inView) {
+      tickerRef.current?.startAnimation();
+    }
+  }, [inView]);
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -118,8 +120,14 @@ const Card = ({
           ref={tickerRef}
           from={card.from}
           target={card.target}
-          transition={{ duration: 3, ease: "easeInOut", type: "tween",  delay: index * 0.2 }}
+          transition={{
+            duration: 3,
+            ease: "easeInOut",
+            type: "tween",
+            delay: index * 0.2,
+          }}
           className="tabular-nums"
+          autoStart={false}
         />
         {card.suffix}
       </div>
@@ -128,16 +136,11 @@ const Card = ({
 };
 
 export default function FancyNumberTickerDemo() {
-
   return (
     <div className="w-full h-full font-azeretMono p-20 bg-white">
       <div className="grid grid-cols-3 grid-rows-2 h-full">
         {cards.map((card, index) => (
-          <Card
-            key={index}
-            card={card}
-            index={index}
-          />
+          <Card key={index} card={card} index={index} />
         ))}
       </div>
     </div>
