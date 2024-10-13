@@ -30,7 +30,7 @@ export const SlotNumberTicker = ({
 
   return (
     <div className={`flex space-x-1 ${className}`} {...props}>
-      {digits.map((digit, index) => {
+      {/* {digits.map((digit, index) => {
         const prevDigit = prevDigits[index] || "0";
         const isDifferent = prevDigit !== digit;
 
@@ -63,7 +63,7 @@ export const SlotNumberTicker = ({
             </motion.span>
           </span>
         );
-      })}
+      })} */}
     </div>
   );
 };
