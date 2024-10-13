@@ -31,7 +31,10 @@ export function CodeBlockWrapper({
   if (lineCount < 20) {
     return (
       <div className={cn("relative overflow-hidden", className)} {...props}>
-        <div className="absolute right-4 top-4">
+        <div className={cn(
+          "absolute right-4 top-4",
+          lineCount === 1 ? "right-3 top-3" : "right-4 top-4"
+        )}>
           <CopyButton
             value={codeString}
             src="code-block"

@@ -50,3 +50,39 @@ export function useContainerDimensions(ref: RefObject<HTMLElement>): Dimensions 
 <ComponentSource name="animated-gradient" />
 
 </Steps>
+
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>colors<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string[]`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Array of color strings to be used in the gradient</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>speed</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`5`</TableCell>
+      <TableCell>Speed of the animation (this is somewhat an arbitrary number, refer to the source code for more details)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>blur</TableCell>
+      <TableCell>`"light" | "medium" | "heavy"`</TableCell>
+      <TableCell>`"light"`</TableCell>
+      <TableCell>Intensity of the blur effect</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+

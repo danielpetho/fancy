@@ -24,6 +24,64 @@ To start the animation from outside the component, you can use the `startAnimati
 
 <ComponentPreview name="fancy-basic-number-ticker-demo" />
 
+## Props
+
+<Table>
+  <TableHeader >
+    <TableRow >
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>from<span className="text-red-500">*</span></TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0`</TableCell>
+      <TableCell>Starting value of the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>target<span className="text-red-500">*</span></TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`100`</TableCell>
+      <TableCell>End value of the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>transition</TableCell>
+      <TableCell>`ValueAnimationTransition`</TableCell>
+      <TableCell>`{ duration: 3, type: "tween", ease: "easeInOut" }`</TableCell>
+      <TableCell>Animation configuration, refer to framer-motion docs for more details</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onStart</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Callback function when animation starts</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onComplete</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Callback function when animation completes</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoStart</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to start the animation automatically</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+
 
 
 

@@ -1,12 +1,20 @@
 import type { MDXComponents } from "mdx/types";
 import { ComponentPreview } from "@/components/component-preview";
 import { ComponentSource } from "@/components/component-source";
-import { CodeBlockWrapper } from "./components/code-block-wrapper";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs";
-import { cn } from "./lib/utils";
-import { CopyButton, CopyNpmCommandButton } from "./components/copy-button";
-import { NpmCommands } from "./types/types";
-import { Event } from "./lib/events";
+import { CodeBlockWrapper } from "@/components/code-block-wrapper";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import { CopyButton, CopyNpmCommandButton } from "@/components/copy-button";
+import { NpmCommands } from "@/types/types";
+import { Event } from "@/lib/events";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -106,8 +114,8 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.HTMLAttributes<HTMLTableElement>) => (
-      <div className="my-6 w-full overflow-y-auto">
-        <table className={cn("w-full", className)} {...props} />
+      <div className="my-6 w-full overflow-y-auto bg-red-200">
+        <table />
       </div>
     ),
     tr: ({
@@ -197,10 +205,48 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
         </div>
       );
     },
+    code: ({ children, className, ...props }: React.ComponentProps<"code">) => (
+      <code className={cn("font-azeretMono text-sm p-1 bg-zinc-100", className)} {...props}>
+        {children}
+      </code>
+    ),
     ComponentPreview,
     ComponentSource,
     CodeBlockWrapper: ({ ...props }) => (
       <CodeBlockWrapper className="rounded-md border" {...props} />
+    ),
+    Table: ({ className, ...props }: React.ComponentProps<typeof Table>) => (
+      <Table className={cn("h-full text-base", className)} {...props} />
+    ),
+    TableHeader: ({
+      className,
+      ...props
+    }: React.ComponentProps<typeof TableHeader>) => (
+      <TableHeader className={cn("bg-zinc-100 font-bold text-black", className)} {...props} />
+    ),
+    TableBody: ({
+      className,
+      ...props
+    }: React.ComponentProps<typeof TableBody>) => (
+      <TableBody className={cn("font-azeretMono font-light text-sm", className)} {...props} />
+    ),
+    TableRow: ({
+      className,
+      ...props
+    }: React.ComponentProps<typeof TableRow>) => (
+      <TableRow className={cn(className)} {...props} />
+    ),
+    TableCell: ({
+      className,
+      ...props
+    }: React.ComponentProps<typeof TableCell>) => (
+      <TableCell className={cn(className)} {...props} />
+    ),
+    TableHead: ({
+      className,
+      ...props
+    }: React.ComponentProps<typeof TableHead>) => (
+      <TableHead className={cn(className)} {...props} />
     ),
     Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
       <h3

@@ -24,9 +24,6 @@ export function Header() {
             <a href="https://github.com/danielpetho/fancy" className="text rounded-full hover:italic">
               Github
             </a>
-            <a href="https://instagram.com/fancycomponents" className="text hover:italic">
-              Instagram
-            </a>
           </div>
         </nav>
       </div>
