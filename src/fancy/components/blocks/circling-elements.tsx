@@ -3,14 +3,14 @@ import React, { useState } from "react";
 
 type CirclingElementsProps = {
   children: React.ReactNode;
-  radius: number;
+  radius?: number;
   duration?: number;
   className?: string;
 };
 
 export const CirclingElements: React.FC<CirclingElementsProps> = ({
   children,
-  radius,
+  radius = 100,
   duration = 10,
   className,
 }) => {

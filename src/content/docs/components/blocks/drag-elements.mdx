@@ -21,4 +21,70 @@ If you use images, or videos, make sure to set the `draggable` attribute to `fal
 </Steps>
 
 
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The elements to be dragged</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragElastic</TableCell>
+      <TableCell>`number | { top?: number; left?: number; right?: number; bottom?: number } | boolean`</TableCell>
+      <TableCell>`0.5`</TableCell>
+      <TableCell>Determines how much the element can be dragged outside the constraints</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragConstraints</TableCell>
+      <TableCell>`{ top?: number; left?: number; right?: number; bottom?: number } | React.RefObject<Element>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>An object with top, left, right, bottom properties, or a ref to another element, to constrain the drag area</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragMomentum</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>If true, the element will continue moving when the drag gesture ends</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragTransition</TableCell>
+      <TableCell>`InertiaOptions`</TableCell>
+      <TableCell>`{ bounceStiffness: 200, bounceDamping: 300 }`</TableCell>
+      <TableCell>Specifies the spring physics for the drag end animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragPropagation</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>If true, allows dragging events to propagate to parent drag gestures</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>selectedOnTop</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>If true, brings the dragged element to the front</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for the container</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+
+
+
 

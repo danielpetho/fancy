@@ -206,7 +206,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       );
     },
     code: ({ children, className, ...props }: React.ComponentProps<"code">) => (
-      <code className={cn("font-azeretMono text-sm p-1 bg-zinc-100", className)} {...props}>
+      <code className={cn("font-azeretMono text-xs p-1 bg-zinc-100", className)} {...props}>
         {children}
       </code>
     ),
@@ -216,7 +216,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <CodeBlockWrapper className="rounded-md border" {...props} />
     ),
     Table: ({ className, ...props }: React.ComponentProps<typeof Table>) => (
-      <Table className={cn("h-full text-base", className)} {...props} />
+      <Table className={cn("h-full text-xs", className)} {...props} />
     ),
     TableHeader: ({
       className,
@@ -228,7 +228,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.ComponentProps<typeof TableBody>) => (
-      <TableBody className={cn("font-azeretMono font-light text-sm", className)} {...props} />
+      <TableBody className={cn("font-azeretMono font-light text-xs", className)} {...props} />
     ),
     TableRow: ({
       className,
