@@ -30,6 +30,11 @@ export const docsConfig = [
         items: [],
       },
       {
+        title: "Underline Animation",
+        href: "/docs/components/text/underline",
+        items: [],
+      },
+      {
         title: "Basic Number Ticker",
         href: "/docs/components/text/basic-number-ticker",
         items: [],

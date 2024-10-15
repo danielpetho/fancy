@@ -23,6 +23,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/random-letter-swap-pingpong-anim.tsx"]
   },
+  "underline-center": {
+    name: "underline-center",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/underline-center.tsx"]
+  },
   "circling-elements": {
     name: "circling-elements",
     type: "components:fancy",
@@ -86,6 +91,14 @@ const example: Registry = {
     files: ["@/fancy/examples/random-letter-swap-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/random-letter-swap-demo")
+    )
+  },
+  "underline-demo": {
+    name: "underline-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/underline-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/underline-demo")
     )
   },
   "drag-elements-demo": {
