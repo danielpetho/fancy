@@ -28,6 +28,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/underline-center.tsx"]
   },
+  "underline-to-background": {
+    name: "underline-to-background",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/underline-to-background.tsx"]
+  },
   "circling-elements": {
     name: "circling-elements",
     type: "components:fancy",
@@ -99,6 +104,14 @@ const example: Registry = {
     files: ["@/fancy/examples/underline-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/underline-demo")
+    )
+  },
+  "underline-to-background-demo": {
+    name: "underline-to-background-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/underline-to-background-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/underline-to-background-demo")
     )
   },
   "drag-elements-demo": {

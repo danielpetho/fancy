@@ -34,6 +34,11 @@ export const docsConfig = [
         href: "/docs/components/text/underline",
         items: [],
       },
+      { 
+        title: "Underline To Background",
+        href: "/docs/components/text/underline-to-background",
+        items: [],
+      },
       {
         title: "Basic Number Ticker",
         href: "/docs/components/text/basic-number-ticker",
