@@ -1,4 +1,3 @@
-const MillionLint = require('@million/lint');
 const withMDX = require('@next/mdx')()
  
 /** @type {import('next').NextConfig} */
