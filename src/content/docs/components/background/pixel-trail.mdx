@@ -34,8 +34,9 @@ If you set the `fadeDuration` prop to `0`, and increase the `delay` prop, you ca
 
 ## Notes
 
-Keep the z-index of the effect's container lower than the rest of your content, so the pointer-events will captured by all of your other elements.
+1. The component operates by dividing the container into a grid of pixels and dynamically recoloring them as you move your cursor. Each pixel is represented by a single div element, so perf may be impacted when using a large number of pixels, especially on the first render.
 
+2. Keep the z-index of the effect's container lower than the rest of your content, so the pointer-events will captured by all of your other elements.
 
 ## Props
 

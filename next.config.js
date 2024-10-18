@@ -1,3 +1,4 @@
+const MillionLint = require('@million/lint');
 const withMDX = require('@next/mdx')()
  
 /** @type {import('next').NextConfig} */
@@ -16,4 +17,7 @@ const nextConfig = {
   },
 }
  
-module.exports = withMDX(nextConfig)
+module.exports = MillionLint.next({
+  enabled: false,
+  rsc: true
+})(withMDX(nextConfig))

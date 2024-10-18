@@ -29,6 +29,11 @@ export const docsConfig = [
         href: "/docs/components/text/random-letter-swap",
         items: [],
       },
+      { 
+        title: "Variable Font Hover By Letter",
+        href: "/docs/components/text/variable-font-hover-by-letter",
+        items: [],
+      },
       {
         title: "Underline Animation",
         href: "/docs/components/text/underline",

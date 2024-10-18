@@ -23,6 +23,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/random-letter-swap-pingpong-anim.tsx"]
   },
+  "variable-font-hover-by-letter": {
+    name: "variable-font-hover-by-letter",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/variable-font-hover-by-letter.tsx"]
+  },
   "underline-center": {
     name: "underline-center",
     type: "components:fancy",
@@ -96,6 +101,14 @@ const example: Registry = {
     files: ["@/fancy/examples/random-letter-swap-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/random-letter-swap-demo")
+    )
+  },
+  "variable-font-hover-by-letter-demo": {
+    name: "variable-font-hover-by-letter-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/variable-font-hover-by-letter-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/variable-font-hover-by-letter-demo")
     )
   },
   "underline-demo": {

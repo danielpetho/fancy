@@ -42,6 +42,11 @@ export function ComponentSource({
     loadSourceCode();
   }, [name]);
 
+  const syntaxHighlighterStyle = React.useMemo(() => ({
+    borderRadius: "var(--radius) var(--radius)",
+    padding: "1rem",
+  }), []);
+
   return (
     <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
       <div className={cn("relative overflow-hidden", className)} {...props}>
@@ -62,11 +67,7 @@ export function ComponentSource({
           <ReactSyntaxHighlighter
             language="typescript"
             style={hybrid}
-            customStyle={{
-              borderRadius: "var(--radius) var(--radius)",
-              padding: "1rem",
-              // backgroundColor: "#000000",
-            }}
+            customStyle={syntaxHighlighterStyle}
           >
             {sourceCode}
           </ReactSyntaxHighlighter>
