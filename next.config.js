@@ -17,7 +17,4 @@ const nextConfig = {
   },
 }
  
-module.exports = MillionLint.next({
-  enabled: false,
-  rsc: true
-})(withMDX(nextConfig))
+module.exports = withMDX(nextConfig)
