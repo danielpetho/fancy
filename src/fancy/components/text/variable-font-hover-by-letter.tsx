@@ -73,7 +73,7 @@ export const VariableFontHoverByLetter = ({
 
   return (
     <motion.span
-      className={`font-overused ${className}`}
+      className={`${className}`}
       onHoverStart={hoverStart}
       onHoverEnd={hoverEnd}
       onClick={onClick}

@@ -1,0 +1,110 @@
+---
+title: Variable Font Hover By Random Letter
+description: A text component that animates the font variation settings of letters in a random order. Works only with variable fonts.
+component: true
+---
+
+<ComponentPreview name="variable-font-hover-by-random-letter-demo" />
+
+## Installation
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="variable-font-hover-by-random-letter" />
+
+</Steps>
+
+## Understanding Variable Fonts
+
+This component is designed to work exclusively with variable fonts. Variable fonts are a modern font technology that allows a single font file to contain multiple variations of a typeface — these variations can be adjusted along different axes, such as weight, width, or slant, etc.
+
+Each axis in a variable font has a minimum and maximum value, and you can interpolate between these values to create custom styles. Common axes include:
+
+- Weight (`wght`): Controls the thickness of the letterforms (usually ranges from 100 to 900)
+- Width (`wdth`): Controls the width of the letterforms
+- Slant (`slnt`): Changes the angle of the letterforms
+- Italic (`ital`): Also controls the slant of the letterforms
+- Optical Size (`opsz`): Controls the size of the letterforms
+
+These 5 axes are actually standardized, so when a font have them, they will have the names above. But, a font can have limitless custom axes too, with completely arbitrary names.
+
+In this component, the `fromFontVariationSettings` and `toFontVariationSettings` props define the starting and ending states of the font variation. For example, using the [Overused Grotesk](https://github.com/RandomMaerks/Overused-Grotesk) font (which we use in this demo), we can modify the 'slnt' (slant) and 'wght' (weight) axes:
+
+- The `slnt` axis ranges from 0 (up) to -10 (upright)
+- The `wght` axis ranges from 100 (thin) to 900 (black)
+
+An example prop therefore would be:
+
+<CodeBlockWrapper language="javascript" className="mt-4">
+  {`fromFontVariationSettings="'wght' 100, 'slnt' 0"`}
+</CodeBlockWrapper>
+
+**Always check the font's documentation to see what are the available axes and their ranges.**
+
+Important to mention that older browsers versions and various environemnts don't support variable fonts, so make sure to check compatibility.
+
+## Resources
+
+I highly recommend to go down the rabbit hole, it's super fun :)
+
+- [MDN Web Docs for Variable fonts](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_fonts/Variable_fonts_guide)
+- [Super cool article by ABC Dinamo](https://abcdinamo.com/news/using-variable-fonts-on-the-web)
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>label<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text to be displayed and animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>fromFontVariationSettings<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Initial font variation settings</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>toFontVariationSettings<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Target font variation settings on hover</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>transition</TableCell>
+      <TableCell>`Transition`</TableCell>
+      <TableCell>`{ type: "spring", duration: 0.7 }`</TableCell>
+      <TableCell>Transition settings for the animation. Refer to framer-motion docs for more details</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>staggerDuration</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.03`</TableCell>
+      <TableCell>Delay between each letter's animation start</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onClick</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback function for click events</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

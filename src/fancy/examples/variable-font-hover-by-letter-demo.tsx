@@ -1,5 +1,4 @@
 import { VariableFontHoverByLetter } from "@/fancy/components/text/variable-font-hover-by-letter";
-import { LetterSwapForward } from "../components/text/letter-swap-forward-anim";
 
 export default function Preview() {
   return (
