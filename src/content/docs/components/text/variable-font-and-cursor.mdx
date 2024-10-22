@@ -110,16 +110,16 @@ For more information about variable fonts and how they work, please refer to the
       <TableCell>Mapping of cursor position to font variation settings</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>className</TableCell>
-      <TableCell>`string`</TableCell>
-      <TableCell>`undefined`</TableCell>
-      <TableCell>Additional CSS classes for styling</TableCell>
+      <TableCell>containerRef<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.RefObject<HTMLElement>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Reference to the container for mouse tracking. If not provided, uses the viewport</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>containerRef</TableCell>
-      <TableCell>`React.RefObject<HTMLElement>`</TableCell>
-      <TableCell>`undefined`</TableCell>
-      <TableCell>Reference to the container for mouse tracking. If not provided, uses the viewport</TableCell>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>onClick</TableCell>
