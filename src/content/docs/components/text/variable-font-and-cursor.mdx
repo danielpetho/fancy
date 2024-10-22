@@ -1,0 +1,187 @@
+---
+title: Variable Font And Cursor
+description: A text component that animates the font variation settings based on the cursor position. Works only with variable fonts.
+component: true
+---
+
+<ComponentPreview name="variable-font-and-cursor-demo" />
+
+## Installation
+
+<Steps>
+
+<Step>Create this hook to query the cursor position:</Step>
+
+<CodeBlockWrapper language="typescript">
+{
+`import { useState, useEffect, RefObject } from "react";
+
+export const useMousePosition = (containerRef: RefObject<HTMLElement>) => {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const updateMousePosition = (ev: MouseEvent) => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setMousePosition({
+          x: ev.clientX - rect.left,
+          y: ev.clientY - rect.top,
+        });
+      }
+    };
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("mousemove", updateMousePosition);
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener("mousemove", updateMousePosition);
+      }
+    };
+  }, [containerRef]);
+
+  return mousePosition;
+}`
+}
+</CodeBlockWrapper>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="variable-font-and-cursor" />
+
+</Steps>
+
+## Usage
+
+The `VariableFontAndCursor` component allows you to create text that responds to cursor movement by adjusting its font variation settings. This component works with variable fonts and can track cursor movement either within a specific container or across the entire viewport.
+
+It's important to note that the container used for tracking mouse position is not part of the component itself. To track mouse movement within a specific area, you need to create a container element, assign it a ref, and pass that ref to the component using the `containerRef` prop. You can use the window object as a reference to the entire viewport.
+
+### Font Variation Mapping
+
+The `fontVariationMapping` prop allows you to define how cursor position maps to font variation settings. It has the following structure:
+
+<CodeBlockWrapper language="typescript" className="pt-4">
+{
+`interface FontVariationMapping {
+    x: { name: string; min: number; max: number };
+    y: { name: string; min: number; max: number };
+}
+`}
+</CodeBlockWrapper>
+
+- `x`: Defines the font variation axis controlled by horizontal cursor movement.
+- `y`: Defines the font variation axis controlled by vertical cursor movement.
+- `name`: The name of the font variation axis (e.g., "wght" for weight, "slnt" for slant, see next section for more details).
+- `min`: The minimum value for the axis, applied when the cursor is at the left/top.
+- `max`: The maximum value for the axis, applied when the cursor is at the right/bottom.
+
+The component interpolates between `min` and `max` based on the cursor position within the tracking area.
+
+### Understanding Variable Fonts
+
+For more information about variable fonts and how they work, please refer to the [Variable Font Hover By Letter](/docs/components/text/variable-font-hover-by-letter#understanding-variable-fonts) documentation.
+
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>label<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text content to display</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>fontVariationMapping<span className="text-red-500">*</span></TableCell>
+      <TableCell>`FontVariationMapping`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Mapping of cursor position to font variation settings</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>containerRef</TableCell>
+      <TableCell>`React.RefObject<HTMLElement>`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Reference to the container for mouse tracking. If not provided, uses the viewport</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onClick</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Click event handler for the text</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Interfaces
+
+### FontVariationMapping
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Property</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>x</TableCell>
+      <TableCell>`FontVariationAxis`</TableCell>
+      <TableCell>Font variation settings for horizontal cursor movement</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>y</TableCell>
+      <TableCell>`FontVariationAxis`</TableCell>
+      <TableCell>Font variation settings for vertical cursor movement</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### FontVariationAxis
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Property</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>name</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>Name of the font variation axis (e.g., "wght", "slnt")</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>min</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>Minimum value for the axis</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>max</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>Maximum value for the axis</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+

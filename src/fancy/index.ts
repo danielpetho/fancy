@@ -33,6 +33,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/variable-font-hover-by-random-letter.tsx"]
   },
+  "variable-font-and-cursor": {
+    name: "variable-font-and-cursor",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/variable-font-and-cursor.tsx"]
+  },
   "underline-center": {
     name: "underline-center",
     type: "components:fancy",
@@ -122,6 +127,14 @@ const example: Registry = {
     files: ["@/fancy/examples/variable-font-hover-by-random-letter-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/variable-font-hover-by-random-letter-demo")
+    )
+  },
+  "variable-font-and-cursor-demo": {
+    name: "variable-font-and-cursor-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/variable-font-and-cursor-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/variable-font-and-cursor-demo")
     )
   },
   "underline-demo": {

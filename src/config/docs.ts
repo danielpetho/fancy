@@ -1,3 +1,5 @@
+import { title } from "process";
+
 export const docsConfig = [
   {
     title: "Getting Started",
@@ -29,14 +31,19 @@ export const docsConfig = [
         href: "/docs/components/text/random-letter-swap",
         items: [],
       },
-      { 
+      {
         title: "Variable Font Hover By Letter",
         href: "/docs/components/text/variable-font-hover-by-letter",
         items: [],
       },
-      { 
+      {
         title: "Variable Font Hover By Random Letter",
         href: "/docs/components/text/variable-font-hover-by-random-letter",
+        items: [],
+      },
+      {
+        title: "Variable Font And Cursor",
+        href: "/docs/components/text/variable-font-and-cursor",
         items: [],
       },
       {
@@ -44,7 +51,7 @@ export const docsConfig = [
         href: "/docs/components/text/underline",
         items: [],
       },
-      { 
+      {
         title: "Underline To Background",
         href: "/docs/components/text/underline-to-background",
         items: [],

@@ -1,20 +1,20 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible"
-import ReactSyntaxHighlighter from "react-syntax-highlighter"
-import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
-import { CopyButton } from "./copy-button"
+} from "@/components/ui/collapsible";
+import ReactSyntaxHighlighter from "react-syntax-highlighter";
+import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { CopyButton } from "./copy-button";
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
-  expandButtonTitle?: string
-  language?: string
+  expandButtonTitle?: string;
+  language?: string;
 }
 
 export function CodeBlockWrapper({
@@ -24,21 +24,20 @@ export function CodeBlockWrapper({
   children,
   ...props
 }: CodeBlockProps) {
-  const [isOpened, setIsOpened] = React.useState(false)
-  const codeString = React.Children.toArray(children)[0]?.toString() || ""
-  const lineCount = codeString.split('\n').length
+  const [isOpened, setIsOpened] = React.useState(false);
+  const codeString = React.Children.toArray(children)[0]?.toString() || "";
+  const lineCount = codeString.split("\n").length;
 
   if (lineCount < 20) {
     return (
       <div className={cn("relative overflow-hidden", className)} {...props}>
-        <div className={cn(
-          "absolute right-4 top-4",
-          lineCount === 1 ? "right-3 top-3" : "right-4 top-4"
-        )}>
-          <CopyButton
-            value={codeString}
-            src="code-block"
-          />
+        <div
+          className={cn(
+            "absolute",
+            lineCount === 1 ? "right-3 top-3" : "right-4 top-4"
+          )}
+        >
+          <CopyButton value={codeString} src="code-block" />
         </div>
         <ReactSyntaxHighlighter
           language={language}
@@ -51,7 +50,7 @@ export function CodeBlockWrapper({
           {codeString}
         </ReactSyntaxHighlighter>
       </div>
-    )
+    );
   }
 
   return (
@@ -65,11 +64,13 @@ export function CodeBlockWrapper({
           )}
         >
           {isOpened && (
-            <div className="absolute right-4 top-4">
-              <CopyButton
-                value={codeString}
-                src="code-block"
-              />
+            <div
+              className={cn(
+                "absolute",
+                lineCount === 1 ? "right-3 top-3" : "right-4 top-4"
+              )}
+            >
+              <CopyButton value={codeString} src="code-block" />
             </div>
           )}
           <ReactSyntaxHighlighter
@@ -99,5 +100,5 @@ export function CodeBlockWrapper({
         </div>
       </div>
     </Collapsible>
-  )
+  );
 }
