@@ -47,7 +47,7 @@ function NavItem({ item, index, pathname }: NavItemProps) {
       <Link
         href={item.href ?? "#"}
         className={cn(
-          "text-lg text-foreground/50",
+          "text text-foreground/50",
           pathname === item.href && "font-medium",
           item.disabled && "opacity-60 cursor-not-allowed"
         )}
@@ -75,7 +75,7 @@ export function DocsSidebarNavItems({
   pathname,
 }: DocsSidebarNavItemsProps) {
   return items?.length ? (
-    <div className="flex flex-col space-y-1">
+    <div className="flex flex-col space-y-2">
       {items.map((item, index) => (
         <NavItem key={index} item={item} index={index} pathname={pathname} />
       ))}

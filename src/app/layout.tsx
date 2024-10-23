@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Fancy Components",
   description: "Ready to use, fancy React components to make the web fun again. Free & Open Source.",
 };
+
 export default function RootLayout({
   children,
 }: Readonly<{

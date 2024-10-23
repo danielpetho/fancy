@@ -2,7 +2,6 @@ import Link from "next/link";
 import { NavItem, NavItemWithChildren } from "@/types/nav";
 import { docsConfig } from "@/config/docs";
 import { Doc } from "@/types/types";
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 interface DocsPagerProps {
   doc: Doc;
@@ -16,19 +15,23 @@ export function DocsPager({ doc }: DocsPagerProps) {
   }
 
   return (
-    <div className="flex flex-row items-center justify-between text-lg">
+    <div className="flex flex-row items-center justify-between text">
       {pager?.prev?.href && (
-        <Link href={pager.prev.href} className="items-center flex flex-row justify-center bg-zinc-200/50 rounded-lg pl-2 pr-6 py-2 shadow">
-          <p className="font-serif mr-2 h-8 w-8 rotate-180 ">&#8594;</p>
-          {pager.prev.title}
+        <Link
+          href={pager.prev.href}
+          className="items-center flex flex-row justify-center bg-zinc-200/50 rounded-lg pl-2 pr-6 py-2 shadow "
+        >
+          <p className="font-serif sm:mr-2 h-7 w-7 rotate-180 ">&#8594;</p>
+          <span className="truncate hidden sm:block">{pager.prev.title}</span>
         </Link>
       )}
       {pager?.next?.href && (
-        <Link href={pager.next.href} className=" flex flex-row  items-center justify-center bg-zinc-200/50 rounded-lg pr-2 pl-6 py-2 shadow">
-          {pager.next.title}
-          <span className="font-serif h-7 w-7 ml-2">
-            &#8594;
-          </span>
+        <Link
+          href={pager.next.href}
+          className=" flex flex-row  items-center justify-center bg-zinc-200/50 rounded-lg pr-2 pl-6 py-2 shadow"
+        >
+          <span className="truncate hidden sm:block">{pager.next.title}</span>
+          <span className="font-serif h-7 w-7 sm:ml-2">&#8594;</span>
         </Link>
       )}
     </div>

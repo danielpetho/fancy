@@ -1,6 +1,6 @@
-import { title } from "process";
+import { SidebarNavItem } from "@/types/nav"
 
-export const docsConfig = [
+export const docsConfig: SidebarNavItem[] = [
   {
     title: "Getting Started",
     items: [
