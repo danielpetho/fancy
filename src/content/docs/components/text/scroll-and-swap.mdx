@@ -8,6 +8,8 @@ component: true
 
 The component uses the `useScroll` hook by framer motion. In order to achieve a nice effect, you likely have to play with the container (where to track the scroll) and its offset. Please refer to framer's [documentation](https://www.framer.com/motion/use-scroll/) for more details.
 
+Make sure that the container has a non-static position, like `relative`, `fixed`, or `absolute` to ensure scroll offset is calculated correctly.
+
 ## Installation
 
 <Steps>
