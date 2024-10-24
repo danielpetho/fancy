@@ -6,7 +6,7 @@ export default function Preview() {
 
   return (
     <div
-      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-2 overflow-auto overscroll-auto snap-y snap-mandatory bg-background"
+      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-2 overflow-auto overscroll-auto bg-background relative"
       ref={containerRef}
       data-lenis-prevent
     >

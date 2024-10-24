@@ -24,7 +24,8 @@ export const ScrollAndSwapText = ({
   const { scrollYProgress } = useScroll({
     container: containerRef,
     target: ref,
-    offset: offset as any // framer motion doesnt export the type, so we have to cast it, sorry :/
+    offset: offset as any, // framer motion doesnt export the type, so we have to cast it, sorry :/
+    layoutEffect: false
   });
 
   const top = useTransform(scrollYProgress, [0, 1], ["0%", "-100%"]);
