@@ -4,7 +4,7 @@ import { LetterSwapPingPong } from "../components/text/letter-swap-pingpong-anim
 export default function Preview() {
   return (
     <div className="w-full h-full rounded-lg text-3xl  flex flex-col items-center justify-center font-calendas">
-        <div className=" p-12 text-blue-800 rounded-xl cale-y-[120%] align-text-top  gap-y-2 flex flex-col">
+        <div className=" p-12 text-blue-800 rounded-xl align-text-top  gap-y-2 flex flex-col">
         <LetterSwapForward label="Hover me chief!" reverse={true} className="italic"/>
         <LetterSwapForward label="{awesome}" reverse={false} className="font-bold"/>
         <LetterSwapForward label="Good day!" staggerFrom={"center"} className="mono"/>

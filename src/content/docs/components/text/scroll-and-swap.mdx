@@ -1,0 +1,61 @@
+---
+title: Scroll and Swap Text
+description: A text component that swaps the letters vertically on scroll.
+component: true
+---
+
+<ComponentPreview name="scroll-and-swap-text-demo" />
+
+The component uses the `useScroll` hook by framer motion. In order to achieve a nice effect, you likely have to play with the container (where to track the scroll) and its offset. Please refer to framer's [documentation](https://www.framer.com/motion/use-scroll/) for more details.
+
+## Installation
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="scroll-and-swap-text" />
+
+</Steps>
+
+
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>label<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text to be displayed and animated</TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>containerRef <span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.RefObject<HTMLSpanElement>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Reference to the container element for scroll tracking</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>offset</TableCell>
+      <TableCell>`[string, string]`</TableCell>
+      <TableCell>`["0 0", "0 1"]`</TableCell>
+      <TableCell>The scroll offset range for the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+

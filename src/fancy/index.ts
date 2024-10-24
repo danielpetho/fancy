@@ -121,6 +121,15 @@ const example: Registry = {
       () => import("@/fancy/examples/variable-font-hover-by-letter-demo")
     )
   },
+  "scroll-and-swap-text-demo": {
+
+    name: "scroll-and-swap-text-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/scroll-and-swap-text-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/scroll-and-swap-text-demo")
+    )
+  },
   "variable-font-hover-by-random-letter-demo": {
     name: "variable-font-hover-by-random-letter-demo",
     type: "components:example",

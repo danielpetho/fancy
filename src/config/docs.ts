@@ -41,6 +41,11 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/variable-font-hover-by-random-letter",
         items: [],
       },
+      { 
+        title: "Scroll And Swap",
+        href: "/docs/components/text/scroll-and-swap",
+        items: [],
+      },
       {
         title: "Variable Font And Cursor",
         href: "/docs/components/text/variable-font-and-cursor",
