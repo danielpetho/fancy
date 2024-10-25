@@ -51,6 +51,11 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/variable-font-and-cursor",
         items: [],
       },
+      { 
+        title: "Breathing Text",
+        href: "/docs/components/text/breathing-text",
+        items: [],
+      },
       {
         title: "Underline Animation",
         href: "/docs/components/text/underline",

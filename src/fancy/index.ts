@@ -84,41 +84,41 @@ const example: Registry = {
   "letter-swap-demo": {
     name: "letter-swap-demo",
     type: "components:example",
-    files: ["@/fancy/examples/letter-swap-demo.tsx"],
+    files: ["@/fancy/examples/text/letter-swap-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/letter-swap-demo")
+      () => import("@/fancy/examples/text/letter-swap-demo")
     ),
   },
   "letter-swap-demo-stagger": {
     name: "letter-swap-demo-stagger",
     type: "components:example",
-    files: ["@/fancy/examples/letter-swap-demo-stagger.tsx"],
+    files: ["@/fancy/examples/text/letter-swap-demo-stagger.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/letter-swap-demo-stagger")
+      () => import("@/fancy/examples/text/letter-swap-demo-stagger")
     ),
   },
   "letter-swap-demo-line": {
     name: "letter-swap-demo-line",
     type: "components:example",
-    files: ["@/fancy/examples/letter-swap-demo-line.tsx"],
+    files: ["@/fancy/examples/text/letter-swap-demo-line.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/letter-swap-demo-line")
+      () => import("@/fancy/examples/text/letter-swap-demo-line")
     ),
   },
   "random-letter-swap-demo": {
     name: "random-letter-swap-demo",
     type: "components:example",
-    files: ["@/fancy/examples/random-letter-swap-demo.tsx"],
+    files: ["@/fancy/examples/text/random-letter-swap-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/random-letter-swap-demo")
+      () => import("@/fancy/examples/text/random-letter-swap-demo")
     )
   },
   "variable-font-hover-by-letter-demo": {
     name: "variable-font-hover-by-letter-demo",
     type: "components:example",
-    files: ["@/fancy/examples/variable-font-hover-by-letter-demo.tsx"],
+    files: ["@/fancy/examples/text/variable-font-hover-by-letter-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/variable-font-hover-by-letter-demo")
+      () => import("@/fancy/examples/text/variable-font-hover-by-letter-demo")
     )
   },
   "scroll-and-swap-text-demo": {
@@ -133,9 +133,9 @@ const example: Registry = {
   "variable-font-hover-by-random-letter-demo": {
     name: "variable-font-hover-by-random-letter-demo",
     type: "components:example",
-    files: ["@/fancy/examples/variable-font-hover-by-random-letter-demo.tsx"],
+    files: ["@/fancy/examples/text/variable-font-hover-by-random-letter-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/variable-font-hover-by-random-letter-demo")
+      () => import("@/fancy/examples/text/variable-font-hover-by-random-letter-demo")
     )
   },
   "variable-font-and-cursor-demo": {
@@ -146,20 +146,28 @@ const example: Registry = {
       () => import("@/fancy/examples/text/variable-font-and-cursor-demo")
     )
   },
+  "breathing-text-demo": {
+    name: "breathing-text-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/breathing-text-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/breathing-text-demo")
+    )
+  },
   "underline-demo": {
     name: "underline-demo",
     type: "components:example",
-    files: ["@/fancy/examples/underline-demo.tsx"],
+    files: ["@/fancy/examples/text/underline-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/underline-demo")
+      () => import("@/fancy/examples/text/underline-demo")
     )
   },
   "underline-to-background-demo": {
     name: "underline-to-background-demo",
     type: "components:example",
-    files: ["@/fancy/examples/underline-to-background-demo.tsx"],
+    files: ["@/fancy/examples/text/underline-to-background-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/underline-to-background-demo")
+      () => import("@/fancy/examples/text/underline-to-background-demo")
     )
   },
   "drag-elements-demo": {

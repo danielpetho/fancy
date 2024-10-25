@@ -1,10 +1,13 @@
-import { UnderlineToBackground } from "../components/text/underline-to-background";
+import { UnderlineToBackground } from "@/fancy/components/text/underline-to-background";
 import { motion } from "framer-motion";
 
 export default function UnderlineToBackgroundDemo() {
   const fadeInVariants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 0.5, staggerChildren: 0.1 } },
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.5, staggerChildren: 0.1 },
+    },
   };
 
   const wordVariants = {
@@ -23,7 +26,11 @@ export default function UnderlineToBackgroundDemo() {
         variants={fadeInVariants}
       >
         {words.map((word, index) => (
-          <motion.span key={index} variants={wordVariants} className="inline-block mr-1">
+          <motion.span
+            key={index}
+            variants={wordVariants}
+            className="inline-block mr-1"
+          >
             {word}
           </motion.span>
         ))}
