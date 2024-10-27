@@ -46,6 +46,11 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/scroll-and-swap",
         items: [],
       },
+      // { 
+      //   title: "Basic Word Rotate",
+      //   href: "/docs/components/text/basic-word-rotate",
+      //   items: [],
+      // },
       {
         title: "Variable Font And Cursor",
         href: "/docs/components/text/variable-font-and-cursor",
@@ -90,6 +95,17 @@ export const docsConfig: SidebarNavItem[] = [
       {
         title: "Pixel Trail",
         href: "/docs/components/background/pixel-trail",
+        items: [],
+      },
+    ],
+  },
+  {
+    title: "SVG",
+    href: "/docs/components/svg",
+    items: [
+      {
+        title: "Elastic Line",
+        href: "/docs/components/svg/elastic-line",
         items: [],
       },
     ],

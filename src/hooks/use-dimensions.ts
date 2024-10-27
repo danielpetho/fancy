@@ -5,16 +5,14 @@ interface Dimensions {
   height: number;
 }
 
-export function useContainerDimensions(ref: RefObject<HTMLElement>): Dimensions {
+export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensions {
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
 
   useEffect(() => {
     const updateDimensions = () => {
       if (ref.current) {
-        setDimensions({
-          width: ref.current.offsetWidth,
-          height: ref.current.offsetHeight,
-        });
+        const { width, height } = ref.current.getBoundingClientRect();
+        setDimensions({ width, height });
       }
     };
 

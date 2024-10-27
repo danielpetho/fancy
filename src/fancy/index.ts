@@ -23,6 +23,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/random-letter-swap-pingpong-anim.tsx"]
   },
+  "scroll-and-swap-text": {
+    name: "scroll-and-swap-text",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/scroll-and-swap-text.tsx"]
+  },
   "variable-font-hover-by-letter": {
     name: "variable-font-hover-by-letter",
     type: "components:fancy",
@@ -38,6 +43,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/variable-font-and-cursor.tsx"]
   },
+  "breathing-text": {
+    name: "breathing-text",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/breathing-text.tsx"]
+  },
   "underline-center": {
     name: "underline-center",
     type: "components:fancy",
@@ -47,6 +57,11 @@ const fancy: Registry = {
     name: "underline-to-background",
     type: "components:fancy",
     files: ["@/fancy/components/text/underline-to-background.tsx"]
+  },
+  "drag-elements": {
+    name: "drag-elements",
+    type: "components:fancy",
+    files: ["@/fancy/components/blocks/drag-elements.tsx"]
   },
   "circling-elements": {
     name: "circling-elements",
@@ -68,16 +83,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/basic-number-ticker.tsx"]
   },
-  "slot-number-ticker": {
-    name: "slot-number-ticker",
+  "elastic-line": {
+    name: "elastic-line",
     type: "components:fancy",
-    files: ["@/fancy/components/text/slot-number-ticker.tsx"]
+    files: ["@/fancy/components/svg/elastic-line.tsx"]
   },
-  "expanding-menu": {
-    name: "expanding-menu",
-    type: "components:fancy",
-    files: ["@/fancy/components/menu/expanding-menu.tsx"]
-  }
 }
 
 const example: Registry = {
@@ -122,12 +132,19 @@ const example: Registry = {
     )
   },
   "scroll-and-swap-text-demo": {
-
     name: "scroll-and-swap-text-demo",
     type: "components:example",
     files: ["@/fancy/examples/text/scroll-and-swap-text-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/text/scroll-and-swap-text-demo")
+    )
+  },
+  "basic-word-rotate-demo": {
+    name: "basic-word-rotate-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/word-rotate-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/basic-word-rotate-demo")
     )
   },
   "variable-font-hover-by-random-letter-demo": {
@@ -226,22 +243,14 @@ const example: Registry = {
       () => import("@/fancy/examples/fancy-basic-number-ticker-demo")
     )
   },
-  "slot-number-ticker-demo": {
-    name: "slot-number-ticker-demo",
+  "elastic-line-demo": {
+    name: "elastic-line-demo",
     type: "components:example",
-    files: ["@/fancy/examples/slot-number-ticker-demo.tsx"],
+    files: ["@/fancy/examples/svg/elastic-line-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/slot-number-ticker-demo")
+      () => import("@/fancy/examples/svg/elastic-line-demo")
     )
   },
-  "expanding-menu-demo": {
-    name: "menu-variant-1-demo",
-    type: "components:example",
-    files: ["@/fancy/examples/expanding-menu.tsx"],
-    component: React.lazy(
-      () => import("@/fancy/examples/expanding-menu-demo")
-    ),
-  }
 }
 
 export const registry = {

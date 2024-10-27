@@ -18,8 +18,8 @@ const PixelTrailDemo: React.FC = () => {
           about us
         </a>
       </ul>
-      <div className="mx-24 my-6">
-        <h1 className="font-VT323 text-9xl uppercase">ACCEL. ventures</h1>
+      <div className="mx-24 my-24">
+        <h1 className="font-VT323 text-9xl uppercase">ACME.INC</h1>
         <div />
         <div />
         <h2 className="font-overusedGrotesk text-2xl font-thin justify-end items-end mt-12">

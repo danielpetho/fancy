@@ -1,4 +1,4 @@
-import { useContainerDimensions } from "@/hooks/use-container-dimensions";
+import { useDimensions } from "@/hooks/use-dimensions";
 import { cn } from "@/lib/utils";
 import React, { useMemo, useRef } from "react";
 
@@ -18,7 +18,7 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
   blur = "light"
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const dimensions = useContainerDimensions(containerRef);
+  const dimensions = useDimensions(containerRef);
 
   const circleSize = useMemo(
     () => Math.max(dimensions.width, dimensions.height),

@@ -75,7 +75,7 @@ export function ComponentPreview({
           <TabsList className="w-full justify-start rounded-none p-0 h-14 bg-transparent">
             <TabsTrigger
               value="preview"
-              className="relative h-14 text-xl  rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+              className="relative h-14 text-xl rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
             >
               Preview
             </TabsTrigger>
@@ -96,7 +96,6 @@ export function ComponentPreview({
 
             </div> */}
             <React.Suspense
-
               fallback={
                 <div className="flex items-center justify-center w-full h-full text-sm text-muted-foreground">
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
