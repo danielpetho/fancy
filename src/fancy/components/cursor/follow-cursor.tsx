@@ -19,11 +19,6 @@ export const FollowCursor: React.FC<FollowCursorProps> = ({
   ...props
 }) => {
 
-  const container = containerRef ?? useRef<HTMLDivElement>(null);
-
-  const mousePosition = useMousePosition();
-
-
   return (
     <motion.div
       className={`-translate-x-1/2 -translate-y-1/2 ${className}`}
