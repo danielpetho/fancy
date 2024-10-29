@@ -83,39 +83,41 @@ export function generateStaticParams() {
 export default async function DocPage({ params }: DocPageProps) {
   const doc = await getDocFromParams({ params });
 
-  const toc = await getTableOfContents(doc.body);
-
-  //console.log(doc)
+  const toc = doc.toc
 
   return (
-    <main className="xl:grid xl:grid-cols-[1fr_300px]">
-      <div className="rounded-xl bg-background shadow-lg px-8 py-6 lg:gap-10 lg:py-6 ">
-        <div className="mb-2 pb-2 flex items-center space-x-1 text-lg text-muted-foreground">
-          <div className="overflow-hidden font-medium  whitespace-nowrap">
-            Docs
+    <main className="xl:grid xl:grid-cols-[1fr_300px] w-full justify-center ">
+      <div className="rounded-xl bg-background shadow-lg py-6 lg:gap-10 lg:py-6">
+        <div className="container">
+          <div className="mb-2 pb-2 flex items-center space-x-1 text-lg text-muted-foreground">
+            <div className="overflow-hidden font-medium  whitespace-nowrap">
+              Docs
+            </div>
+            <span className="font-serif">&#8594;</span>
+            <div className="font-medium text-foreground">{doc.title}</div>
           </div>
-          <span className="font-serif">&#8594;</span>
-          <div className="font-medium text-foreground">{doc.title}</div>
-        </div>
-        <div className="space-y-2">
-          <h1
-            className={cn("scroll-m-20 text-5xl font-calendas tracking-tight")}
-          >
-            {doc.title}
-          </h1>
-          {!!doc.description && doc.description !== "null" && (
-            <p className="text-lg text-muted-foreground">
-              <Balancer>{doc.description}</Balancer>
-            </p>
-          )}
-        </div>
+          <div className="space-y-2">
+            <h1
+              className={cn(
+                "scroll-m-20 text-5xl font-calendas tracking-tight"
+              )}
+            >
+              {doc.title}
+            </h1>
+            {!!doc.description && doc.description !== "null" && (
+              <p className="text-lg text-muted-foreground">
+                <Balancer>{doc.description}</Balancer>
+              </p>
+            )}
+          </div>
 
-        <div className="pb-12 pt-8">{doc.body}</div>
-        <div>
-          <DocsPager doc={doc} />
+          <div className="pb-12 pt-8">{doc.body}</div>
+          <div>
+            <DocsPager doc={doc} />
+          </div>
         </div>
       </div>
-      {doc.toc && (
+      {/* {doc.toc && (
         <div className="hidden text-sm xl:block">
           <div className="sticky top-16 -mt-10 pt-4">
             <ScrollArea className="pb-10">
@@ -125,7 +127,7 @@ export default async function DocPage({ params }: DocPageProps) {
             </ScrollArea>
           </div>
         </div>
-      )}
+      )} */}
     </main>
   );
 }

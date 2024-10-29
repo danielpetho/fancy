@@ -65,17 +65,30 @@ function getItems(node, current): Items {
 
 const getToc = () => (node, file) => {
   const table = toc(node)
+  if (!table.map) return  // Add this check
   const items = getItems(table.map, {})
-
-  file.data = items
+  
+  // Change this to data.toc to match remark's expectations
+  file.data = { toc: items }
 }
 
 export type TableOfContents = Items
 
 export async function getTableOfContents(
-  content: string
+  content: any
 ): Promise<TableOfContents> {
-  const result = await remark().use(getToc).process(content)
-
-  return result.data
+  
+  const markdownContent = typeof content === 'string' 
+    ? content 
+    : content?.props?.children || '';
+  
+  const processedContent = await remark().use(() => (node, file) => {
+    const table = toc(node);
+    if (!table.map) return;
+    const items = getItems(table.map, {});
+    file.data = { toc: items };
+  }).process(markdownContent);
+  
+  
+  return processedContent.data.toc || {};
 }

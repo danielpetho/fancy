@@ -3,6 +3,7 @@ import { Doc, DocPageProps } from "@/types/types";
 import { compileMDX } from "next-mdx-remote/rsc";
 import fs from "node:fs";
 import path from "node:path";
+import { getTableOfContents } from "./toc";
 
 export const CONTENT_DIRECTORY = "/src/content/docs/";
 
@@ -11,6 +12,8 @@ export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
     path.join(process.cwd(), CONTENT_DIRECTORY, params.slug.join("/")) + ".mdx",
     "utf8"
   );
+
+  const toc = await getTableOfContents(source)
 
   // Use the Next.js component mappings
   const components = mdxComponents();
@@ -31,7 +34,7 @@ export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
     published: Boolean(frontmatter.published),
     featured: Boolean(frontmatter.featured),
     component: Boolean(frontmatter.component),
-    toc: Boolean(frontmatter.toc),
+    toc: toc,
     body: content,
   };
 }

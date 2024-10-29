@@ -6,7 +6,7 @@ export type Doc = {
   published: boolean;
   featured: boolean;
   component: boolean;
-  toc: boolean;
+  toc: any;
   /** MDX file body */
   body: any;
   slug: string;

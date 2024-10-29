@@ -3,7 +3,9 @@
 import * as React from "react";
 
 import { cn } from "@/lib/utils";
-import ReactSyntaxHighlighter, { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import ReactSyntaxHighlighter, {
+  Prism as SyntaxHighlighter,
+} from "react-syntax-highlighter";
 import { CopyButton } from "./copy-button";
 import { Icons } from "@/components/icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -44,6 +46,16 @@ export function ComponentPreview({
     loadSourceCode();
   }, [name]);
 
+  const syntaxHighlighterStyle = React.useMemo(
+    () => ({
+      borderRadius: "var(--radius) var(--radius)",
+      padding: "1rem",
+      width: "100%",
+      maxWidth: "100%",
+    }),
+    []
+  );
+
   const Preview = React.useMemo(() => {
     const Component = registry[name]?.component;
 
@@ -77,7 +89,7 @@ export function ComponentPreview({
               value="preview"
               className="relative h-14 text-xl rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
             >
-              Preview
+              Demo
             </TabsTrigger>
             <TabsTrigger
               value="code"
@@ -120,11 +132,7 @@ export function ComponentPreview({
               <ReactSyntaxHighlighter
                 language="typescript"
                 style={hybrid}
-                customStyle={{
-                  borderRadius: "var(--radius)",
-                  padding: "1rem",
-                  //backgroundColor: "#000000",
-                }}
+                customStyle={syntaxHighlighterStyle}
                 wrapLongLines={true}
               >
                 {sourceCode}
