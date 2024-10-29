@@ -83,14 +83,13 @@ export function generateStaticParams() {
 export default async function DocPage({ params }: DocPageProps) {
   const doc = await getDocFromParams({ params });
 
-
-  const toc = await getTableOfContents(doc.body)
+  const toc = await getTableOfContents(doc.body);
 
   //console.log(doc)
 
   return (
-    <main className="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
-      <div className="w-full">
+    <main className="xl:grid xl:grid-cols-[1fr_300px]">
+      <div className="rounded-xl bg-background shadow-lg px-8 py-6 lg:gap-10 lg:py-6 ">
         <div className="mb-2 pb-2 flex items-center space-x-1 text-lg text-muted-foreground">
           <div className="overflow-hidden font-medium  whitespace-nowrap">
             Docs

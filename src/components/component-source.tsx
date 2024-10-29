@@ -45,36 +45,41 @@ export function ComponentSource({
   const syntaxHighlighterStyle = React.useMemo(() => ({
     borderRadius: "var(--radius) var(--radius)",
     padding: "1rem",
+    width: "100%",
+    maxWidth: "100%",
   }), []);
 
   return (
-    <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
-      <div className={cn("relative overflow-hidden", className)} {...props}>
+    <Collapsible open={isOpened} onOpenChange={setIsOpened} className="w-full">
+      <div className={cn("relative w-full", className)} {...props}>
         <CollapsibleContent
           forceMount
           className={cn(
-            "overflow-scroll rounded-lg max-h-[640px]",
+            "overflow-auto rounded-lg max-h-[640px] w-full",
             !isOpened && "max-h-40"
           )}
         >
-          { isOpened && <div className="absolute right-4 top-4">
+          {isOpened && <div className="absolute right-4 top-4">
             <CopyButton
               value={sourceCode}
               src={name}
               event={"copy_npm_command"}
             />
           </div>}
-          <ReactSyntaxHighlighter
-            language="typescript"
-            style={hybrid}
-            customStyle={syntaxHighlighterStyle}
-          >
-            {sourceCode}
-          </ReactSyntaxHighlighter>
+          <div className="w-full">
+            <ReactSyntaxHighlighter
+              language="typescript"
+              style={hybrid}
+              customStyle={syntaxHighlighterStyle}
+              wrapLongLines={true}
+            >
+              {sourceCode}
+            </ReactSyntaxHighlighter>
+          </div>
         </CollapsibleContent>
         <div
           className={cn(
-            "absolute flex items-center justify-center bg-gradient-to-b  p-2 rounded-lg",
+            "absolute flex items-center justify-center bg-gradient-to-b p-2 rounded-lg",
             isOpened
               ? "inset-x-0 bottom-0"
               : "inset-0 from-black/30 to-black/60"

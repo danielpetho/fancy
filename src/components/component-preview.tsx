@@ -125,6 +125,7 @@ export function ComponentPreview({
                   padding: "1rem",
                   //backgroundColor: "#000000",
                 }}
+                wrapLongLines={true}
               >
                 {sourceCode}
               </ReactSyntaxHighlighter>

@@ -36,7 +36,7 @@ export const VariableFontAndCursor = ({
     yPosition: number
   ) => {
     const container = containerRef.current;
-    if (!container) return '0 0'; // Return default values if container is null
+    if (!container) return "0 0"; // Return default values if container is null
 
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;

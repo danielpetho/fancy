@@ -7,8 +7,6 @@ import {
   motion,
   useAnimationFrame,
   ValueAnimationTransition,
-  Transition,
-  DynamicAnimationOptions,
 } from "framer-motion";
 
 interface ElasticLineProps {
@@ -84,29 +82,19 @@ const ElasticLine: React.FC<ElasticLineProps> = ({
       y.set(controlPoint.y);
     }
 
-    if (!hasAnimatedIn) {
-      pathRef.current?.setAttribute(
-        "d",
-        isVertical
-          ? `M${dimensions.width / 2} 0Q${dimensions.width / 2} ${0} ${
-              dimensions.width / 2
-            } ${dimensions.height}`
-          : `M0 ${dimensions.height / 2}Q${0} ${dimensions.height / 2} ${
-              dimensions.width
-            } ${dimensions.height / 2}`
-      );
-    } else {
-      pathRef.current?.setAttribute(
-        "d",
-        isVertical
-          ? `M${dimensions.width / 2} 0Q${x.get()} ${y.get()} ${
-              dimensions.width / 2
-            } ${dimensions.height}`
-          : `M0 ${dimensions.height / 2}Q${x.get()} ${y.get()} ${
-              dimensions.width
-            } ${dimensions.height / 2}`
-      );
-    }
+    const controlX = hasAnimatedIn ? x.get() : dimensions.width / 2;
+    const controlY = hasAnimatedIn ? y.get() : dimensions.height / 2;
+
+    pathRef.current?.setAttribute(
+      "d",
+      isVertical
+        ? `M${dimensions.width / 2} 0Q${controlX} ${controlY} ${
+            dimensions.width / 2
+          } ${dimensions.height}`
+        : `M0 ${dimensions.height / 2}Q${controlX} ${controlY} ${
+            dimensions.width
+          } ${dimensions.height / 2}`
+    );
   });
 
   return (

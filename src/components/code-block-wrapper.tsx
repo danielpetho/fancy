@@ -28,6 +28,16 @@ export function CodeBlockWrapper({
   const codeString = React.Children.toArray(children)[0]?.toString() || "";
   const lineCount = codeString.split("\n").length;
 
+  const syntaxHighlighterStyle = React.useMemo(
+    () => ({
+      borderRadius: "var(--radius) var(--radius)",
+      padding: "1rem",
+      width: "100%",
+      maxWidth: "100%",
+    }),
+    []
+  );
+
   if (lineCount < 20) {
     return (
       <div className={cn("relative overflow-hidden", className)} {...props}>
@@ -42,10 +52,8 @@ export function CodeBlockWrapper({
         <ReactSyntaxHighlighter
           language={language}
           style={hybrid}
-          customStyle={{
-            borderRadius: "var(--radius) var(--radius)",
-            padding: "1rem",
-          }}
+          customStyle={syntaxHighlighterStyle}
+          wrapLongLines={true}
         >
           {codeString}
         </ReactSyntaxHighlighter>
@@ -76,10 +84,8 @@ export function CodeBlockWrapper({
           <ReactSyntaxHighlighter
             language={language}
             style={hybrid}
-            customStyle={{
-              borderRadius: "var(--radius) var(--radius)",
-              padding: "1rem",
-            }}
+            customStyle={syntaxHighlighterStyle}
+            wrapLongLines={true}
           >
             {codeString}
           </ReactSyntaxHighlighter>
