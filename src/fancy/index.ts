@@ -187,6 +187,14 @@ const example: Registry = {
       () => import("@/fancy/examples/text/underline-to-background-demo")
     )
   },
+  "image-trail-demo": {
+    name: "image-trail-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/image/image-trail-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/image/image-trail-demo")
+    )
+  },
   "drag-elements-demo": {
     name: "drag-elements-demo",
     type: "components:example",
@@ -206,17 +214,17 @@ const example: Registry = {
   "pixel-trail-demo": {
     name: "pixel-trail-demo",
     type: "components:example",
-    files: ["@/fancy/examples/pixel-trail-demo.tsx"],
+    files: ["@/fancy/examples/background/pixel-trail-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/pixel-trail-demo")
+      () => import("@/fancy/examples/background/pixel-trail-demo")
     )
   },
   "pixel-trail-no-fade-demo": {
     name: "pixel-trail-no-fade-demo",
     type: "components:example",
-    files: ["@/fancy/examples/pixel-trail-no-fade-demo.tsx"],
+    files: ["@/fancy/examples/background/pixel-trail-no-fade-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/pixel-trail-no-fade-demo")
+      () => import("@/fancy/examples/background/pixel-trail-no-fade-demo")
     )
   },
   "animated-gradient-demo": {

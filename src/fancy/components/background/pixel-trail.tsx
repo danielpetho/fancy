@@ -1,12 +1,11 @@
 import React, {
   useCallback,
   useRef,
-  useEffect,
-  useState,
   useMemo,
 } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
+import { useDimensions } from "@/hooks/use-dimensions";
 
 interface PixelTrailProps {
   pixelColor: string; // hex, rgb, rgba, hsl, etc.
@@ -22,23 +21,8 @@ export const PixelTrail: React.FC<PixelTrailProps> = ({
   delay = 0,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+  const dimensions = useDimensions(containerRef);
   const trailId = useRef(uuidv4());
-  
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (containerRef.current) {
-        setDimensions({
-          width: containerRef.current.clientWidth,
-          height: containerRef.current.clientHeight,
-        });
-      }
-    };
-
-    updateDimensions();
-    window.addEventListener("resize", updateDimensions);
-    return () => window.removeEventListener("resize", updateDimensions);
-  }, []);
 
   const handleMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
