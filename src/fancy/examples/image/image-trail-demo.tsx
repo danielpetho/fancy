@@ -23,7 +23,7 @@ const ImageTrailDemo = () => {
           ))}
         </ImageTrail>
       </div>
-      <h1 className="text-9xl z-10">LPs</h1>
+      <h1 className="text-9xl z-10">ALBUMS</h1>
     </div>
   );
 };

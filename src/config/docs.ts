@@ -1,4 +1,4 @@
-import { SidebarNavItem } from "@/types/nav"
+import { SidebarNavItem } from "@/types/nav";
 
 export const docsConfig: SidebarNavItem[] = [
   {
@@ -41,13 +41,13 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/variable-font-hover-by-random-letter",
         items: [],
       },
-      { 
+      {
         title: "Scroll And Swap",
         href: "/docs/components/text/scroll-and-swap",
         items: [],
         label: "New",
       },
-      // { 
+      // {
       //   title: "Basic Word Rotate",
       //   href: "/docs/components/text/basic-word-rotate",
       //   items: [],
@@ -58,7 +58,7 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
         label: "New",
       },
-      { 
+      {
         title: "Breathing Text",
         href: "/docs/components/text/breathing-text",
         items: [],
@@ -109,6 +109,17 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Elastic Line",
         href: "/docs/components/svg/elastic-line",
         label: "New",
+        items: [],
+      },
+    ],
+  },
+  {
+    title: "Image",
+    href: "/docs/components/image",
+    items: [
+      {
+        title: "Image Trail",
+        href: "/docs/components/image/image-trail",
         items: [],
       },
     ],
