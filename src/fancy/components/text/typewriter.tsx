@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { motion, Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 
@@ -10,6 +11,7 @@ interface TypewriterProps {
   loop?: boolean;
   className?: string;
   showCursor?: boolean;
+  hideCursorOnType?: boolean;
   cursorChar?: string | React.ReactNode;
   cursorAnimationVariants?: {
     initial: Variants["initial"];
@@ -27,6 +29,7 @@ export const Typewriter = ({
   loop = true,
   className,
   showCursor = true,
+  hideCursorOnType = false,
   cursorChar = "|",
   cursorClassName = "ml-1",
   cursorAnimationVariants = {
@@ -109,7 +112,13 @@ export const Typewriter = ({
       {showCursor && (
         <motion.span
           variants={cursorAnimationVariants}
-          className={`${cursorClassName}`}
+          className={cn(
+            cursorClassName,
+            hideCursorOnType &&
+              (currentIndex < texts[currentTextIndex].length || isDeleting)
+              ? "hidden"
+              : ""
+          )}
           initial="initial"
           animate="animate"
         >
