@@ -78,6 +78,12 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/basic-number-ticker",
         items: [],
       },
+      {
+        title: "Typewriter",
+        href: "/docs/components/text/typewriter",
+        items: [],
+        label: "New",
+      },
       // {
       //   title: "Slot Number Ticker",
       //   href: "/docs/components/text/slot-number-ticker",
@@ -113,17 +119,17 @@ export const docsConfig: SidebarNavItem[] = [
       },
     ],
   },
-  {
-    title: "Image",
-    href: "/docs/components/image",
-    items: [
-      {
-        title: "Image Trail",
-        href: "/docs/components/image/image-trail",
-        items: [],
-      },
-    ],
-  },
+  // {
+  //   title: "Image",
+  //   href: "/docs/components/image",
+  //   items: [
+  //     {
+  //       title: "Image Trail",
+  //       href: "/docs/components/image/image-trail",
+  //       items: [],
+  //     },
+  //   ],
+  // },
   {
     title: "Blocks",
     href: "/docs/components/blocks",

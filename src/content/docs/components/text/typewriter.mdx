@@ -1,0 +1,106 @@
+---
+title: Typewriter
+description: A component that types out a text, one letter at a time.
+component: true
+---
+
+<ComponentPreview name="typewriter-demo" />
+
+## Source code
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="typewriter" />
+
+</Steps>
+
+## Notes
+
+As a text, either a string or an array of strings can be passed to the component. The component will automatically split the text into an array of characters, and animate each letter one by one. If you pass an array of strings, the component will animate one text, delete it, then continue animating the next one. The component will loop through the texts if you set the `loop` prop to `true`.
+
+The cursor at the end of the text is optional. You can use a character or even a svg node if you like. There is a prop to customize the cursor animation, where you have to define the two framer-motion variants as `initial` and `animate`.
+
+Ideally, the component should respect multiple lines. If you experience otherwise, please let me know.:)
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>text<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string | string[]`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text or array of texts to be displayed and animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>speed</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`50`</TableCell>
+      <TableCell>Speed of typing animation in milliseconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>initialDelay</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0`</TableCell>
+      <TableCell>Delay before typing starts in milliseconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>waitTime</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`2000`</TableCell>
+      <TableCell>Time to wait before deleting text in milliseconds</TableCell>
+    </TableRow>
+    <TableRow >
+      <TableCell>loop</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to loop through the texts</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>deleteSpeed</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`30`</TableCell>
+      <TableCell>Speed of delete animation in milliseconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showCursor</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to show the cursor</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>cursorChar</TableCell>
+      <TableCell>`string | React.ReactNode`</TableCell>
+      <TableCell>`"|"`</TableCell>
+      <TableCell>Character or node to use as cursor</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>cursorAnimationVariants</TableCell>
+      <TableCell>`{ initial: Variants["initial"]; animate: Variants["animate"] }`</TableCell>
+      <TableCell>`{ initial: { opacity: 0 }, animate: { opacity: 1, transition: { duration: 0.01, repeat: Infinity, repeatDelay: 0.4, repeatType: "mirror" } } }`</TableCell>
+      <TableCell>Framer Motion variants for cursor animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>cursorClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"ml-1"`</TableCell>
+      <TableCell>Additional CSS classes for cursor styling</TableCell>
+    </TableRow>
+  </TableBody>
+  </Table>

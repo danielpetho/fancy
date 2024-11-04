@@ -48,6 +48,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/breathing-text.tsx"]
   },
+  "typewriter": {
+    name: "typewriter",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/typewriter.tsx"]
+  },
   "underline-center": {
     name: "underline-center",
     type: "components:fancy",
@@ -169,6 +174,14 @@ const example: Registry = {
     files: ["@/fancy/examples/text/breathing-text-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/text/breathing-text-demo")
+    )
+  },
+  "typewriter-demo": {
+    name: "typewriter-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/typewriter-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/typewriter-demo")
     )
   },
   "underline-demo": {
