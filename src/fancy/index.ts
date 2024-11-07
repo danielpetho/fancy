@@ -213,6 +213,14 @@ const example: Registry = {
       () => import("@/fancy/examples/text/scramble-hover-new-chars-demo")
     )
   },
+  "scramble-hover-sequential-demo": {
+    name: "scramble-hover-sequential-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/scramble-hover-sequential-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/scramble-hover-sequential-demo")
+    )
+  },
   "underline-demo": {
     name: "underline-demo",
     type: "components:example",
