@@ -24,6 +24,7 @@ const config = {
         cotham: ["Cotham Sans"],
         VT323: ["VT323"],
         azeretMono: ["Azeret Mono"],
+        notoSansSymbols: ["Noto Sans Symbols"],
       },
       colors: {
         lavender: "#ecbfff",

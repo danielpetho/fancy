@@ -53,6 +53,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/typewriter.tsx"]
   },
+  "scramble-hover": {
+    name: "scramble-hover",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/scramble-hover.tsx"]
+  },
   "underline-center": {
     name: "underline-center",
     type: "components:fancy",
@@ -182,6 +187,30 @@ const example: Registry = {
     files: ["@/fancy/examples/text/typewriter-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/text/typewriter-demo")
+    )
+  },
+  "scramble-hover-demo": {
+    name: "scramble-hover-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/scramble-hover-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/scramble-hover-demo")
+    )
+  },
+  "scramble-hover-diff-class-demo": {
+    name: "scramble-hover-diff-class-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/scramble-hover-diff-class-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/scramble-hover-diff-class-demo")
+    )
+  },
+  "scramble-hover-new-chars-demo": {
+    name: "scramble-hover-new-chars-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/scramble-hover-new-chars-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/scramble-hover-new-chars-demo")
     )
   },
   "underline-demo": {

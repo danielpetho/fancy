@@ -45,7 +45,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Scroll And Swap",
         href: "/docs/components/text/scroll-and-swap",
         items: [],
-        label: "New",
       },
       // {
       //   title: "Basic Word Rotate",
@@ -56,7 +55,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Variable Font And Cursor",
         href: "/docs/components/text/variable-font-and-cursor",
         items: [],
-        label: "New",
       },
       {
         title: "Breathing Text",
@@ -81,6 +79,12 @@ export const docsConfig: SidebarNavItem[] = [
       {
         title: "Typewriter",
         href: "/docs/components/text/typewriter",
+        items: [],
+        label: "New",
+      },
+      {
+        title: "Scramble Hover",
+        href: "/docs/components/text/scramble-hover",
         items: [],
         label: "New",
       },

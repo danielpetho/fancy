@@ -1,0 +1,84 @@
+---
+title: Scramble Hover
+description: A text component that scrambles the text on hover.
+component: true
+---
+
+<ComponentPreview name="scramble-hover-demo" />
+
+## Source code
+
+<Steps>
+
+<ComponentSource name="scramble-hover" />
+
+</Steps>
+
+## Usage
+
+For the scrambling effect, you can use either the original characters, or another set of characters specified in the `characters` prop.
+
+<ComponentPreview name="scramble-hover-new-chars-demo" />
+
+You can also apply a different styling on the scrambled text by passing a string to the `scrambleClassName` prop. This allows for example to use a different font family or color, like in the following example. Please not that if the `scrambledClassName` is applied, it's not going to be merged with the `className` prop, so you have to style the original text and the scrambled text separately.
+
+<ComponentPreview name="scramble-hover-diff-class-demo" />
+
+## Props
+
+<Table >
+  <TableHeader>
+    <TableRow >
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        text<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text to be displayed and scrambled</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrambleSpeed</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`50`</TableCell>
+      <TableCell>Speed of the scrambling animation in milliseconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>maxIterations</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`10`</TableCell>
+      <TableCell>Maximum number of iterations for the scrambling animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>useOriginalCharsOnly</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to use only the original characters or the whole string</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>characters</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"ABCDEFGHIJKLMNO PQRSTUVWXYZ abcdefghijklmno pqrstuvwxyz !@#$%^&*()_+"`</TableCell>
+      <TableCell>Characters to use for scrambling, if `useOriginalCharsOnly` is `false`</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrambledClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Additional CSS classes for styling the scrambled text</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
