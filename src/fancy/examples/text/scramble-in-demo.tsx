@@ -37,6 +37,7 @@ export default function Preview() {
     <div className="w-full h-full flex flex-col text-xl justify-start items-start bg-background font-normal overflow-hidden py-16 px-32 text-center">
       {titles.map((model, index) => (
         <ScrambleIn
+          key={index}
           ref={(el) => {
             scrambleRefs.current[index] = el;
           }}
