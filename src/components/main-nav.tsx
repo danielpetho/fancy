@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function MainNav() {
     return (
-        <nav className="flex items-center justify-between w-full gap-x-4">
+        <nav className="flex items-center justify-end md:justify-between w-full gap-x-4">
           <div className="flex flex-row items-center gap-x-12">
             <Link
               href="/docs/introduction"
@@ -32,7 +32,7 @@ export function MainNav() {
               </Link>
             </div>
           </div>
-          <div className="flex flex-row gap-x-8 text-xl font-regular hidden md:flex">
+          <div className="flex-row gap-x-8 text-xl font-regular hidden md:flex">
             <a href="https://github.com/danielpetho/fancy">
               <VariableFontHoverByLetter
                 label="Github"

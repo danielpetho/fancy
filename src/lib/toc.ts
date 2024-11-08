@@ -81,14 +81,16 @@ export async function getTableOfContents(
   const markdownContent = typeof content === 'string' 
     ? content 
     : content?.props?.children || '';
+
+  // Remove frontmatter section
+  const contentWithoutFrontmatter = markdownContent.replace(/^---[\s\S]*?---\n/, '');
   
   const processedContent = await remark().use(() => (node, file) => {
     const table = toc(node);
     if (!table.map) return;
     const items = getItems(table.map, {});
     file.data = { toc: items };
-  }).process(markdownContent);
-  
+  }).process(contentWithoutFrontmatter);
   
   return processedContent.data.toc || {};
 }

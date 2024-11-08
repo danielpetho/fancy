@@ -83,10 +83,10 @@ export function generateStaticParams() {
 export default async function DocPage({ params }: DocPageProps) {
   const doc = await getDocFromParams({ params });
 
-  const toc = doc.toc
+  const toc = doc.toc;
 
   return (
-    <main className="xl:grid xl:grid-cols-[1fr_300px] w-full justify-center ">
+    <main className="xl:grid xl:grid-cols-[1fr_300px] w-full justify-center">
       <div className="rounded-xl bg-background shadow-lg py-6 lg:gap-10 lg:py-6">
         <div className="container">
           <div className="mb-2 pb-2 flex items-center space-x-1 text-lg text-muted-foreground">
@@ -117,17 +117,15 @@ export default async function DocPage({ params }: DocPageProps) {
           </div>
         </div>
       </div>
-      {/* {doc.toc && (
-        <div className="hidden text-sm xl:block">
-          <div className="sticky top-16 -mt-10 pt-4">
-            <ScrollArea className="pb-10">
-              <div className="sticky top-16 -mt-10 h-[calc(100vh-3.5rem)] py-12">
-                <DashboardTableOfContents toc={toc} />
-              </div>
+      {doc.toc && (
+        <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-7rem)] pl-4">
+          <div className=" bg-background rounded-xl shadow-lg ">
+            <ScrollArea className="pb-10 p-6">
+              <DashboardTableOfContents toc={toc} />
             </ScrollArea>
           </div>
         </div>
-      )} */}
+      )}
     </main>
   );
 }

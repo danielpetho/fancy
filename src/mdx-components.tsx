@@ -18,47 +18,65 @@ import {
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
-    h1: ({ className, ...props }: React.ComponentProps<"h1">) => (
+    h1: ({ className, children, ...props }: React.ComponentProps<"h1">) => (
       <h1
+        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
         className={cn(
           "scroll-m-24 text-5xl  font-calendas tracking-tight py-2",
           className
         )}
         {...props}
-      />
+      >
+        {children}
+      </h1>
     ),
-    h2: ({ className, ...props }: React.ComponentProps<"h2">) => (
-      <div className="flex flex-col gap-y-4 my-4 ">
+    h2: ({ className, children, ...props }: React.ComponentProps<"h2">) => (
+      <div className="flex flex-col gap-y-4 mt-4 ">
         <h2
-          className={cn("scroll-m-20 text-4xl tracking-tight mt-8", className)}
+          id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
+          className={cn("scroll-m-20 text-4xl tracking-tight pt-6 pb-3", className)}
           {...props}
-        />
+        >
+          {children}
+        </h2>
         <hr className="" />
       </div>
     ),
-    h3: ({ className, ...props }: React.ComponentProps<"h3">) => (
+    h3: ({ className, children, ...props }: React.ComponentProps<"h3">) => (
       <h3
-        className={cn("scroll-m-24 text-3xl  tracking-tight py-4", className)}
+        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
+        className={cn("scroll-m-24 text-3xl  tracking-tight pt-10 pb-2", className)}
         {...props}
-      />
+      >
+        {children}
+      </h3>
     ),
-    h4: ({ className, ...props }: React.ComponentProps<"h4">) => (
+    h4: ({ className, children, ...props }: React.ComponentProps<"h4">) => (
       <h4
-        className={cn("scroll-m-20 text-2xl tracking-tight py-4", className)}
+        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
+        className={cn("scroll-m-20 text-2xl tracking-tight pt-10 pb-2", className)}
         {...props}
-      />
+      >
+        {children}
+      </h4>
     ),
-    h5: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+    h5: ({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <h5
+        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
         className={cn("mt-8 scroll-m-20 text-xl  tracking-tight", className)}
         {...props}
-      />
+      >
+        {children}
+      </h5>
     ),
-    h6: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+    h6: ({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <h6
+        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
         className={cn("mt-8 scroll-m-20 text-xl tracking-tight", className)}
         {...props}
-      />
+      >
+        {children}
+      </h6>
     ),
     a: ({ className, ...props }: React.HTMLAttributes<HTMLAnchorElement>) => (
       <a
