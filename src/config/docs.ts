@@ -88,6 +88,12 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
         label: "New",
       },
+      {
+        title: "Scramble In",
+        href: "/docs/components/text/scramble-in",
+        items: [],
+        label: "New",
+      }
       // {
       //   title: "Slot Number Ticker",
       //   href: "/docs/components/text/slot-number-ticker",

@@ -58,6 +58,11 @@ const fancy: Registry = {
     type: "components:fancy",
     files: ["@/fancy/components/text/scramble-hover.tsx"]
   },
+  "scramble-in": {
+    name: "scramble-in",
+    type: "components:fancy",
+    files: ["@/fancy/components/text/scramble-in.tsx"]
+  },
   "underline-center": {
     name: "underline-center",
     type: "components:fancy",
@@ -219,6 +224,14 @@ const example: Registry = {
     files: ["@/fancy/examples/text/scramble-hover-sequential-demo.tsx"],
     component: React.lazy(
       () => import("@/fancy/examples/text/scramble-hover-sequential-demo")
+    )
+  },
+  "scramble-in-demo": {
+    name: "scramble-in-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/text/scramble-in-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/text/scramble-in-demo")
     )
   },
   "underline-demo": {

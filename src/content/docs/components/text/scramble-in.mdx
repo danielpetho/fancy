@@ -1,0 +1,95 @@
+---
+title: Scramble In
+description: A text component that reveals the text with a scrambled part in front.
+component: true
+---
+
+<ComponentPreview name="scramble-in-demo" />
+
+## Source code
+
+<Steps>
+
+<ComponentSource name="scramble-in" />
+
+</Steps>
+
+## Usage
+
+With the `autoStart` prop, you can start the animation automatically.
+But there is also a `start` and `reset` method exposed via a ref if you need to control the animation from outside of the component, as you see in the demo above.
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>text<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text to be displayed and scrambled</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrambleSpeed</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`50`</TableCell>
+      <TableCell>Speed of the scrambling animation in milliseconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrambledLetterCount</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`8`</TableCell>
+      <TableCell>Number of letters to scramble</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoStart</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to start the animation automatically</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>characters</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"ABCDEFGHIJKLMNO PQRSTUVWXYZ abcdefghijklmno pqrstuvwxyz !@#$%^&*()_+"`</TableCell>
+      <TableCell>Characters to use for scrambling</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrambledClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`undefined`</TableCell>
+      <TableCell>Additional CSS classes for styling the scrambled text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoStart</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to start the animation automatically</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onComplete</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback function for when the animation completes</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onStart</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback function for when the animation starts</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
