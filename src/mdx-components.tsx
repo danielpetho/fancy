@@ -63,7 +63,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     h5: ({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <h5
         id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-        className={cn("mt-8 scroll-m-20 text-xl  tracking-tight", className)}
+        className={cn("scroll-m-20 text-xl  tracking-tight pt-10 pb-4", className)}
         {...props}
       >
         {children}
@@ -72,7 +72,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     h6: ({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <h6
         id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-        className={cn("mt-8 scroll-m-20 text-xl tracking-tight", className)}
+        className={cn("scroll-m-20 text-xl tracking-tight pt-10 pb-4", className)}
         {...props}
       >
         {children}
