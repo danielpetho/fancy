@@ -129,17 +129,17 @@ export const docsConfig: SidebarNavItem[] = [
       },
     ],
   },
-  // {
-  //   title: "Image",
-  //   href: "/docs/components/image",
-  //   items: [
-  //     {
-  //       title: "Image Trail",
-  //       href: "/docs/components/image/image-trail",
-  //       items: [],
-  //     },
-  //   ],
-  // },
+  {
+    title: "Image",
+    href: "/docs/components/image",
+    items: [
+      {
+        title: "Image Trail",
+        href: "/docs/components/image/image-trail",
+        items: [],
+      },
+    ],
+  },
   {
     title: "Blocks",
     href: "/docs/components/blocks",
@@ -153,6 +153,12 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Circling Elements",
         href: "/docs/components/blocks/circling-elements",
         items: [],
+      },
+      {
+        title: "Screensaver",
+        href: "/docs/components/blocks/screensaver",
+        items: [],
+        label: "New",
       },
       // {
       //   title: "Menu Variant 1",

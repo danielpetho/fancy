@@ -1,0 +1,106 @@
+---
+title: Screensaver
+description: 
+component: true
+---
+
+<ComponentPreview name="screensaver-demo" />
+
+## Source code
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<CodeBlockWrapper language="typescript">
+{
+`import { useState, useEffect, RefObject } from 'react';
+
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
+export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensions {
+  const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
+
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (ref.current) {
+        const { width, height } = ref.current.getBoundingClientRect();
+        setDimensions({ width, height });
+      }
+    };
+
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, [ref]);
+
+  return dimensions;
+}
+`}
+</CodeBlockWrapper>
+
+<Step>Then copy and paste the following code into your project:</Step>
+
+<ComponentSource name="screensaver" />
+
+</Steps>
+
+## Usage
+
+Just wrap your content with the component, and the animation will take care of the rest.
+You also need to pass a container ref to the component — which will be used to constrain the screensaver component. 
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be displayed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>containerRef<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.RefObject<HTMLElement>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Reference to the container for the screensaver</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>speed</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`3`</TableCell>
+      <TableCell>Speed of the animation in pixels per second</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>startPosition</TableCell>
+      <TableCell>`{ x: number; y: number }`</TableCell>
+      <TableCell>`{ x: 0, y: 0 }`</TableCell>
+      <TableCell>Starting position of the element</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>startAngle</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`45`</TableCell>
+      <TableCell>Starting angle of the element in degrees</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

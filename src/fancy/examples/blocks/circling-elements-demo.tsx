@@ -1,7 +1,7 @@
 import React from "react";
 import { CirclingElements } from "@/fancy/components/blocks/circling-elements";
 import Image from "next/image";
-import { exampleImages } from "./exampleImages";
+import { exampleImages } from "../exampleImages";
 
 const CirclingElementsDemo: React.FC = () => {
   return (

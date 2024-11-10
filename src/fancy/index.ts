@@ -269,9 +269,17 @@ const example: Registry = {
   "circling-elements-demo": {
     name: "circling-elements-demo",
     type: "components:example",
-    files: ["@/fancy/examples/circling-elements-demo.tsx"],
+    files: ["@/fancy/examples/blocks/circling-elements-demo.tsx"],
     component: React.lazy(
-      () => import("@/fancy/examples/circling-elements-demo")
+      () => import("@/fancy/examples/blocks/circling-elements-demo")
+    )
+  },
+  "screensaver-demo": {
+    name: "screensaver-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/blocks/screensaver-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/blocks/screensaver-demo")
     )
   },
   "pixel-trail-demo": {
