@@ -330,6 +330,14 @@ const example: Registry = {
       () => import("@/fancy/examples/svg/elastic-line-demo")
     )
   },
+  "sticky-footer-demo": {
+    name: "sticky-footer-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/blocks/sticky-footer-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/blocks/sticky-footer-demo")
+    )
+  }
 }
 
 export const registry = {

@@ -80,7 +80,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Typewriter",
         href: "/docs/components/text/typewriter",
         items: [],
-        label: "New",
       },
       {
         title: "Scramble Hover",
@@ -124,7 +123,6 @@ export const docsConfig: SidebarNavItem[] = [
       {
         title: "Elastic Line",
         href: "/docs/components/svg/elastic-line",
-        label: "New",
         items: [],
       },
     ],
@@ -137,6 +135,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Image Trail",
         href: "/docs/components/image/image-trail",
         items: [],
+        label: "Beta",
       },
     ],
   },
@@ -160,6 +159,12 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
         label: "New",
       },
+      {
+        title: "Sticky Footer",
+        href: "/docs/components/blocks/sticky-footer",
+        items: [],
+        label: "New",
+      }
       // {
       //   title: "Menu Variant 1",
       //   href: "/docs/components/blocks/menu-variant-1",
