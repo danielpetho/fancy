@@ -7,20 +7,19 @@ description: A demo showcasing a footer that sticks to the bottom of the page.
 
 ## How to
 
-This page doesn't contain a component, as achieving a sticky footer doesn't really require any complex logic abstracted away into a component. Some tutorials are tend to overcomplicate this, but for most cases, it's enough to add a few tailwind classes to our elements, which you can find here in this demo.
+This page doesn't contain a component, as achieving a sticky footer doesn't require any complex logic abstracted into a component. Some tutorials tend to overcomplicate this, but for most cases, it's enough to add a few Tailwind classes to our elements, which you can find in this demo.
 
 You need two things to make this work:
-- a main element, which will sit on top of the footer. 
-- a footer element, which will be behind the main element. 
+- A main element that will sit on top of the footer
+- A footer element that will be behind the main element
 
-1. Usually, you want the main element to be **at least** `h-[100vh]` (or `h-[100%]` if you use it insider a container, like in the demo above), so that it fully hides the footer by default. 
-2. You also need to set the position to `relative` in order to not mess up the z-indices.
-3. Then, set the footer element position to `sticky` and stick to the bottom with `bottom-0`. 
-4. Finally, make sure that the main element has a higher z-index than the footer element, so it always sits on top of the footer.
+1. Usually, you want the main element to be **at least** `h-[100vh]` (or `h-[100%]` if you use it inside a container, like in the demo above), so that it fully hides the footer by default
+2. You also need to set the position to `relative`, so the z-index will work correctly
+3. Then, set the footer element's position to `sticky` and make it stick to the bottom with `bottom-0`
+4. Finally, make sure that the main element has a higher z-index than the footer element so it always sits on top of the footer
 
-That's it! Can you believe that? 
+That's it! Can you believe that?
 
 ## Notes
 
-The only drawback in my experience is that the footer element will be always behind the content in the viewport, which sometimes can mess up pointer events, components with z-index modifiers, etc, but 90% of the time it was fine for me.
-
+The main drawback to be aware of is that the footer element will always be behind the main content in the viewport. This can occasionally interfere with pointer events and components that rely on z-index stacking. However, in my experience this approach works well for most common use cases.
