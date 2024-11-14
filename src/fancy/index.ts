@@ -258,6 +258,14 @@ const example: Registry = {
       () => import("@/fancy/examples/image/image-trail-demo")
     )
   },
+  "floating-demo": {
+    name: "floating-demo",
+    type: "components:example",
+    files: ["@/fancy/examples/image/floating-demo.tsx"],
+    component: React.lazy(
+      () => import("@/fancy/examples/image/floating-demo")
+    )
+  },
   "drag-elements-demo": {
     name: "drag-elements-demo",
     type: "components:example",

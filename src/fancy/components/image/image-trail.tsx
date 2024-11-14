@@ -146,12 +146,11 @@ const TrailItem = ({ item, onComplete }: TrailItemProps) => {
     <motion.div
       ref={scope}
       key={item.id}
-      className="absolute"
+      className="absolute transform will-change-transform"
       style={{
         left: item.x,
         top: item.y,
         rotate: item.rotation,
-        willChange: "transform", // Optimize for animations
       }}
     >
       {item.child}

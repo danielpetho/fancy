@@ -85,7 +85,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Scramble Hover",
         href: "/docs/components/text/scramble-hover",
         items: [],
-        label: "New",
       },
       {
         title: "Scramble In",
@@ -137,6 +136,12 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
         label: "Beta",
       },
+      {
+        title: "Floating",
+        href: "/docs/components/image/floating",
+        items: [],
+        label: "New",
+      },
     ],
   },
   {
@@ -157,7 +162,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Screensaver",
         href: "/docs/components/blocks/screensaver",
         items: [],
-        label: "New",
       },
       {
         title: "Sticky Footer",

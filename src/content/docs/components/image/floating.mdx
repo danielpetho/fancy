@@ -1,0 +1,154 @@
+---
+title: Floating
+description: A component that creates a floating effect on cursor/touch movement. Works also with videos, svgs, or any type of html elements.
+component: true
+---
+
+<ComponentPreview name="floating-demo" />
+
+## Source code
+
+<Steps>
+
+<Step>Create a hook for querying the cursor position:</Step>
+
+<CodeBlockWrapper language="typescript">
+{
+`import { useState, useEffect, RefObject } from "react";
+
+export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGElement>) => {
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const updatePosition = (x: number, y: number) => {
+      if (containerRef && containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        const relativeX = x - rect.left;
+        const relativeY = y - rect.top;
+        
+        // Calculate relative position even when outside the container
+        setPosition({ x: relativeX, y: relativeY });
+      } else {
+        setPosition({ x, y });
+      }
+    };
+
+    const handleMouseMove = (ev: MouseEvent) => {
+      updatePosition(ev.clientX, ev.clientY);
+    };
+
+    const handleTouchMove = (ev: TouchEvent) => {
+      const touch = ev.touches[0];
+      updatePosition(touch.clientX, touch.clientY);
+    };
+
+    // Listen for both mouse and touch events
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove); 
+    };
+  }, [containerRef]);
+
+  return position;
+};
+`}
+</CodeBlockWrapper>
+
+<Step>Then copy and paste the following code into your project:</Step>
+
+<ComponentSource name="floating" />
+
+</Steps>
+
+## Usage
+
+There are two components exported from the source file: `Floating` and `FloatingElement`. The first one is a wrapper component that takes care of the animation, mouse position tracking and other logic. The second one is another component that you can use to **wrap your individual element(s)** you want to "float". 
+
+The advantage of this setup that you can just define the position and depth of each floating element directly on the component level, and the rest is taken care of by the `Floating` wrapper component. 
+
+## Behind the scenes
+
+The `Floating` component uses Context to register all children as floating elements. Then, using motion's `useAnimationFrame` hook, it calculates the distance between the mouse position and all the registered element's position, and lerps towards the mouse position. The strength of the movement is influenced by the individual `dept` values, and the `sensitivity` prop on the top level `Floating` component. The lerped position is then used to set the `transform` property of the element.
+
+## Notes
+
+- You need to set and keep the z-indices in order for yourself, since the `Floating` component doesn't do that for you. The `depth` prop is only used to calculate the strength of the movement towards the mouse.
+- If you have a lot of elements and worried about performance, you can group your elements into a single `FloatingElement` component, and use the `depth` prop to control the z-index of the element (so all children on that element will move in sync). Eg. let's say you have 6 images you want to float, but you could group them by 2-2-2, where each group will have the same depth. In this case, instead of calculating and transforming 6 elements, we would only need to it for 3.
+- If you use negative depth, the element will be moved away from the mouse position. Same applies for negative sensitivity.
+
+## Props
+
+### Floating
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be displayed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>sensitivity</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.1`</TableCell>
+      <TableCell>The sensitivity of the movement</TableCell>
+    </TableRow>
+    <TableRow >
+      <TableCell>easingFactor</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.05`</TableCell>
+      <TableCell>The easing factor of the movement</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### FloatingElement
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be displayed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>depth</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`1`</TableCell>
+      <TableCell>The depth of the element</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

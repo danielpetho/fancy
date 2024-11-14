@@ -1,4 +1,5 @@
 import { useDimensions } from "@/hooks/use-dimensions";
+import { cn } from "@/lib/utils";
 import { motion, useAnimationControls, useAnimationFrame } from "framer-motion";
 import React, { useRef, useState } from "react";
 
@@ -61,7 +62,7 @@ export const Screensaver: React.FC<ScreensaverProps> = ({
                 x: position.x,
                 y: position.y,
             }}
-            className={className}
+            className={cn("transform will-change-transform", className)}
         >
             {children}
         </motion.div>
