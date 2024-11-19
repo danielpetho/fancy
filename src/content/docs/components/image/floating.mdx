@@ -65,19 +65,53 @@ export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGEleme
 
 ## Usage
 
-There are two components exported from the source file: `Floating` and `FloatingElement`. The first one is a wrapper component that takes care of the animation, mouse position tracking and other logic. The second one is another component that you can use to **wrap your individual element(s)** you want to "float". 
+There are two components exported from the source file: `Floating` and `FloatingElement`. The first one is a wrapper component that takes care of the animation, mouse position tracking and other logic. The second one is a component that you **must** use to wrap any elements you want to float.
 
-The advantage of this setup that you can just define the position and depth of each floating element directly on the component level, and the rest is taken care of by the `Floating` wrapper component. 
+The advantage of this setup is that you can style and position your elements however you want using Tailwind classes or custom CSS directly on the `FloatingElement` component, while the `Floating` wrapper component handles all the complex animation logic. Simply wrap your positioned elements with `FloatingElement`, set their `depth` value, and the floating effect will be applied while maintaining your original styling and positioning.
 
-## Behind the scenes
+## Understanding the component
 
-The `Floating` component uses Context to register all children as floating elements. Then, using motion's `useAnimationFrame` hook, it calculates the distance between the mouse position and all the registered element's position, and lerps towards the mouse position. The strength of the movement is influenced by the individual `dept` values, and the `sensitivity` prop on the top level `Floating` component. The lerped position is then used to set the `transform` property of the element.
+The `Floating` component creates an interactive floating effect through several key mechanisms:
+
+1. **Element Registration**: Using React Context, each `FloatingElement` child registers itself with the parent `Floating` component, providing its DOM reference and depth value.
+
+2. **Mouse Position Tracking**: The component tracks mouse movement across the screen using a custom hook that provides normalized coordinates relative to the container.
+
+3. **Animation Loop**: Using Framer Motion's `useAnimationFrame`, the component runs a continuous animation loop that:
+   - Calculates the target position for each element based on the mouse coordinates
+   - Applies linear interpolation (lerp) to smoothly transition elements to their new positions
+   - Updates the transform property of each element using CSS transforms
+
+4. **Strength**: The floating effect is customized through two main factors:
+   - Individual `depth` values on each `FloatingElement` determine how far that element moves. The higher the depth, the farther the element will move.
+   - The global `sensitivity` prop controls the overall intensity of the movement
+   
+5. **Lerp**: The `easingFactor` prop determines how quickly elements move toward their target positions - lower values create smoother, more gradual movements while higher values create snappier responses.
 
 ## Notes
 
-- You need to set and keep the z-indices in order for yourself, since the `Floating` component doesn't do that for you. The `depth` prop is only used to calculate the strength of the movement towards the mouse.
-- If you have a lot of elements and worried about performance, you can group your elements into a single `FloatingElement` component, and use the `depth` prop to control the z-index of the element (so all children on that element will move in sync). Eg. let's say you have 6 images you want to float, but you could group them by 2-2-2, where each group will have the same depth. In this case, instead of calculating and transforming 6 elements, we would only need to it for 3.
-- If you use negative depth, the element will be moved away from the mouse position. Same applies for negative sensitivity.
+### Z-Index Management
+The `Floating` component focuses solely on movement animation and does not handle z-index stacking. You'll need to manually set appropriate z-index values on your `FloatingElement` components to achieve the desired layering effect. The `depth` prop only controls the intensity of the floating movement, not the visual stacking order.
+
+### Performance Optimization
+For better performance when dealing with multiple floating elements, you can use a grouping strategy:
+
+1. Instead of creating individual `FloatingElement` components for each item, group related items under a single `FloatingElement`
+2. All children of a `FloatingElement` will move together with the same depth value
+3. This reduces the number of elements being calculated and transformed
+
+For example, if you have 6 floating images, instead of creating 6 separate `FloatingElement` components, you could group them into 3 pairs. This reduces the animation calculations from 6 to 3, improving performance while maintaining a similar visual effect.
+
+### Directional Control
+The `depth` and `sensitivity` props offer flexible control over movement direction:
+
+- **Positive Values**: Elements move toward the mouse cursor
+  - Higher values create stronger movement
+  - Example: `depth={2}` moves twice as far as `depth={1}`
+
+- **Negative Values**: Elements move away from the mouse cursor
+  - Creates an inverse floating effect
+  - Example: `depth={-1}` moves in the opposite direction of the mouse
 
 ## Props
 
