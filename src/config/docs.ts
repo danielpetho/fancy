@@ -30,6 +30,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Vertical Cut Reveal",
         href: "/docs/components/text/vertical-cut-reveal",
         items: [],
+        label: "New",
       },
       {
         title: "Random Letter Swap",
@@ -97,11 +98,6 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
         label: "New",
       }
-      // {
-      //   title: "Slot Number Ticker",
-      //   href: "/docs/components/text/slot-number-ticker",
-      //   items: [],
-      // },
     ],
   },
   {
@@ -172,13 +168,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Sticky Footer",
         href: "/docs/components/blocks/sticky-footer",
         items: [],
-        label: "New",
       }
-      // {
-      //   title: "Menu Variant 1",
-      //   href: "/docs/components/blocks/menu-variant-1",
-      //   items: [],
-      // },
     ],
   },
 ];
