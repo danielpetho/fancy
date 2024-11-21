@@ -7,7 +7,6 @@
     "generate-registry": "ts-node src/scripts/generate-registry.ts",
     "generate": "npm run generate-registry",
     "build": "npm run generate && next build",
-    "postinstall": "npm run generate-source-files",
     "start": "next start",
     "lint": "next lint"
   },
