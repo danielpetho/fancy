@@ -1,4 +1,4 @@
-import { ScrambleHover } from "@/fancy/components/text/scramble-hover";
+import ScrambleHover from "@/fancy/components/text/scramble-hover";
 
 export default function Preview() {
 

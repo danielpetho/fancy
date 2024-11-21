@@ -17,7 +17,7 @@ import {
     onClick?: () => void;
   }
   
-  export const LetterSwapPingPong = ({
+  const LetterSwapPingPong = ({
     label,
     reverse = true,
     transition = {
@@ -117,4 +117,6 @@ import {
       </motion.span>
     );
   };
+
+  export default LetterSwapPingPong;
   

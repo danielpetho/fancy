@@ -12,7 +12,7 @@ interface TextProps {
   onClick?: () => void;
 }
 
-export const BreathingText = ({
+const BreathingText = ({
   label,
   fromFontVariationSettings,
   toFontVariationSettings,
@@ -77,3 +77,5 @@ export const BreathingText = ({
     </span>
   );
 };
+
+export default BreathingText;

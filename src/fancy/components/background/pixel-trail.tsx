@@ -14,7 +14,7 @@ interface PixelTrailProps {
   delay?: number; // ms
 }
 
-export const PixelTrail: React.FC<PixelTrailProps> = ({
+const PixelTrail: React.FC<PixelTrailProps> = ({
   pixelColor = "#000",
   pixelSize = 20,
   fadeDuration = 500,
@@ -75,6 +75,8 @@ export const PixelTrail: React.FC<PixelTrailProps> = ({
     </div>
   );
 };
+
+export default PixelTrail;
 
 interface PixelDotProps {
   id: string;

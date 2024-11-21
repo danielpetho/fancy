@@ -8,7 +8,7 @@ type CirclingElementsProps = {
   className?: string;
 };
 
-export const CirclingElements: React.FC<CirclingElementsProps> = ({
+const CirclingElements: React.FC<CirclingElementsProps> = ({
   children,
   radius = 100,
   duration = 10,
@@ -37,3 +37,5 @@ export const CirclingElements: React.FC<CirclingElementsProps> = ({
     </div>
   );
 };
+
+export default CirclingElements;

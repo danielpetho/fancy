@@ -1,4 +1,4 @@
-import { ScrollAndSwapText } from "@/fancy/components/text/scroll-and-swap-text";
+import ScrollAndSwapText from "@/fancy/components/text/scroll-and-swap-text";
 import { useRef } from "react";
 
 export default function Preview() {

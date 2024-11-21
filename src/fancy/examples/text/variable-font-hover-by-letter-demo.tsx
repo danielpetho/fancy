@@ -1,4 +1,4 @@
-import { VariableFontHoverByLetter } from "@/fancy/components/text/variable-font-hover-by-letter";
+import VariableFontHoverByLetter from "@/fancy/components/text/variable-font-hover-by-letter";
 
 export default function Preview() {
   return (

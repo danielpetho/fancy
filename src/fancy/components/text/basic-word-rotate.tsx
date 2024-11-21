@@ -9,7 +9,7 @@ interface WordRotateProps {
   loop?: boolean;
 }
 
-export const BasicWordRotate = ({
+const BasicWordRotate = ({
   words,
   className,
   transition={ type: "spring", damping: 20, stiffness: 300 },
@@ -52,3 +52,5 @@ export const BasicWordRotate = ({
     </motion.span>
   );
 };
+
+export default BasicWordRotate;

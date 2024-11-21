@@ -1,0 +1,159 @@
+---
+title: Vertical Cut Reveal
+description: A text component that reveals the text with a cut reveal effect.
+component: true
+---
+
+<ComponentPreview name="vertical-cut-reveal-demo" />
+
+## Source code
+
+<Steps>
+
+<ComponentSource name="vertical-cut-reveal" />
+
+</Steps>
+
+## Understanding the component
+
+1. First, the text is split into smaller pieces based on the `splitBy` prop:
+   - `words`: Splits into individual words (e.g., "Hello world" → ["Hello", "world"])
+   - `characters`: Splits into individual characters (e.g., "Hi" → ["H", "i"])
+   - `lines`: Splits by newline characters (`\n`)
+   - `string`: Splits by any custom string delimiter
+
+2. Each piece of text is wrapped in two `<span>` elements:
+   - An outer `<span>` that acts as a container with its position to `prelative` and its overflow to `overflow-hidden`
+   - An inner `<span>` that holds the actual text, initially positioned off-screen using `y: 100` (or `-100` if `reverse` is true)
+
+3. When the animation starts:
+   - The inner `<span>` elements smoothly transition from their off-screen position (`y: 100`) to their final position (`y: 0`)
+   - This creates a "cutting" or "revealing" effect as each piece of text slides into view
+   - The animation can be staggered from different directions (first, last, center, or random) using the `staggerFrom` prop
+
+A key implementation detail is that the component always maintains word boundaries, even when splitting by characters. There are two reason for this: 
+1. When dealing with multi-line text, each line maintains its own reveal animation starting point. This means if you have text that spans multiple lines, each line will animate independently from its own baseline, rather than all elements animating from a single point (like the bottom of the entire paragraph).
+2. When using `characters` mode, characters from the same word stay together in a word container. This prevents unwanted line breaks in the middle of words - if a word needs to wrap to the next line, it will wrap as a complete unit rather than having some characters on one line and others on the next line. This maintains proper text flow and readability while still allowing character-by-character animation within each word.
+
+## Examples
+
+### splitBy variations
+
+With the `splitBy` prop, you can control how the text is split into smaller pieces. It can be either `words`, `characters`, `lines`, or a custom `string` delimiter.
+
+<ComponentPreview name="vertical-cut-reveal-line-demo" />
+
+<ComponentPreview name="vertical-cut-reveal-word-demo" />
+
+### staggerFrom variations
+
+With the `staggerFrom` prop, you can control the starting index of the animation. It can be either `first`, `last`, `center`, a `number` (custom index).
+
+<ComponentPreview name="vertical-cut-reveal-stagger-demo" />
+
+Or you can use the `random` option, which will animate the elements in a random order. You can see the multiline text in action here too:
+
+<ComponentPreview name="vertical-cut-reveal-letter-random-demo" />
+
+### No auto start
+
+If you don't want the animation to start automatically, you can set the `autoStart` prop to `false`. In this case, you can call the `startAnimation` method exposed via a ref to start the animation manually. Here is an example demonstrating how to do this when the component is inside the viewport (with the `useInView` hook from framer motion):
+
+<ComponentPreview name="vertical-cut-reveal-scroll-demo" />
+
+## Notes
+
+Since each element is "cutted" because of the `overflow-hidden` property, with some fonts and font-families (eg italic), parts of the letter may be cutoff. That's why you can use the `containerClassName` prop to style the container element, the `worldLeterLevelClassName` prop to style word level container, and the `elementLevelClassName` prop to style the individual split elements. You can add padding for example to accomodate more space for the text.
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text to be displayed and animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>reverse</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Direction of the animation (true: bottom to top, false: top to bottom)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>transition</TableCell>
+      <TableCell>`DynamicAnimationOptions`</TableCell>
+      <TableCell>`{ type: "spring", damping: 30, stiffness: 300 }`</TableCell>
+      <TableCell>Animation configuration for each element. Refer to framer-motion docs for more details</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>splitBy</TableCell>
+      <TableCell>`"words" | "characters" | "lines" | string`</TableCell>
+      <TableCell>`"words"`</TableCell>
+      <TableCell>The split method for the text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>staggerDuration</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.2`</TableCell>
+      <TableCell>Delay between each element's animation start</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>staggerFrom</TableCell>
+      <TableCell>`"first" | "last" | "center" | "random" | number`</TableCell>
+      <TableCell>`"first"`</TableCell>
+      <TableCell>Starting index of the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>containerClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling the container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>wordLevelClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling the word level container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>elementLevelClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling the individual elements</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onClick</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback function for click events</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onStart</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback function for when the animation starts</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onComplete</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback function for when the animation completes</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoStart</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to start the animation automatically</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

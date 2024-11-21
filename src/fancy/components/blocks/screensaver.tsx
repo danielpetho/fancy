@@ -12,7 +12,7 @@ type ScreensaverProps = {
     className?: string;
 };
 
-export const Screensaver: React.FC<ScreensaverProps> = ({
+const Screensaver: React.FC<ScreensaverProps> = ({
     children,
     speed = 3,
     startPosition = { x: 0, y: 0 },
@@ -68,3 +68,5 @@ export const Screensaver: React.FC<ScreensaverProps> = ({
         </motion.div>
     );
 };
+
+export default Screensaver;

@@ -20,7 +20,7 @@ interface TypewriterProps {
   cursorClassName?: string;
 }
 
-export const Typewriter = ({
+const Typewriter = ({
   text,
   speed = 50,
   initialDelay = 0,
@@ -128,3 +128,5 @@ export const Typewriter = ({
     </div>
   );
 };
+
+export default Typewriter;

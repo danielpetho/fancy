@@ -40,7 +40,7 @@ interface TrailItem {
   child: React.ReactNode;
 }
 
-export const ImageTrail = ({
+const ImageTrail = ({
   children,
   newOnTop = true,
   rotationRange = 15,
@@ -157,3 +157,5 @@ const TrailItem = ({ item, onComplete }: TrailItemProps) => {
     </motion.div>
   );
 };
+
+export default ImageTrail;

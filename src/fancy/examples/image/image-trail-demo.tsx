@@ -1,4 +1,4 @@
-import { ImageTrail } from "@/fancy/components/image/image-trail";
+import ImageTrail from "@/fancy/components/image/image-trail";
 import { exampleImages } from "../exampleImages";
 import { useRef } from "react";
 

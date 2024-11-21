@@ -1,4 +1,4 @@
-import { ScrambleHover } from "@/fancy/components/text/scramble-hover";
+import ScrambleHover from "@/fancy/components/text/scramble-hover";
 import { motion } from "framer-motion";
 
 export default function Preview() {

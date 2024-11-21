@@ -1,4 +1,4 @@
-import { Typewriter } from "@/fancy/components/text/typewriter";
+import Typewriter from "@/fancy/components/text/typewriter";
 
 export default function Preview() {
   return (

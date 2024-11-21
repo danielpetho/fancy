@@ -30,7 +30,7 @@ export interface NumberTickerRef {
   startAnimation: () => void;
 }
 
-export const NumberTicker = forwardRef<NumberTickerRef, NumberTickerProps>(
+const NumberTicker = forwardRef<NumberTickerRef, NumberTickerProps>(
   (
     {
       from = 0,
@@ -91,6 +91,8 @@ export const NumberTicker = forwardRef<NumberTickerRef, NumberTickerProps>(
 );
 
 NumberTicker.displayName = "NumberTicker";
+
+export default NumberTicker;
 
 // Usage example:
 // To start the animation from outside the component:

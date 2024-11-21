@@ -11,7 +11,7 @@ interface UnderlineProps {
   underlinePaddingRatio?: number;
 }
 
-export const UnderlineToBackground = ({
+const UnderlineToBackground = ({
   label,
   className,
   onClick,
@@ -89,3 +89,5 @@ export const UnderlineToBackground = ({
     </motion.span>
   );
 };
+
+export default UnderlineToBackground;

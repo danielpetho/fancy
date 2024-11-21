@@ -10,7 +10,7 @@ interface UnderlineProps {
   underlinePaddingRatio?: number;
 }
 
-export const CenterUnderline = ({
+const CenterUnderline = ({
   label,
   className,
   onClick,
@@ -69,3 +69,5 @@ export const CenterUnderline = ({
     </motion.span>
   );
 };
+
+export default CenterUnderline;

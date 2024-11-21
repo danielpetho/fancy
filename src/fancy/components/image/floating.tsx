@@ -28,7 +28,7 @@ interface FloatingProps {
   easingFactor?: number;
 }
 
-export const Floating = ({
+const Floating = ({
   children,
   className,
   sensitivity = 1,
@@ -101,6 +101,8 @@ export const Floating = ({
     </FloatingContext.Provider>
   );
 };
+
+export default Floating;
 
 interface FloatingElementProps {
   children: ReactNode;

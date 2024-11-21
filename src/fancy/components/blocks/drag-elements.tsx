@@ -17,7 +17,7 @@ type DragElementsProps = {
     className?: string;
 };
 
-export const DragElements: React.FC<DragElementsProps> = ({
+const DragElements: React.FC<DragElementsProps> = ({
     children,
     dragElastic = 0.5,
     dragConstraints,
@@ -78,3 +78,5 @@ export const DragElements: React.FC<DragElementsProps> = ({
         </div>
     );
 };
+
+export default DragElements;

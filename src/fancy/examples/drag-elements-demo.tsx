@@ -1,7 +1,6 @@
 import React from "react";
-import { DragElements } from "@/fancy/components/blocks/drag-elements";
+import DragElements from "@/fancy/components/blocks/drag-elements";
 import Image from "next/image";
-import { random } from "lodash";
 
 const urls = [
   "https://images.unsplash.com/photo-1683746531526-3bca2bc901b8?q=80&w=1820&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",

@@ -11,7 +11,7 @@ interface TextProps {
   onClick?: () => void;
 }
 
-export const RandomLetterSwapPingPong = ({
+const RandomLetterSwapPingPong = ({
   label,
   reverse = true,
   transition = {
@@ -124,3 +124,5 @@ export const RandomLetterSwapPingPong = ({
     </motion.span>
   );
 };
+
+export default RandomLetterSwapPingPong;

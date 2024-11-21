@@ -1,4 +1,4 @@
-import { UnderlineToBackground } from "@/fancy/components/text/underline-to-background";
+import UnderlineToBackground from "@/fancy/components/text/underline-to-background";
 import { motion } from "framer-motion";
 
 export default function UnderlineToBackgroundDemo() {

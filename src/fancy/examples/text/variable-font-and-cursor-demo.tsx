@@ -1,4 +1,4 @@
-import { VariableFontAndCursor } from "@/fancy/components/text/variable-font-and-cursor";
+import VariableFontAndCursor from "@/fancy/components/text/variable-font-and-cursor";
 import { useMousePosition } from "@/hooks/use-mouse-position";
 import { useRef } from "react";
 

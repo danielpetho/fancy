@@ -26,6 +26,11 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/letter-swap",
         items: [],
       },
+      { 
+        title: "Vertical Cut Reveal",
+        href: "/docs/components/text/vertical-cut-reveal",
+        items: [],
+      },
       {
         title: "Random Letter Swap",
         href: "/docs/components/text/random-letter-swap",

@@ -11,6 +11,7 @@ import { Icons } from "@/components/icons";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { registry } from "@/fancy/index";
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
+import { RestartButton } from "./restart-button";
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string;
@@ -31,6 +32,7 @@ export function ComponentPreview({
   ...props
 }: ComponentPreviewProps) {
   const [sourceCode, setSourceCode] = React.useState("");
+  const [previewKey, setPreviewKey] = React.useState(0);
 
   React.useEffect(() => {
     async function loadSourceCode() {
@@ -55,6 +57,10 @@ export function ComponentPreview({
     }),
     []
   );
+
+  const handleRestart = React.useCallback(() => {
+    setPreviewKey((prev) => prev + 1);
+  }, []);
 
   const Preview = React.useMemo(() => {
     const Component = registry[name]?.component;
@@ -103,7 +109,7 @@ export function ComponentPreview({
           value="preview"
           className="border border-black-500 flex rounded-lg"
         >
-          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px]  overflow-auto relative">
+          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative">
             {/* <div className="absolute top-4 right-4 rounded-full border">
 
             </div> */}
@@ -115,7 +121,10 @@ export function ComponentPreview({
                 </div>
               }
             >
-              {Preview}
+              <div className="absolute right-4 top-4 z-50">
+                <RestartButton onRestart={handleRestart} />
+              </div>
+              <React.Fragment key={previewKey}>{Preview}</React.Fragment>
             </React.Suspense>
           </div>
         </TabsContent>

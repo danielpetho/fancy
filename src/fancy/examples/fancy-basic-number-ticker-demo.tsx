@@ -1,9 +1,8 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import {
-  NumberTicker,
-  NumberTickerRef,
+import NumberTicker, {
+  NumberTickerRef
 } from "@/fancy/components/text/basic-number-ticker";
 import {
   Zap,

@@ -12,7 +12,7 @@ interface GoesOutComesInUnderlineProps {
   transition?: ValueAnimationTransition;
 }
 
-export const GoesOutComesInUnderline: React.FC<GoesOutComesInUnderlineProps> = ({
+const GoesOutComesInUnderline: React.FC<GoesOutComesInUnderlineProps> = ({
   label,
   direction = "left",
   className,
@@ -98,3 +98,5 @@ export const GoesOutComesInUnderline: React.FC<GoesOutComesInUnderlineProps> = (
     </motion.span>
   );
 };
+
+export default GoesOutComesInUnderline;

@@ -14,7 +14,7 @@ interface ScrambleHoverProps {
   scrambledClassName?: string;
 }
 
-export const ScrambleHover: React.FC<ScrambleHoverProps> = ({
+const ScrambleHover: React.FC<ScrambleHoverProps> = ({
   text,
   scrambleSpeed = 50,
   maxIterations = 10,
@@ -178,3 +178,5 @@ export const ScrambleHover: React.FC<ScrambleHoverProps> = ({
     </motion.span>
   );
 };
+
+export default ScrambleHover;

@@ -1,4 +1,4 @@
-import { BasicWordRotate } from "@/fancy/components/text/basic-word-rotate";
+import BasicWordRotate from "@/fancy/components/text/basic-word-rotate";
 import { motion } from "framer-motion";
 
 export default function Preview() {

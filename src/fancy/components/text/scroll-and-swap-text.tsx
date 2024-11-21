@@ -12,7 +12,7 @@ interface TextProps {
   className?: string;
 }
 
-export const ScrollAndSwapText = ({
+const ScrollAndSwapText = ({
   label,
   offset = ["0 0", "0 1"],
   className,
@@ -54,3 +54,5 @@ export const ScrollAndSwapText = ({
     </span>
   );
 };
+
+export default ScrollAndSwapText;

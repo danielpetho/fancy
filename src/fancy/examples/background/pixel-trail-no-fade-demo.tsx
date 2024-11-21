@@ -1,4 +1,4 @@
-import { PixelTrail } from "@/fancy/components/background/pixel-trail";
+import PixelTrail from "@/fancy/components/background/pixel-trail";
 import Image from "next/image";
 
 const PixelTrailDemo: React.FC = () => {

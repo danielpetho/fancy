@@ -2,7 +2,7 @@ import React from "react";
 
 const Preview: React.FC = () => {
   return (
-    <div className="w-full bg-[#efefef] items-center justify-center h-full">
+    <div className="w-full bg-[#efefef] items-center justify-center h-full overflow-auto">
       {/* add relative positioning to the main conent */}
       <div className="relative h-full w-full z-10 text-7xl font-bold uppercase flex justify-center items-center bg-[#ff5941] text-white whitespace-pre">
         Scroll down ↓

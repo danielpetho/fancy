@@ -1,4 +1,4 @@
-import { LetterSwapForward } from "@/fancy/components/text/letter-swap-forward-anim";
+import LetterSwapForward from "@/fancy/components/text/letter-swap-forward-anim";
 
 export default function Preview() {
   return (

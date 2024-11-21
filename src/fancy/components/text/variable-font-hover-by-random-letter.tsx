@@ -19,7 +19,7 @@ interface TextProps {
   onClick?: () => void;
 }
 
-export const VariableFontHoverByRandomLetter = ({
+const VariableFontHoverByRandomLetter = ({
   label,
   fromFontVariationSettings = "'wght' 400, 'slnt' 0",
   toFontVariationSettings = "'wght' 900, 'slnt' -10",
@@ -82,3 +82,5 @@ export const VariableFontHoverByRandomLetter = ({
     </motion.span>
   );
 };
+
+export default VariableFontHoverByRandomLetter;

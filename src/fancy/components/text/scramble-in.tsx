@@ -24,7 +24,7 @@ export interface ScrambleInHandle {
   reset: () => void;
 }
 
-export const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
+const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
   (
     {
       text,
@@ -141,3 +141,4 @@ export const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
 );
 
 ScrambleIn.displayName = "ScrambleIn";
+export default ScrambleIn;

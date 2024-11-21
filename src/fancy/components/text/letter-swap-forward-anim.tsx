@@ -16,7 +16,7 @@ interface TextProps {
   onClick?: () => void;
 }
 
-export const LetterSwapForward = ({
+const LetterSwapForward = ({
   label,
   reverse = true,
   transition = {
@@ -111,3 +111,5 @@ export const LetterSwapForward = ({
     </span>
   );
 };
+
+export default LetterSwapForward;

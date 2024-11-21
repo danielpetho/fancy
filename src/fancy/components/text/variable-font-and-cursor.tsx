@@ -1,5 +1,4 @@
-import React, { useRef } from "react";
-import { motion } from "framer-motion";
+import React from "react";
 import { useMousePosition } from "@/hooks/use-mouse-position"; // We'll create this hook
 
 interface FontVariationAxis {
@@ -21,7 +20,7 @@ interface TextProps {
   onClick?: () => void;
 }
 
-export const VariableFontAndCursor = ({
+const VariableFontAndCursor = ({
   label,
   fontVariationMapping,
   className,
@@ -68,3 +67,5 @@ export const VariableFontAndCursor = ({
     </span>
   );
 };
+
+export default VariableFontAndCursor;

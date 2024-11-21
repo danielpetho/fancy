@@ -1,7 +1,7 @@
 import Link from "next/link";
-import { CenterUnderline } from "@/fancy/components/text/underline-center";
-import { ComesInGoesOutUnderline } from "@/fancy/components/text/underline-comes-in-goes-out";
-import { GoesOutComesInUnderline } from "@/fancy/components/text/underline-goes-out-comes-in";
+import CenterUnderline from "@/fancy/components/text/underline-center";
+import ComesInGoesOutUnderline from "@/fancy/components/text/underline-comes-in-goes-out";
+import GoesOutComesInUnderline from "@/fancy/components/text/underline-goes-out-comes-in";
 
 export default function UnderlineDemo() {
   return (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Screensaver } from "@/fancy/components/blocks/screensaver";
+import Screensaver from "@/fancy/components/blocks/screensaver";
 import { exampleImages } from "../exampleImages";
 
 const CirclingElementsDemo: React.FC = () => {
