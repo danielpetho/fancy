@@ -215,4 +215,5 @@ const VerticalCutReveal = forwardRef<VerticalCutRevealRef, TextProps>(
   }
 );
 
+VerticalCutReveal.displayName = "VerticalCutReveal";
 export default VerticalCutReveal;
