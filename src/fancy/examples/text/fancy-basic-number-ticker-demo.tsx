@@ -110,10 +110,10 @@ const Card = ({ card, index }: { card: CardProps; index: number }) => {
       } ${card.size === "large" ? "col-span-2 row-span-2" : ""}`}
     >
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-sm">{card.title}</h3>
+        <h3 className="text-xs md:text-sm">{card.title}</h3>
         <card.icon className={`h-4 w-4`} />
       </div>
-      <div className={`${card.size === "large" ? "text-5xl" : "text-3xl"}`}>
+      <div className={`${card.size === "large" ? "text-2xl md:text-5xl" : "text-xl md:text-3xl"}`}>
         {card.prefix}
         <NumberTicker
           ref={tickerRef}
@@ -136,7 +136,7 @@ const Card = ({ card, index }: { card: CardProps; index: number }) => {
 
 export default function FancyNumberTickerDemo() {
   return (
-    <div className="w-full h-full font-azeretMono p-20 bg-white">
+    <div className="w-full h-full font-azeretMono bg-white">
       <div className="grid grid-cols-3 grid-rows-2 h-full">
         {cards.map((card, index) => (
           <Card key={index} card={card} index={index} />

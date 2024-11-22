@@ -3,8 +3,8 @@ import RandomLetterSwapPingPong from "@/fancy/components/text/random-letter-swap
 
 export default function Preview() {
   return (
-    <div className="w-full h-full rounded-lg bg-white text-5xl flex flex-col items-center justify-center font-overusedGrotesk">
-      <div className="h-full text-red-500 rounded-xl py-12  align-text-center gap-y-2 flex flex-col justify-center items-center">
+    <div className="w-full h-full rounded-lg bg-white text-3xl md:text-5xl flex flex-col items-center justify-center font-overusedGrotesk">
+      <div className="h-full text-red-500 rounded-xl py-12  align-text-center gap-y-1 md:gap-y-2 flex flex-col justify-center items-center">
         <RandomLetterSwapForward
           label="Right here!"
           reverse={true}

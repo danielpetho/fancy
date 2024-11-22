@@ -1,5 +1,5 @@
 ---
-title: Letter Swap Text
+title: Letter Swap Hover
 description: A text component that swaps the letters vertically on hover.
 component: true
 ---
@@ -8,27 +8,23 @@ component: true
 
 There are two types of animations available for this component:
 
-1. Forward animation — plays the animation timeline once forward.
-2. Ping Pong animation — plays the animation timeline in a ping pong fashion. 
+1. Forward animation — plays the animation timeline once forward, when you hover over the text.
+2. Ping Pong animation — plays the animation timeline in a ping pong fashion. It plays once forward when you hover over the text, and once in the opposite direction when you hover away from the text.
 
 
 ## Source code
 
 #### Only forward animation
 
-<Steps>
-
-<Step>Copy and paste the following code into your project:</Step>
-
 <ComponentSource name="letter-swap-forward-anim" />
-
-</Steps>
 
 #### Ping Pong animation
 
 <Steps>
 
 <Step>Install the following dependencies:</Step>
+
+lodash is used for debouncing here — so the animation doesn't break on rapid hover changes.
 
 <CodeBlockWrapper language="bash">{`npm install lodash`}</CodeBlockWrapper>
 
@@ -40,20 +36,39 @@ lodash is used for debouncing here — so the animation doesn't break on rapid h
 
 </Steps>
 
+## Understanding the component
+
+1. First, we duplicate the text we want to animate. We'll have two identical copies of the text.
+
+2. We create a container `<span>` element with these key properties:
+   - `position: relative` - This establishes a positioning context
+   - `overflow: hidden` - This ensures text outside the container boundaries is hidden
+
+3. For each copy of the text:
+   - We split it into individual letters
+   - Each letter is wrapped in its own `<span>` element, with `absolute` positioning
+   - The letters from both copies are stacked vertically on top of each other (`top: 0`, and `top: 100%`)
+
+4. When hovering:
+   - The original letters slide upward out of view (hidden by overflow), by setting `top: 100%`
+   - The duplicate letters slide up into the original position, by setting `top: 0`
+   - This creates a smooth swapping effect
+
+If `reverse` is enabled, the animation direction is flipped.
+
 ## Examples
 
 ### Stagger
 
-With the staggerFrom prop, you can control the index of the letter where the stagger animation starts.
+With the `staggerFrom` prop, you can control the index of the letter where the stagger animation starts.
 
 <ComponentPreview name="letter-swap-demo-stagger" />
 
 ### Line swap
 
-By setting the staggerDelay prop to zero, you can create a line swap effect.
+By setting the `staggerDelay` prop to zero, you can create a line swap effect.
 
 <ComponentPreview name="letter-swap-demo-line" />
-
 
 ## Props
 
@@ -83,7 +98,7 @@ By setting the staggerDelay prop to zero, you can create a line swap effect.
       <TableCell>transition</TableCell>
       <TableCell>`DynamicAnimationOptions`</TableCell>
       <TableCell>`{ type: "spring", duration: 0.7 }`</TableCell>
-      <TableCell>Animation configuration for each letter</TableCell>
+      <TableCell>Animation configuration for each letter. Refer to framer-motion docs for more details</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>staggerDuration</TableCell>

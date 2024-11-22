@@ -18,7 +18,7 @@ const randomInt = (min: number, max: number) => {
 const DragElementsDemo: React.FC = () => {
   return (
     <div className="w-full h-full relative bg-[#eeeeee] overflow-hidden">
-      <h1 className="absolute text-4xl ml-36 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-muted-foreground uppercase w-full">
+      <h1 className="absolute text-2xl md:text-4xl md:ml-36 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-muted-foreground uppercase w-full">
         all your<span className="font-bold text-foreground"> memories. </span>
       </h1>
       <DragElements dragMomentum={false} className="p-40">

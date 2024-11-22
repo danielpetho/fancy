@@ -62,7 +62,7 @@ const Screensaver: React.FC<ScreensaverProps> = ({
                 x: position.x,
                 y: position.y,
             }}
-            className={cn("transform will-change-transform", className)}
+            className={cn("transform will-change-transform ", className)}
         >
             {children}
         </motion.div>

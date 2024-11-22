@@ -4,9 +4,21 @@ import Image from "next/image";
 import { exampleImages } from "../exampleImages";
 
 const CirclingElementsDemo: React.FC = () => {
+
+  const [radius, setRadius] = React.useState(window.innerWidth < 768 ? 80 : 120);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setRadius(window.innerWidth < 768 ? 80 : 120);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <div className="w-full h-full bg-[#efefef] flex items-center justify-center">
-    <div className="absolute top-6 left-6 text-4xl uppercase">
+    <div className="absolute top-6 left-6 text-2xl md:text-4xl uppercase">
         <span className="mr-4 text-zinc-500">Curated.</span>
         <span className="text-black">For you.</span>
     </div>
@@ -31,9 +43,9 @@ const CirclingElementsDemo: React.FC = () => {
         </div>
       </div>
 
-      <CirclingElements radius={120}>
+      <CirclingElements radius={radius}>
         {exampleImages.map((url, index) => (
-          <div key={index} className="w-28 h-28 absolute -translate-x-1/2 -translate-y-1/2">
+          <div key={index} className="w-20 h-20 md:w-28 md:h-28 absolute -translate-x-1/2 -translate-y-1/2">
             <Image src={url} fill alt="image" className="object-cover" />
           </div>
         ))}

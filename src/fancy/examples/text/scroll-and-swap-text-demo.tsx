@@ -6,14 +6,14 @@ export default function Preview() {
 
   return (
     <div
-      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-2 overflow-auto overscroll-auto bg-[#f7f5f5] relative"
+      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-2 overflow-auto overscroll-auto text-[#E794DA] relative"
       ref={containerRef}
     >
       <div className="h-[100%] flex justify-center items-center uppercase relative">
         <p className="absolute bottom-4 left-4 font-bold text-xl">
           SCROLL SLOWLY
         </p>
-        <div className="flex text-6xl justify-center items-center flex-col text-black">
+        <div className="flex md:text-4xl sm:text-3xl text-lg lg:text-5xl cl:text-6xl justify-center items-center flex-col">
           <ScrollAndSwapText
             label="Every day is a journey,"
             offset={["0 0.15", "0 0.35"]}

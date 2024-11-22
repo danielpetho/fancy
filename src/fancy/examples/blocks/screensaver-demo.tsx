@@ -10,7 +10,7 @@ const CirclingElementsDemo: React.FC = () => {
       className="w-full h-full bg-[#efefef] overflow-hidden flex items-center justify-center relative"
       ref={containerRef}
     >
-      <h1 className="z-30 text-6xl font-overusedGrotesk">
+      <h1 className="z-30 text-3xl md:text-6xl font-overusedGrotesk">
         page not found
       </h1>
       {[...exampleImages, ...exampleImages].map((image, index) => (
@@ -21,7 +21,7 @@ const CirclingElementsDemo: React.FC = () => {
           startAngle={40}
           containerRef={containerRef}
         >
-          <div className="w-48 h-48 overflow-hidden">
+          <div className="w-20 h-20 md:w-48 md:h-48 overflow-hidden">
             <img 
               src={image} 
               alt={`Example ${index + 1}`}

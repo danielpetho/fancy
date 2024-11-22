@@ -5,8 +5,8 @@ import GoesOutComesInUnderline from "@/fancy/components/text/underline-goes-out-
 
 export default function UnderlineDemo() {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-[#fbf8f6]">
-      <div className="flex flex-row font-overusedGrotesk items-start  h-full py-36 uppercase space-x-8 text-3xl">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-background">
+      <div className="flex flex-row font-overusedGrotesk items-start text-[#0015ff] h-full py-36 uppercase space-x-8 text-sm sm:text-xl md:text-2xl lg:text-3xl">
         <div>Contact</div>
         <ul className="flex flex-col space-y-1 h-full">
           <Link className="" href="#">

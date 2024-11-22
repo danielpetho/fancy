@@ -16,7 +16,7 @@ export default function Preview() {
       <div className="w-full h-full items-center justify-center flex">
         <VariableFontAndCursor
           label="fancy!"
-          className="text-9xl text-foreground"
+          className="text-5xl sm:text-7xl md:text-9xl text-orange-500"
           fontVariationMapping={{
             y: { name: "wght", min: 100, max: 900 },
             x: { name: "slnt", min: 0, max: -10 },

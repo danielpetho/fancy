@@ -279,10 +279,10 @@ const example: Registry = {
     "name": "basic-number-ticker-demo",
     "type": "components:example",
     "files": [
-      "@/fancy/examples/basic-number-ticker-demo.tsx"
+      "@/fancy/examples/text/basic-number-ticker-demo.tsx"
     ],
     component: React.lazy(
-      () => import('@/fancy/examples/basic-number-ticker-demo'))
+      () => import('@/fancy/examples/text/basic-number-ticker-demo'))
   },
   "circling-elements-demo": {
     "name": "circling-elements-demo",
@@ -327,7 +327,7 @@ const example: Registry = {
       "@/fancy/examples/fancy-basic-number-ticker-demo.tsx"
     ],
     component: React.lazy(
-      () => import('@/fancy/examples/fancy-basic-number-ticker-demo'))
+      () => import('@/fancy/examples/text/fancy-basic-number-ticker-demo'))
   },
   "floating-demo": {
     "name": "floating-demo",

@@ -22,7 +22,7 @@ export const docsConfig: SidebarNavItem[] = [
     href: "/docs/components/text",
     items: [
       {
-        title: "Letter Swap",
+        title: "Letter Swap Hover",
         href: "/docs/components/text/letter-swap",
         items: [],
       },
@@ -33,7 +33,7 @@ export const docsConfig: SidebarNavItem[] = [
         label: "New",
       },
       {
-        title: "Random Letter Swap",
+        title: "Random Letter Swap Hover",
         href: "/docs/components/text/random-letter-swap",
         items: [],
       },

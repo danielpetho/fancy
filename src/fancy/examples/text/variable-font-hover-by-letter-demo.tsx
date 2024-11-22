@@ -2,11 +2,11 @@ import VariableFontHoverByLetter from "@/fancy/components/text/variable-font-hov
 
 export default function Preview() {
   return (
-    <div className="w-full h-full rounded-lg text-3xl flex flex-col items-center justify-center font-overusedGrotesk">
-      <div className="w-full justify-start items-center p-24">
+    <div className="w-full h-full rounded-lg sm:text-xl xs:text-sm md:text-2xl xl:text-3xl flex flex-col items-center justify-center font-overusedGrotesk">
+      <div className="w-full justify-start items-center p-6 sm:p-8 md:p-12 lg:p-16">
         <div className="w-3/4">
           <h2>OPEN ROLES ✽</h2>
-          <ul className="flex flex-col space-y-1 mt-12 h-full cursor-pointer">
+          <ul className="flex flex-col space-y-1 mt-6 md:mt-12 h-full cursor-pointer">
             <VariableFontHoverByLetter
               label="DESIGN ENGINEER (US)"
               staggerDuration={0.03}

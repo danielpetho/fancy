@@ -3,14 +3,10 @@ import LetterSwapPingPong from "@/fancy/components/text/letter-swap-pingpong-ani
 
 export default function Preview() {
   return (
-    <div className="w-full h-full text-3xl flex flex-row gap-12 items-center justify-center font-calendas">
-      <div className="flex flex-col items-center justify-center gap-y-8">
+    <div className="w-full h-full text-3xl flex flex-row gap-12 items-center justify-center font-calendas bg-[#0015ff]">
+      <div className="items-center justify-center grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-12  text-white">
         <LetterSwapForward label="oh, wow!" staggerDuration={0} />
         <LetterSwapForward label="nice!" staggerDuration={0} reverse={false} />
-      </div>
-      <div className="flex flex-col items-center justify-center gap-y-8">
-        <LetterSwapPingPong label="nice!" staggerDuration={0} reverse={false} />
-        <LetterSwapPingPong label="oh, wow!" staggerDuration={0} />
       </div>
     </div>
   );

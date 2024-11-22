@@ -16,10 +16,22 @@ component: true
 
 <ComponentSource name="underline-comes-in-goes-out" />
 
-
 ### From side to side (goes out, comes in)
 
 <ComponentSource name="underline-goes-out-comes-in" />
+
+## Understanding the component
+
+These underline animations work differently from typical CSS underline animations. Instead of animating the CSS `text-decoration-line: underline` property, they create a separate `div` element positioned absolutely below the text. This div acts as the underline and its dimensions are calculated relative to the font size:
+
+- The height is controlled by `underlineHeightRatio` (defaults to 10% of font size)
+- The padding below text is controlled by `underlinePaddingRatio` (defaults to 1% of font size)
+
+The three variants work as follows:
+
+- **Center**: The underline grows outward from the center point
+- **Comes In Goes Out**: The underline enters from one side, then exits from the other side
+- **Goes Out Comes In**: The underline exits from one side, then re-enters from the opposite side
 
 ## Props
 
