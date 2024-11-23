@@ -153,6 +153,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Drag Elements",
         href: "/docs/components/blocks/drag-elements",
         items: [],
+        label: "Updated",
       },
       {
         title: "Circling Elements",

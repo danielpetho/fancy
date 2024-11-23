@@ -8,18 +8,27 @@ component: true
 
 ## Source code
 
-<Steps>
-
-<Step>Copy and paste the following code into your project:</Step>
-
 <ComponentSource name="drag-elements" />
 
-<Step>Notes</Step>
+## Usage
+
+You only need to wrap your elements with the `DragElements` component, everything else is taken care of by the component itself.
+
+Under the hood, the component wraps all the children in a `relative` container, then sets all children to `absolute` to allow free dragging. For the dragging events and logic it uses framer-motion`s Drag gestures.
+
+The children are constrained to move withing the container, but you can set the `dragConstraints` prop to define a custom container, or custom `top`, `bottom`, `left` and `right` value. For the other drag props, refer to framer-motion's [Drag gestures](https://motion.dev/docs/react-gestures#drag) documentation.
+
+In the demo above, the `dragMomentum` prop is set to `false` to disable the "physics-based" movement, but in the following example, you can see a more funky use-case where it is enabled.
+
+## Examples
+
+### Drag momentum
+
+<ComponentPreview name="drag-elements-momentum-demo" />
+
+## Notes
 
 If you use images, or videos, make sure to set the `draggable` attribute to `false`, as they have priority for drag events.
-
-</Steps>
-
 
 ## Props
 

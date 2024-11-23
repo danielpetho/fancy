@@ -1,6 +1,7 @@
 import React from "react";
 import DragElements from "@/fancy/components/blocks/drag-elements";
 import Image from "next/image";
+import useScreenSize from "@/hooks/use-screen-size";
 
 const urls = [
   "https://images.unsplash.com/photo-1683746531526-3bca2bc901b8?q=80&w=1820&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -16,16 +17,18 @@ const randomInt = (min: number, max: number) => {
 };
 
 const DragElementsDemo: React.FC = () => {
+
+  const screenSize = useScreenSize();
   return (
     <div className="w-full h-full relative bg-[#eeeeee] overflow-hidden">
-      <h1 className="absolute text-2xl md:text-4xl md:ml-36 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-muted-foreground uppercase w-full">
+      <h1 className="absolute text-xl md:text-4xl md:ml-36 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-muted-foreground uppercase w-full">
         all your<span className="font-bold text-foreground"> memories. </span>
       </h1>
       <DragElements dragMomentum={false} className="p-40">
         {urls.map((url, index) => {
           const rotation = randomInt(-12, 12);
-          const width = randomInt(120, 150); 
-          const height = randomInt(150, 180);
+          const width = screenSize.lessThan(`md`) ? randomInt(90, 120) : randomInt(120, 150);
+          const height = screenSize.lessThan(`md`) ? randomInt(120, 140) : randomInt(150, 180);
 
           return (
             <div

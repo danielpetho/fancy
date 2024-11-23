@@ -252,10 +252,10 @@ const example: Registry = {
     "name": "animated-gradient-demo",
     "type": "components:example",
     "files": [
-      "@/fancy/examples/animated-gradient-demo.tsx"
+      "@/fancy/examples/background/animated-gradient-demo.tsx"
     ],
     component: React.lazy(
-      () => import('@/fancy/examples/animated-gradient-demo'))
+      () => import('@/fancy/examples/background/animated-gradient-demo'))
   },
   "pixel-trail-demo": {
     "name": "pixel-trail-demo",
@@ -275,15 +275,6 @@ const example: Registry = {
     component: React.lazy(
       () => import('@/fancy/examples/background/pixel-trail-no-fade-demo'))
   },
-  "basic-number-ticker-demo": {
-    "name": "basic-number-ticker-demo",
-    "type": "components:example",
-    "files": [
-      "@/fancy/examples/text/basic-number-ticker-demo.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/examples/text/basic-number-ticker-demo'))
-  },
   "circling-elements-demo": {
     "name": "circling-elements-demo",
     "type": "components:example",
@@ -292,6 +283,24 @@ const example: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/examples/blocks/circling-elements-demo'))
+  },
+  "drag-elements-demo": {
+    "name": "drag-elements-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/blocks/drag-elements-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/blocks/drag-elements-demo'))
+  },
+  "drag-elements-momentum-demo": {
+    "name": "drag-elements-momentum-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/blocks/drag-elements-momentum-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/blocks/drag-elements-momentum-demo'))
   },
   "screensaver-demo": {
     "name": "screensaver-demo",
@@ -310,24 +319,6 @@ const example: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/examples/blocks/sticky-footer-demo'))
-  },
-  "drag-elements-demo": {
-    "name": "drag-elements-demo",
-    "type": "components:example",
-    "files": [
-      "@/fancy/examples/drag-elements-demo.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/examples/drag-elements-demo'))
-  },
-  "fancy-basic-number-ticker-demo": {
-    "name": "fancy-basic-number-ticker-demo",
-    "type": "components:example",
-    "files": [
-      "@/fancy/examples/fancy-basic-number-ticker-demo.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/examples/text/fancy-basic-number-ticker-demo'))
   },
   "floating-demo": {
     "name": "floating-demo",
@@ -356,6 +347,15 @@ const example: Registry = {
     component: React.lazy(
       () => import('@/fancy/examples/svg/elastic-line-demo'))
   },
+  "basic-number-ticker-demo": {
+    "name": "basic-number-ticker-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/text/basic-number-ticker-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/text/basic-number-ticker-demo'))
+  },
   "basic-word-rotate-demo": {
     "name": "basic-word-rotate-demo",
     "type": "components:example",
@@ -373,6 +373,15 @@ const example: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/examples/text/breathing-text-demo'))
+  },
+  "fancy-basic-number-ticker-demo": {
+    "name": "fancy-basic-number-ticker-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/text/fancy-basic-number-ticker-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/text/fancy-basic-number-ticker-demo'))
   },
   "letter-swap-demo-line": {
     "name": "letter-swap-demo-line",

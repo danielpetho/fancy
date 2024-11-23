@@ -21,7 +21,7 @@ const Preview = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.88, delay: 1.5 }}
       >
-        <p className="text-7xl z-50 text-white font-calendas italic">fancy.</p>
+        <p className="text-5xl md:text-7xl z-50 text-white font-calendas italic">fancy.</p>
         <p className="text-xs z-50 hover:scale-110 transition-transform bg-white text-black rounded-full py-2 w-20 cursor-pointer">
           Download
         </p>
@@ -32,28 +32,28 @@ const Preview = () => {
           <motion.img
             initial={{ opacity: 0 }}
             src={exampleImages[0]}
-            className="w-24 h-24 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
+            className="w-16 h-16 md:w-24 md:h-24 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
           />
         </FloatingElement>
         <FloatingElement depth={1} className="top-[10%] left-[32%]">
           <motion.img
             initial={{ opacity: 0 }}
             src={exampleImages[1]}
-            className="w-28 h-28 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
+            className="w-20 h-20 md:w-28 md:h-28 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
           />
         </FloatingElement>
         <FloatingElement depth={2} className="top-[2%] left-[53%]">
           <motion.img
             initial={{ opacity: 0 }}
             src={exampleImages[2]}
-            className="w-40 h-52 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
+            className="w-28 h-40 md:w-40 md:h-52 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
           />
         </FloatingElement>
         <FloatingElement depth={1} className="top-[0%] left-[83%]">
           <motion.img
             initial={{ opacity: 0 }}
             src={exampleImages[3]}
-            className="w-32 h-32 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
+            className="w-24 h-24 md:w-32 md:h-32 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
           />
         </FloatingElement>
 
@@ -61,14 +61,14 @@ const Preview = () => {
           <motion.img
             initial={{ opacity: 0 }}
             src={exampleImages[4]}
-            className="w-36 h-36 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
+            className="w-28 h-28 md:w-36 md:h-36 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
           />
         </FloatingElement>
         <FloatingElement depth={2} className="top-[70%] left-[77%]">
           <motion.img
             initial={{ opacity: 0 }}
             src={exampleImages[7]}
-            className="w-36 h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
+            className="w-28 h-28 md:w-36 md:h-48 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
           />
         </FloatingElement>
 
@@ -76,14 +76,14 @@ const Preview = () => {
           <motion.img
             initial={{ opacity: 0 }}
             src={exampleImages[5]}
-            className="w-52 h-full object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
+            className="w-40 md:w-52 h-full object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
           />
         </FloatingElement>
         <FloatingElement depth={1} className="top-[80%] left-[50%]">
           <motion.img
             initial={{ opacity: 0 }}
             src={exampleImages[6]}
-            className="w-32 h-32 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
+            className="w-24 h-24 md:w-32 md:h-32 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform"
           />
         </FloatingElement>
       </Floating>

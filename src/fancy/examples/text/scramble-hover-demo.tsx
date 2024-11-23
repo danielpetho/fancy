@@ -20,7 +20,7 @@ export default function Preview() {
   ];
 
   return (
-    <div className="w-full h-full flex flex-col text-xl justify-center items-end bg-background font-normal overflow-hidden py-20 px-32 text-right">
+    <div className="w-full h-full flex flex-col  justify-center items-end bg-background font-normal overflow-hidden py-20 px-8 sm:px-16 md:px-24 lg:px-32 text-right text-sm sm:text-lg md:text-xl">
       {models.map((model, index) => (
         <motion.div
           layout
