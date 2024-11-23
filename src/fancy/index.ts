@@ -257,6 +257,15 @@ const example: Registry = {
     component: React.lazy(
       () => import('@/fancy/examples/background/animated-gradient-demo'))
   },
+  "pixel-trail-custom-pixel-demo": {
+    "name": "pixel-trail-custom-pixel-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/background/pixel-trail-custom-pixel-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/background/pixel-trail-custom-pixel-demo'))
+  },
   "pixel-trail-demo": {
     "name": "pixel-trail-demo",
     "type": "components:example",

@@ -24,6 +24,10 @@ We use the uuid package to generate a unique ID for each trail instance — so e
 
 </Steps>
 
+## Usage
+
+Just drop the `PixelTrail` component into your project, define a pixelSize, and pass the `pixelColor` prop. You can also pass a `className` prop to style the container, and a `pixelClassName` prop to style the individual pixels.
+
 ## Examples
 
 ### Without fading
@@ -32,11 +36,18 @@ If you set the `fadeDuration` prop to `0`, and increase the `delay` prop, you ca
 
 <ComponentPreview name="pixel-trail-no-fade-demo" />
 
+### Customizing the pixels
+
+You can customize the individual pixels by passing a `pixelClassName` prop.
+
+<ComponentPreview name="pixel-trail-custom-pixel-demo" />
+
 ## Notes
 
 1. The component operates by dividing the container into a grid of pixels and dynamically recoloring them as you move your cursor. Each pixel is represented by a single div element, so perf may be impacted when using a large number of pixels, especially on the first render.
 
 2. Keep the z-index of the effect's container lower than the rest of your content, so the pointer-events will captured by all of your other elements.
+
 
 ## Props
 
@@ -50,12 +61,6 @@ If you set the `fadeDuration` prop to `0`, and increase the `delay` prop, you ca
     </TableRow>
   </TableHeader>
   <TableBody>
-    <TableRow>
-      <TableCell>pixelColor</TableCell>
-      <TableCell>`string`</TableCell>
-      <TableCell>`"#000"`</TableCell>
-      <TableCell>Color of the trail pixels (hex, rgb, rgba, hsl, etc.)</TableCell>
-    </TableRow>
     <TableRow>
       <TableCell>pixelSize</TableCell>
       <TableCell>`number`</TableCell>
@@ -73,6 +78,18 @@ If you set the `fadeDuration` prop to `0`, and increase the `delay` prop, you ca
       <TableCell>`number`</TableCell>
       <TableCell>`0`</TableCell>
       <TableCell>Delay before the fade animation starts in milliseconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>pixelClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling the individual pixels</TableCell>
     </TableRow>
   </TableBody>
 </Table>

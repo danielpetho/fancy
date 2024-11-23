@@ -113,6 +113,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Pixel Trail",
         href: "/docs/components/background/pixel-trail",
         items: [],
+        label: "Updated",
       },
     ],
   },

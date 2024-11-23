@@ -87,7 +87,7 @@ export default async function DocPage({ params }: DocPageProps) {
 
   return (
     <main className="xl:grid xl:grid-cols-[1fr_300px] w-full justify-center">
-      <div className="rounded-xl bg-background shadow-lg py-6 lg:gap-10 lg:py-6">
+      <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 shadow-lg">
         <div className="container">
           <div className="mb-2 pb-2 flex items-center space-x-1 text-lg text-muted-foreground">
             <div className="overflow-hidden font-medium  whitespace-nowrap">

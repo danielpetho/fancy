@@ -1,24 +1,23 @@
-import React, {
-  useCallback,
-  useRef,
-  useMemo,
-} from "react";
+import React, { useCallback, useRef, useMemo } from "react";
 import { motion, useAnimationControls } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 import { useDimensions } from "@/hooks/use-dimensions";
+import { cn } from "@/lib/utils";
 
 interface PixelTrailProps {
-  pixelColor: string; // hex, rgb, rgba, hsl, etc.
   pixelSize: number; // px
   fadeDuration?: number; // ms
   delay?: number; // ms
+  className?: string;
+  pixelClassName?: string;
 }
 
 const PixelTrail: React.FC<PixelTrailProps> = ({
-  pixelColor = "#000",
   pixelSize = 20,
   fadeDuration = 500,
   delay = 0,
+  className,
+  pixelClassName,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const dimensions = useDimensions(containerRef);
@@ -55,7 +54,10 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
   return (
     <div
       ref={containerRef}
-      className="absolute inset-0 w-full h-full pointer-events-auto"
+      className={cn(
+        "absolute inset-0 w-full h-full pointer-events-auto",
+        className
+      )}
       onMouseMove={handleMouseMove}
     >
       {Array.from({ length: rows }).map((_, rowIndex) => (
@@ -64,10 +66,10 @@ const PixelTrail: React.FC<PixelTrailProps> = ({
             <PixelDot
               key={`${colIndex}-${rowIndex}`}
               id={`${trailId.current}-pixel-${colIndex}-${rowIndex}`}
-              color={pixelColor}
               size={pixelSize}
               fadeDuration={fadeDuration}
               delay={delay}
+              className={pixelClassName}
             />
           ))}
         </div>
@@ -80,14 +82,14 @@ export default PixelTrail;
 
 interface PixelDotProps {
   id: string;
-  color: string;
   size: number;
   fadeDuration: number;
   delay: number;
+  className?: string;
 }
 
 const PixelDot: React.FC<PixelDotProps> = React.memo(
-  ({ id, color, size, fadeDuration, delay }) => {
+  ({ id, size, fadeDuration, delay, className }) => {
     const controls = useAnimationControls();
 
     const animatePixel = useCallback(() => {
@@ -111,11 +113,10 @@ const PixelDot: React.FC<PixelDotProps> = React.memo(
       <motion.div
         id={id}
         ref={ref}
-        className="cursor-pointer-none"
+        className={cn("cursor-pointer-none", className)}
         style={{
           width: `${size}px`,
           height: `${size}px`,
-          backgroundColor: color,
         }}
         initial={{ opacity: 0 }}
         animate={controls}
