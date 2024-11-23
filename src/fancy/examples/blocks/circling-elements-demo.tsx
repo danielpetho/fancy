@@ -2,26 +2,17 @@ import React from "react";
 import CirclingElements from "@/fancy/components/blocks/circling-elements";
 import Image from "next/image";
 import { exampleImages } from "../exampleImages";
+import useScreenSize from "@/hooks/use-screen-size";
 
 const CirclingElementsDemo: React.FC = () => {
-
-  const [radius, setRadius] = React.useState(window.innerWidth < 768 ? 80 : 120);
-
-  React.useEffect(() => {
-    const handleResize = () => {
-      setRadius(window.innerWidth < 768 ? 80 : 120);
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  const screenSize = useScreenSize();
 
   return (
     <div className="w-full h-full bg-[#efefef] flex items-center justify-center">
-    <div className="absolute top-6 left-6 text-2xl md:text-4xl uppercase">
+      <div className="absolute top-6 left-6 text-2xl md:text-4xl uppercase">
         <span className="mr-4 text-zinc-500">Curated.</span>
         <span className="text-black">For you.</span>
-    </div>
+      </div>
       <div className="cursor-pointer z-10 group/btn absolute bottom-6 right-6 flex flex-row space-x-1 font-medium uppercase group">
         <p className="rounded-full bg-white text-black px-4 py-2">
           View Gallery
@@ -43,9 +34,12 @@ const CirclingElementsDemo: React.FC = () => {
         </div>
       </div>
 
-      <CirclingElements radius={radius}>
+      <CirclingElements radius={screenSize.lessThan(`md`) ? 80 : 120}>
         {exampleImages.map((url, index) => (
-          <div key={index} className="w-20 h-20 md:w-28 md:h-28 absolute -translate-x-1/2 -translate-y-1/2">
+          <div
+            key={index}
+            className="w-20 h-20 md:w-28 md:h-28 absolute -translate-x-1/2 -translate-y-1/2"
+          >
             <Image src={url} fill alt="image" className="object-cover" />
           </div>
         ))}
