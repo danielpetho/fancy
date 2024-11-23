@@ -46,6 +46,14 @@ component: true
 
 </Steps>
 
+## Usage
+
+You only need to wrap your elements with the `CirclingElements` component, everything else is taken care of by the component itself.
+
+Under the hood, the component wraps all the children in a `relative` container, then sets all children to `absolute` to allow the circling movement.
+
+The animation is done with only a few animation keyframes, as you can see in the tailwind config above.
+
 ## Props
 
 <Table>

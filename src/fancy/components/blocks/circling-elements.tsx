@@ -1,5 +1,5 @@
-import { motion, useAnimationFrame } from "framer-motion";
-import React, { useState } from "react";
+import { motion } from "framer-motion";
+import React from "react";
 
 type CirclingElementsProps = {
   children: React.ReactNode;
