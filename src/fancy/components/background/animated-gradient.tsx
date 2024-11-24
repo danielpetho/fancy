@@ -1,4 +1,4 @@
-import { useDimensions } from "@/hooks/use-dimensions";
+import { useDimensions } from "@/hooks/use-debounced-dimensions";
 import { cn } from "@/lib/utils";
 import React, { useMemo, useRef } from "react";
 

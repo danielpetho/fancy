@@ -1,6 +1,6 @@
 ---
-title: Animated Gradient
-description: An animated multi-color gradient background effect.
+title: Animated Gradient With SVG
+description: An animated multi-color gradient background effect with SVG elements.
 component: true
 toc: true
 ---
@@ -11,38 +11,94 @@ toc: true
 
 <Steps>
 
-<Step>Add this hook to your project:</Step>
+<Step>Add this hook for querying the dimensions of an element:</Step>
 
 <CodeBlockWrapper language="typescript">
 {
 `import { useState, useEffect, RefObject } from 'react';
 
 interface Dimensions {
-  width: number;
-  height: number;
+width: number;
+height: number;
 }
 
-export function useContainerDimensions(ref: RefObject<HTMLElement>): Dimensions {
+export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensions {
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
 
-  useEffect(() => {
+useEffect(() => {
+let timeoutId: NodeJS.Timeout;
+
     const updateDimensions = () => {
       if (ref.current) {
-        setDimensions({
-          width: ref.current.offsetWidth,
-          height: ref.current.offsetHeight,
-        });
+        const { width, height } = ref.current.getBoundingClientRect();
+        setDimensions({ width, height });
       }
     };
 
+    const debouncedUpdateDimensions = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(updateDimensions, 250); // Wait 250ms after resize ends
+    };
+
+    // Initial measurement
     updateDimensions();
-    window.addEventListener('resize', updateDimensions);
 
-    return () => window.removeEventListener('resize', updateDimensions);
-  }, [ref]);
+    window.addEventListener('resize', debouncedUpdateDimensions);
 
-  return dimensions;
+    return () => {
+      window.removeEventListener('resize', debouncedUpdateDimensions);
+      clearTimeout(timeoutId);
+    };
+
+}, [ref]);
+
+return dimensions;
 }
+`}
+
+</CodeBlockWrapper>
+
+<Step>
+  Update your `tailwind.config.ts` file to include the animation keyframes:
+</Step>
+
+<CodeBlockWrapper language="typescript">
+  {`module.exports = {
+  // ...
+  theme: {
+    // ...
+    animation: {
+      ...
+      "background-gradient":
+          "background-gradient var(--background-gradient-speed, 15s) cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite"
+    },
+    keyframes: {
+      ...
+      "background-gradient": {
+        "0%, 100%": {
+          transform: "translate(0, 0)",
+          animationDelay: "var(--background-gradient-delay, 0s)",
+        },
+        "20%": {
+          transform:
+            "translate(calc(100% * var(--tx-1, 1)), calc(100% * var(--ty-1, 1)))",
+        },
+        "40%": {
+          transform:
+            "translate(calc(100% * var(--tx-2, -1)), calc(100% * var(--ty-2, 1)))",
+        },
+        "60%": {
+          transform:
+            "translate(calc(100% * var(--tx-3, 1)), calc(100% * var(--ty-3, -1)))",
+        },
+        "80%": {
+          transform:
+            "translate(calc(100% * var(--tx-4, -1)), calc(100% * var(--ty-4, -1)))",
+        },
+      },
+    },
+  },
+};
 `}
 </CodeBlockWrapper>
 
@@ -51,6 +107,49 @@ export function useContainerDimensions(ref: RefObject<HTMLElement>): Dimensions 
 <ComponentSource name="animated-gradient" />
 
 </Steps>
+
+## Understanding the component
+
+Animated gradients can be achieved with many different techniques (shaders, CSS gradients, etc.), this component uses simple SVG circles with a blur filter to create the effect.
+
+1. For each color in the `colors` prop array, the component creates an SVG circle element
+2. Each circle is given a random initial position using percentage values
+3. The movement of each circle is controlled by 8 CSS variables that define target positions:
+   - `--tx-1` and `--ty-1` for the first position
+   - `--tx-2` and `--ty-2` for the second position
+   - And so on for positions 3 and 4
+4. These variables are set to random values between -0.5 and 0.5. 
+
+<CodeBlockWrapper language="typescript" className="mt-4">
+{
+`...
+style={
+    {
+      ...
+      "--tx-1": (Math.random() - 0.5),
+      "--ty-1": (Math.random() - 0.5),
+      "--tx-2": (Math.random() - 0.5),
+      "--ty-2": (Math.random() - 0.5),
+      "--tx-3": (Math.random() - 0.5),
+      "--ty-3": (Math.random() - 0.5),
+      "--tx-4": (Math.random() - 0.5),
+      "--ty-4": (Math.random() - 0.5),
+    } as React.CSSProperties
+  }
+...
+`}
+</CodeBlockWrapper>
+
+5. The `background-gradient` animation keyframes are used to animate the circles between these positions
+6. Lastly, we blur the container element which holds the circles, to create a smooth effect.
+
+If you would like to achieve a more complex animation, you have to edit the component directly, for example:
+
+1. Add more keyframe positions by increasing the number of `--tx` and `--ty` variables
+2. Use cubic-bezier timing functions to create non-linear movement
+3. Add rotation or scaling transforms
+
+and so on.
 
 
 ## Props
@@ -75,7 +174,7 @@ export function useContainerDimensions(ref: RefObject<HTMLElement>): Dimensions 
       <TableCell>speed</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`5`</TableCell>
-      <TableCell>Speed of the animation (this is somewhat an arbitrary number, refer to the source code for more details)</TableCell>
+      <TableCell>Speed of the animation (this is somewhat an arbitrary number, refer tothe source code for more details)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>blur</TableCell>
@@ -85,5 +184,3 @@ export function useContainerDimensions(ref: RefObject<HTMLElement>): Dimensions 
     </TableRow>
   </TableBody>
 </Table>
-
-

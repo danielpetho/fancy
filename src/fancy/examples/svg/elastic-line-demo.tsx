@@ -1,7 +1,5 @@
 import ElasticLine from "@/fancy/components/svg/elastic-line";
 import { motion } from "framer-motion";
-import Image from "next/image";
-import { exampleImages } from "../exampleImages";
 
 export default function Preview() {
   const textVariants = {
@@ -19,9 +17,9 @@ export default function Preview() {
   };
 
   return (
-    <div className="w-full h-full flex flex-row items-center justify-center font-overusedGrotesk bg-[#eeeeee] overflow-hidden">
-      <div className="flex absolute left-0 top-0 flex-col w-full h-full px-12 py-8 z-10">
-        {/* Animated elastic lines */}
+    <div className="w-full h-full flex flex-row items-center justify-center font-overusedGrotesk overflow-hidden to-white">
+      <div className="absolute left-0 top-0 w-full h-full px-6 sm:px-8 md:px-12 z-10">
+        {/* Animated elastic line */}
         <ElasticLine
           releaseThreshold={50}
           strokeWidth={1}
@@ -32,56 +30,53 @@ export default function Preview() {
             delay: 0.15,
           }}
         />
-        <ElasticLine
-          releaseThreshold={50}
-          strokeWidth={1}
-          animateInTransition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 30,
-            delay: 0.45,
-          }}
-        />
       </div>
 
       {/* This is just fluff for the demo */}
-      <div className="h-full flex flex-col text-4xl py-3 w-full px-12 font-light">
-        <div className="h-1/3 items-center  flex justify-start">
+      <div className="h-full flex flex-col py-6 w-full px-6 sm:px-8 md:px-12 font-light">
+        <div className="h-1/2 py-8 w-full items-end flex">
           <motion.p
             variants={textVariants}
             initial="hidden"
             animate="visible"
+            className="uppercase text-4xl sm:text-5xl md:text-6xl font-medium"
             custom={0}
           >
-            ACME.INC — A PLAYFUL DESIGN PARTNER
+            FANCY COMPONENTS
           </motion.p>
         </div>
-        <div className="h-1/3 flex items-center flex-col  py-2">
-          <motion.div
-            className="w-full h-full relative overflow-hidden"
+        <div className="flex flex-row  pt-8 justify-between items-start gap-x-4">
+          <motion.p
             variants={textVariants}
             initial="hidden"
             animate="visible"
+            className="w-1/3 uppercase md:text-7xl hidden md:block text-orange-500"
+            custom={0}
+          >
+            ✽
+          </motion.p>
+          <motion.p
+            variants={textVariants}
+            initial="hidden"
+            animate="visible"
+            className="w-full md:w-2/3 sm:text-left text-base sm:text-xl md:text-2xl"
             custom={1}
           >
-            <Image
-              src={exampleImages[1]}
-              alt="image"
-              fill
-              className="object-cover"
-            />
-          </motion.div>
+            Ready to use, fancy, animated React components & microinteractions
+            for creative developers.
+          </motion.p>
         </div>
-        <div className="h-1/3 flex items-center justify-end">
+
+        {/* <div className="h-1/3 flex items-center justify-end">
           <motion.p
             variants={textVariants}
             initial="hidden"
             animate="visible"
             custom={2}
           >
-            FOR SERIOUS COMPANIES
+            
           </motion.p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

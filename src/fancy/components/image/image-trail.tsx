@@ -146,7 +146,7 @@ const TrailItem = ({ item, onComplete }: TrailItemProps) => {
     <motion.div
       ref={scope}
       key={item.id}
-      className="absolute transform will-change-transform"
+      className="absolute"
       style={{
         left: item.x,
         top: item.y,
