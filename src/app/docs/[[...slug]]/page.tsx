@@ -28,7 +28,7 @@ export async function generateMetadata({
     description: doc.description,
     openGraph: {
       title: doc.title,
-      description: doc.description,
+      description: doc.description || siteConfig.description,
       type: "article",
       url: absoluteUrl(doc.slug),
       images: [
