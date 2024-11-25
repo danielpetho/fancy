@@ -65,6 +65,15 @@ const fancy: Registry = {
     component: React.lazy(
       () => import('@/fancy/components/image/image-trail'))
   },
+  "gravity": {
+    "name": "gravity",
+    "type": "components:fancy",
+    "files": [
+      "@/fancy/components/physics/gravity.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/components/physics/gravity'))
+  },
   "elastic-line": {
     "name": "elastic-line",
     "type": "components:fancy",
@@ -346,6 +355,15 @@ const example: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/examples/image/image-trail-demo'))
+  },
+  "gravity-demo": {
+    "name": "gravity-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/physics/gravity-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/physics/gravity-demo'))
   },
   "elastic-line-demo": {
     "name": "elastic-line-demo",
