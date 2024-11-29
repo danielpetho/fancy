@@ -5,3 +5,27 @@ component: true
 ---
 
 <ComponentPreview name="gravity-demo" />
+
+## Source code
+
+<ComponentSource name="gravity" />
+
+## Examples
+
+### Non-draggable bodies
+
+By default, the component will make all bodies draggable. You can disable this behavior by setting the `isDraggable` prop to `false`. Under the hood, we just add back the pointer-events to the elements, so they will be clickable, hover-able, etc, but the Matter body underneath will not receive any pointer events. This can be handy to create creative footers with clickable links for example:
+
+<ComponentPreview name="gravity-non-draggable-demo" />
+
+### Different body types
+
+With the `bodyType` prop, you can choose between different types of bodies. The available types are `circle`, `rectangle`, and `calculated`.
+
+In this example, we have a mixed of `circle` and `rectangle` bodies. Again, you do not need to define the sizes, the component will calculate them for you.
+
+<ComponentPreview name="gravity-body-types-demo" />
+
+With the `calculated` type, the component will use the poly-decomp package under the hood to decompose the body to a concave set of vertices. This can be handy for complex shapes, like SVGs, but it can also be slower than the other types, and the decomposition can be inaccurate. My recommendation is to prototype with the `debug` prop enabled until you get a somewhat accurate result. Refer to the [poly-decomp documentation](https://github.com/schteppe/poly-decomp) and [Matter.js documentation](https://brm.io/matter-js/docs/classes/Body.html#bodytype) for more details.
+
+<ComponentPreview name="gravity-svg-bodies-demo" />

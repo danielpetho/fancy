@@ -1,7 +1,7 @@
 import React from "react";
 import CirclingElements from "@/fancy/components/blocks/circling-elements";
 import Image from "next/image";
-import { exampleImages } from "../exampleImages";
+import { exampleImages } from "../_helpers/exampleImages";
 import useScreenSize from "@/hooks/use-screen-size";
 
 const CirclingElementsDemo: React.FC = () => {

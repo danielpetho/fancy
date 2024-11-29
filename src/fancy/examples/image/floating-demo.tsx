@@ -1,4 +1,4 @@
-import { exampleImages } from "../exampleImages";
+import { exampleImages } from "../_helpers/exampleImages";
 import { useEffect } from "react";
 import Floating, { FloatingElement } from "@/fancy/components/image/floating";
 import { motion, stagger, useAnimate } from "framer-motion";

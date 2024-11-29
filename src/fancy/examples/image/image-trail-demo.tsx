@@ -1,5 +1,5 @@
 import ImageTrail from "@/fancy/components/image/image-trail";
-import { exampleImages } from "../exampleImages";
+import { exampleImages } from "../_helpers/exampleImages";
 import { useRef } from "react";
 
 const ImageTrailDemo = () => {

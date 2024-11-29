@@ -87,7 +87,7 @@ The advantage of this setup is that you can style and position your elements how
 
 ## Understanding the component
 
-The `Floating` component creates an interactive floating effect through several key mechanisms:
+If you're curious how it works, here's a quick overview of the component's internals:
 
 1. **Element Registration**: Using React Context, each `FloatingElement` child registers itself with the parent `Floating` component, providing its DOM reference and depth value.
 
@@ -119,7 +119,7 @@ For better performance when dealing with multiple floating elements, you can use
 For example, if you have 6 floating images, instead of creating 6 separate `FloatingElement` components, you could group them into 3 pairs. This reduces the animation calculations from 6 to 3.
 
 ### Directional Control
-The `depth` and `sensitivity` props offer flexible control over movement direction:
+With the `depth` and `sensitivity` props, you can control the direction, and strength of the floating effect:
 
 - **Positive Values**: Elements move toward the mouse cursor
   - Higher values create stronger movement

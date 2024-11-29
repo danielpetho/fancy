@@ -1,6 +1,6 @@
 import React from "react";
 import Screensaver from "@/fancy/components/blocks/screensaver";
-import { exampleImages } from "../exampleImages";
+import { exampleImages } from "../_helpers/exampleImages";
 
 const CirclingElementsDemo: React.FC = () => {
   const containerRef = React.useRef<HTMLDivElement>(null);
