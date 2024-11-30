@@ -8,7 +8,7 @@ export default function Preview() {
     <div className="w-full h-full flex flex-col relative">
       <button 
         onClick={() => setDebug(!debug)}
-        className="absolute top-4 left-4 px-4 py-2 text-xs border border-border rounded-lg hover:bg-gray-100 cursor-pointer z-10"
+        className="absolute top-4 left-4 px-4 py-2 text-xs border border-border rounded-lg bg-background hover:bg-accent cursor-pointer z-10"
       >
         {debug ? 'Disable Debug' : 'Enable Debug'}
       </button>

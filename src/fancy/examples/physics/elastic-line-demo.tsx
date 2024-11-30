@@ -1,4 +1,4 @@
-import ElasticLine from "@/fancy/components/svg/elastic-line";
+import ElasticLine from "@/fancy/components/physics/elastic-line";
 import { motion } from "framer-motion";
 
 export default function Preview() {

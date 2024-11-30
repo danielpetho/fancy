@@ -26,7 +26,7 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/letter-swap",
         items: [],
       },
-      { 
+      {
         title: "Vertical Cut Reveal",
         href: "/docs/components/text/vertical-cut-reveal",
         items: [],
@@ -52,11 +52,6 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/scroll-and-swap",
         items: [],
       },
-      // {
-      //   title: "Basic Word Rotate",
-      //   href: "/docs/components/text/basic-word-rotate",
-      //   items: [],
-      // },
       {
         title: "Variable Font And Cursor",
         href: "/docs/components/text/variable-font-and-cursor",
@@ -96,8 +91,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Scramble In",
         href: "/docs/components/text/scramble-in",
         items: [],
-        label: "New",
-      }
+      },
     ],
   },
   {
@@ -113,18 +107,23 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Pixel Trail",
         href: "/docs/components/background/pixel-trail",
         items: [],
-        label: "Updated",
       },
     ],
   },
   {
-    title: "SVG",
-    href: "/docs/components/svg",
+    title: "Physics",
+    href: "/docs/components/physics",
     items: [
       {
         title: "Elastic Line",
-        href: "/docs/components/svg/elastic-line",
+        href: "/docs/components/physics/elastic-line",
         items: [],
+      },
+      { 
+        title: "Gravity", 
+        href: "/docs/components/physics/gravity", 
+        items: [],
+        label: "New",
       },
     ],
   },
@@ -142,7 +141,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Floating",
         href: "/docs/components/image/floating",
         items: [],
-        label: "New",
       },
     ],
   },
@@ -154,7 +152,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Drag Elements",
         href: "/docs/components/blocks/drag-elements",
         items: [],
-        label: "Updated",
       },
       {
         title: "Circling Elements",
@@ -170,7 +167,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Sticky Footer",
         href: "/docs/components/blocks/sticky-footer",
         items: [],
-      }
+      },
     ],
   },
 ];

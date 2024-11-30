@@ -65,6 +65,15 @@ const fancy: Registry = {
     component: React.lazy(
       () => import('@/fancy/components/image/image-trail'))
   },
+  "elastic-line": {
+    "name": "elastic-line",
+    "type": "components:fancy",
+    "files": [
+      "@/fancy/components/physics/elastic-line.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/components/physics/elastic-line'))
+  },
   "gravity": {
     "name": "gravity",
     "type": "components:fancy",
@@ -73,15 +82,6 @@ const fancy: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/components/physics/gravity'))
-  },
-  "elastic-line": {
-    "name": "elastic-line",
-    "type": "components:fancy",
-    "files": [
-      "@/fancy/components/svg/elastic-line.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/components/svg/elastic-line'))
   },
   "basic-number-ticker": {
     "name": "basic-number-ticker",
@@ -365,6 +365,15 @@ const example: Registry = {
     component: React.lazy(
       () => import('@/fancy/examples/image/image-trail-demo'))
   },
+  "elastic-line-demo": {
+    "name": "elastic-line-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/physics/elastic-line-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/physics/elastic-line-demo'))
+  },
   "gravity-body-types-demo": {
     "name": "gravity-body-types-demo",
     "type": "components:example",
@@ -409,15 +418,6 @@ const example: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/examples/physics/gravity-svg-bodies-demo'))
-  },
-  "elastic-line-demo": {
-    "name": "elastic-line-demo",
-    "type": "components:example",
-    "files": [
-      "@/fancy/examples/svg/elastic-line-demo.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/examples/svg/elastic-line-demo'))
   },
   "basic-number-ticker-demo": {
     "name": "basic-number-ticker-demo",

@@ -74,9 +74,7 @@
   body {
     @apply bg-background text-foreground;
   }
-}
 
-@layer base {
   @font-face {
     font-family: "Overused Grotesk";
     src: url("../../public/fonts/OverusedGrotesk-VF.woff2")

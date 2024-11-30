@@ -34,7 +34,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <div className="flex flex-col gap-y-4 mt-4 ">
         <h2
           id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-          className={cn("scroll-m-20 text-4xl tracking-tight pt-6 pb-3", className)}
+          className={cn("scroll-m-20 text-4xl tracking-tight pt-6 pb-0", className)}
           {...props}
         >
           {children}
@@ -90,7 +90,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.HTMLAttributes<HTMLParagraphElement>) => (
       <p
         className={cn(
-          "leading-7 [&:not(:first-child)]:mt-6 text-lg",
+          "leading-7 [&:not(:first-child)]:mt-3 text-lg",
           className
         )}
         {...props}
@@ -126,7 +126,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <img className={cn("rounded-md", className)} alt={alt} {...props} />
     ),
     hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
-      <hr className="my-4 md:my-8" {...props} />
+      <hr className="my-1 md:my-1" {...props} />
     ),
     table: ({
       className,

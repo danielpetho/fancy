@@ -22,8 +22,9 @@ import Matter, {
   Common,
 } from "matter-js";
 import { cn } from "@/lib/utils";
-import { debounce } from "lodash"; // Add this import at the top
+import { debounce } from "lodash";
 import { parsePathToVertices } from "@/utils/svg";
+import { calculatePosition } from "@/utils/get-position";
 
 type GravityProps = {
   children: ReactNode;
@@ -36,42 +37,29 @@ type GravityProps = {
   className?: string;
 };
 
-interface MatterBodyProps {
+type PhysicsBody = {
+  element: HTMLElement;
+  body: Matter.Body;
+  props: MatterBodyProps;
+}
+
+type MatterBodyProps = {
   children: ReactNode;
   matterBodyOptions?: Matter.IBodyDefinition;
   isDraggable?: boolean;
   bodyType?: "rectangle" | "circle" | "svg";
+  sampleLength?: number;
   x?: number | string;
   y?: number | string;
   angle?: number;
   className?: string;
 }
 
-interface PhysicsBody {
-  element: HTMLElement;
-  body: Matter.Body;
-  props: MatterBodyProps;
-}
-
-export interface GravityRef {
+export type GravityRef = {
   start: () => void;
   stop: () => void;
   reset: () => void;
 }
-
-const calculatePosition = (
-  value: number | string | undefined,
-  containerSize: number,
-  elementSize: number
-) => {
-  if (typeof value === "string" && value.endsWith("%")) {
-    const percentage = parseFloat(value) / 100;
-    return containerSize * percentage;
-  }
-  return typeof value === "number"
-    ? value
-    : elementSize - containerSize + elementSize / 2;
-};
 
 const GravityContext = createContext<{
   registerElement: (
@@ -93,6 +81,7 @@ export const MatterBody = ({
   },
   bodyType = "rectangle",
   isDraggable = true,
+  sampleLength = 15,
   x = 0,
   y = 0,
   angle = 0,
@@ -108,6 +97,7 @@ export const MatterBody = ({
       children,
       matterBodyOptions,
       bodyType,
+      sampleLength,
       isDraggable,
       x,
       y,
@@ -159,6 +149,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
 
     const isRunning = useRef(false);
 
+    // Register Matter.js body in the physics world
     const registerElement = useCallback(
       (id: string, element: HTMLElement, props: MatterBodyProps) => {
         if (!canvas.current) return;
@@ -187,14 +178,9 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
           const paths = element.querySelectorAll("path");
           const vertexSets: Matter.Vector[][] = [];
 
-          console.log(paths);
-
           paths.forEach((path) => {
-            console.log(path);
             const d = path.getAttribute("d");
-            console.log(d);
-
-            const p = parsePathToVertices(d!);
+            const p = parsePathToVertices(d!, props.sampleLength);
             vertexSets.push(p);
           });
 
@@ -227,6 +213,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       [debug]
     );
 
+    // Unregister Matter.js body from the physics world
     const unregisterElement = useCallback((id: string) => {
       const body = bodiesMap.current.get(id);
       if (body) {
@@ -235,6 +222,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       }
     }, []);
 
+    // Keep react elements in sync with the physics world
     const updateElements = useCallback(() => {
       bodiesMap.current.forEach(({ element, body }) => {
         const { x, y } = body.position;
@@ -373,7 +361,6 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       render.current.mouse = mouse;
 
       runner.current = Runner.create();
-      //Runner.run(runner.current, engine.current);
       Render.run(render.current);
       updateElements();
       runner.current.enabled = false;
@@ -384,6 +371,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
       }
     }, [updateElements, debug, autoStart]);
 
+    // Clear the Matter.js world
     const clearRenderer = useCallback(() => {
       if (frameId.current) {
         cancelAnimationFrame(frameId.current);
@@ -425,8 +413,6 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
     }, [clearRenderer, initializeRenderer, resetOnResize]);
 
     const startEngine = useCallback(() => {
-      //if (isRunning.current) return;
-
       if (runner.current) {
         runner.current.enabled = true;
 
@@ -508,6 +494,7 @@ const Gravity = forwardRef<GravityRef, GravityProps>(
         <div
           ref={canvas}
           className={cn(className, "absolute top-0 left-0 w-full h-full")}
+          {...props}
         >
           {children}
         </div>
