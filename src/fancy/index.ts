@@ -254,15 +254,6 @@ const fancy: Registry = {
     component: React.lazy(
       () => import('@/fancy/components/text/vertical-cut-reveal'))
   },
-  "word-rotate": {
-    "name": "word-rotate",
-    "type": "components:fancy",
-    "files": [
-      "@/fancy/components/text/word-rotate.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/components/text/word-rotate'))
-  }
 };
 
 const example: Registry = {

@@ -1,6 +1,6 @@
 import { useDimensions } from "@/hooks/use-dimensions";
 import { cn } from "@/lib/utils";
-import { motion, useAnimationControls, useAnimationFrame } from "framer-motion";
+import { motion, useAnimationControls, useAnimationFrame, useMotionValue } from "framer-motion";
 import React, { useRef, useState } from "react";
 
 type ScreensaverProps = {
@@ -21,35 +21,33 @@ const Screensaver: React.FC<ScreensaverProps> = ({
     className,
 }) => {
     const elementRef = useRef<HTMLDivElement>(null);
-    const [position, setPosition] = useState(startPosition);
-    const [angle, setAngle] = useState((startAngle * Math.PI) / 180);
+    const x = useMotionValue(startPosition.x);
+    const y = useMotionValue(startPosition.y);
+    const angle = useRef((startAngle * Math.PI) / 180);
     
     const containerDimensions = useDimensions(containerRef);
     const elementDimensions = useDimensions(elementRef);
 
     useAnimationFrame(() => {
         const velocity = speed;
-        const dx = Math.cos(angle) * velocity;
-        const dy = Math.sin(angle) * velocity;
+        const dx = Math.cos(angle.current) * velocity;
+        const dy = Math.sin(angle.current) * velocity;
         
-        setPosition((currentPos) => {
-            let newX = currentPos.x + dx;
-            let newY = currentPos.y + dy;
-            let newAngle = angle;
+        let newX = x.get() + dx;
+        let newY = y.get() + dy;
 
-            // Check for collisions with container boundaries
-            if (newX <= 0 || newX + elementDimensions.width >= containerDimensions.width) {
-                newAngle = Math.PI - newAngle;
-                newX = Math.max(0, Math.min(newX, containerDimensions.width - elementDimensions.width));
-            }
-            if (newY <= 0 || newY + elementDimensions.height >= containerDimensions.height) {
-                newAngle = -newAngle;
-                newY = Math.max(0, Math.min(newY, containerDimensions.height - elementDimensions.height));
-            }
+        // Check for collisions with container boundaries
+        if (newX <= 0 || newX + elementDimensions.width >= containerDimensions.width) {
+            angle.current = Math.PI - angle.current;
+            newX = Math.max(0, Math.min(newX, containerDimensions.width - elementDimensions.width));
+        }
+        if (newY <= 0 || newY + elementDimensions.height >= containerDimensions.height) {
+            angle.current = -angle.current;
+            newY = Math.max(0, Math.min(newY, containerDimensions.height - elementDimensions.height));
+        }
 
-            setAngle(newAngle);
-            return { x: newX, y: newY };
-        });
+        x.set(newX);
+        y.set(newY);
     });
 
     return (
@@ -59,8 +57,8 @@ const Screensaver: React.FC<ScreensaverProps> = ({
                 position: "absolute",
                 top: 0,
                 left: 0,
-                x: position.x,
-                y: position.y,
+                x,
+                y,
             }}
             className={cn("transform will-change-transform ", className)}
         >
