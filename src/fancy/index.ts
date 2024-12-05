@@ -92,15 +92,6 @@ const fancy: Registry = {
     component: React.lazy(
       () => import('@/fancy/components/text/basic-number-ticker'))
   },
-  "basic-word-rotate": {
-    "name": "basic-word-rotate",
-    "type": "components:fancy",
-    "files": [
-      "@/fancy/components/text/basic-word-rotate.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/components/text/basic-word-rotate'))
-  },
   "breathing-text": {
     "name": "breathing-text",
     "type": "components:fancy",
@@ -172,6 +163,15 @@ const fancy: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/components/text/scroll-and-swap-text'))
+  },
+  "text-rotate": {
+    "name": "text-rotate",
+    "type": "components:fancy",
+    "files": [
+      "@/fancy/components/text/text-rotate.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/components/text/text-rotate'))
   },
   "typewriter": {
     "name": "typewriter",
@@ -253,7 +253,7 @@ const fancy: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/components/text/vertical-cut-reveal'))
-  },
+  }
 };
 
 const example: Registry = {
@@ -419,15 +419,6 @@ const example: Registry = {
     component: React.lazy(
       () => import('@/fancy/examples/text/basic-number-ticker-demo'))
   },
-  "basic-word-rotate-demo": {
-    "name": "basic-word-rotate-demo",
-    "type": "components:example",
-    "files": [
-      "@/fancy/examples/text/basic-word-rotate-demo.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/examples/text/basic-word-rotate-demo'))
-  },
   "breathing-text-demo": {
     "name": "breathing-text-demo",
     "type": "components:example",
@@ -535,6 +526,15 @@ const example: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/examples/text/scroll-and-swap-text-demo'))
+  },
+  "text-rotate-demo": {
+    "name": "text-rotate-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/text/text-rotate-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/text/text-rotate-demo'))
   },
   "typewriter-demo": {
     "name": "typewriter-demo",
