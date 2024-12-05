@@ -61,7 +61,7 @@ export function MobileNav() {
           onOpenChange={setOpen}
         >
           {/* <Icons.logo className="mr-2 h-4 w-4" /> */}
-          <p className=" text-3xl tracking-tight font-calendas scale-y-[120%] align-text-top ">
+          <p className=" text-2xl tracking-tight font-calendas scale-y-[120%] ">
             fancy components*
           </p>
         </MobileLink>

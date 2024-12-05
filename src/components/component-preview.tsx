@@ -57,10 +57,20 @@ export function ComponentPreview({
     }),
     []
   );
-
   const handleRestart = React.useCallback(() => {
     setPreviewKey((prev) => prev + 1);
   }, []);
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'r' || event.key === 'R') {
+        handleRestart();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [handleRestart]);
 
   const Preview = React.useMemo(() => {
     const Component = registry[name]?.component;
@@ -122,7 +132,7 @@ export function ComponentPreview({
               }
             >
               <div className="absolute right-4 top-4 z-50">
-                <RestartButton onRestart={handleRestart} />
+                {/* <RestartButton onRestart={handleRestart} /> */}
               </div>
               <React.Fragment key={previewKey}>{Preview}</React.Fragment>
             </React.Suspense>

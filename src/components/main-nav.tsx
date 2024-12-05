@@ -9,11 +9,11 @@ export function MainNav() {
               href="/docs/introduction"
               className="flex items-center gap-x-2"
             >
-              <p className=" text-3xl px-2 tracking-tight font-calendas scale-y-[120%] align-text-top ">
+              <p className=" text-2xl px-2 tracking-tight font-calendas scale-y-[120%] ">
                 fancy components*
               </p>
             </Link>
-            <div className="flex-row gap-x-8 pt-2 text-xl  font-regular items-end hidden md:flex">
+            <div className="flex-row gap-x-8 pt-1 text-lg  font-regular items-end hidden md:flex">
               <Link href="/docs/introduction">
                 <VariableFontHoverByLetter
                   label="Docs"
