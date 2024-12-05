@@ -13,7 +13,7 @@ export function HeroImages() {
           className="w-16 h-16 md:w-24 md:h-24 object-cover hover:scale-105 duration-200 cursor-pointer transition-transform -rotate-12 shadow-2xl rounded-xl"
         />
       </FloatingElement>
-      <FloatingElement depth={1} className="top-[80%] left-[2%]">
+      <FloatingElement depth={4} className="top-[80%] left-[2%]">
         <motion.img
           src={exampleImages[1]}
           className="w-20 h-20 md:w-56 md:h-56 object-cover -rotate-[4deg] hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rounded-xl"

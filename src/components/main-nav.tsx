@@ -6,7 +6,7 @@ export function MainNav() {
         <nav className="flex items-center justify-end md:justify-between w-full gap-x-4">
           <div className="flex flex-row items-center gap-x-12">
             <Link
-              href="/docs/introduction"
+              href="/"
               className="flex items-center gap-x-2"
             >
               <p className=" text-2xl px-2 tracking-tight font-calendas scale-y-[120%] ">
