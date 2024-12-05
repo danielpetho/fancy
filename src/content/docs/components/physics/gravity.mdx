@@ -128,12 +128,13 @@ At its core, the Gravity component creates and manages a Matter.js physics world
 The `MatterBody` component transforms regular HTML elements into physics-enabled elements. Key features:
 
 - **Positioning**: Set initial positions with `x` and `y` props
-  <CodeBlockWrapper language="typescript" className="mt-2">
+
+<CodeBlockWrapper language="typescript" className="mt-2">
   {`<MatterBody x="50%" y="100px">
     <div>I'm physics-enabled!</div>
   </MatterBody>
   `}
-  </CodeBlockWrapper>
+</CodeBlockWrapper>
 
 
 - **Body Types**: Choose between different physics shapes:
@@ -142,7 +143,8 @@ The `MatterBody` component transforms regular HTML elements into physics-enabled
   - `svg`: For complex custom shapes
 
 - **Physics Properties**: Customize how elements behave with `matterBodyOptions`. The most commonly used options are:
-  <CodeBlockWrapper language="typescript" className="mt-2">
+
+<CodeBlockWrapper language="typescript" className="mt-2">
   {`<MatterBody 
     matterBodyOptions={{ 
       friction: 0.5,     // How slippery it is
@@ -156,7 +158,7 @@ The `MatterBody` component transforms regular HTML elements into physics-enabled
     <div>I'm bouncy!</div>
   </MatterBody>
   `}
-  </CodeBlockWrapper>
+</CodeBlockWrapper>
 
   For a complete list of options, check out the [Matter.js Body documentation](https://brm.io/matter-js/docs/classes/Body.html#properties). You can fine-tune everything from angular velocity to mass to create exactly the physics behavior you want.
 
