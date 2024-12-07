@@ -33,8 +33,6 @@ function extractComponent(fetchResponse: any): any {
 }
 
 function extractComponentEntries(fetchResponse: any): any[] {
-  console.log(fetchResponse?.data?.componentsCollection?.items);
-
   return fetchResponse?.data?.componentsCollection?.items;
 }
 

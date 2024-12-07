@@ -4,22 +4,18 @@ import Link from "next/link";
 import { HeroImages } from "./hero-images";
 import TextRotate from "@/fancy/components/text/text-rotate";
 import { LayoutGroup, motion } from "framer-motion";
-import { init } from "next/dist/compiled/webpack/webpack";
-import { getAllComponents } from "@/lib/api";
-import { useEffect } from "react";
+import { Component } from "@/types/types";
 
 export function LandingHero({
   allComps,
-}: any) {
-
-  useEffect(() => {
-    console.log(allComps);
-  }, [allComps]);
+}: {
+  allComps: Component[];
+}) {
 
   return (
     <section className="w-full h-[calc(100vh-6rem)] max-h-[1280px] flex flex-col items-center justify-center relative">
-      <HeroImages />
-      <div className=" flex flex-col justify-center items-center w-[700px]">
+      <HeroImages allComps={allComps} />
+      <div className=" flex flex-col justify-center items-center w-[700px] z-50 pointer-events-auto">
         <motion.h1
           className="text-8xl text-center w-full justify-center items-center flex-col flex whitespace-pre leading-tight font-calendas tracking-tight "
           animate={{ opacity: 1, y: 0 }}
@@ -41,19 +37,19 @@ export function LandingHero({
                 words={[
                   "fancy",
                   "fun",
-                  "💃🕺",
+                  "lovely ♥",
                   "weird",
                   "🪩 funky",
-                  "lovely ♥",
-                  "awesome",
+                  "💃🕺",
+                  "sexy",
                   "🕶️ cool",
-                  "look 🔥🔥🔥",
-                  "over-animated?",
                   "go 🚀",
+                  "🔥🔥🔥",
+                  "over-animated?",
                   "✨ pop ✨",
                   "rock 🤘",
                 ]}
-                className=" overflow-hidden pr-3 text-yellow-500 rounded-xl"
+                className=" overflow-hidden pr-3 text-yellow-500 rounded-xl py-0"
                 staggerDuration={0.03}
                 staggerFrom="last"
                 rotationInterval={3000}
