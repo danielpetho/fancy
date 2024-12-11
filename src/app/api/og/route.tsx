@@ -15,9 +15,9 @@ export async function GET(request: Request) {
       });
     }
 
-    const font = await fetch(
-      new URL('./Calendas.woff', import.meta.url)
-    ).then((res) => res.arrayBuffer())
+    // const font = await fetch(
+    //   new URL('./Calendas.woff', import.meta.url)
+    // ).then((res) => res.arrayBuffer())
 
     const component = await getComponent(slug!, false);
 
@@ -91,13 +91,13 @@ export async function GET(request: Request) {
       {
         width: 1200,
         height: 630,
-        fonts: [
-          {
-            name: 'Calendas',
-            data: font,
-            style: 'normal',
-          },
-        ],
+        // fonts: [
+        //   {
+        //     name: 'Calendas',
+        //     data: font,
+        //     style: 'normal',
+        //   },
+        // ],
       }
     );
   } catch (e: any) {
