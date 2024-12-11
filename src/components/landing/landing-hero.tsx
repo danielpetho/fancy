@@ -20,7 +20,7 @@ export function LandingHero({
           className="text-8xl text-center w-full justify-center items-center flex-col flex whitespace-pre leading-tight font-calendas tracking-tight "
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.2, ease: "easeOut", delay: 0 }}
+          transition={{ duration: 0.2, ease: "easeOut", delay: 0.3 }}
         >
           <span>Make your </span>
           <LayoutGroup>
@@ -62,7 +62,7 @@ export function LandingHero({
           className="text-2xl text-center font-overusedGrotesk pt-12"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.2, ease: "easeOut", delay: 0.1 }}
+          transition={{ duration: 0.2, ease: "easeOut", delay: 0.5 }}
         >
           with a growing library of ready-to-use react components &
           microinteractions. free & open source.
@@ -83,7 +83,7 @@ export function LandingHero({
           transition={{ 
             duration: 0.2, 
             ease: "easeOut", 
-            delay: 0.2,
+            delay: 0.7,
             scale: {
               duration: 0.2,
             }

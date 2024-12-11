@@ -65,10 +65,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`font-overusedGrotesk bg-[#faf9f9] antialiased flex items-center justify-center w-full `}
+        className={`font-overusedGrotesk bg-[#faf9f9] antialiased flex items-center justify-center w-full overflow-x-hidden`}
       >
-        <main className="h-full w-full max-w-screen-2xl flex flex-col items-center justify-center overflow-x-hidden">
-          <Header />
+        <main className="h-full w-full max-w-screen-2xl flex flex-col items-center justify-center">
+          {/* <Header /> */}
           {children}
           <Analytics />
         </main>
