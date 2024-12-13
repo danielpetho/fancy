@@ -38,6 +38,15 @@ const fancy: Registry = {
     component: React.lazy(
       () => import('@/fancy/components/blocks/drag-elements'))
   },
+  "float": {
+    "name": "float",
+    "type": "components:fancy",
+    "files": [
+      "@/fancy/components/blocks/float.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/components/blocks/float'))
+  },
   "screensaver": {
     "name": "screensaver",
     "type": "components:fancy",
@@ -47,15 +56,6 @@ const fancy: Registry = {
     component: React.lazy(
       () => import('@/fancy/components/blocks/screensaver'))
   },
-  "floating": {
-    "name": "floating",
-    "type": "components:fancy",
-    "files": [
-      "@/fancy/components/image/floating.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/components/image/floating'))
-  },
   "image-trail": {
     "name": "image-trail",
     "type": "components:fancy",
@@ -64,6 +64,15 @@ const fancy: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/components/image/image-trail'))
+  },
+  "parallax-floating": {
+    "name": "parallax-floating",
+    "type": "components:fancy",
+    "files": [
+      "@/fancy/components/image/parallax-floating.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/components/image/parallax-floating'))
   },
   "elastic-line": {
     "name": "elastic-line",
@@ -320,6 +329,24 @@ const example: Registry = {
     component: React.lazy(
       () => import('@/fancy/examples/blocks/drag-elements-momentum-demo'))
   },
+  "float-demo": {
+    "name": "float-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/blocks/float-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/blocks/float-demo'))
+  },
+  "float-offset-demo": {
+    "name": "float-offset-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/blocks/float-offset-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/blocks/float-offset-demo'))
+  },
   "screensaver-demo": {
     "name": "screensaver-demo",
     "type": "components:example",
@@ -338,15 +365,6 @@ const example: Registry = {
     component: React.lazy(
       () => import('@/fancy/examples/blocks/sticky-footer-demo'))
   },
-  "floating-demo": {
-    "name": "floating-demo",
-    "type": "components:example",
-    "files": [
-      "@/fancy/examples/image/floating-demo.tsx"
-    ],
-    component: React.lazy(
-      () => import('@/fancy/examples/image/floating-demo'))
-  },
   "image-trail-demo": {
     "name": "image-trail-demo",
     "type": "components:example",
@@ -355,6 +373,15 @@ const example: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/examples/image/image-trail-demo'))
+  },
+  "parallax-floating-demo": {
+    "name": "parallax-floating-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/image/parallax-floating-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/image/parallax-floating-demo'))
   },
   "elastic-line-demo": {
     "name": "elastic-line-demo",

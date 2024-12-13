@@ -138,8 +138,8 @@ export const docsConfig: SidebarNavItem[] = [
         label: "Beta",
       },
       {
-        title: "Floating",
-        href: "/docs/components/image/floating",
+        title: "Parallax Floating",
+        href: "/docs/components/image/parallax-floating",
         items: [],
       },
     ],
@@ -167,6 +167,12 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Sticky Footer",
         href: "/docs/components/blocks/sticky-footer",
         items: [],
+      },
+      {
+        title: "Float",
+        href: "/docs/components/blocks/float",
+        items: [],
+        label: "New",
       },
     ],
   },

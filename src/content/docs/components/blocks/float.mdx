@@ -1,0 +1,85 @@
+---
+title: Float
+description: A component that creates a gentle floating effect on its child.
+component: true
+---
+
+<ComponentPreview name="float-demo" />
+
+## Source code
+
+<ComponentSource name="float" />
+
+## Usage
+
+Just wrap your content you want to float with the `Float` component, and the animation will take care of the rest.
+
+## Understanding the component
+
+The component creates a smooth floating animation using sine waves for both movement and rotation. It accepts three main props:
+
+1. **Movement**: The `amplitude` prop controls movement range on X, Y and Z axes in pixels.
+
+2. **Rotation**: The `rotationRange` prop sets maximum rotation angles in degrees for each axis.
+
+3. **Animation Speed**: The `speed` prop (default: 0.5) controls animation speed - higher is faster.
+
+## Examples
+
+By default, multiple Float components will move in unison. Use the `timeOffset` prop to create more organic movement, as demonstrated below:
+
+<ComponentPreview name="float-offset-demo" />
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>speed</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.5`</TableCell>
+      <TableCell>Speed of the floating animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>amplitude</TableCell>
+      <TableCell>`[number, number, number]`</TableCell>
+      <TableCell>`[10, 30, 30]`</TableCell>
+      <TableCell>Movement range in pixels for X, Y and Z axes</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>rotationRange</TableCell>
+      <TableCell>`[number, number, number]`</TableCell>
+      <TableCell>`[15, 15, 7.5]`</TableCell>
+      <TableCell>Maximum rotation in degrees for X, Y and Z axes</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>timeOffset</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0`</TableCell>
+      <TableCell>Offset to stagger animations between multiple instances</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+
+
