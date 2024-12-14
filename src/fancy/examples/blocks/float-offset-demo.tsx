@@ -3,24 +3,32 @@ import { cn } from "@/lib/utils";
 
 export default function FloatDemo() {
   const texts = [
-    { text: "James Smith", position: "top-[0%] left-[20%]" },
-    { text: "Emma Johnson", position: "top-[20%] left-[80%]" },
-    { text: "William Brown", position: "top-[70%] left-[40%]" },
-    { text: "Olivia Davis", position: "top-[50%] left-[70%]" },
-    { text: "Noah Wilson", position: "top-[80%] left-[30%]" },
-    { text: "Sophia Taylor", position: "top-[40%] left-[0%]" },
-    { text: "Lucas Anderson", position: "top-[15%] left-[45%]" },
-    { text: "Isabella Thomas", position: "top-[65%] left-[85%]" },
-    { text: "Mason Jackson", position: "top-[85%] left-[15%]" },
-    { text: "Ava White", position: "top-[35%] left-[75%]" },
-    { text: "Ethan Harris", position: "top-[75%] left-[55%]" },
-    { text: "Mia Martin", position: "top-[25%] left-[35%]" },
-    { text: "Alexander Thompson", position: "top-[45%] left-[25%]" },
-    { text: "Charlotte Garcia", position: "top-[55%] left-[65%]" },
-    { text: "Daniel Martinez", position: "top-[90%] left-[45%]" },
-    { text: "Emily Robinson", position: "top-[10%] left-[70%]" },
-    { text: "Henry Clark", position: "top-[60%] left-[10%]" },
-    { text: "Sophie Lewis", position: "top-[95%] left-[80%]" },
+    { text: "@mdx-js/loader", position: "top-[0%] left-[20%]" },
+    { text: "@mdx-js/react", position: "top-[20%] left-[80%]" },
+    { text: "@next/mdx", position: "top-[70%] left-[40%]" },
+    { text: "@vercel/analytics", position: "top-[80%] left-[30%]" },
+    { text: "class-variance-authority", position: "top-[40%] left-[0%]" },
+    { text: "clsx", position: "top-[15%] left-[45%]" },
+    { text: "flubber", position: "top-[65%] left-[85%]" },
+    { text: "framer-motion", position: "top-[85%] left-[15%]" },
+    { text: "lenis", position: "top-[35%] left-[75%]" },
+    { text: "lodash", position: "top-[75%] left-[55%]" },
+    { text: "lucide-react", position: "top-[25%] left-[35%]" },
+    { text: "matter-js", position: "top-[45%] left-[25%]" },
+    { text: "mdast-util-toc", position: "top-[55%] left-[65%]" },
+    { text: "next", position: "top-[90%] left-[45%]" },
+    { text: "next-mdx-remote", position: "top-[10%] left-[70%]" },
+    { text: "poly-decomp", position: "top-[60%] left-[10%]" },
+    { text: "react", position: "top-[30%] left-[50%]" },
+    { text: "react-dom", position: "top-[95%] left-[60%]" },
+    { text: "react-syntax-highlighter", position: "top-[5%] left-[90%]" },
+    { text: "react-wrap-balancer", position: "top-[82%] left-[75%]" },
+    { text: "rehype-pretty-code", position: "top-[28%] left-[15%]" },
+    { text: "remark", position: "top-[67%] left-[5%]" },
+    { text: "svg-path-commander", position: "top-[92%] left-[25%]" },
+    { text: "tailwind-merge", position: "top-[28%] left-[95%]" },
+    { text: "tailwindcss-animate", position: "top-[73%] left-[20%]" },
+    { text: "zod", position: "top-[8%] left-[40%]" },
   ];
 
   return (
@@ -41,7 +49,7 @@ export default function FloatDemo() {
           ]}
           speed={0.3 + Math.random() * 0.4}
           className={cn(
-            "absolute text-xl flex w-full sm:text-2xl md:text-3xl font-light hover:underline cursor-pointer text-[#0015ff]",
+            "absolute text-lg flex sm:text-xl md:text-2xl font-light hover:underline cursor-pointer text-[#0015ff]",
             item.position
           )}
         >
