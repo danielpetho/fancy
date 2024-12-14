@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer"
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 import { siteConfig } from "@/config/site";
 
@@ -56,7 +54,7 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
-}
+};
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -64,11 +62,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`font-overusedGrotesk min-h-screen bg-stone-200 antialiased`}>
-        <Header />
-        {children}
-        <Footer />
-        <Analytics />
+      <body
+        className={`font-overusedGrotesk bg-[#faf9f9] antialiased flex items-center justify-center w-full overflow-x-hidden`}
+      >
+        <main className="h-full w-full max-w-screen-2xl flex flex-col items-center justify-center">
+          {children}
+          <Analytics />
+        </main>
       </body>
     </html>
   );

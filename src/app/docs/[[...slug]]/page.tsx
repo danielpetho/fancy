@@ -2,8 +2,7 @@ import { DocsPager } from "@/components/doc-pager";
 import { DashboardTableOfContents } from "@/components/toc";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CONTENT_DIRECTORY, getDocFromParams } from "@/lib/get-docs";
-import { siteConfig } from "@/lib/site";
-import { getTableOfContents } from "@/lib/toc";
+import { siteConfig } from "@/config/site";
 import { absoluteUrl, cn } from "@/lib/utils";
 import { DocPageProps } from "@/types/types";
 import { Metadata } from "next";
@@ -23,17 +22,20 @@ export async function generateMetadata({
     return {};
   }
 
+  const urlSlug = doc.slug.split('/').pop();
+  const ogUrl = urlSlug ? `/api/og?slug=${urlSlug}` : siteConfig.ogImage;
+
   return {
     title: doc.title,
-    description: doc.description,
+    description: doc.description === "null" ? siteConfig.description : doc.description,
     openGraph: {
       title: doc.title,
-      description: doc.description || siteConfig.description,
+      description: doc.description === "null" ? siteConfig.description : doc.description,
       type: "article",
-      url: absoluteUrl(doc.slug),
+      url: doc.slug,
       images: [
         {
-          url: siteConfig.ogImage,
+          url: ogUrl,          
           width: 1200,
           height: 630,
           alt: siteConfig.name,
@@ -44,7 +46,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: doc.title,
       description: doc.description,
-      images: [siteConfig.ogImage],
+      images: [ogUrl],
       creator: "@nonzeroexitcode",
     },
   };
@@ -87,7 +89,7 @@ export default async function DocPage({ params }: DocPageProps) {
 
   return (
     <main className="xl:grid xl:grid-cols-[1fr_300px] w-full justify-center">
-      <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 shadow-lg">
+      <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 border-border border shadow-lg">
         <div className="container">
           <div className="mb-2 pb-2 flex items-center space-x-1 text-lg text-muted-foreground">
             <div className="overflow-hidden font-medium  whitespace-nowrap">
@@ -118,8 +120,8 @@ export default async function DocPage({ params }: DocPageProps) {
         </div>
       </div>
       {doc.toc && (
-        <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-7rem)] pl-4">
-          <div className=" bg-background rounded-xl shadow-lg ">
+        <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-6rem)] pl-4">
+          <div className=" bg-background rounded-xl shadow-lg border">
             <ScrollArea className="pb-10 p-6">
               <DashboardTableOfContents toc={toc} />
             </ScrollArea>

@@ -26,5 +26,17 @@ export interface DocPageProps {
   };
 }
 
+// CMS data
+export type Component = {
+  slug: string;
+  name: string;
+  thumbnail: {
+    url: string;
+  };
+  demo: {
+    url: string;
+  };
+}
+
 
 
