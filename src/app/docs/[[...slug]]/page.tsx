@@ -2,8 +2,7 @@ import { DocsPager } from "@/components/doc-pager";
 import { DashboardTableOfContents } from "@/components/toc";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CONTENT_DIRECTORY, getDocFromParams } from "@/lib/get-docs";
-import { siteConfig } from "@/lib/site";
-import { getTableOfContents } from "@/lib/toc";
+import { siteConfig } from "@/config/site";
 import { absoluteUrl, cn } from "@/lib/utils";
 import { DocPageProps } from "@/types/types";
 import { Metadata } from "next";
@@ -24,17 +23,16 @@ export async function generateMetadata({
   }
 
   const urlSlug = doc.slug.split('/').pop();
-  //const ogUrl = absoluteUrl(`/api/og?slug=${doc.slug}`);
-  const ogUrl = `/api/og?slug=${urlSlug}`;
+  const ogUrl = urlSlug ? `/api/og?slug=${urlSlug}` : siteConfig.ogImage;
 
   return {
     title: doc.title,
-    description: doc.description,
+    description: doc.description === "null" ? siteConfig.description : doc.description,
     openGraph: {
       title: doc.title,
-      description: doc.description || siteConfig.description,
+      description: doc.description === "null" ? siteConfig.description : doc.description,
       type: "article",
-      url: absoluteUrl(doc.slug),
+      url: doc.slug,
       images: [
         {
           url: ogUrl,          
@@ -48,7 +46,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title: doc.title,
       description: doc.description,
-      images: [siteConfig.ogImage],
+      images: [ogUrl],
       creator: "@nonzeroexitcode",
     },
   };
