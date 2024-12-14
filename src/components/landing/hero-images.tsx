@@ -1,6 +1,6 @@
 "use client";
 
-import Floating, { FloatingElement } from "@/fancy/components/image/floating";
+import Floating, { FloatingElement } from "@/fancy/components/image/parallax-floating";
 import { Component } from "@/types/types";
 import HoverVideo from "./hover-video";
 import Link from "next/link";
