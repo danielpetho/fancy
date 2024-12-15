@@ -23,9 +23,15 @@ async function fetchGraphQL(query: string, preview = false): Promise<any> {
         }`,
       },
       body: JSON.stringify({ query }),
+      cache: 'force-cache',
       next: { tags: ["components"] },
     }
-  ).then((response) => response.json());
+  ).then((response) => {
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json();
+  });
 }
 
 function extractComponent(fetchResponse: any): any {

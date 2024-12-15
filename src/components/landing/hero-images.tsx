@@ -6,7 +6,21 @@ import HoverVideo from "./hover-video";
 import Link from "next/link";
 
 export function HeroImages({ allComps }: { allComps: Component[] }) {
-  const getComp = (name: string) => allComps.find((comp) => comp.name === name);
+  
+  if (!Array.isArray(allComps)) {
+    console.error('allComps is not an array:', allComps);
+    return null;
+  }
+
+  const getComp = (name: string) => {
+    const comp = allComps.find((comp) => comp.name === name);
+    if (!comp) {
+      console.error(`Component ${name} not found`);
+      return null;
+    }
+    return comp;
+  };
+
   const preLink = "/docs/components";
 
   return (
