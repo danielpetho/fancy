@@ -2,6 +2,9 @@ import { getComponent } from "@/lib/api";
 import { ImageResponse } from "next/og";
 import { siteConfig } from "@/config/site";
 
+export const runtime = "edge";
+export const dynamic = "force-static";
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
