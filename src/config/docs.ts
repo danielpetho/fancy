@@ -14,11 +14,11 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/installation",
         items: [],
       },
-      {
-        title: "Components",
-        href: "/docs/components",
-        items: [],
-      },
+      // {
+      //   title: "Components",
+      //   href: "/docs/components",
+      //   items: [],
+      // },
     ],
   },
 

@@ -9,6 +9,7 @@ import { Metadata } from "next";
 import fs from "node:fs";
 import path from "node:path";
 import Balancer from "react-wrap-balancer";
+import { getComponent } from "@/lib/api";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
@@ -52,16 +53,14 @@ export async function generateMetadata({
   };
 }
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
   const targets = fs.readdirSync(path.join(process.cwd(), CONTENT_DIRECTORY), {
-    // Read nested directories and files
     recursive: true,
   });
 
   const files = [];
 
   for (const target of targets) {
-    // Skip directories
     if (
       fs
         .lstatSync(
@@ -72,11 +71,25 @@ export function generateStaticParams() {
       continue;
     }
 
-    // Add files as valid paths
     files.push(target);
   }
 
-  // Return the list of files we want to match with, removing the `.mdx` suffix and breaking them up by directory.
+  const slugs = files.map((file) => 
+    file.toString().replace(".mdx", "").split("/").pop()
+  );
+
+  await Promise.all(
+    slugs.map(async (slug) => {
+      if (slug) {
+        try {
+          await getComponent(slug, false);
+        } catch (e) {
+          console.log(`Failed to pre-fetch OG data for ${slug}:`, e);
+        }
+      }
+    })
+  );
+
   return files.map((file) => ({
     slug: file.toString().replace(".mdx", "").split("/"),
   }));

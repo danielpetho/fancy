@@ -2,6 +2,10 @@ import { getComponent } from "@/lib/api";
 import { ImageResponse } from "next/og";
 import { siteConfig } from "@/config/site";
 
+// Add segment config for build-time generation
+export const runtime = 'edge';
+export const revalidate = false;
+
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
@@ -13,25 +17,18 @@ export async function GET(request: Request) {
     }
 
     const component = await getComponent(slug!, false);
-
-    const componentName = slug
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-
-    const imageUrl = component?.thumbnail?.url;
     
-    // If no component image found, return default OG image
-    if (!imageUrl) {
+    // If no component found, return default OG image
+    if (!component?.thumbnail?.url) {
       return Response.redirect(siteConfig.ogImage);
     }
 
-    // Rest of the existing code for generating dynamic OG image...
+    // Generate OG image
     return new ImageResponse(
       (
         <img
-          src={imageUrl}
-          alt={componentName}
+          src={component.thumbnail.url}
+          alt={slug}
           style={{
             width: '100%',
             height: '100%',
@@ -46,7 +43,6 @@ export async function GET(request: Request) {
     );
   } catch (e: any) {
     console.log(`${e.message}`);
-    // Return default OG image on any error
     return Response.redirect(siteConfig.ogImage);
   }
 }
