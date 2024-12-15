@@ -12,6 +12,8 @@ export function LandingHero({
   allComps: Component[];
 }) {
 
+  console.log(allComps);
+
   return (
     <section className="w-full h-[calc(100vh-6rem)] max-h-[1280px] flex flex-col items-center justify-center relative">
       {/* <HeroImages allComps={allComps} /> */}
