@@ -19,7 +19,11 @@ export async function GET(request: Request) {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
 
+    console.log(component);
+
     const imageUrl = component?.thumbnail?.url;
+
+    console.log(imageUrl);
     
     // If no component image found, return default OG image
     if (!imageUrl) {
