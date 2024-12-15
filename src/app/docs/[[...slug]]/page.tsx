@@ -23,7 +23,7 @@ export async function generateMetadata({
   }
 
   const urlSlug = doc.slug.split('/').pop();
-  const ogUrl = urlSlug ? `/api/og?slug=${urlSlug}` : siteConfig.ogImage;
+  const ogUrl = urlSlug ? `/api/og/${urlSlug}` : siteConfig.ogImage;
 
   return {
     title: doc.title,

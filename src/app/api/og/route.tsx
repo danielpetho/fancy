@@ -2,10 +2,26 @@ import { getComponent } from "@/lib/api";
 import { ImageResponse } from "next/og";
 import { siteConfig } from "@/config/site";
 
+// Make it static
+export const runtime = 'edge';
+export const dynamic = 'force-static';
+
+// Use generateImageMetadata instead of GET
+export async function generateImageMetadata() {
+  return [
+    {
+      contentType: 'image/png',
+      size: { width: 1200, height: 630 },
+      id: 'default',
+    },
+  ];
+}
+
 export async function GET(request: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const slug = searchParams.get("slug");
+    // Get slug from pathname instead of searchParams
+    const pathname = new URL(request.url).pathname;
+    const slug = pathname.split('/').pop();
 
     // If no slug provided, return default OG image
     if (!slug) {
