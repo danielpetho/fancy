@@ -5,12 +5,15 @@ import { HeroImages } from "./hero-images";
 import TextRotate from "@/fancy/components/text/text-rotate";
 import { LayoutGroup, motion } from "framer-motion";
 import { Component } from "@/types/types";
+import { redirect } from "next/navigation";
 
 export function LandingHero({
   allComps,
 }: {
   allComps: Component[];
 }) {
+
+  redirect("/docs/introduction");
 
   return (
     <section className="w-full h-[calc(100vh-6rem)] max-h-[1280px] flex flex-col items-center justify-center relative">
