@@ -10,7 +10,8 @@ import fs from "node:fs";
 import path from "node:path";
 import Balancer from "react-wrap-balancer";
 
-export const runtime = "edge";
+export const runtime = "nodejs";
+export const dynamic = "force-static";
 
 export async function generateMetadata({
   params,
