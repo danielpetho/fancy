@@ -17,7 +17,7 @@ const CirclingElementsDemo: React.FC = () => {
         <Screensaver
           key={index}
           speed={1}
-          startPosition={{ x: index * 15, y: index * 15 }}
+          startPosition={{ x: index * 3, y: index * 3 }}
           startAngle={40}
           containerRef={containerRef}
         >

@@ -1,13 +1,13 @@
 import { useDimensions } from "@/hooks/use-dimensions";
 import { cn } from "@/lib/utils";
 import { motion, useAnimationControls, useAnimationFrame, useMotionValue } from "framer-motion";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 type ScreensaverProps = {
     children: React.ReactNode;
     containerRef: React.RefObject<HTMLElement>;
     speed?: number;
-    startPosition?: { x: number; y: number };
+    startPosition?: { x: number; y: number }; // x,y as percentages (0-100)
     startAngle?: number; // in degrees
     className?: string;
 };
@@ -21,12 +21,22 @@ const Screensaver: React.FC<ScreensaverProps> = ({
     className,
 }) => {
     const elementRef = useRef<HTMLDivElement>(null);
-    const x = useMotionValue(startPosition.x);
-    const y = useMotionValue(startPosition.y);
+    const x = useMotionValue(0);
+    const y = useMotionValue(0);
     const angle = useRef((startAngle * Math.PI) / 180);
     
     const containerDimensions = useDimensions(containerRef);
     const elementDimensions = useDimensions(elementRef);
+
+    // Set initial position based on container dimensions and percentage
+    useEffect(() => {
+        if (containerDimensions.width && containerDimensions.height) {
+            const initialX = (startPosition.x / 100) * (containerDimensions.width - (elementDimensions.width || 0));
+            const initialY = (startPosition.y / 100) * (containerDimensions.height - (elementDimensions.height || 0));
+            x.set(initialX);
+            y.set(initialY);
+        }
+    }, [containerDimensions, elementDimensions, startPosition]);
 
     useAnimationFrame(() => {
         const velocity = speed;
@@ -60,7 +70,7 @@ const Screensaver: React.FC<ScreensaverProps> = ({
                 x,
                 y,
             }}
-            className={cn("transform will-change-transform ", className)}
+            className={cn("transform will-change-transform", className)}
         >
             {children}
         </motion.div>
