@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </aside>
 
-          <div className="flex p-4 w-screen">{children}</div>
+          <div className="flex p-4 w-screen md:w-full">{children}</div>
         </div>
         {/* <div className="absolute bottom-0 h-36" /> */}
       </div>
