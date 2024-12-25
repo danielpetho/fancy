@@ -132,7 +132,7 @@ export function ComponentPreview({
               }
             >
               <div className="absolute right-4 top-4 z-50">
-                {/* <RestartButton onRestart={handleRestart} /> */}
+                <RestartButton onRestart={handleRestart} />
               </div>
               <React.Fragment key={previewKey}>{Preview}</React.Fragment>
             </React.Suspense>
@@ -152,7 +152,6 @@ export function ComponentPreview({
                 language="typescript"
                 style={hybrid}
                 customStyle={syntaxHighlighterStyle}
-                wrapLongLines={true}
               >
                 {sourceCode}
               </ReactSyntaxHighlighter>

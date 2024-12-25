@@ -88,9 +88,9 @@ export default async function DocPage({ params }: DocPageProps) {
   const toc = doc.toc;
 
   return (
-    <main className="xl:grid xl:grid-cols-[1fr_300px] w-full justify-center">
+    <main className="xl:grid xl:grid-cols-[1fr_300px] justify-center max-w-full">
       <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 border-border border shadow-lg">
-        <div className="container">
+        <div className="container max-w-full px-4 md:px-8">
           <div className="mb-2 pb-2 flex items-center space-x-1 text-lg text-muted-foreground">
             <div className="overflow-hidden font-medium  whitespace-nowrap">
               Docs
@@ -101,7 +101,7 @@ export default async function DocPage({ params }: DocPageProps) {
           <div className="space-y-2">
             <h1
               className={cn(
-                "scroll-m-20 text-5xl font-calendas tracking-tight"
+                "scroll-m-20 text-3xl text-pretty md:text-5xl font-calendas tracking-tight"
               )}
             >
               {doc.title}
@@ -113,7 +113,9 @@ export default async function DocPage({ params }: DocPageProps) {
             )}
           </div>
 
-          <div className="pb-12 pt-8">{doc.body}</div>
+          <div className="pb-12 pt-8 overflow-x-hidden">
+            {doc.body}
+          </div>
           <div>
             <DocsPager doc={doc} />
           </div>
@@ -121,7 +123,7 @@ export default async function DocPage({ params }: DocPageProps) {
       </div>
       {doc.toc && (
         <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-6rem)] pl-4">
-          <div className=" bg-background rounded-xl shadow-lg border">
+          <div className="bg-background rounded-xl shadow-lg border">
             <ScrollArea className="pb-10 p-6">
               <DashboardTableOfContents toc={toc} />
             </ScrollArea>

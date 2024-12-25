@@ -42,12 +42,15 @@ export function ComponentSource({
     loadSourceCode();
   }, [name]);
 
-  const syntaxHighlighterStyle = React.useMemo(() => ({
-    borderRadius: "var(--radius) var(--radius)",
-    padding: "1rem",
-    width: "100%",
-    maxWidth: "100%",
-  }), []);
+  const syntaxHighlighterStyle = React.useMemo(
+    () => ({
+      borderRadius: "var(--radius) var(--radius)",
+      padding: "1rem",
+      width: "100%",
+      maxWidth: "100%",
+    }),
+    []
+  );
 
   return (
     <Collapsible open={isOpened} onOpenChange={setIsOpened} className="w-full">
@@ -59,19 +62,20 @@ export function ComponentSource({
             !isOpened && "max-h-40"
           )}
         >
-          {isOpened && <div className="absolute right-4 top-4">
-            <CopyButton
-              value={sourceCode}
-              src={name}
-              event={"copy_npm_command"}
-            />
-          </div>}
+          {isOpened && (
+            <div className="absolute right-4 top-4">
+              <CopyButton
+                value={sourceCode}
+                src={name}
+                event={"copy_npm_command"}
+              />
+            </div>
+          )}
           <div className="w-full">
             <ReactSyntaxHighlighter
               language="typescript"
               style={hybrid}
               customStyle={syntaxHighlighterStyle}
-              wrapLongLines={true}
             >
               {sourceCode}
             </ReactSyntaxHighlighter>
@@ -86,7 +90,10 @@ export function ComponentSource({
           )}
         >
           <CollapsibleTrigger asChild>
-            <Button variant="secondary" className="h-8 text-xs bg-white hover:bg-accent">
+            <Button
+              variant="secondary"
+              className="h-8 text-xs bg-white hover:bg-accent"
+            >
               {isOpened ? "Collapse" : expandButtonTitle}
             </Button>
           </CollapsibleTrigger>

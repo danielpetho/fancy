@@ -13,7 +13,7 @@ export function LandingHero({
 }) {
 
   return (
-    <section className="w-full h-[calc(100vh-6rem)] max-h-[1280px] flex flex-col items-center justify-center relative">
+    <section className="w-full h-screen overflow-hidden flex flex-col items-center justify-center relative">
       <HeroImages allComps={allComps} />
       <div className=" flex flex-col justify-center items-center w-[250px] sm:w-[300px] md:w-[500px] lg:w-[700px] z-50 pointer-events-auto">
         <motion.h1

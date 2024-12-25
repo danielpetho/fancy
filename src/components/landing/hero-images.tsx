@@ -24,7 +24,7 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
   const preLink = "/docs/components";
 
   return (
-    <Floating sensitivity={-0.5} className="w-full h-full ">
+    <Floating sensitivity={-0.5} className="h-full">
       <FloatingElement depth={0.5} className="top-[15%] left-[2%] md:top-[25%] md:left-[5%] ">
         <Link href={`${preLink}/blocks/sticky-footer`}>
           <HoverVideo
