@@ -53,12 +53,12 @@ export function ComponentSource({
   );
 
   return (
-    <Collapsible open={isOpened} onOpenChange={setIsOpened} className="w-full">
+    <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
       <div className={cn("relative w-full", className)} {...props}>
         <CollapsibleContent
           forceMount
           className={cn(
-            "overflow-auto rounded-lg max-h-[640px] w-full",
+            "overflow-auto rounded-lg max-h-[640px]",
             !isOpened && "max-h-40"
           )}
         >
@@ -71,15 +71,14 @@ export function ComponentSource({
               />
             </div>
           )}
-          <div className="w-full">
             <ReactSyntaxHighlighter
               language="typescript"
               style={hybrid}
               customStyle={syntaxHighlighterStyle}
+              wrapLongLines={true}
             >
               {sourceCode}
             </ReactSyntaxHighlighter>
-          </div>
         </CollapsibleContent>
         <div
           className={cn(

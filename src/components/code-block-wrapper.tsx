@@ -85,6 +85,7 @@ export function CodeBlockWrapper({
             language={language}
             style={hybrid}
             customStyle={syntaxHighlighterStyle}
+            wrapLongLines={true}
           >
             {codeString}
           </ReactSyntaxHighlighter>

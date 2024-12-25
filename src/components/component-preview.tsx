@@ -152,6 +152,7 @@ export function ComponentPreview({
                 language="typescript"
                 style={hybrid}
                 customStyle={syntaxHighlighterStyle}
+                wrapLongLines={true}
               >
                 {sourceCode}
               </ReactSyntaxHighlighter>
