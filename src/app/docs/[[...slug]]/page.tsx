@@ -9,6 +9,8 @@ import { Metadata } from "next";
 import fs from "node:fs";
 import path from "node:path";
 import Balancer from "react-wrap-balancer";
+import { getComponent } from "@/lib/api";
+import { url } from "node:inspector";
 
 export const runtime = "nodejs";
 export const dynamic = "force-static";
@@ -23,7 +25,8 @@ export async function generateMetadata({
   }
 
   const urlSlug = doc.slug.split('/').pop();
-  const ogUrl = urlSlug ? `/api/og?slug=${urlSlug}` : siteConfig.ogImage;
+  const component = await getComponent(urlSlug!, false);
+  const ogUrl = component?.thumbnail?.url || siteConfig.ogImage;
 
   return {
     title: doc.title,
