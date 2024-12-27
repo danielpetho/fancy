@@ -49,8 +49,8 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
       <FloatingElement depth={4} className="top-[90%] left-[6%] md:top-[80%] md:left-[8%]">
         <Link href={`${preLink}/text/letter-swap`}>
           <HoverVideo
-            thumbnail={getComp("letter-swap-hover")!.thumbnail.url}
-            videoSrc={getComp("letter-swap-hover")!.demo.url}
+            thumbnail={getComp("letter-swap")!.thumbnail.url}
+            videoSrc={getComp("letter-swap")!.demo.url}
             className="w-40 h-40 sm:w-48 sm:h-48 md:w-60 md:h-60 lg:w-64 lg:h-64 object-cover -rotate-[4deg] hover:scale-105 duration-200 cursor-pointer transition-transform shadow-2xl rounded-xl"
             delay={0.9}
           />
