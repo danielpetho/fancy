@@ -236,6 +236,15 @@ const fancy: Registry = {
     component: React.lazy(
       () => import('@/fancy/components/text/variable-font-and-cursor'))
   },
+  "variable-font-cursor-proximity": {
+    "name": "variable-font-cursor-proximity",
+    "type": "components:fancy",
+    "files": [
+      "@/fancy/components/text/variable-font-cursor-proximity.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/components/text/variable-font-cursor-proximity'))
+  },
   "variable-font-hover-by-letter": {
     "name": "variable-font-hover-by-letter",
     "type": "components:fancy",
@@ -598,6 +607,24 @@ const example: Registry = {
     ],
     component: React.lazy(
       () => import('@/fancy/examples/text/variable-font-and-cursor-demo'))
+  },
+  "variable-font-cursor-proximity-demo": {
+    "name": "variable-font-cursor-proximity-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/text/variable-font-cursor-proximity-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/text/variable-font-cursor-proximity-demo'))
+  },
+  "variable-font-cursor-proximity-falloff-demo": {
+    "name": "variable-font-cursor-proximity-falloff-demo",
+    "type": "components:example",
+    "files": [
+      "@/fancy/examples/text/variable-font-cursor-proximity-falloff-demo.tsx"
+    ],
+    component: React.lazy(
+      () => import('@/fancy/examples/text/variable-font-cursor-proximity-falloff-demo'))
   },
   "variable-font-hover-by-letter-demo": {
     "name": "variable-font-hover-by-letter-demo",
