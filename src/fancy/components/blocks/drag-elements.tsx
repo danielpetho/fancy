@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react"
-import { InertiaOptions, motion } from "framer-motion"
+import { InertiaOptions, motion } from "motion/react"
 
 type DragElementsProps = {
   children: React.ReactNode

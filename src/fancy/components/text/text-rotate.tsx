@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react"
-import { AnimatePresence, motion, Transition } from "framer-motion"
+import { AnimatePresence, motion, Transition } from "motion/react"
 
 interface TextRotateProps {
   words: string[]

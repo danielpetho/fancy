@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import { motion, ValueAnimationTransition } from "framer-motion"
+import { motion, ValueAnimationTransition } from "motion/react"
 
 interface UnderlineProps {
   label: string

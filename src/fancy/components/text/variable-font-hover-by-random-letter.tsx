@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { motion, Transition } from "framer-motion"
+import { motion, Transition } from "motion/react"
 
 // Function to shuffle an array
 function shuffleArray(array: number[]) {

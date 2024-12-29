@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react"
-import { DynamicAnimationOptions, motion } from "framer-motion"
+import { DynamicAnimationOptions, motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 
 import { SidebarNavItem } from "@/types/nav"
 import { cn } from "@/lib/utils"

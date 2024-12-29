@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import {
   motion,
-  useAnimationControls,
   useAnimationFrame,
   useMotionValue,
-} from "framer-motion"
+} from "motion/react"
 
 import { cn } from "@/lib/utils"
 import { useDimensions } from "@/hooks/use-dimensions"

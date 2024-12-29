@@ -6,7 +6,7 @@ import {
   Transition,
   useAnimate,
   useAnimationFrame,
-} from "framer-motion"
+} from "motion/react"
 import { v4 as uuidv4 } from "uuid"
 
 import { useMouseVector } from "@/hooks/use-mouse-vector"

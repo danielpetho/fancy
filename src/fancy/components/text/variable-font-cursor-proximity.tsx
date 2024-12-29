@@ -1,5 +1,5 @@
 import React, { forwardRef, useMemo, useRef } from "react"
-import { motion, useAnimationFrame } from "framer-motion"
+import { motion, useAnimationFrame } from "motion/react"
 
 import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
 

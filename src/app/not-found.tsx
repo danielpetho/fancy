@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import Link from "next/link"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import Screensaver from "@/fancy/components/blocks/screensaver"

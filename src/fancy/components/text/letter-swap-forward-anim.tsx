@@ -4,7 +4,7 @@ import {
   motion,
   stagger,
   useAnimate,
-} from "framer-motion"
+} from "motion/react"
 
 interface TextProps {
   label: string

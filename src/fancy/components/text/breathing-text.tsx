@@ -1,4 +1,4 @@
-import { motion, Transition, Variants } from "framer-motion"
+import { motion, Transition, Variants } from "motion/react"
 
 interface TextProps {
   label: string

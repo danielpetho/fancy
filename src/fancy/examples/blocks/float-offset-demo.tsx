@@ -10,7 +10,7 @@ export default function FloatDemo() {
     { text: "class-variance-authority", position: "top-[40%] left-[0%]" },
     { text: "clsx", position: "top-[15%] left-[45%]" },
     { text: "flubber", position: "top-[65%] left-[85%]" },
-    { text: "framer-motion", position: "top-[85%] left-[15%]" },
+    { text: "motion", position: "top-[85%] left-[15%]" },
     { text: "lenis", position: "top-[35%] left-[75%]" },
     { text: "lodash", position: "top-[75%] left-[55%]" },
     { text: "lucide-react", position: "top-[25%] left-[35%]" },

@@ -1,5 +1,5 @@
 import React from "react"
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 
 import AnimatedGradient from "@/fancy/components/background/animated-gradient"
 

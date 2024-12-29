@@ -4,7 +4,7 @@ import {
   motion,
   stagger,
   useAnimate,
-} from "framer-motion"
+} from "motion/react"
 import { debounce } from "lodash"
 
 interface TextProps {

@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { DynamicAnimationOptions, motion, useAnimate } from "framer-motion"
+import { DynamicAnimationOptions, motion, useAnimate } from "motion/react"
 import { debounce } from "lodash"
 
 interface TextProps {

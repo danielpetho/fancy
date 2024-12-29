@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { LayoutGroup, motion } from "framer-motion"
+import { LayoutGroup, motion } from "motion/react"
 
 import { Component } from "@/types/types"
 import TextRotate from "@/fancy/components/text/text-rotate"

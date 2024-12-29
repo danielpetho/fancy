@@ -5,7 +5,7 @@ import {
   useAnimationFrame,
   useMotionValue,
   ValueAnimationTransition,
-} from "framer-motion"
+} from "motion/react"
 
 import { useDimensions } from "@/hooks/use-dimensions"
 import { useElasticLineEvents } from "@/hooks/use-elastic-line-events"

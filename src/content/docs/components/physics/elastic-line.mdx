@@ -188,7 +188,7 @@ return { isGrabbed, controlPoint };
 
 This component is made with a simple svg quadratic curve, with 2+1 points. The start and end points of the curve positioned at the two edges of the parent container, either horizontally or vertically, depending on the `isVertical` prop. This means, the line will always be centered in the container, and it will always fill up the entire container, so make sure to position your container properly.
 
-The third point of the line is the control point, named `Q`, which is positioned at the center of the container by default. When the cursor moves close to the line (within `grabThreshold`), the control point will be controlled by the cursor's position. When the distance between them is greater than the `releaseThreshold` prop, the control point is animated back to the center of the container, with the help of framer-motion's `animate` function.
+The third point of the line is the control point, named `Q`, which is positioned at the center of the container by default. When the cursor moves close to the line (within `grabThreshold`), the control point will be controlled by the cursor's position. When the distance between them is greater than the `releaseThreshold` prop, the control point is animated back to the center of the container, with the help of motion's `animate` function.
 
 For better readability — the calculation of the control point's position, and the signal it's grabbed — done in a separate hook, called `useElasticLineEvents`.
 
@@ -241,13 +241,13 @@ The compoment also have an `animateInTransition` prop, which is used when the li
       <TableCell>transition</TableCell>
       <TableCell>`Transition`</TableCell>
       <TableCell>`{ type: "spring", stiffness: 400, damping: 5, delay: 0 }`</TableCell>
-      <TableCell>The transition object of the line. Refer to framer-motion docs for more details</TableCell>
+      <TableCell>The transition object of the line. Refer to motion docs for more details</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>animateInTransition</TableCell>
       <TableCell>`Transition`</TableCell>
       <TableCell>`{ type: "spring", stiffness: 400, damping: 5, delay: 0 }`</TableCell>
-      <TableCell>The transition object of the line when it is initially rendered. Refer to framer-motion docs for more details</TableCell>
+      <TableCell>The transition object of the line when it is initially rendered. Refer to motion docs for more details</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>
