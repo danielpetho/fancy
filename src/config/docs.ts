@@ -35,7 +35,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Vertical Cut Reveal",
         href: "/docs/components/text/vertical-cut-reveal",
         items: [],
-        label: "New",
       },
       {
         title: "Random Letter Swap Hover",
@@ -61,6 +60,12 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Variable Font And Cursor",
         href: "/docs/components/text/variable-font-and-cursor",
         items: [],
+      },
+      {
+        title: "Variable Font Cursor Proximity",
+        href: "/docs/components/text/variable-font-cursor-proximity",
+        items: [],
+        label: "New",
       },
       {
         title: "Breathing Text",
@@ -128,7 +133,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Gravity", 
         href: "/docs/components/physics/gravity", 
         items: [],
-        label: "New",
       },
     ],
   },
@@ -177,7 +181,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Float",
         href: "/docs/components/blocks/float",
         items: [],
-        label: "New",
       },
     ],
   },
