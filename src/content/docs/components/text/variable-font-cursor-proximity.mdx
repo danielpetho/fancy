@@ -10,40 +10,53 @@ component: true
 
 <Steps>
 
-<Step>Create a hook for querying the cursor position:</Step>
+<Step>Create a hook for querying the cursor/mouse position.</Step>
 
-<CodeBlockWrapper language="typescript">
+This hook actually returns a ref to the position (instead of a state), so we can avoid re-renders when the cursor moves.
+
+<CodeBlockWrapper language="typescript" className="mt-4">
 {
-`import { useState, useEffect, RefObject } from "react";
+`import { useEffect, useRef, RefObject } from "react";
 
-export const useMousePosition = (containerRef: RefObject<HTMLElement>) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+export const useMousePositionRef = (containerRef?: RefObject<HTMLElement | SVGElement>) => {
+  const positionRef = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    const updateMousePosition = (ev: MouseEvent) => {
-      if (containerRef.current) {
+    const updatePosition = (x: number, y: number) => {
+      if (containerRef && containerRef.current) {
         const rect = containerRef.current.getBoundingClientRect();
-        setMousePosition({
-          x: ev.clientX - rect.left,
-          y: ev.clientY - rect.top,
-        });
+        const relativeX = x - rect.left;
+        const relativeY = y - rect.top;
+        
+        // Calculate relative position even when outside the container
+        positionRef.current = { x: relativeX, y: relativeY };
+      } else {
+        positionRef.current = { x, y };
       }
     };
 
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("mousemove", updateMousePosition);
-    }
+    const handleMouseMove = (ev: MouseEvent) => {
+      updatePosition(ev.clientX, ev.clientY);
+    };
+
+    const handleTouchMove = (ev: TouchEvent) => {
+      const touch = ev.touches[0];
+      updatePosition(touch.clientX, touch.clientY);
+    };
+
+    // Listen for both mouse and touch events
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove);
 
     return () => {
-      if (container) {
-        container.removeEventListener("mousemove", updateMousePosition);
-      }
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove); 
     };
   }, [containerRef]);
 
-  return mousePosition;
-}`
+
+  return positionRef;
+};`
 }
 </CodeBlockWrapper>
 
@@ -57,21 +70,21 @@ export const useMousePosition = (containerRef: RefObject<HTMLElement>) => {
 
 The `VariableFontCursorProximity` splits its text into letters, that respond to cursor movement by adjusting their font variation settings, based on the distance between the letter and cursor distance. This component works only with variable fonts.
 
-### Font Variation Mapping
+1. Splitting text into individual letters
+2. Tracking cursor position relative to each letter
+3. Smoothly transitioning font variations based on proximity
+4. Supporting multiple falloff patterns for the effect
 
-The `fromFontVariationSettings` and `toFontVariationSettings` props define the starting and ending states of the font variation. For example, using the [Overused Grotesk](https://github.com/RandomMaerks/Overused-Grotesk) font (which we use in this demo), we can modify the 'slnt' (slant) and 'wght' (weight) axes:
+This component requires the use of variable fonts to function properly. Otherwise it will not work.
 
-- The `slnt` axis ranges from 0 (up) to -10 (upright)
-- The `wght` axis ranges from 100 (thin) to 900 (black)
+### How it works
 
-An example prop therefore would be:
+The component calculates the distance between the cursor and each letter in real-time. When the cursor comes within the specified `radius` of a letter, that letter's font variations (like weight, slant, etc.) smoothly interpolate between two states:
 
-<CodeBlockWrapper language="typescript" className="mt-4">
-  {`fromFontVariationSettings="'wght' 100, 'slnt' 0"`
-  }
-</CodeBlockWrapper>
+- The default state (`fromFontVariationSettings`)
+- The target state (`toFontVariationSettings`) 
 
-Based on the cursor proximity, we interpolate between these values to create custom styles.
+The closer the cursor gets to a letter, the closer that letter moves toward its target state.
 
 ### Understanding Variable Fonts
 
@@ -81,11 +94,13 @@ For more information about variable fonts and how they work, please refer to the
 
 ### Falloff
 
-With the `falloff` prop, you can control the type of falloff. It can be either `linear`, `exponential`, or `gaussian`. The `linear` falloff is the default, and it creates a linear transition between the starting and ending states of the font variation. The `exponential` falloff creates a more dramatic effect, where the transition is more abrupt. The `gaussian` falloff creates a more organic effect, where the transition is more random. These can be best observed on a larger block of text.
-
-### Exponential Falloff
+With the `falloff` prop, you can control the type of falloff. It can be either `linear`, `exponential`, or `gaussian`. The following demo showcases the `exponential` one. The effects are best observed on a larger block of text.
 
 <ComponentPreview name="variable-font-cursor-proximity-falloff-demo" />
+
+## Notes
+
+It seems like interpolating on large number of letters simultaneously can be a bit slow, even when we're avoiding re-renders with state updates. If you're experienceing performance issues, try to limit the length of the text you're animating.
 
 ## Props
 

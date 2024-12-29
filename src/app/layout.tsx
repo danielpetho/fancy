@@ -62,6 +62,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      {/* <head>
+        <script src="https://unpkg.com/react-scan/dist/auto.global.js"/>
+      </head> */}
       <body
         className={`font-overusedGrotesk bg-[#faf9f9] antialiased flex items-center justify-center w-full`}
       >

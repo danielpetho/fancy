@@ -1,6 +1,6 @@
 import React, { useMemo, useRef, forwardRef } from "react";
 import { motion, useAnimationFrame } from "framer-motion";
-import { useMousePosition } from "@/hooks/use-mouse-position";
+import { useMousePositionRef } from "@/hooks/use-mouse-position-ref";
 
 interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
   label: string;
@@ -24,9 +24,9 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(({
 }, ref) => {
   const letterRefs = useRef<(HTMLSpanElement | null)[]>([]);
   const interpolatedSettingsRef = useRef<string[]>([]);
-  const { x, y } = useMousePosition(containerRef);
+  const mousePositionRef = useMousePositionRef(containerRef);
   
-  // Parse the font variation settings strings
+  // Parse the font variation settings strings. see the docs or the demo on how one should look like
   const parsedSettings = useMemo(() => {
     const fromSettings = new Map(
       fromFontVariationSettings
@@ -89,7 +89,7 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(({
       const letterCenterX = rect.left + rect.width / 2 - containerRect.left;
       const letterCenterY = rect.top + rect.height / 2 - containerRect.top;
 
-      const distance = calculateDistance(x, y, letterCenterX, letterCenterY);
+      const distance = calculateDistance(mousePositionRef.current.x, mousePositionRef.current.y, letterCenterX, letterCenterY);
       
       if (distance >= radius) {
         if (letterRef.style.fontVariationSettings !== fromFontVariationSettings) {
@@ -136,7 +136,7 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(({
                 className="inline-block"
                 aria-hidden="true"
                 style={{
-                  fontVariationSettings: fromFontVariationSettings,
+                  fontVariationSettings: interpolatedSettingsRef.current[currentLetterIndex],
                 }}
               >
                 {letter}
@@ -154,5 +154,4 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(({
 });
 
 VariableFontCursorProximity.displayName = "VariableFontCursorProximity";
-
 export default VariableFontCursorProximity;
