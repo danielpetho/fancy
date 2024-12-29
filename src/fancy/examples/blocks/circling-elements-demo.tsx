@@ -1,11 +1,13 @@
-import React from "react";
-import CirclingElements from "@/fancy/components/blocks/circling-elements";
-import Image from "next/image";
-import { exampleImages } from "../_helpers/exampleImages";
-import useScreenSize from "@/hooks/use-screen-size";
+import React from "react"
+import Image from "next/image"
+
+import useScreenSize from "@/hooks/use-screen-size"
+import CirclingElements from "@/fancy/components/blocks/circling-elements"
+
+import { exampleImages } from "../_helpers/exampleImages"
 
 const CirclingElementsDemo: React.FC = () => {
-  const screenSize = useScreenSize();
+  const screenSize = useScreenSize()
 
   return (
     <div className="w-full h-full bg-[#efefef] flex items-center justify-center">
@@ -45,7 +47,7 @@ const CirclingElementsDemo: React.FC = () => {
         ))}
       </CirclingElements>
     </div>
-  );
-};
+  )
+}
 
-export default CirclingElementsDemo;
+export default CirclingElementsDemo

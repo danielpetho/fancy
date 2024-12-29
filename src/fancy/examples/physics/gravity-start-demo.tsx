@@ -1,4 +1,4 @@
-import Gravity, { MatterBody } from "@/fancy/components/physics/gravity";
+import Gravity, { MatterBody } from "@/fancy/components/physics/gravity"
 
 export default function Preview() {
   return (
@@ -7,10 +7,7 @@ export default function Preview() {
       <p className="pt-4 text-2xl text-black w-full text-center">
         components made with:
       </p>
-      <Gravity
-        gravity={{ x: 0, y: 1 }}
-        className="w-full h-full"
-      >
+      <Gravity gravity={{ x: 0, y: 1 }} className="w-full h-full">
         <MatterBody
           matterBodyOptions={{ friction: 0.5, restitution: 0.2 }}
           x="30%"
@@ -68,5 +65,5 @@ export default function Preview() {
         </MatterBody>
       </Gravity>
     </div>
-  );
+  )
 }

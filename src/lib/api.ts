@@ -7,7 +7,7 @@ const COMPONENT_GRAPHQL_FIELDS = `
   demo {
     url
   }
-`;
+`
 
 async function fetchGraphQL(query: string, preview = false): Promise<any> {
   return fetch(
@@ -23,23 +23,23 @@ async function fetchGraphQL(query: string, preview = false): Promise<any> {
         }`,
       },
       body: JSON.stringify({ query }),
-      cache: 'force-cache',
+      cache: "force-cache",
       next: { tags: ["components"] },
     }
   ).then((response) => {
     if (!response.ok) {
-      throw new Error('Failed to fetch data');
+      throw new Error("Failed to fetch data")
     }
-    return response.json();
-  });
+    return response.json()
+  })
 }
 
 function extractComponent(fetchResponse: any): any {
-  return fetchResponse?.data?.componentsCollection?.items?.[0];
+  return fetchResponse?.data?.componentsCollection?.items?.[0]
 }
 
 function extractComponentEntries(fetchResponse: any): any[] {
-  return fetchResponse?.data?.componentsCollection?.items;
+  return fetchResponse?.data?.componentsCollection?.items
 }
 
 export async function getAllComponents(isDraftMode: boolean): Promise<any[]> {
@@ -54,24 +54,27 @@ export async function getAllComponents(isDraftMode: boolean): Promise<any[]> {
       }
     }`,
     isDraftMode
-  );
+  )
 
-  return extractComponentEntries(entries);
+  return extractComponentEntries(entries)
 }
 
-export async function getComponent(slug: string, preview: boolean): Promise<any> {
+export async function getComponent(
+  slug: string,
+  preview: boolean
+): Promise<any> {
   const entry = await fetchGraphQL(
     `query {
       componentsCollection(where: { slug: "${slug}" }, preview: ${
-      preview ? "true" : "false"
-    }) {
+        preview ? "true" : "false"
+      }) {
         items {
           ${COMPONENT_GRAPHQL_FIELDS}
         }
       }
     }`,
     preview
-  );
+  )
 
-  return extractComponent(entry);
+  return extractComponent(entry)
 }

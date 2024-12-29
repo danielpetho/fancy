@@ -1,9 +1,11 @@
-import ImageTrail from "@/fancy/components/image/image-trail";
-import { exampleImages } from "../_helpers/exampleImages";
-import { useRef } from "react";
+import { useRef } from "react"
+
+import ImageTrail from "@/fancy/components/image/image-trail"
+
+import { exampleImages } from "../_helpers/exampleImages"
 
 const ImageTrailDemo = () => {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null)
 
   return (
     <div className="flex w-full h-full justify-center items-center bg-white">
@@ -25,7 +27,7 @@ const ImageTrailDemo = () => {
       </div>
       <h1 className="text-9xl z-10">ALBUMS</h1>
     </div>
-  );
-};
+  )
+}
 
-export default ImageTrailDemo;
+export default ImageTrailDemo

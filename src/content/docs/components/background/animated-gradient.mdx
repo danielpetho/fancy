@@ -118,11 +118,10 @@ Animated gradients can be achieved with many different techniques (shaders, CSS 
    - `--tx-1` and `--ty-1` for the first position
    - `--tx-2` and `--ty-2` for the second position
    - And so on for positions 3 and 4
-4. These variables are set to random values between -0.5 and 0.5. 
+4. These variables are set to random values between -0.5 and 0.5.
 
 <CodeBlockWrapper language="typescript" className="mt-4">
-{
-`...
+  {`...
 style={
     {
       ...
@@ -151,7 +150,6 @@ If you would like to achieve a more complex animation, you have to edit the comp
 
 and so on.
 
-
 ## Props
 
 <Table>
@@ -165,7 +163,9 @@ and so on.
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>colors<span className="text-red-500">*</span></TableCell>
+      <TableCell>
+        colors<span className="text-red-500">*</span>
+      </TableCell>
       <TableCell>`string[]`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>Array of color strings to be used in the gradient</TableCell>
@@ -174,7 +174,10 @@ and so on.
       <TableCell>speed</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`5`</TableCell>
-      <TableCell>Speed of the animation (this is somewhat an arbitrary number, refer tothe source code for more details)</TableCell>
+      <TableCell>
+        Speed of the animation (this is somewhat an arbitrary number, refer
+        tothe source code for more details)
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableCell>blur</TableCell>

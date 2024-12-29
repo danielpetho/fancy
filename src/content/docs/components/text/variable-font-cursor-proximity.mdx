@@ -21,13 +21,13 @@ This hook actually returns a ref to the position (instead of a state), so we can
 export const useMousePositionRef = (containerRef?: RefObject<HTMLElement | SVGElement>) => {
   const positionRef = useRef({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const updatePosition = (x: number, y: number) => {
-      if (containerRef && containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const relativeX = x - rect.left;
-        const relativeY = y - rect.top;
-        
+useEffect(() => {
+const updatePosition = (x: number, y: number) => {
+if (containerRef && containerRef.current) {
+const rect = containerRef.current.getBoundingClientRect();
+const relativeX = x - rect.left;
+const relativeY = y - rect.top;
+
         // Calculate relative position even when outside the container
         positionRef.current = { x: relativeX, y: relativeY };
       } else {
@@ -50,14 +50,15 @@ export const useMousePositionRef = (containerRef?: RefObject<HTMLElement | SVGEl
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove); 
+      window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [containerRef]);
 
+}, [containerRef]);
 
-  return positionRef;
+return positionRef;
 };`
 }
+
 </CodeBlockWrapper>
 
 <Step>Copy and paste the following code into your project:</Step>
@@ -82,7 +83,7 @@ This component requires the use of variable fonts to function properly. Otherwis
 The component calculates the distance between the cursor and each letter in real-time. When the cursor comes within the specified `radius` of a letter, that letter's font variations (like weight, slant, etc.) smoothly interpolate between two states:
 
 - The default state (`fromFontVariationSettings`)
-- The target state (`toFontVariationSettings`) 
+- The target state (`toFontVariationSettings`)
 
 The closer the cursor gets to a letter, the closer that letter moves toward its target state.
 
@@ -158,7 +159,3 @@ It seems like interpolating on large number of letters simultaneously can be a b
     </TableRow>
   </TableBody>
 </Table>
-
-
-
-

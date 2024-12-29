@@ -1,4 +1,4 @@
-import VerticalCutReveal from "@/fancy/components/text/vertical-cut-reveal";
+import VerticalCutReveal from "@/fancy/components/text/vertical-cut-reveal"
 
 export default function Preview() {
   return (
@@ -59,5 +59,5 @@ export default function Preview() {
         </VerticalCutReveal>
       </div>
     </div>
-  );
+  )
 }

@@ -1,5 +1,6 @@
-import TextRotate from "@/fancy/components/text/text-rotate";
-import { LayoutGroup, motion } from "framer-motion";
+import { LayoutGroup, motion } from "framer-motion"
+
+import TextRotate from "@/fancy/components/text/text-rotate"
 
 export default function Preview() {
   return (
@@ -14,7 +15,14 @@ export default function Preview() {
             Make it{" "}
           </motion.span>
           <TextRotate
-            words={["work!", "fancy ✽", "✨ pop ✨", "right", "fast 🚀", "fun ツ"]}
+            words={[
+              "work!",
+              "fancy ✽",
+              "✨ pop ✨",
+              "right",
+              "fast 🚀",
+              "fun ツ",
+            ]}
             className="text-white px-3 bg-[#0015ff] pt-1 overflow-hidden py-2 justify-center rounded-lg "
             staggerFrom={"last"}
             staggerDuration={0.025}
@@ -31,5 +39,5 @@ export default function Preview() {
         </motion.p>
       </LayoutGroup>
     </div>
-  );
+  )
 }

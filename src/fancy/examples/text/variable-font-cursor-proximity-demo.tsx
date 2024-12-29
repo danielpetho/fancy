@@ -1,11 +1,12 @@
-import VariableFontCursorProximity from "@/fancy/components/text/variable-font-cursor-proximity";
-import { cn } from "@/lib/utils";
-import { useRef } from "react";
+import { useRef } from "react"
 
-const texts = ["Overstimulated", "Underutilized", "Familiar", "Extraordinary"];
+import { cn } from "@/lib/utils"
+import VariableFontCursorProximity from "@/fancy/components/text/variable-font-cursor-proximity"
+
+const texts = ["Overstimulated", "Underutilized", "Familiar", "Extraordinary"]
 
 export default function Preview() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
@@ -26,5 +27,5 @@ export default function Preview() {
         ))}
       </div>
     </div>
-  );
+  )
 }

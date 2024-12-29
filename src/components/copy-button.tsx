@@ -1,15 +1,20 @@
 "use client"
 
 import * as React from "react"
+import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu"
 import { CheckIcon, ClipboardIcon } from "lucide-react"
 
+import { NpmCommands } from "@/types/types"
 import { Event, trackEvent } from "@/lib/events"
 import { cn } from "@/lib/utils"
 import { Button, ButtonProps } from "@/components/ui/button"
-import { NpmCommands } from "@/types/types"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./ui/dropdown-menu"
-import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu"
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
 
 interface CopyButtonProps extends ButtonProps {
   value: string

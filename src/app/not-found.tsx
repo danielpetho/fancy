@@ -1,13 +1,14 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import Screensaver from "@/fancy/components/blocks/screensaver";
-import { useRef } from "react";
-import { cn } from "@/lib/utils";
+import { useRef } from "react"
+import Link from "next/link"
+import { motion } from "framer-motion"
+
+import { cn } from "@/lib/utils"
+import Screensaver from "@/fancy/components/blocks/screensaver"
 
 export default function NotFound() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
@@ -53,15 +54,19 @@ export default function NotFound() {
           startAngle={angle}
           containerRef={containerRef}
         >
-          <div className={cn("px-8 sm:px-12 md:px-16 lg:px-20 py-2 sm:py-3 md:py-4 lg:py-5 rounded-xl shadow-2xl text-white", color)} style={{transform: `rotate(${Math.random() * 4 - 2}deg)`}}>
-            <span
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black"
-            >
+          <div
+            className={cn(
+              "px-8 sm:px-12 md:px-16 lg:px-20 py-2 sm:py-3 md:py-4 lg:py-5 rounded-xl shadow-2xl text-white",
+              color
+            )}
+            style={{ transform: `rotate(${Math.random() * 4 - 2}deg)` }}
+          >
+            <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black">
               404
             </span>
           </div>
         </Screensaver>
       ))}
     </div>
-  );
+  )
 }

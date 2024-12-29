@@ -1,13 +1,14 @@
-import React from "react";
-import { motion } from "framer-motion";
-import AnimatedGradient from "@/fancy/components/background/animated-gradient";
+import React from "react"
+import { motion } from "framer-motion"
+
+import AnimatedGradient from "@/fancy/components/background/animated-gradient"
 
 interface BentoCardProps {
-  title: string;
-  value: string | number;
-  subtitle?: string;
-  colors: string[];
-  delay: number;
+  title: string
+  value: string | number
+  subtitle?: string
+  colors: string[]
+  delay: number
 }
 
 const BentoCard: React.FC<BentoCardProps> = ({
@@ -26,18 +27,18 @@ const BentoCard: React.FC<BentoCardProps> = ({
         delayChildren: delay + 0.3, // Add a small delay after the card appears
       },
     },
-  };
+  }
 
   const item = {
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { duration: 0.5 } },
-  };
+  }
 
   return (
     <motion.div
       className="relative overflow-hidden h-full bg-white"
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1}}
+      animate={{ opacity: 1 }}
       transition={{ duration: 0.5, delay }}
     >
       <AnimatedGradient colors={colors} speed={0.05} blur="medium" />
@@ -50,7 +51,10 @@ const BentoCard: React.FC<BentoCardProps> = ({
         <motion.h3 className="text-sm sm:text-base md:text-lg" variants={item}>
           {title}
         </motion.h3>
-        <motion.p className="text-2xl sm:text-4xl md:text-5xl font-medium mb-4" variants={item}>
+        <motion.p
+          className="text-2xl sm:text-4xl md:text-5xl font-medium mb-4"
+          variants={item}
+        >
           {value}
         </motion.p>
         {subtitle && (
@@ -60,8 +64,8 @@ const BentoCard: React.FC<BentoCardProps> = ({
         )}
       </motion.div>
     </motion.div>
-  );
-};
+  )
+}
 
 const AnimatedGradientDemo: React.FC = () => {
   return (
@@ -110,7 +114,7 @@ const AnimatedGradientDemo: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AnimatedGradientDemo;
+export default AnimatedGradientDemo

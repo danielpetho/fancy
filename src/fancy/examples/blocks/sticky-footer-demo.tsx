@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 const Preview: React.FC = () => {
   return (
@@ -29,7 +29,7 @@ const Preview: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Preview;
+export default Preview

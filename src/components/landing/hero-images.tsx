@@ -1,31 +1,37 @@
-"use client";
+"use client"
 
-import Floating, { FloatingElement } from "@/fancy/components/image/parallax-floating";
-import { Component } from "@/types/types";
-import HoverVideo from "./hover-video";
-import Link from "next/link";
+import Link from "next/link"
+
+import { Component } from "@/types/types"
+import Floating, {
+  FloatingElement,
+} from "@/fancy/components/image/parallax-floating"
+
+import HoverVideo from "./hover-video"
 
 export function HeroImages({ allComps }: { allComps: Component[] }) {
-  
   if (!Array.isArray(allComps)) {
-    console.error('allComps is not an array:', allComps);
-    return null;
+    console.error("allComps is not an array:", allComps)
+    return null
   }
 
   const getComp = (name: string) => {
-    const comp = allComps.find((comp) => comp.name === name);
+    const comp = allComps.find((comp) => comp.name === name)
     if (!comp) {
-      console.error(`Component ${name} not found`);
-      return null;
+      console.error(`Component ${name} not found`)
+      return null
     }
-    return comp;
-  };
+    return comp
+  }
 
-  const preLink = "/docs/components";
+  const preLink = "/docs/components"
 
   return (
     <Floating sensitivity={-0.5} className="h-full">
-      <FloatingElement depth={0.5} className="top-[15%] left-[2%] md:top-[25%] md:left-[5%] ">
+      <FloatingElement
+        depth={0.5}
+        className="top-[15%] left-[2%] md:top-[25%] md:left-[5%] "
+      >
         <Link href={`${preLink}/blocks/sticky-footer`}>
           <HoverVideo
             thumbnail={getComp("sticky-footer")!.thumbnail.url}
@@ -35,7 +41,10 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
           />
         </Link>
       </FloatingElement>
-      <FloatingElement depth={1} className="top-[0%] left-[8%] md:top-[6%] md:left-[11%] ">
+      <FloatingElement
+        depth={1}
+        className="top-[0%] left-[8%] md:top-[6%] md:left-[11%] "
+      >
         <Link href={`${preLink}/text/scramble-in`}>
           <HoverVideo
             thumbnail={getComp("scramble-in")!.thumbnail.url}
@@ -46,7 +55,10 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
         </Link>
       </FloatingElement>
 
-      <FloatingElement depth={4} className="top-[90%] left-[6%] md:top-[80%] md:left-[8%]">
+      <FloatingElement
+        depth={4}
+        className="top-[90%] left-[6%] md:top-[80%] md:left-[8%]"
+      >
         <Link href={`${preLink}/text/letter-swap`}>
           <HoverVideo
             thumbnail={getComp("letter-swap")!.thumbnail.url}
@@ -56,7 +68,10 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
           />
         </Link>
       </FloatingElement>
-      <FloatingElement depth={2} className="top-[0%] left-[87%] md:top-[2%] md:left-[83%]">
+      <FloatingElement
+        depth={2}
+        className="top-[0%] left-[87%] md:top-[2%] md:left-[83%]"
+      >
         <Link href={`${preLink}/blocks/screensaver`}>
           <HoverVideo
             thumbnail={getComp("screensaver")!.thumbnail.url}
@@ -66,7 +81,10 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
           />
         </Link>
       </FloatingElement>
-      <FloatingElement depth={1} className="top-[78%] left-[83%] md:top-[68%] md:left-[83%]">
+      <FloatingElement
+        depth={1}
+        className="top-[78%] left-[83%] md:top-[68%] md:left-[83%]"
+      >
         <Link href={`${preLink}/blocks/drag-elements`}>
           <HoverVideo
             thumbnail={getComp("drag-elements")!.thumbnail.url}
@@ -77,5 +95,5 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
         </Link>
       </FloatingElement>
     </Floating>
-  );
+  )
 }

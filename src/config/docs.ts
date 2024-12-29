@@ -1,4 +1,4 @@
-import { SidebarNavItem } from "@/types/nav";
+import { SidebarNavItem } from "@/types/nav"
 
 export const docsConfig: SidebarNavItem[] = [
   {
@@ -129,9 +129,9 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/physics/elastic-line",
         items: [],
       },
-      { 
-        title: "Gravity", 
-        href: "/docs/components/physics/gravity", 
+      {
+        title: "Gravity",
+        href: "/docs/components/physics/gravity",
         items: [],
       },
     ],
@@ -184,4 +184,4 @@ export const docsConfig: SidebarNavItem[] = [
       },
     ],
   },
-];
+]

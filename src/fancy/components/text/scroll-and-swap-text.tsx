@@ -1,15 +1,11 @@
-import {
-  motion,
-  useScroll,
-  useTransform,
-} from "framer-motion";
-import { useRef } from "react";
+import { useRef } from "react"
+import { motion, useScroll, useTransform } from "framer-motion"
 
 interface TextProps {
-  label: string;
-  containerRef: React.RefObject<HTMLElement>;
-  offset?: [string, string];
-  className?: string;
+  label: string
+  containerRef: React.RefObject<HTMLElement>
+  offset?: [string, string]
+  className?: string
 }
 
 const ScrollAndSwapText = ({
@@ -19,17 +15,17 @@ const ScrollAndSwapText = ({
   containerRef,
   ...props
 }: TextProps) => {
-  const ref = useRef<HTMLSpanElement>(null);
+  const ref = useRef<HTMLSpanElement>(null)
 
   const { scrollYProgress } = useScroll({
     container: containerRef,
     target: ref,
     offset: offset as any, // framer motion doesnt export the type, so we have to cast it, sorry :/
-    layoutEffect: false
-  });
+    layoutEffect: false,
+  })
 
-  const top = useTransform(scrollYProgress, [0, 1], ["0%", "-100%"]);
-  const bottom = useTransform(scrollYProgress, [0, 1], ["100%", "0%"]);
+  const top = useTransform(scrollYProgress, [0, 1], ["0%", "-100%"])
+  const bottom = useTransform(scrollYProgress, [0, 1], ["100%", "0%"])
 
   return (
     <span
@@ -38,9 +34,7 @@ const ScrollAndSwapText = ({
       ref={ref}
       {...props}
     >
-      <span className="relative text-transparent">
-        {label}
-      </span>
+      <span className="relative text-transparent">{label}</span>
       <motion.span className="absolute " style={{ top: top }}>
         {label}
       </motion.span>
@@ -52,7 +46,7 @@ const ScrollAndSwapText = ({
         {label}
       </motion.span>
     </span>
-  );
-};
+  )
+}
 
-export default ScrollAndSwapText;
+export default ScrollAndSwapText

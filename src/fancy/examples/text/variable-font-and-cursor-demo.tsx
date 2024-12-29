@@ -1,11 +1,12 @@
-import VariableFontAndCursor from "@/fancy/components/text/variable-font-and-cursor";
-import { useMousePosition } from "@/hooks/use-mouse-position";
-import { useRef } from "react";
+import { useRef } from "react"
+
+import { useMousePosition } from "@/hooks/use-mouse-position"
+import VariableFontAndCursor from "@/fancy/components/text/variable-font-and-cursor"
 
 export default function Preview() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
-  const { x, y } = useMousePosition(containerRef);
+  const { x, y } = useMousePosition(containerRef)
 
   return (
     <div
@@ -56,5 +57,5 @@ export default function Preview() {
         }}
       />
     </div>
-  );
+  )
 }

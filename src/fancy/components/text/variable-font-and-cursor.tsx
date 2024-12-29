@@ -1,23 +1,24 @@
-import React from "react";
-import { useMousePosition } from "@/hooks/use-mouse-position"; // We'll create this hook
+import React from "react"
+
+import { useMousePosition } from "@/hooks/use-mouse-position" // We'll create this hook
 
 interface FontVariationAxis {
-  name: string;
-  min: number;
-  max: number;
+  name: string
+  min: number
+  max: number
 }
 
 interface FontVariationMapping {
-  x: FontVariationAxis;
-  y: FontVariationAxis;
+  x: FontVariationAxis
+  y: FontVariationAxis
 }
 
 interface TextProps {
-  label: string;
-  fontVariationMapping: FontVariationMapping;
-  containerRef: React.RefObject<HTMLDivElement>;
-  className?: string;
-  onClick?: () => void;
+  label: string
+  fontVariationMapping: FontVariationMapping
+  containerRef: React.RefObject<HTMLDivElement>
+  className?: string
+  onClick?: () => void
 }
 
 const VariableFontAndCursor = ({
@@ -28,30 +29,30 @@ const VariableFontAndCursor = ({
   onClick,
   ...props
 }: TextProps) => {
-  const { x, y } = useMousePosition(containerRef);
+  const { x, y } = useMousePosition(containerRef)
 
   const interpolateFontVariationSettings = (
     xPosition: number,
     yPosition: number
   ) => {
-    const container = containerRef.current;
-    if (!container) return "0 0"; // Return default values if container is null
+    const container = containerRef.current
+    if (!container) return "0 0" // Return default values if container is null
 
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
+    const containerWidth = container.clientWidth
+    const containerHeight = container.clientHeight
 
-    const xProgress = Math.min(Math.max(xPosition / containerWidth, 0), 1);
-    const yProgress = Math.min(Math.max(yPosition / containerHeight, 0), 1);
+    const xProgress = Math.min(Math.max(xPosition / containerWidth, 0), 1)
+    const yProgress = Math.min(Math.max(yPosition / containerHeight, 0), 1)
 
     const xValue =
       fontVariationMapping.x.min +
-      (fontVariationMapping.x.max - fontVariationMapping.x.min) * xProgress;
+      (fontVariationMapping.x.max - fontVariationMapping.x.min) * xProgress
     const yValue =
       fontVariationMapping.y.min +
-      (fontVariationMapping.y.max - fontVariationMapping.y.min) * yProgress;
+      (fontVariationMapping.y.max - fontVariationMapping.y.min) * yProgress
 
-    return `'${fontVariationMapping.x.name}' ${xValue}, '${fontVariationMapping.y.name}' ${yValue}`;
-  };
+    return `'${fontVariationMapping.x.name}' ${xValue}, '${fontVariationMapping.y.name}' ${yValue}`
+  }
 
   return (
     <span
@@ -65,7 +66,7 @@ const VariableFontAndCursor = ({
     >
       {label}
     </span>
-  );
-};
+  )
+}
 
-export default VariableFontAndCursor;
+export default VariableFontAndCursor

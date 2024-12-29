@@ -1,14 +1,14 @@
-import { motion, ValueAnimationTransition } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
+import { motion, ValueAnimationTransition } from "framer-motion"
 
 interface UnderlineProps {
-  label: string;
-  className?: string;
-  transition?: ValueAnimationTransition;
-  onClick?: () => void;
-  targetTextColor: string;
-  underlineHeightRatio?: number;
-  underlinePaddingRatio?: number;
+  label: string
+  className?: string
+  transition?: ValueAnimationTransition
+  onClick?: () => void
+  targetTextColor: string
+  underlineHeightRatio?: number
+  underlinePaddingRatio?: number
 }
 
 const UnderlineToBackground = ({
@@ -21,30 +21,30 @@ const UnderlineToBackground = ({
   targetTextColor = "#fef",
   ...props
 }: UnderlineProps) => {
-  const textRef = useRef<HTMLSpanElement>(null);
+  const textRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     const updateUnderlineStyles = () => {
       if (textRef.current) {
-        const fontSize = parseFloat(getComputedStyle(textRef.current).fontSize);
-        const underlineHeight = fontSize * underlineHeightRatio;
-        const underlinePadding = fontSize * underlinePaddingRatio;
+        const fontSize = parseFloat(getComputedStyle(textRef.current).fontSize)
+        const underlineHeight = fontSize * underlineHeightRatio
+        const underlinePadding = fontSize * underlinePaddingRatio
         textRef.current.style.setProperty(
           "--underline-height",
           `${underlineHeight}px`
-        );
+        )
         textRef.current.style.setProperty(
           "--underline-padding",
           `${underlinePadding}px`
-        );
+        )
       }
-    };
+    }
 
-    updateUnderlineStyles();
-    window.addEventListener("resize", updateUnderlineStyles);
+    updateUnderlineStyles()
+    window.addEventListener("resize", updateUnderlineStyles)
 
-    return () => window.removeEventListener("resize", updateUnderlineStyles);
-  }, [underlineHeightRatio, underlinePaddingRatio]);
+    return () => window.removeEventListener("resize", updateUnderlineStyles)
+  }, [underlineHeightRatio, underlinePaddingRatio])
 
   const underlineVariants = {
     initial: {
@@ -54,7 +54,7 @@ const UnderlineToBackground = ({
       height: "100%",
       transition: transition,
     },
-  };
+  }
 
   const textVariants = {
     initial: {
@@ -64,7 +64,7 @@ const UnderlineToBackground = ({
       color: targetTextColor,
       transition: transition,
     },
-  };
+  }
 
   return (
     <motion.span
@@ -87,7 +87,7 @@ const UnderlineToBackground = ({
         {label}
       </motion.span>
     </motion.span>
-  );
-};
+  )
+}
 
-export default UnderlineToBackground;
+export default UnderlineToBackground

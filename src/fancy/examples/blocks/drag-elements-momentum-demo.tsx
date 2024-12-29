@@ -1,5 +1,6 @@
-import React from "react";
-import DragElements from "@/fancy/components/blocks/drag-elements";
+import React from "react"
+
+import DragElements from "@/fancy/components/blocks/drag-elements"
 
 const DragElementsDemo: React.FC = () => {
   return (
@@ -16,7 +17,7 @@ const DragElementsDemo: React.FC = () => {
         </div>
       </DragElements>
     </div>
-  );
-};
+  )
+}
 
-export default DragElementsDemo;
+export default DragElementsDemo

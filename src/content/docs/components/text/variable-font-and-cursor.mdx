@@ -19,16 +19,16 @@ component: true
 export const useMousePosition = (containerRef: RefObject<HTMLElement>) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const updateMousePosition = (ev: MouseEvent) => {
-      if (containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        setMousePosition({
-          x: ev.clientX - rect.left,
-          y: ev.clientY - rect.top,
-        });
-      }
-    };
+useEffect(() => {
+const updateMousePosition = (ev: MouseEvent) => {
+if (containerRef.current) {
+const rect = containerRef.current.getBoundingClientRect();
+setMousePosition({
+x: ev.clientX - rect.left,
+y: ev.clientY - rect.top,
+});
+}
+};
 
     const container = containerRef.current;
     if (container) {
@@ -40,11 +40,13 @@ export const useMousePosition = (containerRef: RefObject<HTMLElement>) => {
         container.removeEventListener("mousemove", updateMousePosition);
       }
     };
-  }, [containerRef]);
 
-  return mousePosition;
+}, [containerRef]);
+
+return mousePosition;
 }`
 }
+
 </CodeBlockWrapper>
 
 <Step>Copy and paste the following code into your project:</Step>
@@ -64,8 +66,7 @@ It's important to note that the container used for tracking mouse position is no
 The `fontVariationMapping` prop allows you to define how cursor position maps to font variation settings. It has the following structure:
 
 <CodeBlockWrapper language="typescript" className="pt-4">
-{
-`interface FontVariationMapping {
+  {`interface FontVariationMapping {
     x: { name: string; min: number; max: number };
     y: { name: string; min: number; max: number };
 }
@@ -83,7 +84,6 @@ The component interpolates between `min` and `max` based on the cursor position 
 ### Understanding Variable Fonts
 
 For more information about variable fonts and how they work, please refer to the [Variable Font Hover By Letter](/docs/components/text/variable-font-hover-by-letter#understanding-variable-fonts) documentation.
-
 
 ## Props
 
@@ -146,12 +146,16 @@ For more information about variable fonts and how they work, please refer to the
     <TableRow>
       <TableCell>x</TableCell>
       <TableCell>`FontVariationAxis`</TableCell>
-      <TableCell>Font variation settings for horizontal cursor movement</TableCell>
+      <TableCell>
+        Font variation settings for horizontal cursor movement
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableCell>y</TableCell>
       <TableCell>`FontVariationAxis`</TableCell>
-      <TableCell>Font variation settings for vertical cursor movement</TableCell>
+      <TableCell>
+        Font variation settings for vertical cursor movement
+      </TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -170,7 +174,9 @@ For more information about variable fonts and how they work, please refer to the
     <TableRow>
       <TableCell>name</TableCell>
       <TableCell>`string`</TableCell>
-      <TableCell>Name of the font variation axis (e.g., "wght", "slnt")</TableCell>
+      <TableCell>
+        Name of the font variation axis (e.g., "wght", "slnt")
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableCell>min</TableCell>
@@ -184,4 +190,3 @@ For more information about variable fonts and how they work, please refer to the
     </TableRow>
   </TableBody>
 </Table>
-

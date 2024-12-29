@@ -17,30 +17,32 @@ component: true
 `import { useState, useEffect, RefObject } from 'react';
 
 interface Dimensions {
-  width: number;
-  height: number;
+width: number;
+height: number;
 }
 
 export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensions {
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
 
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (ref.current) {
-        const { width, height } = ref.current.getBoundingClientRect();
-        setDimensions({ width, height });
-      }
-    };
+useEffect(() => {
+const updateDimensions = () => {
+if (ref.current) {
+const { width, height } = ref.current.getBoundingClientRect();
+setDimensions({ width, height });
+}
+};
 
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
 
     return () => window.removeEventListener('resize', updateDimensions);
-  }, [ref]);
 
-  return dimensions;
+}, [ref]);
+
+return dimensions;
 }
 `}
+
 </CodeBlockWrapper>
 
 <Step>Then copy and paste the following code into your project:</Step>
@@ -52,7 +54,7 @@ export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensi
 ## Usage
 
 Just wrap your content with the component, and the animation will take care of the rest.
-You also need to pass a container ref to the component — which will be used to constrain the screensaver component. 
+You also need to pass a container ref to the component — which will be used to constrain the screensaver component.
 
 ## Props
 
