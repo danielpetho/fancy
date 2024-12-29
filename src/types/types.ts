@@ -1,42 +1,39 @@
 export type Doc = {
-  _id: string;
-  type: "Doc";
-  title: string;
-  description: string;
-  published: boolean;
-  featured: boolean;
-  component: boolean;
-  toc: any;
+  _id: string
+  type: "Doc"
+  title: string
+  description: string
+  published: boolean
+  featured: boolean
+  component: boolean
+  toc: any
   /** MDX file body */
-  body: any;
-  slug: string;
-  slugAsParams: string;
-};
+  body: any
+  slug: string
+  slugAsParams: string
+}
 
 export type NpmCommands = {
-  __npmCommand__?: string;
-  __yarnCommand__?: string;
-  __pnpmCommand__?: string;
-  __bunCommand__?: string;
-};
+  __npmCommand__?: string
+  __yarnCommand__?: string
+  __pnpmCommand__?: string
+  __bunCommand__?: string
+}
 
 export interface DocPageProps {
   params: {
-    slug: string[];
-  };
+    slug: string[]
+  }
 }
 
 // CMS data
 export type Component = {
-  slug: string;
-  name: string;
+  slug: string
+  name: string
   thumbnail: {
-    url: string;
-  };
+    url: string
+  }
   demo: {
-    url: string;
-  };
+    url: string
+  }
 }
-
-
-

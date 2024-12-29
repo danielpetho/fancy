@@ -1,15 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
-import { motion, useAnimationControls, ValueAnimationTransition,  } from "framer-motion";
-import cn from "clsx";
+import React, { useEffect, useRef, useState } from "react"
+import cn from "clsx"
+import {
+  motion,
+  useAnimationControls,
+  ValueAnimationTransition,
+} from "framer-motion"
 
 interface GoesOutComesInUnderlineProps {
-  label: string;
-  direction?: "left" | "right";
-  className?: string;
-  onClick?: () => void;
-  underlineHeightRatio?: number;
-  underlinePaddingRatio?: number;
-  transition?: ValueAnimationTransition;
+  label: string
+  direction?: "left" | "right"
+  className?: string
+  onClick?: () => void
+  underlineHeightRatio?: number
+  underlinePaddingRatio?: number
+  transition?: ValueAnimationTransition
 }
 
 const GoesOutComesInUnderline: React.FC<GoesOutComesInUnderlineProps> = ({
@@ -25,31 +29,37 @@ const GoesOutComesInUnderline: React.FC<GoesOutComesInUnderlineProps> = ({
   },
   ...props
 }) => {
-  const controls = useAnimationControls();
-  const [blocked, setBlocked] = useState(false);
-  const textRef = useRef<HTMLSpanElement>(null);
+  const controls = useAnimationControls()
+  const [blocked, setBlocked] = useState(false)
+  const textRef = useRef<HTMLSpanElement>(null)
 
   useEffect(() => {
     const updateUnderlineStyles = () => {
       if (textRef.current) {
-        const fontSize = parseFloat(getComputedStyle(textRef.current).fontSize);
-        const underlineHeight = fontSize * underlineHeightRatio;
-        const underlinePadding = fontSize * underlinePaddingRatio;
-        textRef.current.style.setProperty('--underline-height', `${underlineHeight}px`);
-        textRef.current.style.setProperty('--underline-padding', `${underlinePadding}px`);
+        const fontSize = parseFloat(getComputedStyle(textRef.current).fontSize)
+        const underlineHeight = fontSize * underlineHeightRatio
+        const underlinePadding = fontSize * underlinePaddingRatio
+        textRef.current.style.setProperty(
+          "--underline-height",
+          `${underlineHeight}px`
+        )
+        textRef.current.style.setProperty(
+          "--underline-padding",
+          `${underlinePadding}px`
+        )
       }
-    };
+    }
 
-    updateUnderlineStyles();
-    window.addEventListener('resize', updateUnderlineStyles);
+    updateUnderlineStyles()
+    window.addEventListener("resize", updateUnderlineStyles)
 
-    return () => window.removeEventListener('resize', updateUnderlineStyles);
-  }, [underlineHeightRatio, underlinePaddingRatio]);
+    return () => window.removeEventListener("resize", updateUnderlineStyles)
+  }, [underlineHeightRatio, underlinePaddingRatio])
 
   const animate = async () => {
-    if (blocked) return;
+    if (blocked) return
 
-    setBlocked(true);
+    setBlocked(true)
 
     await controls.start({
       width: 0,
@@ -57,8 +67,8 @@ const GoesOutComesInUnderline: React.FC<GoesOutComesInUnderlineProps> = ({
       transitionEnd: {
         left: direction === "left" ? "auto" : 0,
         right: direction === "left" ? 0 : "auto",
-      }
-    });
+      },
+    })
 
     await controls.start({
       width: "100%",
@@ -66,11 +76,11 @@ const GoesOutComesInUnderline: React.FC<GoesOutComesInUnderlineProps> = ({
       transitionEnd: {
         left: direction === "left" ? 0 : "",
         right: direction === "left" ? "" : 0,
-      }
-    });
+      },
+    })
 
-    setBlocked(false);
-  };
+    setBlocked(false)
+  }
 
   return (
     <motion.span
@@ -88,15 +98,15 @@ const GoesOutComesInUnderline: React.FC<GoesOutComesInUnderlineProps> = ({
           "right-0": direction === "right",
         })}
         style={{
-          height: 'var(--underline-height)',
-          bottom: 'calc(-1 * var(--underline-padding))',
+          height: "var(--underline-height)",
+          bottom: "calc(-1 * var(--underline-padding))",
           width: "100%",
         }}
         animate={controls}
         aria-hidden="true"
       />
     </motion.span>
-  );
-};
+  )
+}
 
-export default GoesOutComesInUnderline;
+export default GoesOutComesInUnderline

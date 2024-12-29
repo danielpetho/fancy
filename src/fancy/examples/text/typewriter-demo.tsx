@@ -1,4 +1,4 @@
-import Typewriter from "@/fancy/components/text/typewriter";
+import Typewriter from "@/fancy/components/text/typewriter"
 
 export default function Preview() {
   return (
@@ -6,7 +6,13 @@ export default function Preview() {
       <p className="whitespace-pre-wrap">
         <span>{"We're born 🌞 to "}</span>
         <Typewriter
-          text={["experience", "dance", "love", "be alive", "create things that make the world a better place"]}
+          text={[
+            "experience",
+            "dance",
+            "love",
+            "be alive",
+            "create things that make the world a better place",
+          ]}
           speed={70}
           className="text-yellow-500"
           waitTime={1500}
@@ -15,5 +21,5 @@ export default function Preview() {
         />
       </p>
     </div>
-  );
+  )
 }

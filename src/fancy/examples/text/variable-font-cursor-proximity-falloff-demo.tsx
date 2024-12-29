@@ -1,8 +1,9 @@
-import VariableFontCursorProximity from "@/fancy/components/text/variable-font-cursor-proximity";
-import { useRef } from "react";
+import { useRef } from "react"
+
+import VariableFontCursorProximity from "@/fancy/components/text/variable-font-cursor-proximity"
 
 export default function Preview() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
@@ -22,5 +23,5 @@ export default function Preview() {
         />
       </div>
     </div>
-  );
+  )
 }

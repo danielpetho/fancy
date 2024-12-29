@@ -1,28 +1,30 @@
-import { mdxComponents } from "@/mdx-components";
-import { Doc, DocPageProps } from "@/types/types";
-import { compileMDX } from "next-mdx-remote/rsc";
-import fs from "node:fs";
-import path from "node:path";
-import { getTableOfContents } from "./toc";
+import fs from "node:fs"
+import path from "node:path"
+import { mdxComponents } from "@/mdx-components"
+import { compileMDX } from "next-mdx-remote/rsc"
 
-export const CONTENT_DIRECTORY = "/src/content/docs/";
+import { Doc, DocPageProps } from "@/types/types"
+
+import { getTableOfContents } from "./toc"
+
+export const CONTENT_DIRECTORY = "/src/content/docs/"
 
 export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
   const source = fs.readFileSync(
     path.join(process.cwd(), CONTENT_DIRECTORY, params.slug.join("/")) + ".mdx",
     "utf8"
-  );
+  )
 
   const toc = await getTableOfContents(source)
 
   // Use the Next.js component mappings
-  const components = mdxComponents();
+  const components = mdxComponents()
 
   const { content, frontmatter } = await compileMDX({
     source,
     options: { parseFrontmatter: true },
     components,
-  });
+  })
 
   return {
     slug: params.slug.join("/"),
@@ -36,5 +38,5 @@ export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
     component: Boolean(frontmatter.component),
     toc: toc,
     body: content,
-  };
+  }
 }

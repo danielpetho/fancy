@@ -1,5 +1,6 @@
-import UnderlineToBackground from "@/fancy/components/text/underline-to-background";
-import { motion } from "framer-motion";
+import { motion } from "framer-motion"
+
+import UnderlineToBackground from "@/fancy/components/text/underline-to-background"
 
 export default function UnderlineToBackgroundDemo() {
   const fadeInVariants = {
@@ -8,14 +9,14 @@ export default function UnderlineToBackgroundDemo() {
       opacity: 1,
       transition: { duration: 0.5, staggerChildren: 0.1 },
     },
-  };
+  }
 
   const wordVariants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
-  };
+  }
 
-  const words = "Weekly goodies delivered straight to your inbox —".split(" ");
+  const words = "Weekly goodies delivered straight to your inbox —".split(" ")
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-[#f5f5f5]">
@@ -43,5 +44,5 @@ export default function UnderlineToBackgroundDemo() {
         </motion.span>
       </motion.h2>
     </div>
-  );
+  )
 }

@@ -1,20 +1,22 @@
-"use client";
+"use client"
 
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
+import * as React from "react"
+import ReactSyntaxHighlighter from "react-syntax-highlighter"
+import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
+
+import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "@/components/ui/collapsible";
-import ReactSyntaxHighlighter from "react-syntax-highlighter";
-import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { CopyButton } from "./copy-button";
+} from "@/components/ui/collapsible"
+
+import { CopyButton } from "./copy-button"
 
 interface CodeBlockProps extends React.HTMLAttributes<HTMLDivElement> {
-  expandButtonTitle?: string;
-  language?: string;
+  expandButtonTitle?: string
+  language?: string
 }
 
 export function CodeBlockWrapper({
@@ -24,9 +26,9 @@ export function CodeBlockWrapper({
   children,
   ...props
 }: CodeBlockProps) {
-  const [isOpened, setIsOpened] = React.useState(false);
-  const codeString = React.Children.toArray(children)[0]?.toString() || "";
-  const lineCount = codeString.split("\n").length;
+  const [isOpened, setIsOpened] = React.useState(false)
+  const codeString = React.Children.toArray(children)[0]?.toString() || ""
+  const lineCount = codeString.split("\n").length
 
   const syntaxHighlighterStyle = React.useMemo(
     () => ({
@@ -36,7 +38,7 @@ export function CodeBlockWrapper({
       maxWidth: "100%",
     }),
     []
-  );
+  )
 
   if (lineCount < 20) {
     return (
@@ -58,7 +60,7 @@ export function CodeBlockWrapper({
           {codeString}
         </ReactSyntaxHighlighter>
       </div>
-    );
+    )
   }
 
   return (
@@ -99,12 +101,15 @@ export function CodeBlockWrapper({
           )}
         >
           <CollapsibleTrigger asChild>
-            <Button variant="secondary" className="h-8 text-xs bg-white hover:bg-accent">
+            <Button
+              variant="secondary"
+              className="h-8 text-xs bg-white hover:bg-accent"
+            >
               {isOpened ? "Collapse" : expandButtonTitle}
             </Button>
           </CollapsibleTrigger>
         </div>
       </div>
     </Collapsible>
-  );
+  )
 }

@@ -1,15 +1,15 @@
-import { motion, Transition, Variants } from "framer-motion";
+import { motion, Transition, Variants } from "framer-motion"
 
 interface TextProps {
-  label: string;
-  fromFontVariationSettings: string;
-  toFontVariationSettings: string;
-  transition?: Transition;
-  staggerDuration?: number;
-  staggerFrom?: "first" | "last" | "center" | number;
-  repeatDelay?: number;
-  className?: string;
-  onClick?: () => void;
+  label: string
+  fromFontVariationSettings: string
+  toFontVariationSettings: string
+  transition?: Transition
+  staggerDuration?: number
+  staggerFrom?: "first" | "last" | "center" | number
+  repeatDelay?: number
+  className?: string
+  onClick?: () => void
 }
 
 const BreathingText = ({
@@ -39,24 +39,24 @@ const BreathingText = ({
         repeatDelay: repeatDelay,
       },
     }),
-  };
+  }
 
   const getCustomIndex = (index: number, total: number) => {
     if (typeof staggerFrom === "number") {
-      return Math.abs(index - staggerFrom);
+      return Math.abs(index - staggerFrom)
     }
     switch (staggerFrom) {
       case "first":
-        return index;
+        return index
       case "last":
-        return total - 1 - index;
+        return total - 1 - index
       case "center":
       default:
-        return Math.abs(index - Math.floor(total / 2));
+        return Math.abs(index - Math.floor(total / 2))
     }
-  };
+  }
 
-  const letters = label.split("");
+  const letters = label.split("")
 
   return (
     <span className={`${className}`} onClick={onClick} {...props}>
@@ -75,7 +75,7 @@ const BreathingText = ({
       ))}
       <span className="sr-only">{label}</span>
     </span>
-  );
-};
+  )
+}
 
-export default BreathingText;
+export default BreathingText

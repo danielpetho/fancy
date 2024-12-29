@@ -1,21 +1,22 @@
-"use client";
+"use client"
 
-import * as React from "react";
+import * as React from "react"
+import ReactSyntaxHighlighter from "react-syntax-highlighter"
+import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
-import { cn } from "@/lib/utils";
-import ReactSyntaxHighlighter from "react-syntax-highlighter";
-import { CopyButton } from "./copy-button";
+import { cn } from "@/lib/utils"
+
+import { CopyButton } from "./copy-button"
+import { Button } from "./ui/button"
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "./ui/collapsible";
-import { Button } from "./ui/button";
-import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
+} from "./ui/collapsible"
 
 interface ComponentSourceProps extends React.HTMLAttributes<HTMLDivElement> {
-  name: string;
-  expandButtonTitle?: string;
+  name: string
+  expandButtonTitle?: string
 }
 
 export function ComponentSource({
@@ -25,22 +26,22 @@ export function ComponentSource({
   className,
   ...props
 }: ComponentSourceProps) {
-  const [sourceCode, setSourceCode] = React.useState("");
-  const [isOpened, setIsOpened] = React.useState(false);
+  const [sourceCode, setSourceCode] = React.useState("")
+  const [isOpened, setIsOpened] = React.useState(false)
 
   React.useEffect(() => {
     async function loadSourceCode() {
       try {
-        const mod = await import(`../../.component-sources/${name}.json`);
-        const sourceCodeJSON = mod.default;
-        setSourceCode(sourceCodeJSON.sourceCode);
+        const mod = await import(`../../.component-sources/${name}.json`)
+        const sourceCodeJSON = mod.default
+        setSourceCode(sourceCodeJSON.sourceCode)
       } catch (error) {
-        console.error(`Failed to load source for ${name}:`, error);
-        setSourceCode("");
+        console.error(`Failed to load source for ${name}:`, error)
+        setSourceCode("")
       }
     }
-    loadSourceCode();
-  }, [name]);
+    loadSourceCode()
+  }, [name])
 
   const syntaxHighlighterStyle = React.useMemo(
     () => ({
@@ -50,7 +51,7 @@ export function ComponentSource({
       maxWidth: "100%",
     }),
     []
-  );
+  )
 
   return (
     <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
@@ -71,14 +72,14 @@ export function ComponentSource({
               />
             </div>
           )}
-            <ReactSyntaxHighlighter
-              language="typescript"
-              style={hybrid}
-              customStyle={syntaxHighlighterStyle}
-              wrapLongLines={true}
-            >
-              {sourceCode}
-            </ReactSyntaxHighlighter>
+          <ReactSyntaxHighlighter
+            language="typescript"
+            style={hybrid}
+            customStyle={syntaxHighlighterStyle}
+            wrapLongLines={true}
+          >
+            {sourceCode}
+          </ReactSyntaxHighlighter>
         </CollapsibleContent>
         <div
           className={cn(
@@ -99,5 +100,5 @@ export function ComponentSource({
         </div>
       </div>
     </Collapsible>
-  );
+  )
 }

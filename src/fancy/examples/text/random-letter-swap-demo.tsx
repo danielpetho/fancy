@@ -1,5 +1,5 @@
-import RandomLetterSwapForward from "@/fancy/components/text/random-letter-swap-forward-anim";
-import RandomLetterSwapPingPong from "@/fancy/components/text/random-letter-swap-pingpong-anim";
+import RandomLetterSwapForward from "@/fancy/components/text/random-letter-swap-forward-anim"
+import RandomLetterSwapPingPong from "@/fancy/components/text/random-letter-swap-pingpong-anim"
 
 export default function Preview() {
   return (
@@ -23,5 +23,5 @@ export default function Preview() {
         />
       </div>
     </div>
-  );
+  )
 }

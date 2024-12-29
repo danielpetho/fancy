@@ -1,5 +1,5 @@
-import LetterSwapForward from "@/fancy/components/text/letter-swap-forward-anim";
-import LetterSwapPingPong from "@/fancy/components/text/letter-swap-pingpong-anim";
+import LetterSwapForward from "@/fancy/components/text/letter-swap-forward-anim"
+import LetterSwapPingPong from "@/fancy/components/text/letter-swap-pingpong-anim"
 
 export default function Preview() {
   return (
@@ -9,5 +9,5 @@ export default function Preview() {
         <LetterSwapForward label="nice!" staggerDuration={0} reverse={false} />
       </div>
     </div>
-  );
+  )
 }

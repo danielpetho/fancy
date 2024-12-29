@@ -1,18 +1,18 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { SidebarNavItem } from "@/types/nav";
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { motion } from "framer-motion"
 
-import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { SidebarNavItem } from "@/types/nav"
+import { cn } from "@/lib/utils"
 
 export interface DocsSidebarNavProps {
-  items: SidebarNavItem[];
+  items: SidebarNavItem[]
 }
 
 export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return items.length ? (
     <div className="w-full h-full py-6">
@@ -32,13 +32,13 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
         </div>
       ))}
     </div>
-  ) : null;
+  ) : null
 }
 
 interface NavItemProps {
-  item: SidebarNavItem;
-  index: number;
-  pathname: string | null;
+  item: SidebarNavItem
+  index: number
+  pathname: string | null
 }
 
 function NavItem({ item, index, pathname }: NavItemProps) {
@@ -62,12 +62,12 @@ function NavItem({ item, index, pathname }: NavItemProps) {
         )}
       </Link>
     </motion.p>
-  );
+  )
 }
 
 interface DocsSidebarNavItemsProps {
-  items: SidebarNavItem[];
-  pathname: string | null;
+  items: SidebarNavItem[]
+  pathname: string | null
 }
 
 export function DocsSidebarNavItems({
@@ -80,5 +80,5 @@ export function DocsSidebarNavItems({
         <NavItem key={index} item={item} index={index} pathname={pathname} />
       ))}
     </div>
-  ) : null;
+  ) : null
 }

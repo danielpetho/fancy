@@ -1,12 +1,8 @@
-import type { MDXComponents } from "mdx/types";
-import { ComponentPreview } from "@/components/component-preview";
-import { ComponentSource } from "@/components/component-source";
-import { CodeBlockWrapper } from "@/components/code-block-wrapper";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-import { CopyButton, CopyNpmCommandButton } from "@/components/copy-button";
-import { NpmCommands } from "@/types/types";
-import { Event } from "@/lib/events";
+import type { MDXComponents } from "mdx/types"
+
+import { NpmCommands } from "@/types/types"
+import { Event } from "@/lib/events"
+import { cn } from "@/lib/utils"
 import {
   Table,
   TableBody,
@@ -14,13 +10,18 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CodeBlockWrapper } from "@/components/code-block-wrapper"
+import { ComponentPreview } from "@/components/component-preview"
+import { ComponentSource } from "@/components/component-source"
+import { CopyButton, CopyNpmCommandButton } from "@/components/copy-button"
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
     h1: ({ className, children, ...props }: React.ComponentProps<"h1">) => (
       <h1
-        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
+        id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
         className={cn(
           "scroll-m-24 text-5xl  font-calendas tracking-tight py-2",
           className
@@ -33,8 +34,11 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     h2: ({ className, children, ...props }: React.ComponentProps<"h2">) => (
       <div className="flex flex-col gap-y-4 mt-4 ">
         <h2
-          id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-          className={cn("scroll-m-20 text-4xl tracking-tight pt-6 pb-0", className)}
+          id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
+          className={cn(
+            "scroll-m-20 text-4xl tracking-tight pt-6 pb-0",
+            className
+          )}
           {...props}
         >
           {children}
@@ -44,8 +48,11 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     ),
     h3: ({ className, children, ...props }: React.ComponentProps<"h3">) => (
       <h3
-        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-        className={cn("scroll-m-24 text-3xl  tracking-tight pt-10 pb-2", className)}
+        id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
+        className={cn(
+          "scroll-m-24 text-3xl  tracking-tight pt-10 pb-2",
+          className
+        )}
         {...props}
       >
         {children}
@@ -53,26 +60,43 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     ),
     h4: ({ className, children, ...props }: React.ComponentProps<"h4">) => (
       <h4
-        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-        className={cn("scroll-m-20 text-2xl tracking-tight pt-10 pb-2", className)}
+        id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
+        className={cn(
+          "scroll-m-20 text-2xl tracking-tight pt-10 pb-2",
+          className
+        )}
         {...props}
       >
         {children}
       </h4>
     ),
-    h5: ({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+    h5: ({
+      className,
+      children,
+      ...props
+    }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <h5
-        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-        className={cn("scroll-m-20 text-xl  tracking-tight pt-10 pb-4", className)}
+        id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
+        className={cn(
+          "scroll-m-20 text-xl  tracking-tight pt-10 pb-4",
+          className
+        )}
         {...props}
       >
         {children}
       </h5>
     ),
-    h6: ({ className, children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
+    h6: ({
+      className,
+      children,
+      ...props
+    }: React.HTMLAttributes<HTMLHeadingElement>) => (
       <h6
-        id={children?.toString().toLowerCase().replace(/\s+/g, '-')}
-        className={cn("scroll-m-20 text-xl tracking-tight pt-10 pb-4", className)}
+        id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
+        className={cn(
+          "scroll-m-20 text-xl tracking-tight pt-10 pb-4",
+          className
+        )}
         {...props}
       >
         {children}
@@ -181,10 +205,10 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       __event__,
       ...props
     }: React.HTMLAttributes<HTMLPreElement> & {
-      __rawString__?: string;
-      __withMeta__?: boolean;
-      __src__?: string;
-      __event__?: Event["name"];
+      __rawString__?: string
+      __withMeta__?: boolean
+      __src__?: string
+      __event__?: Event["name"]
     } & NpmCommands) => {
       return (
         <div className="relative flex h-full">
@@ -221,10 +245,13 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
               />
             )}
         </div>
-      );
+      )
     },
     code: ({ children, className, ...props }: React.ComponentProps<"code">) => (
-      <code className={cn("font-azeretMono text-xs p-1 bg-zinc-100", className)} {...props}>
+      <code
+        className={cn("font-azeretMono text-xs p-1 bg-zinc-100", className)}
+        {...props}
+      >
         {children}
       </code>
     ),
@@ -240,13 +267,19 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.ComponentProps<typeof TableHeader>) => (
-      <TableHeader className={cn("bg-zinc-100 font-bold text-black", className)} {...props} />
+      <TableHeader
+        className={cn("bg-zinc-100 font-bold text-black", className)}
+        {...props}
+      />
     ),
     TableBody: ({
       className,
       ...props
     }: React.ComponentProps<typeof TableBody>) => (
-      <TableBody className={cn("font-azeretMono font-light text-xs", className)} {...props} />
+      <TableBody
+        className={cn("font-azeretMono font-light text-xs", className)}
+        {...props}
+      />
     ),
     TableRow: ({
       className,
@@ -321,5 +354,5 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       />
     ),
     ...components,
-  };
+  }
 }

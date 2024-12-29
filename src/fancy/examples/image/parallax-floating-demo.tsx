@@ -1,14 +1,18 @@
-import { exampleImages } from "../_helpers/exampleImages";
-import { useEffect } from "react";
-import Floating, { FloatingElement } from "@/fancy/components/image/parallax-floating";
-import { motion, stagger, useAnimate } from "framer-motion";
+import { useEffect } from "react"
+import { motion, stagger, useAnimate } from "framer-motion"
+
+import Floating, {
+  FloatingElement,
+} from "@/fancy/components/image/parallax-floating"
+
+import { exampleImages } from "../_helpers/exampleImages"
 
 const Preview = () => {
-  const [scope, animate] = useAnimate();
+  const [scope, animate] = useAnimate()
 
   useEffect(() => {
-    animate("img", { opacity: [0, 1] }, { duration: 0.5, delay: stagger(0.15) });
-  }, []);
+    animate("img", { opacity: [0, 1] }, { duration: 0.5, delay: stagger(0.15) })
+  }, [])
 
   return (
     <div
@@ -17,11 +21,13 @@ const Preview = () => {
     >
       <motion.div
         className="z-50 text-center space-y-4 items-center flex flex-col"
-        initial={{ opacity: 0 , y: 10 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.88, delay: 1.5 }}
       >
-        <p className="text-5xl md:text-7xl z-50 text-white font-calendas italic">fancy.</p>
+        <p className="text-5xl md:text-7xl z-50 text-white font-calendas italic">
+          fancy.
+        </p>
         <p className="text-xs z-50 hover:scale-110 transition-transform bg-white text-black rounded-full py-2 w-20 cursor-pointer">
           Download
         </p>
@@ -88,7 +94,7 @@ const Preview = () => {
         </FloatingElement>
       </Floating>
     </div>
-  );
-};
+  )
+}
 
-export default Preview;
+export default Preview

@@ -1,7 +1,6 @@
-import ScrambleHover from "@/fancy/components/text/scramble-hover";
+import ScrambleHover from "@/fancy/components/text/scramble-hover"
 
 export default function Preview() {
-
   return (
     <div className="w-full h-full  text-xl sm:text-3xl md:text-5xl bg-background font-normal overflow-hidden p-12 sm:p-20 flex flex-col md:p-24 space-y-2 space-x-6">
       <ScrambleHover
@@ -20,5 +19,5 @@ export default function Preview() {
         characters="abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;':\,./<>?"
       />
     </div>
-  );
+  )
 }

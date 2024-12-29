@@ -11,7 +11,6 @@ There are two types of animations available for this component:
 1. Forward animation — plays the animation timeline once forward, when you hover over the text.
 2. Ping Pong animation — plays the animation timeline in a ping pong fashion. It plays once forward when you hover over the text, and once in the opposite direction when you hover away from the text.
 
-
 ## Source code
 
 #### Only forward animation
@@ -41,10 +40,12 @@ lodash is used for debouncing here — so the animation doesn't break on rapid h
 1. First, we duplicate the text we want to animate. We'll have two identical copies of the text.
 
 2. We create a container `<span>` element with these key properties:
+
    - `position: relative` - This establishes a positioning context
    - `overflow: hidden` - This ensures text outside the container boundaries is hidden
 
 3. For each copy of the text:
+
    - We split it into individual letters
    - Each letter is wrapped in its own `<span>` element, with `absolute` positioning
    - The letters from both copies are stacked vertically on top of each other (`top: 0`, and `top: 100%`)
@@ -126,10 +127,3 @@ By setting the `staggerDelay` prop to zero, you can create a line swap effect.
     </TableRow>
   </TableBody>
 </Table>
-
-
-
-
-
-
-

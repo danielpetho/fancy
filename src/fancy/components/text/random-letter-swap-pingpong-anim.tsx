@@ -1,14 +1,14 @@
-import { useAnimate, motion, DynamicAnimationOptions } from "framer-motion";
-import { debounce } from "lodash";
-import { useState } from "react";
+import { useState } from "react"
+import { DynamicAnimationOptions, motion, useAnimate } from "framer-motion"
+import { debounce } from "lodash"
 
 interface TextProps {
-  label: string;
-  reverse?: boolean;
-  transition?: DynamicAnimationOptions;
-  staggerDuration?: number;
-  className?: string;
-  onClick?: () => void;
+  label: string
+  reverse?: boolean
+  transition?: DynamicAnimationOptions
+  staggerDuration?: number
+  className?: string
+  onClick?: () => void
 }
 
 const RandomLetterSwapPingPong = ({
@@ -23,33 +23,33 @@ const RandomLetterSwapPingPong = ({
   onClick,
   ...props
 }: TextProps) => {
-  const [scope, animate] = useAnimate();
-  const [blocked, setBlocked] = useState(false);
+  const [scope, animate] = useAnimate()
+  const [blocked, setBlocked] = useState(false)
 
   const mergeTransition = (transition: DynamicAnimationOptions, i: number) => ({
     ...transition,
     delay: i * staggerDuration,
-  });
+  })
 
   const shuffledIndices = Array.from(
     { length: label.length },
     (_, i) => i
-  ).sort(() => Math.random() - 0.5);
+  ).sort(() => Math.random() - 0.5)
 
   const hoverStart = debounce(
     () => {
-      if (blocked) return;
-      setBlocked(true);
+      if (blocked) return
+      setBlocked(true)
 
       for (let i = 0; i < label.length; i++) {
-        const randomIndex = shuffledIndices[i];
+        const randomIndex = shuffledIndices[i]
         animate(
           ".letter-" + randomIndex,
           {
             y: reverse ? "100%" : "-100%",
           },
           mergeTransition(transition, i)
-        );
+        )
 
         animate(
           ".letter-secondary-" + randomIndex,
@@ -57,26 +57,26 @@ const RandomLetterSwapPingPong = ({
             top: "0%",
           },
           mergeTransition(transition, i)
-        );
+        )
       }
     },
     100,
     { leading: true, trailing: true }
-  );
+  )
 
   const hoverEnd = debounce(
     () => {
-      setBlocked(false);
+      setBlocked(false)
 
       for (let i = 0; i < label.length; i++) {
-        const randomIndex = shuffledIndices[i];
+        const randomIndex = shuffledIndices[i]
         animate(
           ".letter-" + randomIndex,
           {
             y: 0,
           },
           mergeTransition(transition, i)
-        );
+        )
 
         animate(
           ".letter-secondary-" + randomIndex,
@@ -84,12 +84,12 @@ const RandomLetterSwapPingPong = ({
             top: reverse ? "-100%" : "100%",
           },
           mergeTransition(transition, i)
-        );
+        )
       }
     },
     100,
     { leading: true, trailing: true }
-  );
+  )
 
   return (
     <motion.span
@@ -119,10 +119,10 @@ const RandomLetterSwapPingPong = ({
               {letter}
             </motion.span>
           </span>
-        );
+        )
       })}
     </motion.span>
-  );
-};
+  )
+}
 
-export default RandomLetterSwapPingPong;
+export default RandomLetterSwapPingPong

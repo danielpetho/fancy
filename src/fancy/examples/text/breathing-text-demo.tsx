@@ -1,4 +1,4 @@
-import BreathingText from "@/fancy/components/text/breathing-text";
+import BreathingText from "@/fancy/components/text/breathing-text"
 
 export default function Preview() {
   return (
@@ -12,5 +12,5 @@ export default function Preview() {
         />
       </div>
     </div>
-  );
+  )
 }

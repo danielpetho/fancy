@@ -1,19 +1,22 @@
-import VerticalCutReveal, { VerticalCutRevealRef } from "@/fancy/components/text/vertical-cut-reveal";
-import { useInView } from "framer-motion";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from "react"
+import { useInView } from "framer-motion"
+
+import VerticalCutReveal, {
+  VerticalCutRevealRef,
+} from "@/fancy/components/text/vertical-cut-reveal"
 
 export default function Preview() {
-  const ref = useRef(null);
-  const textRef = useRef<VerticalCutRevealRef>(null);
-  const isInView = useInView(ref, { once: false });
+  const ref = useRef(null)
+  const textRef = useRef<VerticalCutRevealRef>(null)
+  const isInView = useInView(ref, { once: false })
 
   useEffect(() => {
     if (isInView) {
-      textRef.current?.startAnimation();
+      textRef.current?.startAnimation()
     } else {
-      textRef.current?.reset();
+      textRef.current?.reset()
     }
-  }, [isInView]);
+  }, [isInView])
 
   return (
     <div className="w-full h-full font-overusedGrotesk bg-[#0015ff] overflow-auto text-white text md:text-4xl lg:text-4xl font-bold text-xl">
@@ -41,5 +44,5 @@ export default function Preview() {
         </div>
       </div>
     </div>
-  );
+  )
 }

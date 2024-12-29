@@ -1,4 +1,4 @@
-import NumberTicker from "@/fancy/components/text/basic-number-ticker";
+import NumberTicker from "@/fancy/components/text/basic-number-ticker"
 
 const NumberTickerDemo = () => {
   return (
@@ -15,7 +15,7 @@ const NumberTickerDemo = () => {
         %
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default NumberTickerDemo;
+export default NumberTickerDemo

@@ -1,4 +1,3 @@
-import Gravity, { MatterBody } from "@/fancy/components/physics/gravity";
 import {
   Atom,
   AudioLines,
@@ -34,7 +33,9 @@ import {
   Sun,
   TrendingUp,
   Zap,
-} from "lucide-react";
+} from "lucide-react"
+
+import Gravity, { MatterBody } from "@/fancy/components/physics/gravity"
 
 export default function Preview() {
   const icons = [
@@ -73,17 +74,19 @@ export default function Preview() {
     { icon: Earth, size: 24 },
     { icon: Zap, size: 24 },
     { icon: Sigma, size: 24 },
-  ];
+  ]
 
   return (
     <div className="w-full h-full flex flex-col items-center relative bg-background">
-      <h2 className=" text-black pt-24 text-xl ponter-events-none">icons from lucide.dev</h2>
-      <Gravity gravity={{ x: 0, y: 1 }} className="w-full h-full" >
+      <h2 className=" text-black pt-24 text-xl ponter-events-none">
+        icons from lucide.dev
+      </h2>
+      <Gravity gravity={{ x: 0, y: 1 }} className="w-full h-full">
         {icons.map((IconData, index) => {
-          const Icon = IconData.icon;
-          const randomX = Math.random() * 60 + 20; // Random x between 20-80%
-          const randomY = Math.random() * 20 + 5; // Random y between 5-25%
-          const bodyType = Math.random() > 0.7 ? "rectangle" : "circle";
+          const Icon = IconData.icon
+          const randomX = Math.random() * 60 + 20 // Random x between 20-80%
+          const randomY = Math.random() * 20 + 5 // Random y between 5-25%
+          const bodyType = Math.random() > 0.7 ? "rectangle" : "circle"
 
           return (
             <MatterBody
@@ -101,9 +104,9 @@ export default function Preview() {
                 <Icon size={IconData.size} />
               </div>
             </MatterBody>
-          );
+          )
         })}
       </Gravity>
     </div>
-  );
+  )
 }
