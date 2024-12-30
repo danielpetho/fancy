@@ -47,8 +47,8 @@ function NavItem({ item, index, pathname }: NavItemProps) {
       <Link
         href={item.href ?? "#"}
         className={cn(
-          "text text-foreground/50",
-          pathname === item.href && "font-medium",
+          "text text-muted-foreground",
+          pathname === item.href && "text-foreground font-medium",
           item.disabled && "opacity-60 cursor-not-allowed"
         )}
         target={item.external ? "_blank" : ""}
@@ -56,7 +56,7 @@ function NavItem({ item, index, pathname }: NavItemProps) {
       >
         {item.title}
         {item.label && (
-          <span className="ml-1 rounded-md bg-[#ffd726] px-1.5 py-0.5  text-[11px] leading-none text-foreground">
+          <span className="ml-1 rounded-md bg-[#ffd726] px-1.5 py-0.5 text-[11px] leading-none text-foreground">
             {item.label}
           </span>
         )}

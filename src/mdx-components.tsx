@@ -291,7 +291,10 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.ComponentProps<typeof TableCell>) => (
-      <TableCell className={cn(className)} {...props} />
+      <TableCell 
+        className={cn("font-azeretMono text-xs [&_*]:text-xs", className)} 
+        {...props} 
+      />
     ),
     TableHead: ({
       className,
