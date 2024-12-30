@@ -6,7 +6,14 @@ Please take a moment to review this document before submitting your first pull r
 
 If you need any help, feel free to reach out to [daniel](https://x.com/nonzeroexitcode), or open an issue.
 
-## About this repository
+## Stack
+
+- Tailwind CSS for styling the components.
+- Motion (formerly Framer Motion) for animations. Please use the latest version.
+- React 18 (React 19 is not supported yet).
+- MDX for the documentation.
+- Next.js for the website.
+- Contentful for the CMS.
 
 ## Structure
 
@@ -65,20 +72,7 @@ As of now, the environemnt variables aren't available publicly, therefore the la
 
 ## Components
 
-Before you add a component, we strongly recommend to review and follow the following guideline:
-
-### Acceptance Criteria
-
-There are many similar, wonderful projects already on GitHub, which might worth checking and contributing to (eg: https://github.com/magicuidesign/magic-ui). 
-
-Fancy Components aimed to be different from other projects by creating and collecting the "less useful", more fun, edgy and unconvential components and microinteractions. This is something which should be reflected with the design and the demos of the components. Please, have a look at the catalog to get an idea of what we are aiming for. If you're not sure, feel free to reach out and check with us before you start working on a new component.
-
-### Credits
-
-Please, avoid 1:1 copying other people's work. Re-creating the concept itself is perfectly fine, but please, package it in new way for the demo. 
-Some concepts are already have been made by 100 different ways, in that case, tracing back to the original creator is unlikely, so leaving out the credits is fine in that case. Otherwise, if the inspiration, or the concept can be traced back to someone, please, credit the original author. 
-
-TBD...
+Before you add a component, please make sure to review and understand the [Acceptance Criteria](./ACCEPTANCE_CRITERIA.md).
 
 ## Commit Convention
 
