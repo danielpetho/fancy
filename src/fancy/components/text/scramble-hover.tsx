@@ -164,18 +164,21 @@ const ScrambleHover: React.FC<ScrambleHoverProps> = ({
       className={cn("inline-block whitespace-pre-wrap", className)}
       {...props}
     >
-      {displayText.split("").map((char, index) => (
-        <span
-          key={index}
-          className={cn(
-            revealedIndices.has(index) || !isScrambling || !isHovering
-              ? className
-              : scrambledClassName
-          )}
-        >
-          {char}
-        </span>
-      ))}
+      <span className="sr-only">{displayText}</span>
+      <span aria-hidden="true">
+        {displayText.split("").map((char, index) => (
+          <span
+            key={index}
+            className={cn(
+              revealedIndices.has(index) || !isScrambling || !isHovering
+                ? className
+                : scrambledClassName
+            )}
+          >
+            {char}
+          </span>
+        ))}
+      </span>
     </motion.span>
   )
 }

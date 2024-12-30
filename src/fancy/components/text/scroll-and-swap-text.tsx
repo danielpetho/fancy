@@ -34,8 +34,8 @@ const ScrollAndSwapText = ({
       ref={ref}
       {...props}
     >
-      <span className="relative text-transparent">{label}</span>
-      <motion.span className="absolute " style={{ top: top }}>
+      <span className="relative text-transparent" aria-hidden="true">{label}</span>
+      <motion.span className="absolute " style={{ top: top }} >
         {label}
       </motion.span>
       <motion.span

@@ -10,6 +10,7 @@ import { useAnimationFrame } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import { useMousePosition } from "@/hooks/use-mouse-position"
+import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
 
 interface FloatingContextType {
   registerElement: (id: string, element: HTMLDivElement, depth: number) => void
@@ -43,7 +44,7 @@ const Floating = ({
       }
     >()
   )
-  const { x: mouseX, y: mouseY } = useMousePosition(containerRef)
+  const mousePositionRef = useMousePositionRef(containerRef)
 
   const registerElement = useCallback(
     (id: string, element: HTMLDivElement, depth: number) => {
@@ -67,8 +68,8 @@ const Floating = ({
       const strength = (data.depth * sensitivity) / 20
 
       // Calculate new target position
-      const newTargetX = mouseX * strength
-      const newTargetY = mouseY * strength
+      const newTargetX = mousePositionRef.current.x * strength
+      const newTargetY = mousePositionRef.current.y * strength
 
       // Check if we need to update
       const dx = newTargetX - data.currentPosition.x

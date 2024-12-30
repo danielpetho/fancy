@@ -136,7 +136,12 @@ const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
     }
 
     return (
-      <span className="inline-block whitespace-pre-wrap">{renderText()}</span>
+      <>
+        <span className="sr-only">{text}</span>
+        <span className="inline-block whitespace-pre-wrap" aria-hidden="true">
+          {renderText()}
+        </span>
+      </>
     )
   }
 )

@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useCallback, useRef } from "react"
 
-import { useMousePosition } from "@/hooks/use-mouse-position" // We'll create this hook
+import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
+import { motion, useAnimationFrame } from "motion/react"
 
 interface FontVariationAxis {
   name: string
@@ -29,9 +30,10 @@ const VariableFontAndCursor = ({
   onClick,
   ...props
 }: TextProps) => {
-  const { x, y } = useMousePosition(containerRef)
+  const mousePositionRef = useMousePositionRef(containerRef)
+  const spanRef = useRef<HTMLSpanElement>(null)  // Add ref for the span
 
-  const interpolateFontVariationSettings = (
+  const interpolateFontVariationSettings = useCallback((
     xPosition: number,
     yPosition: number
   ) => {
@@ -52,20 +54,27 @@ const VariableFontAndCursor = ({
       (fontVariationMapping.y.max - fontVariationMapping.y.min) * yProgress
 
     return `'${fontVariationMapping.x.name}' ${xValue}, '${fontVariationMapping.y.name}' ${yValue}`
-  }
+  }, [])
+
+  useAnimationFrame(() => {
+    const settings = interpolateFontVariationSettings(
+      mousePositionRef.current.x, 
+      mousePositionRef.current.y
+    )
+    if (spanRef.current) {
+      spanRef.current.style.fontVariationSettings = settings
+    }
+  })
 
   return (
-    <span
-      className={`${className}`}
+    <motion.span
+      ref={spanRef}
+      className={`${className} inline-block`}
       onClick={onClick}
-      style={{
-        fontVariationSettings: interpolateFontVariationSettings(x, y),
-        display: "inline-block", // Ensure the span can receive mouse events
-      }}
       {...props}
     >
       {label}
-    </span>
+    </motion.span>
   )
 }
 
