@@ -15,7 +15,7 @@ export default function Preview() {
             Make it{" "}
           </motion.span>
           <TextRotate
-            words={[
+            texts={[
               "work!",
               "fancy ✽",
               "✨ pop ✨",
@@ -23,9 +23,10 @@ export default function Preview() {
               "fast 🚀",
               "fun ツ",
             ]}
-            className="text-white px-3 bg-[#0015ff] pt-1 overflow-hidden py-2 justify-center rounded-lg "
+            mainClassName="text-white px-3 bg-[#0015ff] pt-1 overflow-hidden py-2 justify-center rounded-lg "
             staggerFrom={"last"}
             staggerDuration={0.025}
+            splitLevelClassName="overflow-hidden"
             transition={{ type: "spring", damping: 30, stiffness: 400 }}
             rotationInterval={2000}
           />
