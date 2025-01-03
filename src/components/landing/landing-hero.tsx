@@ -31,7 +31,7 @@ export function LandingHero({ allComps }: { allComps: Component[] }) {
               </motion.span>
 
               <TextRotate
-                words={[
+                texts={[
                   "fancy",
                   "fun",
                   "lovely ♥",
@@ -46,7 +46,7 @@ export function LandingHero({ allComps }: { allComps: Component[] }) {
                   "✨ pop ✨",
                   "rock 🤘",
                 ]}
-                className="overflow-hidden pr-3 text-yellow-500 py-0 pb-2 md:pb-4 rounded-xl"
+                mainClassName="overflow-hidden pr-3 text-yellow-500 py-0 pb-2 md:pb-4 rounded-xl"
                 staggerDuration={0.03}
                 staggerFrom="last"
                 rotationInterval={3000}
