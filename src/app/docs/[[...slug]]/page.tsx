@@ -100,6 +100,9 @@ export default async function DocPage({ params }: DocPageProps) {
 
   const toc = doc.toc
 
+  console.log(doc.author)
+
+
   return (
     <main className="xl:grid xl:grid-cols-[1fr_300px] justify-center max-w-full">
       <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 border-border border shadow-lg">
@@ -123,6 +126,34 @@ export default async function DocPage({ params }: DocPageProps) {
               <p className="text-lg text-muted-foreground">
                 <Balancer>{doc.description}</Balancer>
               </p>
+            )}
+            {doc.author && doc.author.length > 0 && doc.author !== "undefined" && (
+              <>
+                <p className="pl-2 pt-1 text font-medium text-foreground flex flex-row gap-x-3">
+                    by {" "}
+                    {doc.author.match(/\[([^\]]+)\]\(([^)]+)\)/g)
+                      ? doc.author.split(",").map((author, i) => {
+                          const match = author.match(/\[([^\]]+)\]\(([^)]+)\)/)
+                          if (match) {
+                            return (
+                              <span key={i}>
+                                {i > 0 && " "}
+                                <a href={match[2]} className="underline">
+                                  {match[1]}
+                                </a>
+                              </span>
+                            )
+                          }
+                          return (
+                            <span key={i}>
+                              {i > 0 && " "}
+                              {author.trim()}
+                            </span>
+                          )
+                        })
+                      : doc.author}
+                </p>
+              </>
             )}
           </div>
 

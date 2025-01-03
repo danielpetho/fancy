@@ -120,7 +120,7 @@ export function ComponentPreview({
           value="preview"
           className="border border-black-500 flex rounded-lg"
         >
-          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative">
+          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative max-h-[620px]">
             {/* <div className="absolute top-4 right-4 rounded-full border">
 
             </div> */}

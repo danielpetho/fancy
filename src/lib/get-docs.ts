@@ -36,6 +36,7 @@ export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
     published: Boolean(frontmatter.published),
     featured: Boolean(frontmatter.featured),
     component: Boolean(frontmatter.component),
+    author: String(frontmatter.author),
     toc: toc,
     body: content,
   }
