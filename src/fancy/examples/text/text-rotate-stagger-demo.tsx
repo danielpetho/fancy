@@ -6,7 +6,7 @@ import { exampleImages } from "../_helpers/exampleImages"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full text-2xl flex flex-row items-center justify-center font-overusedGrotesk bg-background font-light overflow-hidden p-6 uppercase relative">
+    <div className="w-full h-full text-base sm:text-xl md:text-2xl flex flex-row items-center justify-center font-overusedGrotesk bg-background font-light overflow-hidden p-6 uppercase relative">
       <div className="absolute inset-0 w-full h-full blur-3xl">
         <img
           src={exampleImages[0].url}
@@ -18,7 +18,7 @@ export default function Preview() {
         <div className=" grid grid-cols-2 gap-y-12 gap-x-8 w-full text-[#ff5941] font-bold">
           <TextRotate
             texts={["New York", "Los Angeles", "Chicago", "Miami"]}
-            mainClassName="py-2 justify-center rounded-lg "
+            mainClassName="justify-center"
             staggerFrom="first"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -30,8 +30,8 @@ export default function Preview() {
           />
 
           <TextRotate
-            texts={["Tokyo", "Osaka", "Kyoto", "Sapporo"]}
-            mainClassName="py-2 justify-center rounded-lg "
+            texts={["São Paulo", "Rio de Janeiro", "Salvador", "Brasília"]}
+            mainClassName="justify-center"
             staggerFrom="center"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -43,8 +43,8 @@ export default function Preview() {
           />
 
           <TextRotate
-            texts={["Mumbai", "Delhi", "Bangalore", "Chennai"]}
-            mainClassName="py-2 justify-center rounded-lg "
+            texts={["Tokyo", "Osaka", "Kyoto", "Sapporo"]}
+            mainClassName="justify-center"
             staggerFrom="last"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}
@@ -56,8 +56,8 @@ export default function Preview() {
           />
 
           <TextRotate
-            texts={["São Paulo", "Rio de Janeiro", "Salvador", "Brasília"]}
-            mainClassName="py-2 justify-center rounded-lg"
+            texts={["Mumbai", "Delhi", "Bangalore", "Chennai"]}
+            mainClassName="justify-center"
             staggerFrom="random"
             initial={{ y: "100%" }}
             animate={{ y: 0 }}

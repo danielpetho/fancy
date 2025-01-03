@@ -55,3 +55,155 @@ This can be handy for a lot of use cases, eg. a scroll-triggered animation.
 
 <ComponentPreview name="text-rotate-scroll-step-demo" />
 
+## Notes
+
+If you're using `auto` mode, make sure that the `rotationInterval` prop is set to a value that's greater than the duration of initial/exit animations, otherwise we will switch to a new text before the animation is complete. 
+
+## Props
+
+### TextRotateProps
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>texts<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string[]`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text to be displayed and animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>initial</TableCell>
+      <TableCell>`MotionProps["initial"]`</TableCell>
+      <TableCell>`{ y: "100%", opacity: 0 }`</TableCell>
+      <TableCell>Initial styles for the text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>animate</TableCell>
+      <TableCell>`MotionProps["animate"]`</TableCell>
+      <TableCell>`{ y: 0, opacity: 1 }`</TableCell>
+      <TableCell>Target styles for the text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>exit</TableCell>
+      <TableCell>`MotionProps["exit"]`</TableCell>
+      <TableCell>`{ y: "-120%", opacity: 0 }`</TableCell>
+      <TableCell>Styles for the text for animating out</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>animatePresenceMode</TableCell>
+      <TableCell>`AnimatePresenceProps["mode"]`</TableCell>
+      <TableCell>`"wait"`</TableCell>
+      <TableCell>The mode for the AnimatePresence component. Refer to motion docs for more details</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>animatePresenceInitial</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to animate in the initial state for AnimatePresence. Refer to motion docs for more details</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>rotationInterval</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`2000`</TableCell>
+      <TableCell>The interval in milliseconds between each rotation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>transition</TableCell>
+      <TableCell>`ValueAnimationTransition`</TableCell>
+      <TableCell>`{ type: "spring", damping: 25, stiffness: 300 }`</TableCell>
+      <TableCell>Animation configuration for each letter. Refer to motion docs for more details</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>staggerDuration</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0`</TableCell>
+      <TableCell>Delay between each letter's animation start</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>staggerFrom</TableCell>
+      <TableCell>`"first" | "last" | "center" | "random" | number`</TableCell>
+      <TableCell>`"first"`</TableCell>
+      <TableCell>Starting index of the stagger effect</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>loop</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to loop through the texts</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>auto</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to start the animation automatically</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>splitBy</TableCell>
+      <TableCell>`"words" | "characters" | "lines" | string`</TableCell>
+      <TableCell>`"words"`</TableCell>
+      <TableCell>The split method for the text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onNext</TableCell>
+      <TableCell>`(index: number) => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback function for when the next text is rendered</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>mainClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling the container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>splitLevelClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling the individual words or lines</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>elementLevelClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling the individual characters/words/lines</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### TextRotateRef
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Method</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>next()</TableCell>
+      <TableCell>Goes to the next text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>previous()</TableCell>
+      <TableCell>Goes back to the previous text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>jumpTo(index: number)</TableCell>
+      <TableCell>Jumps to a specific text index</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>reset()</TableCell>
+      <TableCell>Resets the animation to the initial state</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+

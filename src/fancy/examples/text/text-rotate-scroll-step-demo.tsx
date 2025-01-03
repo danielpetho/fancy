@@ -29,9 +29,9 @@ function Item({
     <section
       ref={ref}
       key={index + 1}
-      className="h-full w-full flex justify-start pl-24 items-center snap-center"
+      className="h-full w-1/2 flex justify-center items-center snap-center"
     >
-      <div className="w-64 h-64">
+      <div className="w-16 h-16 sm:w-36 sm:h-36 md:w-40 md:h-40">
         <a href={link} target="_blank" rel="noreferrer">
           <img
             src={image}
@@ -46,7 +46,6 @@ function Item({
 
 export default function Preview() {
   const textRotateRef = useRef<TextRotateRef>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
 
   const handleInView = (index: number, inView: boolean) => {
     console.log(index, inView)
@@ -57,22 +56,24 @@ export default function Preview() {
 
   return (
     <div className="w-full h-full overflow-auto absolute snap-y snap-mandatory">
-      <div className="sticky inset-0 h-full w-full flex items-center pr-40">
-        <TextRotate
-          ref={textRotateRef}
-          texts={[...exampleImages.map((image) => image.author)]}
-          mainClassName="text-3xl w-full justify-end flex"
-          splitLevelClassName="overflow-hidden"
-          staggerFrom={"first"}
-          animatePresenceMode="wait"
-          loop={false}
-          auto={false}
-          staggerDuration={0.005}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-          transition={{ type: "spring", duration: 0.6, bounce: 0. }}
-        />
+      <div className="sticky inset-0 h-full w-full flex items-center justify-end">
+        <div className="w-2/3">
+          <TextRotate
+            ref={textRotateRef}
+            texts={[...exampleImages.map((image) => image.author)]}
+            mainClassName="text-sm sm:text-3xl md:text-4xl w-full justify-center flex pt-2"
+            splitLevelClassName="overflow-hidden pb-2"
+            staggerFrom={"first"}
+            animatePresenceMode="wait"
+            loop={false}
+            auto={false}
+            staggerDuration={0.005}
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            transition={{ type: "spring", duration: 0.6, bounce: 0 }}
+          />
+        </div>
       </div>
       <div className="absolute inset-0">
         {exampleImages.slice(1).map((image, index) => (

@@ -8,20 +8,20 @@ export default function Preview() {
   const textRotateRef = useRef<TextRotateRef>(null)
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center font-overusedGrotesk bg-background font-light overflow-hidden p-24 gap-8">
+    <div className="w-full h-full flex flex-col items-center justify-center font-overusedGrotesk bg-background font-light overflow-hidden p-8 sm:p-20 md:p-24 gap-8">
       <LayoutGroup>
         <motion.p className="" layout>
           <TextRotate
             ref={textRotateRef}
             texts={[
-              "This is the first text",
+              "this is the first text",
               "this is the 2nd",
               "we're at third!",
               "4th! keep going",
               "5th.",
               "this is the end.",
             ]}
-            mainClassName="text-4xl justify-center flex"
+            mainClassName="text-lg sm:text-2xl md:text-4xl justify-center flex"
             staggerFrom={"first"}
             animatePresenceMode="sync"
             loop={true}
@@ -42,13 +42,13 @@ export default function Preview() {
           onClick={() => textRotateRef.current?.previous()}
           className="px-2 py-2 text-black "
         >
-          <MoveLeft className="w-4 h-4" />
+          <MoveLeft className="w-3 h-3 sm:w-4 sm:h-4" />
         </button>
         <button
           onClick={() => textRotateRef.current?.next()}
           className="px-2 py-2 text-black "
         >
-          <MoveRight className="w-4 h-4" />
+          <MoveRight className="w-3 h-3 sm:w-4 sm:h-4" />
         </button>
       </div>
     </div>
