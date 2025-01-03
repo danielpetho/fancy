@@ -70,7 +70,7 @@ npm install
 
 The project uses Contentful as a CMS, from where we fetch some component data. Namely: thumbnail and video demo URLs. These URLs are used as sources in the landing page, and for the og:image meta on each component page.
 
-As of now, the environemnt variables aren't available publicly, therefore the landing page will not work. We will create a workaround for this soon.
+As of now, the environment variables aren't available publicly, therefore you will not see the images in the landing page. We will create a workaround for this soon.
 
 ## Components
 
@@ -123,7 +123,7 @@ author: "[johndoe](https://example.com)"
 
 Please, have a look at an [existing component](./src/content/docs/components/blocks/circling-elements.mdx) for reference.
 
-When you're done and ready to submit your PR, please create a quick recording of your work, and upload it to the PR description. It will help us to speed up the review process.
+When you're done and ready to submit your PR, please create a quick recording of your work, and upload it to the PR description. It will help us to speed up the review process. Check out [this PR](https://github.com/danielpetho/fancy/pull/2) for reference.
 
 That's it, you're done!
 
