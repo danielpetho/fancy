@@ -124,6 +124,34 @@ export default async function DocPage({ params }: DocPageProps) {
                 <Balancer>{doc.description}</Balancer>
               </p>
             )}
+            {doc.author && doc.author.length > 0 && doc.author !== "undefined" && (
+              <>
+                <p className="pl-2 pt-1 text font-medium text-foreground flex flex-row gap-x-3">
+                    by {" "}
+                    {doc.author.match(/\[([^\]]+)\]\(([^)]+)\)/g)
+                      ? doc.author.split(",").map((author, i) => {
+                          const match = author.match(/\[([^\]]+)\]\(([^)]+)\)/)
+                          if (match) {
+                            return (
+                              <span key={i}>
+                                {i > 0 && " "}
+                                <a href={match[2]} className="underline">
+                                  {match[1]}
+                                </a>
+                              </span>
+                            )
+                          }
+                          return (
+                            <span key={i}>
+                              {i > 0 && " "}
+                              {author.trim()}
+                            </span>
+                          )
+                        })
+                      : doc.author}
+                </p>
+              </>
+            )}
           </div>
 
           <div className="pb-12 pt-8 overflow-x-hidden">{doc.body}</div>

@@ -16,7 +16,7 @@ export default function FloatDemo() {
           <Float>
             <div className="sm:w-40 sm:h-40 h-32 w-32 md:w-48 md:h-48 shadow-2xl relative overflow-hidden  hover:scale-105 duration-200 cursor-pointer transition-transform">
               <img
-                src={exampleImages[4]}
+                src={exampleImages[4].url}
                 className="w-full h-full object-cover absolute top-0 left-0"
               />
             </div>

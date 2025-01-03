@@ -78,6 +78,8 @@ const example = traverseDirectory(examplesDir, true)
 const content = `import * as React from "react";
 import { Registry } from "@/fancy/schema";
 
+// This file is generated automatically. Do not edit it manually.
+
 const fancy: Registry = ${JSON.stringify(fancy, null, 2)};
 
 const example: Registry = ${JSON.stringify(example, null, 2)};

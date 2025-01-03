@@ -7,6 +7,7 @@ export type Doc = {
   featured: boolean
   component: boolean
   toc: any
+  author: string
   /** MDX file body */
   body: any
   slug: string

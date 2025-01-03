@@ -32,14 +32,20 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
       },
       {
+        title: "Random Letter Swap Hover",
+        href: "/docs/components/text/random-letter-swap",
+        items: [],
+      },
+      {
         title: "Vertical Cut Reveal",
         href: "/docs/components/text/vertical-cut-reveal",
         items: [],
       },
       {
-        title: "Random Letter Swap Hover",
-        href: "/docs/components/text/random-letter-swap",
+        title: "Text Rotate",
+        href: "/docs/components/text/text-rotate",
         items: [],
+        label: "New",
       },
       {
         title: "Variable Font Hover By Letter",
