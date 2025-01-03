@@ -68,6 +68,14 @@ git checkout -b my-new-branch
 npm install
 ```
 
+### Generate the source files and the registry index.
+
+```bash
+npm run generate
+```
+
+Then, you're ready for development!
+
 The project uses Contentful as a CMS, from where we fetch some component data. Namely: thumbnail and video demo URLs. These URLs are used as sources in the landing page, and for the og:image meta on each component page.
 
 As of now, the environment variables aren't available publicly, therefore you will not see the images in the landing page. We will create a workaround for this soon.
