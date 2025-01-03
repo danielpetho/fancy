@@ -1,9 +1,11 @@
-import React from "react";
-import Screensaver from "@/fancy/components/blocks/screensaver";
-import { exampleImages } from "../_helpers/exampleImages";
+import React from "react"
+
+import Screensaver from "@/fancy/components/blocks/screensaver"
+
+import { exampleImages } from "../_helpers/exampleImages"
 
 const CirclingElementsDemo: React.FC = () => {
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null)
 
   return (
     <div
@@ -22,8 +24,8 @@ const CirclingElementsDemo: React.FC = () => {
           containerRef={containerRef}
         >
           <div className="w-20 h-20 md:w-48 md:h-48 overflow-hidden">
-            <img 
-              src={image} 
+            <img
+              src={image.url}
               alt={`Example ${index + 1}`}
               className="w-full h-full object-cover"
             />
@@ -31,7 +33,7 @@ const CirclingElementsDemo: React.FC = () => {
         </Screensaver>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default CirclingElementsDemo;
+export default CirclingElementsDemo

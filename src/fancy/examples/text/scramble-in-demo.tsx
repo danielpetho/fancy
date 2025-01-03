@@ -1,7 +1,8 @@
+import { useEffect, useRef } from "react"
+
 import ScrambleIn, {
   ScrambleInHandle,
-} from "@/fancy/components/text/scramble-in";
-import { useEffect, useRef } from "react";
+} from "@/fancy/components/text/scramble-in"
 
 export default function Preview() {
   const titles = [
@@ -19,18 +20,18 @@ export default function Preview() {
     "12. Short Circuit - 3:26",
     "13. Face to Face (featuring Todd Edwards) - 3:58",
     "14. Too Long (featuring Romanthony) - 10:00",
-  ];
+  ]
 
-  const scrambleRefs = useRef<(ScrambleInHandle | null)[]>([]);
+  const scrambleRefs = useRef<(ScrambleInHandle | null)[]>([])
 
   useEffect(() => {
     titles.forEach((_, index) => {
-      const delay = index * 50;
+      const delay = index * 50
       setTimeout(() => {
-        scrambleRefs.current[index]?.start();
-      }, delay);
-    });
-  }, []);
+        scrambleRefs.current[index]?.start()
+      }, delay)
+    })
+  }, [])
 
   return (
     <div className="w-full h-full flex flex-col text-sm md:text-lg lg:text-lg xl:text-xl justify-start items-start bg-background font-normal overflow-hidden py-16 px-8 sm:px-16 md:px-20 lg:px-24 text-center">
@@ -38,7 +39,7 @@ export default function Preview() {
         <ScrambleIn
           key={index}
           ref={(el) => {
-            scrambleRefs.current[index] = el;
+            scrambleRefs.current[index] = el
           }}
           text={model}
           scrambleSpeed={25}
@@ -47,5 +48,5 @@ export default function Preview() {
         />
       ))}
     </div>
-  );
+  )
 }

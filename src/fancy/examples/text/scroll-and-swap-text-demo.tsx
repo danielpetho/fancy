@@ -1,8 +1,9 @@
-import ScrollAndSwapText from "@/fancy/components/text/scroll-and-swap-text";
-import { useRef } from "react";
+import { useRef } from "react"
+
+import ScrollAndSwapText from "@/fancy/components/text/scroll-and-swap-text"
 
 export default function Preview() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
@@ -36,5 +37,5 @@ export default function Preview() {
       </div>
       <div className="h-[30%]"></div>
     </div>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import { SidebarNavItem } from "@/types/nav";
+import { SidebarNavItem } from "@/types/nav"
 
 export const docsConfig: SidebarNavItem[] = [
   {
@@ -32,15 +32,20 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
       },
       {
-        title: "Vertical Cut Reveal",
-        href: "/docs/components/text/vertical-cut-reveal",
-        items: [],
-        label: "New",
-      },
-      {
         title: "Random Letter Swap Hover",
         href: "/docs/components/text/random-letter-swap",
         items: [],
+      },
+      {
+        title: "Vertical Cut Reveal",
+        href: "/docs/components/text/vertical-cut-reveal",
+        items: [],
+      },
+      {
+        title: "Text Rotate",
+        href: "/docs/components/text/text-rotate",
+        items: [],
+        label: "New",
       },
       {
         title: "Variable Font Hover By Letter",
@@ -61,6 +66,12 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Variable Font And Cursor",
         href: "/docs/components/text/variable-font-and-cursor",
         items: [],
+      },
+      {
+        title: "Variable Font Cursor Proximity",
+        href: "/docs/components/text/variable-font-cursor-proximity",
+        items: [],
+        label: "New",
       },
       {
         title: "Breathing Text",
@@ -124,11 +135,10 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/physics/elastic-line",
         items: [],
       },
-      { 
-        title: "Gravity", 
-        href: "/docs/components/physics/gravity", 
+      {
+        title: "Gravity",
+        href: "/docs/components/physics/gravity",
         items: [],
-        label: "New",
       },
     ],
   },
@@ -177,8 +187,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Float",
         href: "/docs/components/blocks/float",
         items: [],
-        label: "New",
       },
     ],
   },
-];
+]

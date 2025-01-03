@@ -19,13 +19,13 @@ component: true
 export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGElement>) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const updatePosition = (x: number, y: number) => {
-      if (containerRef && containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const relativeX = x - rect.left;
-        const relativeY = y - rect.top;
-        
+useEffect(() => {
+const updatePosition = (x: number, y: number) => {
+if (containerRef && containerRef.current) {
+const rect = containerRef.current.getBoundingClientRect();
+const relativeX = x - rect.left;
+const relativeY = y - rect.top;
+
         // Calculate relative position even when outside the container
         setPosition({ x: relativeX, y: relativeY });
       } else {
@@ -48,13 +48,15 @@ export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGEleme
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove); 
+      window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [containerRef]);
 
-  return position;
+}, [containerRef]);
+
+return position;
 };
 `}
+
 </CodeBlockWrapper>
 
 <Step>And a hook for querying the dimensions of an element:</Step>
@@ -64,33 +66,38 @@ export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGEleme
 `import { useState, useEffect, RefObject } from 'react';
 
 interface Dimensions {
-  width: number;
-  height: number;
+width: number;
+height: number;
 }
 
 export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensions {
   const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
 
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (ref.current) {
-        const { width, height } = ref.current.getBoundingClientRect();
-        setDimensions({ width, height });
-      }
-    };
+useEffect(() => {
+const updateDimensions = () => {
+if (ref.current) {
+const { width, height } = ref.current.getBoundingClientRect();
+setDimensions({ width, height });
+}
+};
 
     updateDimensions();
     window.addEventListener('resize', updateDimensions);
 
     return () => window.removeEventListener('resize', updateDimensions);
-  }, [ref]);
 
-  return dimensions;
+}, [ref]);
+
+return dimensions;
 }
 `}
+
 </CodeBlockWrapper>
 
-<Step>For better readability, there is another hook for getting the elastic line's control point, and if the line is grabbed or not:</Step>
+<Step>
+  For better readability, there is another hook for getting the elastic line's
+  control point, and if the line is grabbed or not:
+</Step>
 
 <CodeBlockWrapper language="typescript">
 {
@@ -99,8 +106,8 @@ import { useMousePosition } from "@/hooks/use-mouse-position";
 import { useDimensions } from "@/hooks//use-dimensions";
 
 interface ElasticLineEvents {
-  isGrabbed: boolean;
-  controlPoint: { x: number; y: number };
+isGrabbed: boolean;
+controlPoint: { x: number; y: number };
 }
 
 export function useElasticLineEvents(
@@ -114,17 +121,17 @@ export function useElasticLineEvents(
   const [isGrabbed, setIsGrabbed] = useState(false);
   const [controlPoint, setControlPoint] = useState({ x: dimensions.width / 2, y: dimensions.height / 2 });
 
-  useEffect(() => {
-    if (containerRef.current) {
-      const { width, height } = dimensions;
-      const x = mousePosition.x;
-      const y = mousePosition.y;
+useEffect(() => {
+if (containerRef.current) {
+const { width, height } = dimensions;
+const x = mousePosition.x;
+const y = mousePosition.y;
 
       // Check if mouse is outside container bounds
-      const isOutsideBounds = 
-        x < 0 || 
-        x > width || 
-        y < 0 || 
+      const isOutsideBounds =
+        x < 0 ||
+        x > width ||
+        y < 0 ||
         y > height;
 
       if (isOutsideBounds) {
@@ -159,14 +166,19 @@ export function useElasticLineEvents(
         setIsGrabbed(false);
       }
     }
-  }, [mousePosition, isVertical, isGrabbed, grabThreshold, releaseThreshold]);
 
-  return { isGrabbed, controlPoint };
+}, [mousePosition, isVertical, isGrabbed, grabThreshold, releaseThreshold]);
+
+return { isGrabbed, controlPoint };
 }
 `}
+
 </CodeBlockWrapper>
 
-<Step>Then, copy and paste the component code into your project, and update your imports:</Step>
+<Step>
+  Then, copy and paste the component code into your project, and update your
+  imports:
+</Step>
 
 <ComponentSource name="elastic-line" />
 
@@ -174,9 +186,9 @@ export function useElasticLineEvents(
 
 ## Understanding the component
 
-This component is made with a simple svg quadratic curve, with 2+1 points. The start and end points of the curve positioned at the two edges of the parent container, either horizontally or vertically, depending on the `isVertical` prop. This means, the line will always be centered in the container, and it will always fill up the entire container, so make sure to position your container properly. 
+This component is made with a simple svg quadratic curve, with 2+1 points. The start and end points of the curve positioned at the two edges of the parent container, either horizontally or vertically, depending on the `isVertical` prop. This means, the line will always be centered in the container, and it will always fill up the entire container, so make sure to position your container properly.
 
-The third point of the line is the control point, named `Q`, which is positioned at the center of the container by default. When the cursor moves close to the line (within `grabThreshold`), the control point will be controlled by the cursor's position. When the distance between them is greater than the `releaseThreshold` prop, the control point is animated back to the center of the container, with the help of framer-motion's `animate` function. 
+The third point of the line is the control point, named `Q`, which is positioned at the center of the container by default. When the cursor moves close to the line (within `grabThreshold`), the control point will be controlled by the cursor's position. When the distance between them is greater than the `releaseThreshold` prop, the control point is animated back to the center of the container, with the help of motion's `animate` function.
 
 For better readability — the calculation of the control point's position, and the signal it's grabbed — done in a separate hook, called `useElasticLineEvents`.
 
@@ -188,7 +200,6 @@ The compoment also have an `animateInTransition` prop, which is used when the li
 
 - [MDN Web Docs for SVG Quadratic Curve](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths)
 - [Framer Motion docs for SVG paths](https://www.framer.com/motion/component/#%23%23svg-line-drawing/)
-
 
 ## Props
 
@@ -230,13 +241,13 @@ The compoment also have an `animateInTransition` prop, which is used when the li
       <TableCell>transition</TableCell>
       <TableCell>`Transition`</TableCell>
       <TableCell>`{ type: "spring", stiffness: 400, damping: 5, delay: 0 }`</TableCell>
-      <TableCell>The transition object of the line. Refer to framer-motion docs for more details</TableCell>
+      <TableCell>The transition object of the line. Refer to motion docs for more details</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>animateInTransition</TableCell>
       <TableCell>`Transition`</TableCell>
       <TableCell>`{ type: "spring", stiffness: 400, damping: 5, delay: 0 }`</TableCell>
-      <TableCell>The transition object of the line when it is initially rendered. Refer to framer-motion docs for more details</TableCell>
+      <TableCell>The transition object of the line when it is initially rendered. Refer to motion docs for more details</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>

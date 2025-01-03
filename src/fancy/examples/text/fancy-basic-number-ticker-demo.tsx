@@ -1,18 +1,19 @@
-"use client";
+"use client"
 
-import { useRef, useEffect } from "react";
-import NumberTicker, {
-  NumberTickerRef
-} from "@/fancy/components/text/basic-number-ticker";
+import { useEffect, useRef } from "react"
+import { motion, useInView } from "motion/react"
 import {
-  Zap,
   Activity,
-  TrendingUp,
-  DollarSign,
   ArrowDownRight,
+  DollarSign,
   LucideIcon,
-} from "lucide-react";
-import { motion, useInView } from "framer-motion";
+  TrendingUp,
+  Zap,
+} from "lucide-react"
+
+import NumberTicker, {
+  NumberTickerRef,
+} from "@/fancy/components/text/basic-number-ticker"
 
 const cards = [
   {
@@ -75,29 +76,29 @@ const cards = [
     gradient: "from-gray-100 to-blue-200",
     size: "small",
   },
-];
+]
 
 interface CardProps {
-  title: string;
-  icon: LucideIcon;
-  from: number;
-  target: number;
-  prefix: string;
-  suffix: string;
-  gradient: string;
-  size: string;
+  title: string
+  icon: LucideIcon
+  from: number
+  target: number
+  prefix: string
+  suffix: string
+  gradient: string
+  size: string
 }
 
 const Card = ({ card, index }: { card: CardProps; index: number }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const tickerRef = useRef<NumberTickerRef>(null);
-  const inView = useInView(cardRef, { once: false });
+  const cardRef = useRef<HTMLDivElement>(null)
+  const tickerRef = useRef<NumberTickerRef>(null)
+  const inView = useInView(cardRef, { once: false })
 
   useEffect(() => {
     if (inView) {
-      tickerRef.current?.startAnimation();
+      tickerRef.current?.startAnimation()
     }
-  }, [inView]);
+  }, [inView])
 
   return (
     <motion.div
@@ -113,7 +114,9 @@ const Card = ({ card, index }: { card: CardProps; index: number }) => {
         <h3 className="text-xs md:text-sm">{card.title}</h3>
         <card.icon className={`h-4 w-4`} />
       </div>
-      <div className={`${card.size === "large" ? "text-2xl md:text-5xl" : "text-xl md:text-3xl"}`}>
+      <div
+        className={`${card.size === "large" ? "text-2xl md:text-5xl" : "text-xl md:text-3xl"}`}
+      >
         {card.prefix}
         <NumberTicker
           ref={tickerRef}
@@ -131,8 +134,8 @@ const Card = ({ card, index }: { card: CardProps; index: number }) => {
         {card.suffix}
       </div>
     </motion.div>
-  );
-};
+  )
+}
 
 export default function FancyNumberTickerDemo() {
   return (
@@ -143,5 +146,5 @@ export default function FancyNumberTickerDemo() {
         ))}
       </div>
     </div>
-  );
+  )
 }

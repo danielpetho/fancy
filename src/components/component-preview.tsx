@@ -1,24 +1,25 @@
-"use client";
+"use client"
 
-import * as React from "react";
-
-import { cn } from "@/lib/utils";
+import * as React from "react"
 import ReactSyntaxHighlighter, {
   Prism as SyntaxHighlighter,
-} from "react-syntax-highlighter";
-import { CopyButton } from "./copy-button";
-import { Icons } from "@/components/icons";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { registry } from "@/fancy/index";
-import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs";
-import { RestartButton } from "./restart-button";
+} from "react-syntax-highlighter"
+import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
+
+import { cn } from "@/lib/utils"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Icons } from "@/components/icons"
+import { registry } from "@/fancy/index"
+
+import { CopyButton } from "./copy-button"
+import { RestartButton } from "./restart-button"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
-  name: string;
-  extractClassname?: boolean;
-  extractedClassNames?: string;
-  align?: "center" | "start" | "end";
-  description?: string;
+  name: string
+  extractClassname?: boolean
+  extractedClassNames?: string
+  align?: "center" | "start" | "end"
+  description?: string
 }
 
 export function ComponentPreview({
@@ -31,22 +32,22 @@ export function ComponentPreview({
   description,
   ...props
 }: ComponentPreviewProps) {
-  const [sourceCode, setSourceCode] = React.useState("");
-  const [previewKey, setPreviewKey] = React.useState(0);
+  const [sourceCode, setSourceCode] = React.useState("")
+  const [previewKey, setPreviewKey] = React.useState(0)
 
   React.useEffect(() => {
     async function loadSourceCode() {
       try {
-        const mod = await import(`../../.component-sources/${name}.json`);
-        const sourceCodeJSON = mod.default;
-        setSourceCode(sourceCodeJSON.sourceCode);
+        const mod = await import(`../../.component-sources/${name}.json`)
+        const sourceCodeJSON = mod.default
+        setSourceCode(sourceCodeJSON.sourceCode)
       } catch (error) {
-        console.error(`Failed to load source for ${name}:`, error);
-        setSourceCode("");
+        console.error(`Failed to load source for ${name}:`, error)
+        setSourceCode("")
       }
     }
-    loadSourceCode();
-  }, [name]);
+    loadSourceCode()
+  }, [name])
 
   const syntaxHighlighterStyle = React.useMemo(
     () => ({
@@ -56,24 +57,24 @@ export function ComponentPreview({
       maxWidth: "100%",
     }),
     []
-  );
+  )
   const handleRestart = React.useCallback(() => {
-    setPreviewKey((prev) => prev + 1);
-  }, []);
+    setPreviewKey((prev) => prev + 1)
+  }, [])
 
   React.useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'r' || event.key === 'R') {
-        handleRestart();
+      if (event.key === "r" || event.key === "R") {
+        handleRestart()
       }
-    };
+    }
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleRestart]);
+    window.addEventListener("keydown", handleKeyDown)
+    return () => window.removeEventListener("keydown", handleKeyDown)
+  }, [handleRestart])
 
   const Preview = React.useMemo(() => {
-    const Component = registry[name]?.component;
+    const Component = registry[name]?.component
 
     if (!Component) {
       return (
@@ -84,11 +85,11 @@ export function ComponentPreview({
           </code>{" "}
           not found.
         </p>
-      );
+      )
     }
 
-    return <Component />;
-  }, [name]);
+    return <Component />
+  }, [name])
 
   return (
     <div
@@ -119,7 +120,7 @@ export function ComponentPreview({
           value="preview"
           className="border border-black-500 flex rounded-lg"
         >
-          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative">
+          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative max-h-[620px]">
             {/* <div className="absolute top-4 right-4 rounded-full border">
 
             </div> */}
@@ -161,5 +162,5 @@ export function ComponentPreview({
         </TabsContent>
       </Tabs>
     </div>
-  );
+  )
 }

@@ -1,17 +1,14 @@
-"use client";
+"use client"
 
-import Link from "next/link";
-import { HeroImages } from "./hero-images";
-import TextRotate from "@/fancy/components/text/text-rotate";
-import { LayoutGroup, motion } from "framer-motion";
-import { Component } from "@/types/types";
+import Link from "next/link"
+import { LayoutGroup, motion } from "motion/react"
 
-export function LandingHero({
-  allComps,
-}: {
-  allComps: Component[];
-}) {
+import { Component } from "@/types/types"
+import TextRotate from "@/fancy/components/text/text-rotate"
 
+import { HeroImages } from "./hero-images"
+
+export function LandingHero({ allComps }: { allComps: Component[] }) {
   return (
     <section className="w-full h-screen overflow-hidden flex flex-col items-center justify-center relative">
       <HeroImages allComps={allComps} />
@@ -34,7 +31,7 @@ export function LandingHero({
               </motion.span>
 
               <TextRotate
-                words={[
+                texts={[
                   "fancy",
                   "fun",
                   "lovely ♥",
@@ -49,7 +46,7 @@ export function LandingHero({
                   "✨ pop ✨",
                   "rock 🤘",
                 ]}
-                className="overflow-hidden pr-3 text-yellow-500 py-0 pb-2 md:pb-4 rounded-xl"
+                mainClassName="overflow-hidden pr-3 text-yellow-500 py-0 pb-2 md:pb-4 rounded-xl"
                 staggerDuration={0.03}
                 staggerFrom="last"
                 rotationInterval={3000}
@@ -80,17 +77,17 @@ export function LandingHero({
           className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-white bg-black px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas mt-10 sm:mt-16 md:mt-20 lg:mt-20"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
-          transition={{ 
-            duration: 0.2, 
-            ease: "easeOut", 
+          transition={{
+            duration: 0.2,
+            ease: "easeOut",
             delay: 0.7,
             scale: {
               duration: 0.2,
-            }
+            },
           }}
           whileHover={{
             scale: 1.05,
-            transition: { type: "spring", damping: 30, stiffness: 400 }
+            transition: { type: "spring", damping: 30, stiffness: 400 },
           }}
         >
           <Link href="/docs/introduction">
@@ -99,5 +96,5 @@ export function LandingHero({
         </motion.button>
       </div>
     </section>
-  );
+  )
 }

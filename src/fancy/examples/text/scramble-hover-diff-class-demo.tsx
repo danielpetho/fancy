@@ -1,7 +1,6 @@
-import ScrambleHover from "@/fancy/components/text/scramble-hover";
+import ScrambleHover from "@/fancy/components/text/scramble-hover"
 
 export default function Preview() {
-
   return (
     <div className="w-full h-full flex text-4xl justify-center items-center bg-background font-normal overflow-hidden p-24 space-y-2">
       <ScrambleHover
@@ -14,5 +13,5 @@ export default function Preview() {
         scrambledClassName="font-notoSansSymbols text-3xl cursor-pointer"
       />
     </div>
-  );
+  )
 }

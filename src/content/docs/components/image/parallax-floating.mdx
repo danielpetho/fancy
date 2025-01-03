@@ -19,13 +19,13 @@ component: true
 export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGElement>) => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const updatePosition = (x: number, y: number) => {
-      if (containerRef && containerRef.current) {
-        const rect = containerRef.current.getBoundingClientRect();
-        const relativeX = x - rect.left;
-        const relativeY = y - rect.top;
-        
+useEffect(() => {
+const updatePosition = (x: number, y: number) => {
+if (containerRef && containerRef.current) {
+const rect = containerRef.current.getBoundingClientRect();
+const relativeX = x - rect.left;
+const relativeY = y - rect.top;
+
         // Calculate relative position even when outside the container
         setPosition({ x: relativeX, y: relativeY });
       } else {
@@ -48,13 +48,15 @@ export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGEleme
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove); 
+      window.removeEventListener("touchmove", handleTouchMove);
     };
-  }, [containerRef]);
 
-  return position;
+}, [containerRef]);
+
+return position;
 };
 `}
+
 </CodeBlockWrapper>
 
 <Step>Then copy and paste the following code into your project:</Step>
@@ -68,8 +70,7 @@ export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGEleme
 There are two components exported from the source file: `Floating` and `FloatingElement`. The first one is a wrapper component that takes care of the animation, mouse position tracking and other logic. The second one is a component that you **must** use to wrap any elements you want to float.
 
 <CodeBlockWrapper language="typescript" className="mt-4">
-{
-`<Floating>
+  {`<Floating>
   <FloatingElement depth={0.5}>
     <div className="absolute top-1/2 left-1/4 bg-red-500" />
   </FloatingElement>
@@ -79,8 +80,7 @@ There are two components exported from the source file: `Floating` and `Floating
   <FloatingElement depth={2}>
     <div className="absolute top-1/2 left-3/4 bg-blue-500" />
   </FloatingElement>
-</Floating>`
-}
+</Floating>`}
 </CodeBlockWrapper>
 
 The advantage of this setup is that you can style and position your elements however you want using Tailwind classes or custom CSS directly on the `FloatingElement` component, while the `Floating` wrapper component handles all the complex animation logic. Simply wrap your positioned elements with `FloatingElement`, set their `depth` value, and the floating effect will be applied while maintaining your original styling and positioning.
@@ -94,6 +94,7 @@ If you're curious how it works, here's a quick overview of the component's inter
 2. **Mouse Position Tracking**: The component tracks mouse movement across the screen using a custom hook that provides normalized coordinates relative to the container.
 
 3. **Animation Loop**: Using Framer Motion's `useAnimationFrame`, the component runs a continuous animation loop that:
+
    - Calculates the target position for each element based on the mouse coordinates
    - Applies linear interpolation (lerp) to smoothly transition elements to their new positions
    - Updates the transform property of each element using CSS transforms
@@ -101,15 +102,16 @@ If you're curious how it works, here's a quick overview of the component's inter
 4. **Strength**: The floating effect is customized through two main factors:
    - Individual `depth` values on each `FloatingElement` determine how far that element moves. The higher the depth, the farther the element will move.
    - The global `sensitivity` prop controls the overall intensity of the movement
-   
 5. **Lerp**: The `easingFactor` prop determines how quickly elements move toward their target positions - lower values create smoother, more gradual movements while higher values create snappier responses.
 
 ## Notes
 
 ### Z-Index Management
+
 The `Floating` component focuses solely on movement animation and does not handle z-index stacking. You'll need to manually set appropriate z-index values on your `FloatingElement` components to achieve the desired layering effect. The `depth` prop only controls the intensity of the floating movement, not the visual stacking order.
 
 ### Performance Optimization
+
 For better performance when dealing with multiple floating elements, you can use a grouping strategy:
 
 1. Instead of creating individual `FloatingElement` components for each item, group related items under a single `FloatingElement`
@@ -119,9 +121,11 @@ For better performance when dealing with multiple floating elements, you can use
 For example, if you have 6 floating images, instead of creating 6 separate `FloatingElement` components, you could group them into 3 pairs. This reduces the animation calculations from 6 to 3.
 
 ### Directional Control
+
 With the `depth` and `sensitivity` props, you can control the direction, and strength of the floating effect:
 
 - **Positive Values**: Elements move toward the mouse cursor
+
   - Higher values create stronger movement
   - Example: `depth={2}` moves twice as far as `depth={1}`
 
@@ -144,7 +148,9 @@ With the `depth` and `sensitivity` props, you can control the direction, and str
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>
+        children<span className="text-red-500">*</span>
+      </TableCell>
       <TableCell>`React.ReactNode`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>The content to be displayed</TableCell>
@@ -155,7 +161,7 @@ With the `depth` and `sensitivity` props, you can control the direction, and str
       <TableCell>`0.1`</TableCell>
       <TableCell>The sensitivity of the movement</TableCell>
     </TableRow>
-    <TableRow >
+    <TableRow>
       <TableCell>easingFactor</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`0.05`</TableCell>
@@ -183,7 +189,9 @@ With the `depth` and `sensitivity` props, you can control the direction, and str
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>
+        children<span className="text-red-500">*</span>
+      </TableCell>
       <TableCell>`React.ReactNode`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>The content to be displayed</TableCell>

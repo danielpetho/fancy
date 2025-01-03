@@ -13,7 +13,7 @@ component: true
 <Step>Install the uuid package:</Step>
 
 <CodeBlockWrapper language="bash">
-{`npm install --save @types/uuid uuid`}
+  {`npm install --save @types/uuid uuid`}
 </CodeBlockWrapper>
 
 We use the uuid package to generate a unique ID for each trail instance — so each trail will work without interfering with other effects.
@@ -48,7 +48,6 @@ You can customize the individual pixels by passing a `pixelClassName` prop.
 
 2. Keep the z-index of the effect's container lower than the rest of your content, so the pointer-events will captured by all of your other elements.
 
-
 ## Props
 
 <Table>
@@ -77,7 +76,9 @@ You can customize the individual pixels by passing a `pixelClassName` prop.
       <TableCell>delay</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`0`</TableCell>
-      <TableCell>Delay before the fade animation starts in milliseconds</TableCell>
+      <TableCell>
+        Delay before the fade animation starts in milliseconds
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>
@@ -89,10 +90,9 @@ You can customize the individual pixels by passing a `pixelClassName` prop.
       <TableCell>pixelClassName</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Additional CSS classes for styling the individual pixels</TableCell>
+      <TableCell>
+        Additional CSS classes for styling the individual pixels
+      </TableCell>
     </TableRow>
   </TableBody>
 </Table>
-
-
-

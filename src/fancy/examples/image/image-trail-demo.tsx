@@ -1,21 +1,23 @@
-import ImageTrail from "@/fancy/components/image/image-trail";
-import { exampleImages } from "../_helpers/exampleImages";
-import { useRef } from "react";
+import { useRef } from "react"
+
+import ImageTrail from "@/fancy/components/image/image-trail"
+
+import { exampleImages } from "../_helpers/exampleImages"
 
 const ImageTrailDemo = () => {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null)
 
   return (
     <div className="flex w-full h-full justify-center items-center bg-white">
       <div className="absolute top-0 left-0 z-0" ref={ref}>
         <ImageTrail containerRef={ref}>
-          {exampleImages.map((url, index) => (
+          {exampleImages.map((image, index) => (
             <div
               key={index}
               className="flex relative overflow-hidden w-24 h-24 "
             >
               <img
-                src={url}
+                src={image.url}
                 alt="image"
                 className="object-cover absolute inset-0"
               />
@@ -25,7 +27,7 @@ const ImageTrailDemo = () => {
       </div>
       <h1 className="text-9xl z-10">ALBUMS</h1>
     </div>
-  );
-};
+  )
+}
 
-export default ImageTrailDemo;
+export default ImageTrailDemo

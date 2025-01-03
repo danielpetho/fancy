@@ -1,4 +1,4 @@
-import LetterSwapForward from "@/fancy/components/text/letter-swap-forward-anim";
+import LetterSwapForward from "@/fancy/components/text/letter-swap-forward-anim"
 
 export default function Preview() {
   return (
@@ -7,5 +7,5 @@ export default function Preview() {
       <LetterSwapForward label="Center" staggerFrom={"center"} className="" />
       <LetterSwapForward label="Last" staggerFrom={"last"} />
     </div>
-  );
+  )
 }

@@ -17,13 +17,15 @@ component: true
 ## Understanding the component
 
 1. First, the text is split into smaller pieces based on the `splitBy` prop:
+
    - `words`: Splits into individual words (e.g., "Hello world" → ["Hello", "world"])
    - `characters`: Splits into individual characters (e.g., "Hi" → ["H", "i"])
    - `lines`: Splits by newline characters (`\n`)
    - `string`: Splits by any custom string delimiter
 
 2. Each piece of text is wrapped in two `<span>` elements:
-   - An outer `<span>` that acts as a container with its position to `prelative` and its overflow to `overflow-hidden`
+
+   - An outer `<span>` that acts as a container with its position to `relative` and its overflow to `overflow-hidden`
    - An inner `<span>` that holds the actual text, initially positioned off-screen using `y: 100` (or `-100` if `reverse` is true)
 
 3. When the animation starts:
@@ -31,7 +33,8 @@ component: true
    - This creates a "cutting" or "revealing" effect as each piece of text slides into view
    - The animation can be staggered from different directions (first, last, center, or random) using the `staggerFrom` prop
 
-A key implementation detail is that the component always maintains word boundaries, even when splitting by characters. There are two reason for this: 
+A key implementation detail is that the component always maintains word boundaries, even when splitting by characters. There are two reason for this:
+
 1. When dealing with multi-line text, each line maintains its own reveal animation starting point. This means if you have text that spans multiple lines, each line will animate independently from its own baseline, rather than all elements animating from a single point (like the bottom of the entire paragraph).
 2. When using `characters` mode, characters from the same word stay together in a word container. This prevents unwanted line breaks in the middle of words - if a word needs to wrap to the next line, it will wrap as a complete unit rather than having some characters on one line and others on the next line. This maintains proper text flow and readability while still allowing character-by-character animation within each word.
 
@@ -93,7 +96,7 @@ Since each element is "cutted" because of the `overflow-hidden` property, with s
       <TableCell>transition</TableCell>
       <TableCell>`DynamicAnimationOptions`</TableCell>
       <TableCell>`{ type: "spring", damping: 30, stiffness: 300 }`</TableCell>
-      <TableCell>Animation configuration for each element. Refer to framer-motion docs for more details</TableCell>
+      <TableCell>Animation configuration for each element. Refer to motion docs for more details</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>splitBy</TableCell>

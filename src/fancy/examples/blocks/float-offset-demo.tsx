@@ -1,5 +1,5 @@
-import Float from "@/fancy/components/blocks/float";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
+import Float from "@/fancy/components/blocks/float"
 
 export default function FloatDemo() {
   const texts = [
@@ -10,7 +10,7 @@ export default function FloatDemo() {
     { text: "class-variance-authority", position: "top-[40%] left-[0%]" },
     { text: "clsx", position: "top-[15%] left-[45%]" },
     { text: "flubber", position: "top-[65%] left-[85%]" },
-    { text: "framer-motion", position: "top-[85%] left-[15%]" },
+    { text: "motion", position: "top-[85%] left-[15%]" },
     { text: "lenis", position: "top-[35%] left-[75%]" },
     { text: "lodash", position: "top-[75%] left-[55%]" },
     { text: "lucide-react", position: "top-[25%] left-[35%]" },
@@ -29,7 +29,7 @@ export default function FloatDemo() {
     { text: "tailwind-merge", position: "top-[28%] left-[95%]" },
     { text: "tailwindcss-animate", position: "top-[73%] left-[20%]" },
     { text: "zod", position: "top-[8%] left-[40%]" },
-  ];
+  ]
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-background relative">
@@ -57,5 +57,5 @@ export default function FloatDemo() {
         </Float>
       ))}
     </div>
-  );
+  )
 }

@@ -1,4 +1,4 @@
-import VariableFontHoverByRandomLetter from "@/fancy/components/text/variable-font-hover-by-random-letter";
+import VariableFontHoverByRandomLetter from "@/fancy/components/text/variable-font-hover-by-random-letter"
 
 export default function Preview() {
   return (
@@ -13,5 +13,5 @@ export default function Preview() {
         />
       </div>
     </div>
-  );
+  )
 }

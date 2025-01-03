@@ -1,5 +1,6 @@
-import ScrambleHover from "@/fancy/components/text/scramble-hover";
-import { motion } from "framer-motion";
+import { motion } from "motion/react"
+
+import ScrambleHover from "@/fancy/components/text/scramble-hover"
 
 export default function Preview() {
   const models = [
@@ -16,8 +17,8 @@ export default function Preview() {
     "DBRX Instruct",
     "MythoMax L2 13B",
     "SOLAR 10.7B Instruct",
-    "Gemma 2B Instruct"
-  ];
+    "Gemma 2B Instruct",
+  ]
 
   return (
     <div className="w-full h-full flex flex-col  justify-center items-end bg-background font-normal overflow-hidden py-20 px-8 sm:px-16 md:px-24 lg:px-32 text-right text-sm sm:text-lg md:text-xl">
@@ -26,7 +27,12 @@ export default function Preview() {
           layout
           key={model}
           animate={{ opacity: [0, 1, 1], y: [10, 10, 0] }}
-          transition={{ duration: 0.1, ease: "circInOut", delay: index * 0.05 + 0.5, times: [0, 0.2, 1] }}
+          transition={{
+            duration: 0.1,
+            ease: "circInOut",
+            delay: index * 0.05 + 0.5,
+            times: [0, 0.2, 1],
+          }}
         >
           <ScrambleHover
             text={model}
@@ -38,5 +44,5 @@ export default function Preview() {
         </motion.div>
       ))}
     </div>
-  );
+  )
 }

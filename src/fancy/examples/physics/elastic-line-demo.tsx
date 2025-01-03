@@ -1,5 +1,6 @@
-import ElasticLine from "@/fancy/components/physics/elastic-line";
-import { motion } from "framer-motion";
+import { motion } from "motion/react"
+
+import ElasticLine from "@/fancy/components/physics/elastic-line"
 
 export default function Preview() {
   const textVariants = {
@@ -14,7 +15,7 @@ export default function Preview() {
         damping: 30,
       },
     }),
-  };
+  }
 
   return (
     <div className="w-full h-full flex flex-row items-center justify-center font-overusedGrotesk overflow-hidden to-white">
@@ -79,5 +80,5 @@ export default function Preview() {
         </div> */}
       </div>
     </div>
-  );
+  )
 }

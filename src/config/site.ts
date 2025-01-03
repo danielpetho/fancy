@@ -8,6 +8,6 @@ export const siteConfig = {
     twitter: "https://twitter.com/nonzeroexitcode",
     github: "https://github.com/danielpetho/fancy",
   },
-};
+}
 
-export type SiteConfig = typeof siteConfig;
+export type SiteConfig = typeof siteConfig

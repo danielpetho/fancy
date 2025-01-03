@@ -1,23 +1,25 @@
-import React from "react";
-import { useMousePosition } from "@/hooks/use-mouse-position"; // We'll create this hook
+import React, { useCallback, useRef } from "react"
+
+import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
+import { motion, useAnimationFrame } from "motion/react"
 
 interface FontVariationAxis {
-  name: string;
-  min: number;
-  max: number;
+  name: string
+  min: number
+  max: number
 }
 
 interface FontVariationMapping {
-  x: FontVariationAxis;
-  y: FontVariationAxis;
+  x: FontVariationAxis
+  y: FontVariationAxis
 }
 
 interface TextProps {
-  label: string;
-  fontVariationMapping: FontVariationMapping;
-  containerRef: React.RefObject<HTMLDivElement>;
-  className?: string;
-  onClick?: () => void;
+  label: string
+  fontVariationMapping: FontVariationMapping
+  containerRef: React.RefObject<HTMLDivElement>
+  className?: string
+  onClick?: () => void
 }
 
 const VariableFontAndCursor = ({
@@ -28,44 +30,52 @@ const VariableFontAndCursor = ({
   onClick,
   ...props
 }: TextProps) => {
-  const { x, y } = useMousePosition(containerRef);
+  const mousePositionRef = useMousePositionRef(containerRef)
+  const spanRef = useRef<HTMLSpanElement>(null)  // Add ref for the span
 
-  const interpolateFontVariationSettings = (
+  const interpolateFontVariationSettings = useCallback((
     xPosition: number,
     yPosition: number
   ) => {
-    const container = containerRef.current;
-    if (!container) return "0 0"; // Return default values if container is null
+    const container = containerRef.current
+    if (!container) return "0 0" // Return default values if container is null
 
-    const containerWidth = container.clientWidth;
-    const containerHeight = container.clientHeight;
+    const containerWidth = container.clientWidth
+    const containerHeight = container.clientHeight
 
-    const xProgress = Math.min(Math.max(xPosition / containerWidth, 0), 1);
-    const yProgress = Math.min(Math.max(yPosition / containerHeight, 0), 1);
+    const xProgress = Math.min(Math.max(xPosition / containerWidth, 0), 1)
+    const yProgress = Math.min(Math.max(yPosition / containerHeight, 0), 1)
 
     const xValue =
       fontVariationMapping.x.min +
-      (fontVariationMapping.x.max - fontVariationMapping.x.min) * xProgress;
+      (fontVariationMapping.x.max - fontVariationMapping.x.min) * xProgress
     const yValue =
       fontVariationMapping.y.min +
-      (fontVariationMapping.y.max - fontVariationMapping.y.min) * yProgress;
+      (fontVariationMapping.y.max - fontVariationMapping.y.min) * yProgress
 
-    return `'${fontVariationMapping.x.name}' ${xValue}, '${fontVariationMapping.y.name}' ${yValue}`;
-  };
+    return `'${fontVariationMapping.x.name}' ${xValue}, '${fontVariationMapping.y.name}' ${yValue}`
+  }, [])
+
+  useAnimationFrame(() => {
+    const settings = interpolateFontVariationSettings(
+      mousePositionRef.current.x, 
+      mousePositionRef.current.y
+    )
+    if (spanRef.current) {
+      spanRef.current.style.fontVariationSettings = settings
+    }
+  })
 
   return (
-    <span
-      className={`${className}`}
+    <motion.span
+      ref={spanRef}
+      className={`${className} inline-block`}
       onClick={onClick}
-      style={{
-        fontVariationSettings: interpolateFontVariationSettings(x, y),
-        display: "inline-block", // Ensure the span can receive mouse events
-      }}
       {...props}
     >
       {label}
-    </span>
-  );
-};
+    </motion.span>
+  )
+}
 
-export default VariableFontAndCursor;
+export default VariableFontAndCursor

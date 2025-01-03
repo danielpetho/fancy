@@ -1,13 +1,10 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
-import { RotateCw } from "lucide-react";
+import { RotateCw } from "lucide-react"
 
-export function RestartButton({
-    onRestart,
-}: {
-    onRestart: () => void;
-}) {
+import { Button } from "@/components/ui/button"
+
+export function RestartButton({ onRestart }: { onRestart: () => void }) {
   return (
     <Button
       variant="outline"
@@ -17,5 +14,5 @@ export function RestartButton({
     >
       <RotateCw className="h-4 w-4" />
     </Button>
-  );
+  )
 }

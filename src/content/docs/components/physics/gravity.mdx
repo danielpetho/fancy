@@ -12,11 +12,14 @@ Setting up Matter.js for creating physics-based animations can be a bit tricky a
 
 <Steps>
 
-<Step>First, install the following dependencies.</Step> 
+<Step>First, install the following dependencies.</Step>{" "}
 
 We use the `matter-js` library to create the physics simulation. The `poly-decomp` package is used to decompose bodies into a set of vertices, which is required for the `svg` body type. The `svg-path-commander` package is used to parse SVG paths and convert them into a set of vertices (since the built-in feature for this in `matter-js` is outdated).
 
-<CodeBlockWrapper className="mt-2" language="bash">{`npm install matter-js @types/matter-js poly-decomp svg-path-commander`}</CodeBlockWrapper>
+<CodeBlockWrapper
+  className="mt-2"
+  language="bash"
+>{`npm install matter-js @types/matter-js poly-decomp svg-path-commander`}</CodeBlockWrapper>
 
 <Step>Then, create two utility functions for the component.</Step>
 
@@ -27,12 +30,12 @@ One is for parsing SVG paths into a set of vertices:
 
 // Function to convert SVG path "d" to vertices
 export function parsePathToVertices(path: string, sampleLength = 15) {
-    // Convert path to absolute commands
-    const commander = new SVGPathCommander(path);
-    
+// Convert path to absolute commands
+const commander = new SVGPathCommander(path);
+
     const points: { x: number, y: number }[] = [];
     let lastPoint: { x: number, y: number } | null = null;
-    
+
     // Get total length of the path
     const totalLength = commander.getTotalLength();
     let length = 0;
@@ -40,13 +43,13 @@ export function parsePathToVertices(path: string, sampleLength = 15) {
     // Sample points along the path
     while (length < totalLength) {
         const point = commander.getPointAtLength(length);
-        
+
         // Only add point if it's different from the last one
         if (!lastPoint || point.x !== lastPoint.x || point.y !== lastPoint.y) {
             points.push({ x: point.x, y: point.y });
             lastPoint = point;
         }
-        
+
         length += sampleLength;
     }
 
@@ -57,14 +60,16 @@ export function parsePathToVertices(path: string, sampleLength = 15) {
     }
 
     return points;
+
 }
 `}
+
 </CodeBlockWrapper>
 
 The other is for calculating the position of an element based on its container, and a posiiton value
 
 <CodeBlockWrapper language="typescript" className="mt-2">
-{`export function calculatePosition(
+  {`export function calculatePosition(
   value: number | string | undefined,
   containerSize: number,
   elementSize: number
@@ -91,7 +96,7 @@ The other is for calculating the position of an element based on its container, 
 First, you need to wrap your scene / content with the `Gravity` component. Set the gravity direction vector in the `gravity` prop (default is `{x: 0, y: 1}`). Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). High-level example:
 
 <CodeBlockWrapper language="typescript" className="mt-2">
-{`<Gravity>
+  {`<Gravity>
   <MatterBody x="50%" y="50%">
     <div>Hello world!</div>
   </MatterBody>
@@ -101,7 +106,6 @@ First, you need to wrap your scene / content with the `Gravity` component. Set t
 </Gravity>`}
 </CodeBlockWrapper>
 
-
 ## Understanding the component
 
 ### Gravity component
@@ -109,6 +113,7 @@ First, you need to wrap your scene / content with the `Gravity` component. Set t
 At its core, the Gravity component creates and manages a Matter.js physics world. It handles:
 
 1. **Physics Setup**: Creates a canvas and initializes the Matter.js physics engine with:
+
    - A physics engine to calculate forces and collisions
    - A renderer to visualize the physics (when debug mode is enabled)
    - A runner to step the physics simulation forward
@@ -117,6 +122,7 @@ At its core, the Gravity component creates and manages a Matter.js physics world
 2. **Animation Loop**: Continuously updates the positions of your HTML elements to match their physics bodies in the Matter.js world. This creates the illusion that your DOM elements are actually affected by physics.
 
 3. **Controls**: Exposes three main methods:
+
    - `start()`: Begins the physics simulation
    - `stop()`: Pauses the physics simulation
    - `reset()`: Returns all elements to their starting positions
@@ -136,8 +142,8 @@ The `MatterBody` component transforms regular HTML elements into physics-enabled
   `}
 </CodeBlockWrapper>
 
-
 - **Body Types**: Choose between different physics shapes:
+
   - `rectangle`: Default, good for most elements
   - `circle`: Perfect for round elements
   - `svg`: For complex custom shapes
@@ -160,7 +166,7 @@ The `MatterBody` component transforms regular HTML elements into physics-enabled
   `}
 </CodeBlockWrapper>
 
-  For a complete list of options, check out the [Matter.js Body documentation](https://brm.io/matter-js/docs/classes/Body.html#properties). You can fine-tune everything from angular velocity to mass to create exactly the physics behavior you want.
+For a complete list of options, check out the [Matter.js Body documentation](https://brm.io/matter-js/docs/classes/Body.html#properties). You can fine-tune everything from angular velocity to mass to create exactly the physics behavior you want.
 
 ### Context
 
@@ -182,7 +188,7 @@ By default, the MatterBody makes its element draggable. You can disable this beh
 
 With the `bodyType` prop, you can choose between different types of bodies. The available types are `circle`, `rectangle`, and `svg`.
 
-In this example, we have a mixed of `circle` and `rectangle` bodies. Again, you do not need to define the sizes on the `MatterBody` component, you can define them on your component level, eg. adding `w-12 h12` to your tailwind classes. Then, the component will calculate the size for the matter.js engine. 
+In this example, we have a mixed of `circle` and `rectangle` bodies. Again, you do not need to define the sizes on the `MatterBody` component, you can define them on your component level, eg. adding `w-12 h12` to your tailwind classes. Then, the component will calculate the size for the matter.js engine.
 
 <ComponentPreview name="gravity-body-types-demo" />
 
@@ -191,6 +197,7 @@ In this example, we have a mixed of `circle` and `rectangle` bodies. Again, you 
 The third `bodyType` option is `svg`, which allows you to create physics bodies from SVG elements. This is particularly useful for creating custom-shaped physics objects that match your SVG graphics.
 
 Here's how it works:
+
 1. The component takes your SVG element and extracts the path data
 2. It converts the path into a series of vertices (points) that outline the shape (with a custom converter using the `svg-path-commander` package)
 3. These vertices are then converted into polygons by matter.js (with the help of the `poly-decomp` package).
@@ -198,11 +205,12 @@ Here's how it works:
 
 <ComponentPreview name="gravity-svg-bodies-demo" />
 
-As you can see in the demo above, SVG bodies can produce varying results. Simple shapes like the stars translate well, maintaining their shapes in the physics simulation. More complex shapes like the *fancy* text at the bottom (which is an SVG path, and not an HTML element) end up with rougher approximations.
+As you can see in the demo above, SVG bodies can produce varying results. Simple shapes like the stars translate well, maintaining their shapes in the physics simulation. More complex shapes like the _fancy_ text at the bottom (which is an SVG path, and not an HTML element) end up with rougher approximations.
 
 This variance in quality stems from the challenging process of converting SVG paths to physics bodies. Therefore, there are a few caveats to keep in mind:
 
 1. **SVG Requirements**:
+
    - Keep them simple. The simpler the SVG, the better the decomposition, and the simulation.
    - It's only tested with single-path SVGs, and it probably won't work with nested paths.
    - Avoid shapes with holes or complex curves, or shapes that are seem to be too complex to decompose into polygons.
@@ -218,7 +226,7 @@ If you're not getting the desired results, you have several options:
 2. Use basic physics bodies (rectangles/circles) with the SVG as a visual overlay
 3. Fine-tune the vertex sampling with the `sampleLength` prop
 
-While the demo's *fancy* text on the bottom worked well by chance for me, you more than likely will need to experiment with different settings to get the desired results. Use the `debug` prop to visualize the physics bodies and their vertices, and adjust the `sampleLength` prop to control the accuracy of the conversion.
+While the demo's _fancy_ text on the bottom worked well by chance for me, you more than likely will need to experiment with different settings to get the desired results. Use the `debug` prop to visualize the physics bodies and their vertices, and adjust the `sampleLength` prop to control the accuracy of the conversion.
 
 For more details on the decomposition process, refer to the [poly-decomp documentation](https://github.com/schteppe/poly-decomp), the [Matter.js documentation](https://brm.io/matter-js/docs/classes/Bodies.html#method_fromVertices), and to the [SVG path commander documentation](https://github.com/thednp/svg-path-commander).
 

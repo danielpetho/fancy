@@ -1,22 +1,22 @@
-import { motion, Transition } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo } from "react"
+import { motion, Transition } from "motion/react"
 
 // Function to shuffle an array
 function shuffleArray(array: number[]) {
   for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[array[i], array[j]] = [array[j], array[i]]
   }
 }
 
 interface TextProps {
-  label: string;
-  fromFontVariationSettings: string;
-  toFontVariationSettings: string;
-  transition?: Transition;
-  staggerDuration?: number;
-  className?: string;
-  onClick?: () => void;
+  label: string
+  fromFontVariationSettings: string
+  toFontVariationSettings: string
+  transition?: Transition
+  staggerDuration?: number
+  className?: string
+  onClick?: () => void
 }
 
 const VariableFontHoverByRandomLetter = ({
@@ -33,10 +33,10 @@ const VariableFontHoverByRandomLetter = ({
   ...props
 }: TextProps) => {
   const shuffledIndices = useMemo(() => {
-    const indices = Array.from({ length: label.length }, (_, i) => i);
-    shuffleArray(indices);
-    return indices;
-  }, [label]);
+    const indices = Array.from({ length: label.length }, (_, i) => i)
+    shuffleArray(indices)
+    return indices
+  }, [label])
 
   const letterVariants = {
     hover: (index: number) => ({
@@ -53,7 +53,7 @@ const VariableFontHoverByRandomLetter = ({
         delay: staggerDuration * index,
       },
     }),
-  };
+  }
 
   return (
     <motion.span
@@ -66,7 +66,7 @@ const VariableFontHoverByRandomLetter = ({
       <span className="sr-only">{label}</span>
 
       {label.split("").map((letter: string, i: number) => {
-        const index = shuffledIndices[i];
+        const index = shuffledIndices[i]
         return (
           <motion.span
             key={i}
@@ -77,10 +77,10 @@ const VariableFontHoverByRandomLetter = ({
           >
             {letter}
           </motion.span>
-        );
+        )
       })}
     </motion.span>
-  );
-};
+  )
+}
 
-export default VariableFontHoverByRandomLetter;
+export default VariableFontHoverByRandomLetter

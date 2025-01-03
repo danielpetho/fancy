@@ -1,16 +1,17 @@
-import Gravity, { MatterBody } from "@/fancy/components/physics/gravity";
-import { useState } from "react";
+import { useState } from "react"
+
+import Gravity, { MatterBody } from "@/fancy/components/physics/gravity"
 
 export default function Preview() {
-  const [debug, setDebug] = useState(false);
+  const [debug, setDebug] = useState(false)
 
   return (
     <div className="w-full h-full flex flex-col relative">
-      <button 
+      <button
         onClick={() => setDebug(!debug)}
         className="absolute top-4 left-4 px-4 py-2 text-xs border border-border rounded-lg bg-background hover:bg-accent cursor-pointer z-10"
       >
-        {debug ? 'Disable Debug' : 'Enable Debug'}
+        {debug ? "Disable Debug" : "Enable Debug"}
       </button>
       <Gravity gravity={{ x: 0, y: 1 }} className="w-full h-full" debug={debug}>
         <MatterBody
@@ -77,14 +78,14 @@ export default function Preview() {
           y="10%"
           bodyType="circle"
         >
-          <div className="w-32 h-32 bg-[#ff5941]  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 "/>
+          <div className="w-32 h-32 bg-[#ff5941]  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 " />
         </MatterBody>
         <MatterBody
           matterBodyOptions={{ friction: 0.5, restitution: 0.2 }}
           x="80%"
           y="20%"
         >
-          <div className="w-16 h-16 bg-orange-500  text-white [#E794DA] rounded-lg hover:cursor-grab px-8 py-4 "/>
+          <div className="w-16 h-16 bg-orange-500  text-white [#E794DA] rounded-lg hover:cursor-grab px-8 py-4 " />
         </MatterBody>
         <MatterBody
           matterBodyOptions={{
@@ -111,5 +112,5 @@ export default function Preview() {
         </MatterBody>
       </Gravity>
     </div>
-  );
+  )
 }

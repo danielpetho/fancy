@@ -1,12 +1,12 @@
-import { motion } from "framer-motion";
-import React from "react";
+import React from "react"
+import { motion } from "motion/react"
 
 type CirclingElementsProps = {
-  children: React.ReactNode;
-  radius?: number;
-  duration?: number;
-  className?: string;
-};
+  children: React.ReactNode
+  radius?: number
+  duration?: number
+  className?: string
+}
 
 const CirclingElements: React.FC<CirclingElementsProps> = ({
   children,
@@ -17,7 +17,7 @@ const CirclingElements: React.FC<CirclingElementsProps> = ({
   return (
     <div className={`relative w-full h-full ${className}`}>
       {React.Children.map(children, (child, index) => {
-        const offset = (index * 360) / React.Children.count(children);
+        const offset = (index * 360) / React.Children.count(children)
         return (
           <motion.div
             key={index}
@@ -32,10 +32,10 @@ const CirclingElements: React.FC<CirclingElementsProps> = ({
           >
             {child}
           </motion.div>
-        );
+        )
       })}
     </div>
-  );
-};
+  )
+}
 
-export default CirclingElements;
+export default CirclingElements

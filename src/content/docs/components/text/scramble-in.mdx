@@ -32,7 +32,9 @@ But there is also a `start` and `reset` method exposed via a ref if you need to 
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>text<span className="text-red-500">*</span></TableCell>
+      <TableCell>
+        text<span className="text-red-500">*</span>
+      </TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>The text to be displayed and scrambled</TableCell>
@@ -64,14 +66,18 @@ But there is also a `start` and `reset` method exposed via a ref if you need to 
     <TableRow>
       <TableCell>characters</TableCell>
       <TableCell>`string`</TableCell>
-      <TableCell>`"ABCDEFGHIJKLMNO PQRSTUVWXYZ abcdefghijklmno pqrstuvwxyz !@#$%^&*()_+"`</TableCell>
+      <TableCell>
+        `"ABCDEFGHIJKLMNO PQRSTUVWXYZ abcdefghijklmno pqrstuvwxyz !@#$%^&*()_+"`
+      </TableCell>
       <TableCell>Characters to use for scrambling</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>scrambledClassName</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>`undefined`</TableCell>
-      <TableCell>Additional CSS classes for styling the scrambled text</TableCell>
+      <TableCell>
+        Additional CSS classes for styling the scrambled text
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableCell>autoStart</TableCell>

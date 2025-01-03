@@ -1,6 +1,6 @@
 ---
 title: Drag Elements
-description: Drag any html element — image, div, video — around freely in a container. 
+description: Drag any html element — image, div, video — around freely in a container.
 component: true
 ---
 
@@ -14,9 +14,9 @@ component: true
 
 You only need to wrap your elements with the `DragElements` component, everything else is taken care of by the component itself.
 
-Under the hood, the component wraps all the children in a `relative` container, then sets all children to `absolute` to allow free dragging. For the dragging events and logic it uses framer-motion`s Drag gestures.
+Under the hood, the component wraps all the children in a `relative` container, then sets all children to `absolute` to allow free dragging. For the dragging events and logic it uses motion`s Drag gestures.
 
-The children are constrained to move withing the container, but you can set the `dragConstraints` prop to define a custom container, or custom `top`, `bottom`, `left` and `right` value. For the other drag props, refer to framer-motion's [Drag gestures](https://motion.dev/docs/react-gestures#drag) documentation.
+The children are constrained to move withing the container, but you can set the `dragConstraints` prop to define a custom container, or custom `top`, `bottom`, `left` and `right` value. For the other drag props, refer to motion's [Drag gestures](https://motion.dev/docs/react-gestures#drag) documentation.
 
 In the demo above, the `dragMomentum` prop is set to `false` to disable the "physics-based" movement, but in the following example, you can see a more funky use-case where it is enabled.
 
@@ -92,8 +92,3 @@ If you use images, or videos, make sure to set the `draggable` attribute to `fal
     </TableRow>
   </TableBody>
 </Table>
-
-
-
-
-

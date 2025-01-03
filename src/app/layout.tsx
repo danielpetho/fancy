@@ -1,7 +1,9 @@
-import type { Metadata } from "next";
-import { Analytics } from "@vercel/analytics/react";
-import "./globals.css";
-import { siteConfig } from "@/config/site";
+import type { Metadata } from "next"
+import { Analytics } from "@vercel/analytics/react"
+
+import "./globals.css"
+
+import { siteConfig } from "@/config/site"
 
 export const metadata: Metadata = {
   title: {
@@ -54,14 +56,17 @@ export const metadata: Metadata = {
     apple: "/apple-touch-icon.png",
   },
   manifest: `${siteConfig.url}/site.webmanifest`,
-};
+}
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en">
+      {/* <head>
+        <script src="https://unpkg.com/react-scan/dist/auto.global.js"/>
+      </head> */}
       <body
         className={`font-overusedGrotesk bg-[#faf9f9] antialiased flex items-center justify-center w-full`}
       >
@@ -71,5 +76,5 @@ export default function RootLayout({
         </main>
       </body>
     </html>
-  );
+  )
 }

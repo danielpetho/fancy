@@ -1,5 +1,6 @@
-import PixelTrail from "@/fancy/components/background/pixel-trail";
-import Image from "next/image";
+import Image from "next/image"
+
+import PixelTrail from "@/fancy/components/background/pixel-trail"
 
 const PixelTrailDemo: React.FC = () => {
   return (
@@ -40,7 +41,7 @@ const PixelTrailDemo: React.FC = () => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PixelTrailDemo;
+export default PixelTrailDemo

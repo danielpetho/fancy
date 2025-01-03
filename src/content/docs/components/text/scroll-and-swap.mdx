@@ -12,7 +12,7 @@ component: true
 
 ## Understanding the component
 
-The trick here is similar to the [Letter Swap Hover](/docs/components/text/letter-swap-hover) component—duplicate the text, then wrapping the them in a container with `relative` position, then stack the elements vertically. We use `useScroll` hook from framer-motion to track the scroll position of the container, and use the `scrollYProgress` value to offset the vertical position of the elements (by setting the `y` property of the element).
+The trick here is similar to the [Letter Swap Hover](/docs/components/text/letter-swap-hover) component—duplicate the text, then wrapping the them in a container with `relative` position, then stack the elements vertically. We use `useScroll` hook from motion to track the scroll position of the container, and use the `scrollYProgress` value to offset the vertical position of the elements (by setting the `y` property of the element).
 
 ## Notes
 
@@ -58,4 +58,3 @@ Make sure that the container has a non-static position, like `relative`, `fixed`
     </TableRow>
   </TableBody>
 </Table>
-

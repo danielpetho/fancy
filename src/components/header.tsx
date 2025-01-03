@@ -1,7 +1,7 @@
-"use client";
+"use client"
 
-import { MainNav } from "./main-nav";
-import { MobileNav } from "./mobile-nav";
+import { MainNav } from "./main-nav"
+import { MobileNav } from "./mobile-nav"
 
 export function Header() {
   return (
@@ -11,5 +11,5 @@ export function Header() {
         <MainNav />
       </div>
     </header>
-  );
+  )
 }
