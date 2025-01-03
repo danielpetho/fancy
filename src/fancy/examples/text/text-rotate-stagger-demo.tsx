@@ -9,7 +9,7 @@ export default function Preview() {
     <div className="w-full h-full text-2xl flex flex-row items-center justify-center font-overusedGrotesk bg-background font-light overflow-hidden p-6 uppercase relative">
       <div className="absolute inset-0 w-full h-full blur-3xl">
         <img
-          src={exampleImages[0]}
+          src={exampleImages[0].url}
           alt="city"
           className="w-full h-full object-cover overflow-hidden"
         />
