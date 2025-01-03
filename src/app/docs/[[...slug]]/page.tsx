@@ -100,9 +100,6 @@ export default async function DocPage({ params }: DocPageProps) {
 
   const toc = doc.toc
 
-  console.log(doc.author)
-
-
   return (
     <main className="xl:grid xl:grid-cols-[1fr_300px] justify-center max-w-full">
       <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 border-border border shadow-lg">
