@@ -25,7 +25,7 @@ const CirclingElementsDemo: React.FC = () => {
         >
           <div className="w-20 h-20 md:w-48 md:h-48 overflow-hidden">
             <img
-              src={image}
+              src={image.url}
               alt={`Example ${index + 1}`}
               className="w-full h-full object-cover"
             />
