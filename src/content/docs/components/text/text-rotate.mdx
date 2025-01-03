@@ -8,17 +8,50 @@ component: true
 
 ## Source code
 
-<Steps>
-
-<Step>Copy and paste the following code into your project:</Step>
-
 <ComponentSource name="text-rotate" />
 
-</Steps>
+## Understanding the component
+
+1. For the animation, we switch the actual rendered text from the `texts` array. Either automatically, if the `auto` prop is set to `true`, or we can do it manually, by calling the `next()` or `previous()` methods exposed via a ref.
+
+2. For animating out the previous text, and animating in the next, we use the `AnimatePresence` component from `motion/react`. The `initial`, `animate` and `exit` props can be used to define the three states of the text. Refer to the [motion documentation](https://motion.dev/docs/react/docs/react-animate-presence) for more details.
+
+3. The current text is split into smaller pieces based on the `splitBy` prop, which will determine how the text will be animated:
+
+   - `words`: Splits into individual words (e.g., "Hello world" → ["Hello", "world"])
+   - `characters`: Splits into individual characters (e.g., "Hi" → ["H", "i"])
+   - `lines`: Splits by newline characters (`\n`)
+   - `string`: Splits by any custom string delimiter
+
+4. Each piece of text is wrapped in two `<span>` elements: An outer `<span>` that acts as a container for a word or line of text and an inner `<span>` that holds the actual text. There are two reasons for this:
+
+    1. When dealing with multi-line text, each line maintains its own reveal animation starting point. This means if you have text that spans multiple lines, each line will animate independently from its own baseline, rather than all elements animating from a single point (like the bottom of the entire paragraph).
+    2. When using `characters` mode, characters from the same word stay together in a word container. This prevents unwanted line breaks in the middle of words - if a word needs to wrap to the next line, it will wrap as a complete unit rather than having some characters on one line and others on the next line. This maintains proper text flow and readability while still allowing character-by-character animation within each word.
+
+
+## Examples
+
+### SplitBy variations
+
+With the `splitBy` prop, you can control how the text is split into smaller pieces. It can be either `words`, `characters`, `lines`, or a custom `string` delimiter. In case of `lines`, you are responsible for adding the `\n` delimiter yourself.
+
+The following example demonstrates the `words` (the quote) and `characters` (the author) mode. It should respect multiline texts.
 
 <ComponentPreview name="text-rotate-multiline-demo" />
 
+### Stagger
+
+With the `staggerFrom` prop, you can control the index of the letter/word/line where the stagger animation starts. Possible values are `"first"`, `"center"`, `"last"`, `"random"`, or a number.
+
+<ComponentPreview name="text-rotate-stagger-demo" />
+
+### Manual control
+
+If the `auto` prop is set to `false`, you can manually control the animation by calling the `next()` or `previous()` methods exposed via a ref.
+
 <ComponentPreview name="text-rotate-step-demo" />
 
-<ComponentPreview name="text-rotate-dynamic-options-demo" />
+This can be handy for a lot of use cases, eg. a scroll-triggered animation.
+
+<ComponentPreview name="text-rotate-scroll-step-demo" />
 

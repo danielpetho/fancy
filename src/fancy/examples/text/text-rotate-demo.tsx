@@ -18,25 +18,22 @@ export default function Preview() {
             texts={[
               "work!",
               "fancy ✽",
-              "✨ pop ✨",
               "right",
-              "fast 🚀",
-              "fun ツ",
+              "fast",
+              "fun",
+              "rock",
+              "🕶️🕶️🕶️"
             ]}
-            mainClassName="text-white px-3 bg-[#0015ff] pt-1 overflow-hidden py-2 justify-center rounded-lg "
+            mainClassName="text-white px-3 bg-[#ff5941] overflow-hidden py-2 justify-center rounded-lg"
             staggerFrom={"last"}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-120%" }}
             staggerDuration={0.025}
-            splitLevelClassName="overflow-hidden"
+            splitLevelClassName="overflow-hidden pb-1"
             transition={{ type: "spring", damping: 30, stiffness: 400 }}
             rotationInterval={2000}
           />
-          {/* <motion.span
-            className="pt-1"
-            layout
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-          >
-            !
-          </motion.span> */}
         </motion.p>
       </LayoutGroup>
     </div>

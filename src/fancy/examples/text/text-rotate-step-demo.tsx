@@ -1,5 +1,6 @@
-import { LayoutGroup, motion } from "motion/react"
 import { useRef } from "react"
+import { MoveLeft, MoveRight } from "lucide-react"
+import { LayoutGroup, motion } from "motion/react"
 
 import TextRotate, { TextRotateRef } from "@/fancy/components/text/text-rotate"
 
@@ -12,8 +13,15 @@ export default function Preview() {
         <motion.p className="" layout>
           <TextRotate
             ref={textRotateRef}
-            texts={["This is the first text", "this is the 2nd", "we're at third!", "4th! keep going", "5th! almost", "this is the end."]}
-            mainClassName="text-3xl justify-center flex"
+            texts={[
+              "This is the first text",
+              "this is the 2nd",
+              "we're at third!",
+              "4th! keep going",
+              "5th.",
+              "this is the end.",
+            ]}
+            mainClassName="text-4xl justify-center flex"
             staggerFrom={"first"}
             animatePresenceMode="sync"
             loop={true}
@@ -32,21 +40,15 @@ export default function Preview() {
       <div className="flex gap-4">
         <button
           onClick={() => textRotateRef.current?.previous()}
-          className="px-4 py-2 bg-black text-white rounded-lg"
+          className="px-2 py-2 text-black "
         >
-          Previous
-        </button>
-        <button
-          onClick={() => textRotateRef.current?.reset()}
-          className="px-4 py-2 bg-black text-white rounded-lg"
-        >
-          Reset
+          <MoveLeft className="w-4 h-4" />
         </button>
         <button
           onClick={() => textRotateRef.current?.next()}
-          className="px-4 py-2 bg-black text-white rounded-lg"
+          className="px-2 py-2 text-black "
         >
-          Next
+          <MoveRight className="w-4 h-4" />
         </button>
       </div>
     </div>
