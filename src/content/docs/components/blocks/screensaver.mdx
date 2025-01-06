@@ -14,32 +14,36 @@ component: true
 
 <CodeBlockWrapper language="typescript">
 {
-`import { useState, useEffect, RefObject } from 'react';
+`import { RefObject, useEffect, useState } from "react"
 
 interface Dimensions {
-width: number;
-height: number;
+  width: number
+  height: number
 }
 
-export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensions {
-  const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
+export function useDimensions(
+  ref: RefObject<HTMLElement | SVGElement>
+): Dimensions {
+  const [dimensions, setDimensions] = useState<Dimensions>({
+    width: 0,
+    height: 0,
+  })
 
-useEffect(() => {
-const updateDimensions = () => {
-if (ref.current) {
-const { width, height } = ref.current.getBoundingClientRect();
-setDimensions({ width, height });
-}
-};
+  useEffect(() => {
+    const updateDimensions = () => {
+      if (ref.current) {
+        const { width, height } = ref.current.getBoundingClientRect()
+        setDimensions({ width, height })
+      }
+    }
 
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
+    updateDimensions()
+    window.addEventListener("resize", updateDimensions)
 
-    return () => window.removeEventListener('resize', updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions)
+  }, [ref])
 
-}, [ref]);
-
-return dimensions;
+  return dimensions
 }
 `}
 
