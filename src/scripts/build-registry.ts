@@ -4,7 +4,7 @@ const path = require("path")
 const baseDir = path.join(__dirname, "..", "fancy")
 const componentsDir = path.join(baseDir, "components")
 const examplesDir = path.join(baseDir, "examples")
-const hooksDir = path.join(__dirname, "..", "hooks") // Add hooks directory
+const hooksDir = path.join(__dirname, "..", "hooks")
 
 type RegistryType = "registry:ui" | "registry:example" | "registry:hook"
 
@@ -54,7 +54,10 @@ function generateRegistryItem(
           ? "registry:example"
           : "registry:ui",
     files: [importPath],
-    component: `React.lazy(\n      () => import('${importPathWithoutExt}') \n)`,
+    // Only add lazy loading for components and examples, not for hooks
+    ...(type !== "hook" && {
+      component: `React.lazy(\n      () => import('${importPathWithoutExt}') \n)`,
+    }),
   }
 
   return item
@@ -75,7 +78,7 @@ function traverseDirectory(
 
       if (stat.isDirectory()) {
         traverse(filePath)
-      } else if (file.match(/\.(tsx|jsx)$/) && !file.includes("index.")) {
+      } else if (file.match(/\.(ts|js|tsx|jsx)$/) && !file.includes("index.")) {
         const registryItem = generateRegistryItem(filePath, type)
         if (registryItem) {
           registry[registryItem.name] = registryItem
