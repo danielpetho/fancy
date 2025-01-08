@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "generate-registry": "ts-node src/scripts/generate-registry.ts",
-    "generate": "npm run generate-registry",
+    "build:registry": "ts-node src/scripts/build-registry.ts",
+    "generate": "npm run build:registry",
     "build": "npm run generate && next build",
     "start": "next start",
     "lint": "next lint",

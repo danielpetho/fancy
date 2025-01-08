@@ -4,22 +4,30 @@ const path = require("path")
 const baseDir = path.join(__dirname, "..", "fancy")
 const componentsDir = path.join(baseDir, "components")
 const examplesDir = path.join(baseDir, "examples")
+const hooksDir = path.join(__dirname, "..", "hooks") // Add hooks directory
+
+type RegistryType = "registry:ui" | "registry:example" | "registry:hook"
 
 interface RegistryItem {
   name: string
-  type: "components:fancy" | "components:example"
+  type: RegistryType
   files: string[]
   component?: string
 }
 
 function generateRegistryItem(
   filePath: string,
-  isExample: boolean
+  type: "ui" | "example" | "hook" // Modified to accept type parameter
 ): RegistryItem | null {
   // Get the relative path from the components or examples directory
-  const relativePath = isExample
-    ? path.relative(examplesDir, filePath)
-    : path.relative(componentsDir, filePath)
+  const baseDirectory =
+    type === "hook"
+      ? hooksDir
+      : type === "example"
+        ? examplesDir
+        : componentsDir
+
+  const relativePath = path.relative(baseDirectory, filePath)
 
   const name = path
     .basename(filePath, path.extname(filePath))
@@ -28,13 +36,23 @@ function generateRegistryItem(
     .replace(/^-/, "")
 
   // Construct the import path with the correct directory structure
-  const basePath = isExample ? "@/fancy/examples/" : "@/fancy/components/"
+  const basePath =
+    type === "hook"
+      ? "@/hooks/"
+      : type === "example"
+        ? "@/fancy/examples/"
+        : "@/fancy/components/"
   const importPath = `${basePath}${relativePath}`.replace(/\\/g, "/")
   const importPathWithoutExt = importPath.replace(/\.tsx?$/, "")
 
   const item: RegistryItem = {
     name,
-    type: isExample ? "components:example" : "components:fancy",
+    type:
+      type === "hook"
+        ? "registry:hook"
+        : type === "example"
+          ? "registry:example"
+          : "registry:ui",
     files: [importPath],
     component: `React.lazy(\n      () => import('${importPathWithoutExt}') \n)`,
   }
@@ -44,7 +62,7 @@ function generateRegistryItem(
 
 function traverseDirectory(
   dir: string,
-  isExample: boolean
+  type: "ui" | "example" | "hook"
 ): Record<string, RegistryItem> {
   const registry: Record<string, RegistryItem> = {}
 
@@ -58,7 +76,7 @@ function traverseDirectory(
       if (stat.isDirectory()) {
         traverse(filePath)
       } else if (file.match(/\.(tsx|jsx)$/) && !file.includes("index.")) {
-        const registryItem = generateRegistryItem(filePath, isExample)
+        const registryItem = generateRegistryItem(filePath, type)
         if (registryItem) {
           registry[registryItem.name] = registryItem
         }
@@ -71,8 +89,9 @@ function traverseDirectory(
 }
 
 // Generate both registries
-const fancy = traverseDirectory(componentsDir, false)
-const example = traverseDirectory(examplesDir, true)
+const fancy = traverseDirectory(componentsDir, "ui")
+const example = traverseDirectory(examplesDir, "example")
+const hooks = traverseDirectory(hooksDir, "hook")
 
 // Generate the final index.ts content
 const content = `import * as React from "react";
@@ -84,9 +103,12 @@ const fancy: Registry = ${JSON.stringify(fancy, null, 2)};
 
 const example: Registry = ${JSON.stringify(example, null, 2)};
 
+const hooks: Registry = ${JSON.stringify(hooks, null, 2)};
+
 export const registry = {
   ...fancy,
   ...example,
+  ...hooks,
 };
 `
 
@@ -104,16 +126,20 @@ fs.writeFileSync(path.join(baseDir, "index.ts"), formattedContent)
 console.log("Registry file generated successfully!")
 
 // Generate the source files
-const _baseDir = path.join(__dirname, "..", "..", "src/fancy")
-const dirsToProcess = ["components", "examples"]
-const outputDir = path.join(__dirname, "..", "..", ".component-sources")
+const _baseDir = path.join(__dirname, "..", "..") // Adjust base directory to handle hooks
+const dirsToProcess = ["components", "examples", "hooks"]
 
-// Ensure the output directory exists
-if (!fs.existsSync(outputDir)) {
-  fs.mkdirSync(outputDir, { recursive: true })
-}
+const componentsOutputDir = path.join(__dirname, "..", "..", "public/c")
+const hooksOutputDir = path.join(__dirname, "..", "..", "public/h")
 
-function processFile(filePath: string) {
+// Ensure both output directories exist
+;[componentsOutputDir, hooksOutputDir].forEach((dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true })
+  }
+})
+
+function processFile(filePath: string, isHook: boolean) {
   const fileName = path.basename(filePath)
   const fileExt = path.extname(fileName)
 
@@ -130,7 +156,10 @@ function processFile(filePath: string) {
   ) {
     const componentName = path.basename(fileName, fileExt)
     const sourceCode = fs.readFileSync(filePath, "utf-8")
-    const outputPath = path.join(outputDir, `${componentName}.json`)
+    const outputPath = path.join(
+      isHook ? hooksOutputDir : componentsOutputDir,
+      `${componentName}.json`
+    )
 
     const jsonContent = JSON.stringify({ sourceCode })
     fs.writeFileSync(outputPath, jsonContent)
@@ -138,7 +167,7 @@ function processFile(filePath: string) {
   }
 }
 
-function readComponentFiles(dir: string) {
+function readComponentFiles(dir: string, isHook: boolean) {
   const files = fs.readdirSync(dir)
 
   files.forEach((file: string) => {
@@ -146,18 +175,22 @@ function readComponentFiles(dir: string) {
     const stat = fs.statSync(filePath)
 
     if (stat.isDirectory()) {
-      readComponentFiles(filePath)
+      readComponentFiles(filePath, isHook)
     } else {
-      processFile(filePath)
+      processFile(filePath, isHook)
     }
   })
 }
 
 dirsToProcess.forEach((dir) => {
-  const fullDir = path.join(_baseDir, dir)
+  const isHook = dir === "hooks"
+  const fullDir = isHook
+    ? path.join(_baseDir, "src/hooks")
+    : path.join(_baseDir, "src/fancy", dir)
+
   if (fs.existsSync(fullDir)) {
     console.log(`Processing directory: ${fullDir}`)
-    readComponentFiles(fullDir)
+    readComponentFiles(fullDir, isHook)
   } else {
     console.warn(`Directory not found: ${fullDir}`)
   }
