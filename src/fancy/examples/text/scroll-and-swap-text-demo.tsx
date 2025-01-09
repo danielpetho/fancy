@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef } from "react"
 
 import ScrollAndSwapText from "@/fancy/components/text/scroll-and-swap-text"

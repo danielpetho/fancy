@@ -1,3 +1,5 @@
+"use client"
+
 import { motion } from "motion/react"
 
 import Gravity, { MatterBody } from "@/fancy/components/physics/gravity"

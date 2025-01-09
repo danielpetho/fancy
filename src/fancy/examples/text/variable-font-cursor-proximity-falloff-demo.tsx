@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef } from "react"
 
 import VariableFontCursorProximity from "@/fancy/components/text/variable-font-cursor-proximity"

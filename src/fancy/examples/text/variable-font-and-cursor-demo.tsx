@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef } from "react"
 
 import { useMousePosition } from "@/hooks/use-mouse-position"

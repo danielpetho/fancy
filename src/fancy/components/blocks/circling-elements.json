@@ -4,7 +4,7 @@
       "theme": {
         "extend": {
           "animation": {
-            "circling": "circling calc(var(--duration)*1s) linear infinite"
+            "circling": "circling calc(var(--duration-duration)*1s) linear infinite"
           },
           "keyframes": {
             "circling": {
@@ -15,8 +15,7 @@
                 "transform": "rotate(calc(360deg + (var(--offset) * 1deg))) translate(calc(var(--radius) * 1px), 0) rotate(calc(-360deg + (var(--offset) * -1deg)))"
               }
             }
-          },
-          "darkMode": "class"
+          }
         }
       }
     }

@@ -1,5 +1,7 @@
-import { use, useEffect, useRef } from "react"
-import { useInView, useScroll } from "motion/react"
+"use client"
+
+import { useEffect, useRef } from "react"
+import { useInView  } from "motion/react"
 
 import TextRotate, { TextRotateRef } from "@/fancy/components/text/text-rotate"
 

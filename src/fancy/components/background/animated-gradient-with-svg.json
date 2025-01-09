@@ -25,8 +25,7 @@
                 "transform": "translate(calc(100% * var(--tx-4, -1)), calc(100% * var(--ty-4, -1)))"
               }
             }
-          },
-          "darkMode": "class"
+          }
         }
       }
     }

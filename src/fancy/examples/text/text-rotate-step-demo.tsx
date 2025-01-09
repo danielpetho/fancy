@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef } from "react"
 import { MoveLeft, MoveRight } from "lucide-react"
 import { LayoutGroup, motion } from "motion/react"

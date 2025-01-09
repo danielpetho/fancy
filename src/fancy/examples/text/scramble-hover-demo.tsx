@@ -1,3 +1,5 @@
+"use client"
+
 import { motion } from "motion/react"
 
 import ScrambleHover from "@/fancy/components/text/scramble-hover"

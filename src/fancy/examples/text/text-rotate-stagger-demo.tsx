@@ -1,4 +1,4 @@
-import { LayoutGroup, motion } from "motion/react"
+"use client"
 
 import TextRotate from "@/fancy/components/text/text-rotate"
 

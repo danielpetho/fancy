@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 
 import Gravity, { MatterBody } from "@/fancy/components/physics/gravity"

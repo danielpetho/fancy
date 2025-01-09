@@ -1,5 +1,4 @@
 import LetterSwapForward from "@/fancy/components/text/letter-swap-forward-anim"
-import LetterSwapPingPong from "@/fancy/components/text/letter-swap-pingpong-anim"
 
 export default function Preview() {
   return (
