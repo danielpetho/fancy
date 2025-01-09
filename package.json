@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build:registry": "ts-node src/scripts/build-registry.ts",
-    "build:source": "ts-node src/scripts/build-source-files.ts",
-    "build:all": "npm run build:registry && npm run build:source",
+    "build:index": "ts-node src/scripts/build-registry-index.ts",
+    "build:source": "ts-node src/scripts/build-registry-sources.ts",
+    "build:registry": "npm run build:index && npm run build:source",
     "build": "npm run build:all && next build",
     "start": "next start",
     "lint": "next lint",
