@@ -3,11 +3,10 @@ title: Installation
 description:
 ---
 
-The components are built with React, TypeScript, Tailwind CSS, and mainly with Motion (Formerly Framer Motion).
+The components are built with React, TypeScript, Tailwind CSS, and mainly with Motion (formerly Framer Motion).
 In order to use the components, you need to install the following dependencies:
 
 <CodeBlockWrapper
-  className="mt-4"
   language="bash"
 >{`npm install tailwindcss@latest motion`}</CodeBlockWrapper>
 
@@ -15,25 +14,28 @@ Or follow the [Tailwind CSS installation guide](https://tailwindcss.com/docs/ins
 
 Some components uses other libraries too, in each case, you can find the installation instructions in the component's documentation.
 
-## Importing
+## Adding a component
 
-Go to any of the components you want to use and copy the code from the "Installation" section. Then, paste it into your project.
+You have two options to add a component to your project:
 
-## Example
+1. Using the CLI
+2. Manually
 
-<CodeBlockWrapper language="tsx">
-{`
-import { LetterSwapForward } from "@/fancy/components/text/letter-swap-forward-anim";
+### Using the CLI
 
-export default function MyComponent() {
-  return (
-    <div className="w-full h-full flex justify-center items-center">
-      <LetterSwapForward label="Hover me!" reverse={true} className="italic" />
-    </div>
-  );
-}`}
+To add a component using the CLI, you need to run the following command in your terminal:
 
-</CodeBlockWrapper>
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/component-name.json"`}</CodeBlockWrapper>
+
+This will add the component source code and its dependencies in your project. You can then import the component in your code and start using it. 
+
+**Important note:** as of now, additional dependencies aren't installed automatically, they just get added to the `package.json` file. You need to run `npm install` or the equivalent command in your preferred package manager to install them.
+
+The appropriate link is available in the "Installation" section of each component's documentation page.
+
+### Manually
+
+Go to any of the components you want to use and copy the source code(s) from the "Installation" section. Make sure to update your imports accordingly. 
 
 ## Notes
 

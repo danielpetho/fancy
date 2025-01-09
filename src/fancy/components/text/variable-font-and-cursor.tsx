@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useCallback, useRef } from "react"
 
 import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"

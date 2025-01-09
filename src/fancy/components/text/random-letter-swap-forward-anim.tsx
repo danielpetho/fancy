@@ -1,3 +1,5 @@
+"use client"
+
 import { useState } from "react"
 import { DynamicAnimationOptions, motion, useAnimate } from "motion/react"
 import { debounce } from "lodash"

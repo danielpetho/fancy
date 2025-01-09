@@ -1,3 +1,5 @@
+"use client"
+
 import React, { forwardRef, useMemo, useRef } from "react"
 import { motion, useAnimationFrame } from "motion/react"
 

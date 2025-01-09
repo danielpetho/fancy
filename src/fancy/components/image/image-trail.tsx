@@ -1,3 +1,5 @@
+"use client"
+
 import { Children, useCallback, useEffect, useMemo, useRef } from "react"
 import {
   AnimationSequence,
