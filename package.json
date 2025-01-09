@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build:registry": "ts-node src/scripts/build-registry.ts",
-    "generate": "npm run build:registry",
-    "build": "npm run generate && next build",
+    "build:source": "ts-node src/scripts/build-source-files.ts",
+    "build:all": "npm run build:registry && npm run build:source",
+    "build": "npm run build:all && next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
