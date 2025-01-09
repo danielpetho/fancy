@@ -3,78 +3,94 @@ const fs = require("fs")
 // @ts-ignore
 const path = require("path")
 
-const _baseDir = path.join(__dirname, "..", "..") // Adjust base directory to handle hooks
-const dirsToProcess = ["components", "examples", "hooks"]
+// @ts-ignore
+const baseDir = path.join(__dirname, "..", "..")
+const registryJsonPath = path.join(baseDir, "public", "index.json")
 
-const componentsOutputDir = path.join(__dirname, "..", "..", "public/c")
-const hooksOutputDir = path.join(__dirname, "..", "..", "public/h")
+// Single output directory for all registry items
+const registryOutputDir = path.join(baseDir, "public/r")
 
-// Ensure both output directories exist
-;[componentsOutputDir, hooksOutputDir].forEach((dir) => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
-  }
-})
+// Ensure output directory exists
+if (!fs.existsSync(registryOutputDir)) {
+  fs.mkdirSync(registryOutputDir, { recursive: true })
+}
 
-function processFile(filePath: string, isHook: boolean) {
-  const fileName = path.basename(filePath)
-  const fileExt = path.extname(fileName)
-
-  // Skip index.ts and schema.ts files
-  if (fileName === "index.ts" || fileName === "schema.ts") {
-    return
-  }
-
-  if (
-    fileExt === ".tsx" ||
-    fileExt === ".jsx" ||
-    fileExt === ".ts" ||
-    fileExt === ".js"
-  ) {
-    const componentName = path.basename(fileName, fileExt)
-    const sourceCode = fs.readFileSync(filePath, "utf-8")
-    const outputPath = path.join(
-      isHook ? hooksOutputDir : componentsOutputDir,
-      `${componentName}.json`
-    )
-
-    const jsonContent = JSON.stringify({ sourceCode })
-    fs.writeFileSync(outputPath, jsonContent)
-    console.log(`Generated source file for: ${componentName}`)
+function getSourceContent(filePath: string): string {
+  try {
+    if (!fs.existsSync(filePath)) {
+      console.warn(`File does not exist: ${filePath}`)
+      return ""
+    }
+    return fs.readFileSync(filePath, "utf-8")
+  } catch (error) {
+    console.error(`Error reading file ${filePath}:`, error)
+    return ""
   }
 }
 
-function readComponentFiles(dir: string, isHook: boolean) {
-  const files = fs.readdirSync(dir)
+function processRegistryItem(name: string, item: any) {
+  const output: any = {
+    name,
+    type: item.type,
+    dependencies: item.dependencies || [],
+    files: [],
+    tailwind: {
+      config: {}
+    }
+  }
 
-  files.forEach((file: string) => {
-    const filePath = path.join(dir, file)
-    const stat = fs.statSync(filePath)
+  // Process each file in the registry item
+  item.files.forEach((file: any) => {
+    let sourceFilePath: string = ""
+    
+    // Skip files from _helpers folder
+    if (file.path.includes('_helpers')) {
+      return
+    }
 
-    if (stat.isDirectory()) {
-      readComponentFiles(filePath, isHook)
-    } else {
-      processFile(filePath, isHook)
+    if (file.type === "registry:hook") {
+      const hookPath = file.path.replace('hooks/', '')
+      sourceFilePath = path.join(baseDir, "src", "hooks", `${hookPath}.ts`)
+    } else if (file.type === "registry:ui") {
+      const componentPath = file.path.replace('fancy/', '')
+      sourceFilePath = path.join(baseDir, "src", "fancy", "components", `${componentPath}.tsx`)
+    } else if (file.type === "registry:example") {
+      const examplePath = file.path.replace('examples/', '')
+      sourceFilePath = path.join(baseDir, "src", "fancy", "examples", `${examplePath}.tsx`)
+    } else if (file.type === "registry:lib") {
+      const utilPath = file.path.replace('utils/', '')
+      sourceFilePath = path.join(baseDir, "src", "utils", `${utilPath}.ts`)
+    }
+
+    if (sourceFilePath !== "") {
+      const content = getSourceContent(sourceFilePath)
+      output.files.push({
+        path: file.path.startsWith('/') ? file.path : `/${file.path}`,
+        content,
+        type: file.type,
+        target: ""
+      })
     }
   })
+
+  return output
 }
 
 function buildSourceFiles() {
-  dirsToProcess.forEach((dir) => {
-    const isHook = dir === "hooks"
-    const fullDir = isHook
-      ? path.join(_baseDir, "src/hooks")
-      : path.join(_baseDir, "src/fancy", dir)
+  // Read the registry
+  const registry = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
 
-    if (fs.existsSync(fullDir)) {
-      console.log(`Processing directory: ${fullDir}`)
-      readComponentFiles(fullDir, isHook)
-    } else {
-      console.warn(`Directory not found: ${fullDir}`)
-    }
+  // Process each item in the registry
+  Object.entries(registry).forEach(([name, item]: [string, any]) => {
+    const sourceFile = processRegistryItem(name, item)
+    
+    // Write all items to the registry directory
+    const outputPath = path.join(registryOutputDir, `${name}.json`)
+    fs.writeFileSync(outputPath, JSON.stringify(sourceFile, null, 2))
+    console.log(`Generated source file for: ${name}`)
   })
 
-  console.log("Source files generation process completed.")
+  console.log("Source files generation completed.")
 }
 
-buildSourceFiles() 
+buildSourceFiles()

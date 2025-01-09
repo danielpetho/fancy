@@ -3,6 +3,7 @@ const fs = require("fs")
 // @ts-ignore
 const path = require("path")
 
+// @ts-ignore
 const baseDir = path.join(__dirname, "..", "fancy")
 const componentsDir = path.join(baseDir, "components")
 const examplesDir = path.join(baseDir, "examples")
@@ -135,16 +136,30 @@ function generateRegistryItem(
     originalPath: string,
     itemType: "ui" | "example" | "hook" | "util"
   ) => {
-    const fileName = path.basename(originalPath, path.extname(originalPath))
+    // Get the relative path from the base directory
+    const relativePath = path.relative(
+      itemType === "hook"
+        ? hooksDir
+        : itemType === "example"
+          ? examplesDir
+          : itemType === "util"
+            ? utilsDir
+            : componentsDir,
+      originalPath
+    ).replace(/\\/g, '/')
+
+    // Remove the file extension
+    const pathWithoutExt = relativePath.replace(/\.(ts|tsx)$/, '')
+
     switch (itemType) {
       case "hook":
-        return `hooks/${fileName}`
+        return `hooks/${pathWithoutExt}`
       case "example":
-        return `examples/${fileName}`
+        return `examples/${pathWithoutExt}`
       case "ui":
-        return `fancy/${fileName}`
+        return `fancy/${pathWithoutExt}`
       case "util":
-        return `utils/${fileName}`
+        return `utils/${pathWithoutExt}`
     }
   }
 
@@ -272,6 +287,11 @@ function traverseDirectory(
     files.forEach((file: string) => {
       const filePath = path.join(currentDir, file)
       const stat = fs.statSync(filePath)
+
+      // Skip _helpers folder in utils
+      if (type === "util" && file === "_helpers") {
+        return
+      }
 
       if (stat.isDirectory()) {
         traverse(filePath)

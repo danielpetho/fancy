@@ -38,9 +38,20 @@ export function ComponentPreview({
   React.useEffect(() => {
     async function loadSourceCode() {
       try {
-        const mod = await import(`../../public/c/${name}.json`)
-        const sourceCodeJSON = mod.default
-        setSourceCode(sourceCodeJSON.sourceCode)
+        const mod = await import(`../../public/r/${name}.json`)
+        const json = mod.default
+        
+        // Find the main component file that matches the name
+        const mainFile = json.files.find(
+          (file: any) => file.path.split('/').pop() === name
+        )
+        
+        if (mainFile) {
+          setSourceCode(mainFile.content)
+        } else {
+          console.error(`Could not find main file for ${name}`)
+          setSourceCode("")
+        }
       } catch (error) {
         console.error(`Failed to load source for ${name}:`, error)
         setSourceCode("")
