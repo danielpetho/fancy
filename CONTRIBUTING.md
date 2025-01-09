@@ -68,10 +68,10 @@ git checkout -b my-new-branch
 npm install
 ```
 
-### Generate the source files and the registry index.
+### Build the registry index and the source files. This is needed to access the components in the documentation.
 
 ```bash
-npm run generate
+npm run build:registry
 ```
 
 Then, you're ready for development!
@@ -92,6 +92,15 @@ If you think your component is a good fit, read on.
 2. Create the component inside the chosen folder. Make sure to use the correct [tech stack](./ACCEPTANCE_CRITERIA.md#stack). Comments are appreciated, but not required.
 3. If you're using new dependencies, feel free to install them in the `package.json` file. 
 4. If you're using new hooks, please add them to the `src/hooks` directory.
+5. If you're using new utilities, please add them to the `src/utils` directory, unless you want them in the same file as the component.
+6. When importing hooks and utilities, always use the `@/hooks` and `@/utils` path aliases (e.g. `import { useHook } from "@/hooks/use-hook"`). This is crucial because the registry build script looks for these specific import paths in the source code to determine which files and dependencies to include in the generated registry. Without the correct import paths, the CLI installation won't work properly.
+
+Some things cannot be fetched from the source file, such as: 
+ - The component's tailwind config, if applicable.
+ - The component's dev dependencies (eg. types for matter-js), if applicable.
+ - The component's additional dependencies, which aren't listed in the source file of the component, but are required for the component to work properly.
+
+Therefore, you need to add these config in a .json file with the same name as the component, next to the component .tsx file. The schema for this json is defined the [registry schema file](./src/fancy/schema.ts). Please, refer to [this example](./src/fancy/components/blocks/circling-elements.json) (additional tailwind config) and [this example](./src/fancy/components/text/gravity.json) (additional dependencies) for reference.
 
 ### 2. Component demo(s)
 
@@ -100,7 +109,7 @@ If you think your component is a good fit, read on.
 
 ### 3. Generate source
 
-1. Run `npm run generate`. This will run a script which will generate the source files for the component documentation, as well as the registry index file. You don't need to worry about what's inside (hopefully), but this is definitely needed, otherwise you can't reference the component in the documentation.
+1. Run `npm run build:registry`. This will run a script which will generate the source files for the component documentation, as well as the registry index file. You don't need to worry about what's inside (hopefully), but this is definitely needed, otherwise you can't reference the component in the documentation, you won't be able to see the source code, and the CLI installation won't work.
 
 ### 4. Component documentation
 
@@ -121,8 +130,8 @@ author: "[johndoe](https://example.com)"
 ```
 
 5. The first node after the header should be a `ComponentPreview` component, which will render the main demo of the component.
-6. Then, a header called `Source code` and the source code of the component referenced in a `ComponentSource` component.
-7. If the component uses hooks, or need to add other dependencies, make sure to include them in that section, in a `CodeBlockWrapper` component.
+6. Then, a header called `Installation`. There should be a `Tabs` component there, with two tabs: `CLI` and `Manual`. The `CLI` tab should contain the command to install the component with `npx shadcn@latest add "https://fancycomponents.dev/r/component-name.json"`. The `Manual` tab should contain the source code of the component referenced in a `ComponentSource` component.
+7. If the component uses hooks, or need to add other dependencies, make sure to include them in that section, in a `ComponentSource` component.
 8. Add an `Usage` and/or `Understanding the component` section, if applicable.
 9. Add an `Examples` section, if applicable.
 10. Add a `Notes` section, if applicable.
@@ -133,7 +142,7 @@ Please, have a look at an [existing component](./src/content/docs/components/blo
 
 When you're done and ready to submit your PR, please create a quick recording of your work, and upload it to the PR description. It will help us to speed up the review process. Check out [this PR](https://github.com/danielpetho/fancy/pull/2) for reference.
 
-That's it, you're done!
+That's it, you're done! If you feel stuck anywhere, please don't hesitate to ask for help.
 
 ## Commit Convention
 
@@ -160,7 +169,7 @@ the following categories:
 - `chore`: all changes to the repository that do not fit into any of the above
   categories
 
-  e.g. `feat(components): add new prop to the avatar component`
+  e.g. `feat(comps): add new prop to the avatar component`
 
 If you are interested in the detailed specification you can visit
 https://www.conventionalcommits.org/ or check out the
