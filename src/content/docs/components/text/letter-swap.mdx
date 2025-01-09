@@ -11,13 +11,42 @@ There are two types of animations available for this component:
 1. Forward animation — plays the animation timeline once forward, when you hover over the text.
 2. Ping Pong animation — plays the animation timeline in a ping pong fashion. It plays once forward when you hover over the text, and once in the opposite direction when you hover away from the text.
 
-## Source code
+## Installation
 
 ### Only forward animation
 
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/letter-swap-forward-anim.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
+
 <ComponentSource name="letter-swap-forward-anim" />
 
+</TabsContent>
+</Tabs>
+
 ### Ping Pong animation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/letter-swap-pingpong-anim.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
 
 <Steps>
 
@@ -32,6 +61,9 @@ lodash is used for debouncing here — so the animation doesn't break on rapid h
 <ComponentSource name="letter-swap-pingpong-anim" />
 
 </Steps>
+
+</TabsContent>
+</Tabs>
 
 ## Understanding the component
 

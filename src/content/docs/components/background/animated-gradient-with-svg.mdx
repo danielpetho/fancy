@@ -7,56 +7,26 @@ toc: true
 
 <ComponentPreview name="animated-gradient-demo" />
 
-## Source code
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/animated-gradient-with-svg.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
 
 <Steps>
 
 <Step>Add this hook for querying the dimensions of an element:</Step>
 
-<CodeBlockWrapper language="typescript">
-{
-`import { useState, useEffect, RefObject } from 'react';
-
-interface Dimensions {
-width: number;
-height: number;
-}
-
-export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensions {
-  const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
-
-useEffect(() => {
-let timeoutId: NodeJS.Timeout;
-
-    const updateDimensions = () => {
-      if (ref.current) {
-        const { width, height } = ref.current.getBoundingClientRect();
-        setDimensions({ width, height });
-      }
-    };
-
-    const debouncedUpdateDimensions = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(updateDimensions, 250); // Wait 250ms after resize ends
-    };
-
-    // Initial measurement
-    updateDimensions();
-
-    window.addEventListener('resize', debouncedUpdateDimensions);
-
-    return () => {
-      window.removeEventListener('resize', debouncedUpdateDimensions);
-      clearTimeout(timeoutId);
-    };
-
-}, [ref]);
-
-return dimensions;
-}
-`}
-
-</CodeBlockWrapper>
+<ComponentSource name="use-dimensions" />
 
 <Step>
   Update your `tailwind.config.ts` file to include the animation keyframes:
@@ -104,9 +74,12 @@ return dimensions;
 
 <Step>Then, copy and paste the following code into your project:</Step>
 
-<ComponentSource name="animated-gradient" />
+<ComponentSource name="animated-gradient-with-svg" />
 
 </Steps>
+
+</TabsContent>
+</Tabs>
 
 ## Understanding the component
 

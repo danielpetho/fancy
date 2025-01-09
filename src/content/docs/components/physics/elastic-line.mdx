@@ -6,174 +6,37 @@ component: true
 
 <ComponentPreview name="elastic-line-demo" />
 
-## Source code
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/elastic-line.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
 
 <Steps>
 
 <Step>Create a hook for querying the cursor position:</Step>
 
-<CodeBlockWrapper language="typescript">
-{
-`import { useState, useEffect, RefObject } from "react";
-
-export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGElement>) => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-useEffect(() => {
-const updatePosition = (x: number, y: number) => {
-if (containerRef && containerRef.current) {
-const rect = containerRef.current.getBoundingClientRect();
-const relativeX = x - rect.left;
-const relativeY = y - rect.top;
-
-        // Calculate relative position even when outside the container
-        setPosition({ x: relativeX, y: relativeY });
-      } else {
-        setPosition({ x, y });
-      }
-    };
-
-    const handleMouseMove = (ev: MouseEvent) => {
-      updatePosition(ev.clientX, ev.clientY);
-    };
-
-    const handleTouchMove = (ev: TouchEvent) => {
-      const touch = ev.touches[0];
-      updatePosition(touch.clientX, touch.clientY);
-    };
-
-    // Listen for both mouse and touch events
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-
-}, [containerRef]);
-
-return position;
-};
-`}
-
-</CodeBlockWrapper>
+<ComponentSource name="use-mouse-position" />
 
 <Step>And a hook for querying the dimensions of an element:</Step>
 
-<CodeBlockWrapper language="typescript">
-{
-`import { useState, useEffect, RefObject } from 'react';
-
-interface Dimensions {
-width: number;
-height: number;
-}
-
-export function useDimensions(ref: RefObject<HTMLElement | SVGElement>): Dimensions {
-  const [dimensions, setDimensions] = useState<Dimensions>({ width: 0, height: 0 });
-
-useEffect(() => {
-const updateDimensions = () => {
-if (ref.current) {
-const { width, height } = ref.current.getBoundingClientRect();
-setDimensions({ width, height });
-}
-};
-
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-
-    return () => window.removeEventListener('resize', updateDimensions);
-
-}, [ref]);
-
-return dimensions;
-}
-`}
-
-</CodeBlockWrapper>
+<ComponentSource name="use-dimensions" />
 
 <Step>
   For better readability, there is another hook for getting the elastic line's
   control point, and if the line is grabbed or not:
 </Step>
 
-<CodeBlockWrapper language="typescript">
-{
-`import { useState, useEffect } from "react";
-import { useMousePosition } from "@/hooks/use-mouse-position";
-import { useDimensions } from "@/hooks//use-dimensions";
-
-interface ElasticLineEvents {
-isGrabbed: boolean;
-controlPoint: { x: number; y: number };
-}
-
-export function useElasticLineEvents(
-  containerRef: React.RefObject<SVGSVGElement>,
-  isVertical: boolean,
-  grabThreshold: number,
-  releaseThreshold: number
-): ElasticLineEvents {
-  const mousePosition = useMousePosition(containerRef);
-  const dimensions = useDimensions(containerRef);
-  const [isGrabbed, setIsGrabbed] = useState(false);
-  const [controlPoint, setControlPoint] = useState({ x: dimensions.width / 2, y: dimensions.height / 2 });
-
-useEffect(() => {
-if (containerRef.current) {
-const { width, height } = dimensions;
-const x = mousePosition.x;
-const y = mousePosition.y;
-
-      // Check if mouse is outside container bounds
-      const isOutsideBounds =
-        x < 0 ||
-        x > width ||
-        y < 0 ||
-        y > height;
-
-      if (isOutsideBounds) {
-        setIsGrabbed(false);
-        return;
-      }
-
-      let distance: number;
-      let newControlPoint: { x: number; y: number };
-
-      if (isVertical) {
-        const midX = width / 2;
-        distance = Math.abs(x - midX);
-        newControlPoint = {
-          x: midX + 2.2 * (x - midX),
-          y: y,
-        };
-      } else {
-        const midY = height / 2;
-        distance = Math.abs(y - midY);
-        newControlPoint = {
-          x: x,
-          y: midY + 2.2 * (y - midY),
-        };
-      }
-
-      setControlPoint(newControlPoint);
-
-      if (!isGrabbed && distance < grabThreshold) {
-        setIsGrabbed(true);
-      } else if (isGrabbed && distance > releaseThreshold) {
-        setIsGrabbed(false);
-      }
-    }
-
-}, [mousePosition, isVertical, isGrabbed, grabThreshold, releaseThreshold]);
-
-return { isGrabbed, controlPoint };
-}
-`}
-
-</CodeBlockWrapper>
+<ComponentSource name="use-elastic-line-events" />
 
 <Step>
   Then, copy and paste the component code into your project, and update your
@@ -183,6 +46,9 @@ return { isGrabbed, controlPoint };
 <ComponentSource name="elastic-line" />
 
 </Steps>
+
+</TabsContent>
+</Tabs>
 
 ## Understanding the component
 

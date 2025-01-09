@@ -3,7 +3,7 @@ import { useInView, useScroll } from "motion/react"
 
 import TextRotate, { TextRotateRef } from "@/fancy/components/text/text-rotate"
 
-import { exampleImages } from "../_helpers/exampleImages"
+import { exampleImages } from "../../../utils/_helpers/exampleImages"
 
 function Item({
   index,

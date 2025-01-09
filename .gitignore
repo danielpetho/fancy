@@ -40,6 +40,8 @@ next-env.d.ts
 # generated files
 /.component-sources
 src/fancy/index.ts
+/public/r
+/public/index.json
 
 # Million Lint
 .million

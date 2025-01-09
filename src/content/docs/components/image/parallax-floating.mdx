@@ -6,64 +6,35 @@ component: true
 
 <ComponentPreview name="parallax-floating-demo" />
 
-## Source code
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/parallax-floating.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
 
 <Steps>
 
 <Step>Create a hook for querying the cursor position:</Step>
 
-<CodeBlockWrapper language="typescript">
-{
-`import { useState, useEffect, RefObject } from "react";
-
-export const useMousePosition = (containerRef?: RefObject<HTMLElement | SVGElement>) => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-useEffect(() => {
-const updatePosition = (x: number, y: number) => {
-if (containerRef && containerRef.current) {
-const rect = containerRef.current.getBoundingClientRect();
-const relativeX = x - rect.left;
-const relativeY = y - rect.top;
-
-        // Calculate relative position even when outside the container
-        setPosition({ x: relativeX, y: relativeY });
-      } else {
-        setPosition({ x, y });
-      }
-    };
-
-    const handleMouseMove = (ev: MouseEvent) => {
-      updatePosition(ev.clientX, ev.clientY);
-    };
-
-    const handleTouchMove = (ev: TouchEvent) => {
-      const touch = ev.touches[0];
-      updatePosition(touch.clientX, touch.clientY);
-    };
-
-    // Listen for both mouse and touch events
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-
-}, [containerRef]);
-
-return position;
-};
-`}
-
-</CodeBlockWrapper>
+<ComponentSource name="use-mouse-position" />
 
 <Step>Then copy and paste the following code into your project:</Step>
 
 <ComponentSource name="parallax-floating" />
 
 </Steps>
+
+</TabsContent>
+</Tabs>
 
 ## Usage
 
