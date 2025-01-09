@@ -24,6 +24,7 @@ interface RegistryItem {
   registryDependencies?: string[]
   dependencies?: string[]
   component?: string
+  devDependencies?: string[]
 }
 
 function findHookImports(sourceCode: string): string[] {
@@ -98,6 +99,21 @@ function findUtilImports(sourceCode: string): string[] {
   }
 
   return utils
+}
+
+function getAdditionalConfig(filePath: string): any {
+  const dir = path.dirname(filePath)
+  const baseName = path.basename(filePath, path.extname(filePath))
+  const configPath = path.join(dir, `${baseName}.json`)
+  
+  if (fs.existsSync(configPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+    } catch (error) {
+      console.warn(`Error reading config for ${baseName}:`, error)
+    }
+  }
+  return null
 }
 
 function generateRegistryItem(
@@ -225,22 +241,33 @@ function generateRegistryItem(
     })
   }
   
+  const additionalConfig = getAdditionalConfig(filePath)
+  
+  // Add additional dependencies if they exist
+  if (additionalConfig?.additionalDependencies) {
+    additionalConfig.additionalDependencies.forEach((dep: string) => {
+      externalDeps.add(dep)
+    })
+  }
+  
   const item: RegistryItem = {
     name,
-    type:
-      type === "hook"
-        ? "registry:hook"
-        : type === "example"
-          ? "registry:example"
-          : type === "util"
-            ? "registry:lib"
-            : "registry:ui",
+    type: type === "hook"
+      ? "registry:hook"
+      : type === "example"
+        ? "registry:example"
+        : type === "util"
+          ? "registry:lib"
+          : "registry:ui",
     files,
     ...(componentDeps.length > 0 && {
       registryDependencies: componentDeps
     }),
     ...(externalDeps.size > 0 && {
       dependencies: Array.from(externalDeps)
+    }),
+    ...(additionalConfig?.devDependencies && {
+      devDependencies: additionalConfig.devDependencies
     }),
     ...(type !== "hook" && type !== "util" && {
       component: `React.lazy(\n      () => import('${importPathWithoutExt}') \n)`,

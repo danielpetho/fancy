@@ -33,9 +33,27 @@ function processRegistryItem(name: string, item: any) {
     name,
     type: item.type,
     dependencies: item.dependencies || [],
-    files: [],
-    tailwind: {
-      config: {}
+    files: []
+  }
+
+  // Add registry dependencies URLs if they exist
+  if (item.registryDependencies && item.registryDependencies.length > 0) {
+    output.registryDependencies = item.registryDependencies.map((dep: string) => {
+      // Extract the component name from the dependency path (e.g., 'fancy/component-name' -> 'component-name')
+      const depName = dep.split('/').pop()
+      return `https://fancycomponents.dev/r/${depName}.json`
+    })
+  }
+
+  // Add devDependencies if they exist
+  if (item.devDependencies) {
+    output.devDependencies = item.devDependencies
+  }
+
+  // Only add tailwind config if it exists and has properties
+  if (item.tailwind && Object.keys(item.tailwind.config || {}).length > 0) {
+    output.tailwind = {
+      config: item.tailwind.config
     }
   }
 
@@ -48,18 +66,27 @@ function processRegistryItem(name: string, item: any) {
       return
     }
 
+    // Get the file name without prefix
+    const fileName = file.path.split('/').pop()
+
+    // Determine target path based on file type
+    let targetPath = ""
     if (file.type === "registry:hook") {
       const hookPath = file.path.replace('hooks/', '')
       sourceFilePath = path.join(baseDir, "src", "hooks", `${hookPath}.ts`)
+      targetPath = `/hooks/${fileName}.ts`
     } else if (file.type === "registry:ui") {
       const componentPath = file.path.replace('fancy/', '')
       sourceFilePath = path.join(baseDir, "src", "fancy", "components", `${componentPath}.tsx`)
+      targetPath = `/components/fancy/${fileName}.tsx`
     } else if (file.type === "registry:example") {
       const examplePath = file.path.replace('examples/', '')
       sourceFilePath = path.join(baseDir, "src", "fancy", "examples", `${examplePath}.tsx`)
+      targetPath = `/components/fancy/${fileName}.tsx`
     } else if (file.type === "registry:lib") {
       const utilPath = file.path.replace('utils/', '')
       sourceFilePath = path.join(baseDir, "src", "utils", `${utilPath}.ts`)
+      targetPath = `/utils/${fileName}.ts`
     }
 
     if (sourceFilePath !== "") {
@@ -73,7 +100,7 @@ function processRegistryItem(name: string, item: any) {
         path: pathWithExt.startsWith('/') ? pathWithExt : `/${pathWithExt}`,
         content,
         type: file.type,
-        target: ""
+        target: targetPath
       })
     }
   })
