@@ -7,7 +7,7 @@
     "build:index": "ts-node src/scripts/build-registry-index.ts",
     "build:source": "ts-node src/scripts/build-registry-sources.ts",
     "build:registry": "npm run build:index && npm run build:source",
-    "build": "npm run build:all && next build",
+    "build": "npm run build:registry && next build",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
