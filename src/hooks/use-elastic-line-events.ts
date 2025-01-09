@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react"
 
+import { useDimensions } from "@/hooks/use-dimensions"
 import { useMousePosition } from "@/hooks/use-mouse-position"
-
-import { useDimensions } from "./use-dimensions"
 
 interface ElasticLineEvents {
   isGrabbed: boolean
