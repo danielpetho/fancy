@@ -64,8 +64,13 @@ function processRegistryItem(name: string, item: any) {
 
     if (sourceFilePath !== "") {
       const content = getSourceContent(sourceFilePath)
+      // Add appropriate extension based on file type
+      const pathWithExt = file.type === "registry:ui" || file.type === "registry:example"
+        ? `${file.path}.tsx`
+        : `${file.path}.ts`
+
       output.files.push({
-        path: file.path.startsWith('/') ? file.path : `/${file.path}`,
+        path: pathWithExt.startsWith('/') ? pathWithExt : `/${pathWithExt}`,
         content,
         type: file.type,
         target: ""
