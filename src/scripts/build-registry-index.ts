@@ -25,6 +25,7 @@ interface RegistryItem {
   dependencies?: string[]
   component?: string
   devDependencies?: string[]
+  tailwind?: string
 }
 
 function findHookImports(sourceCode: string): string[] {
@@ -268,6 +269,9 @@ function generateRegistryItem(
     }),
     ...(additionalConfig?.devDependencies && {
       devDependencies: additionalConfig.devDependencies
+    }),
+    ...(additionalConfig?.tailwind && {
+      tailwind: additionalConfig.tailwind
     }),
     ...(type !== "hook" && type !== "util" && {
       component: `React.lazy(\n      () => import('${importPathWithoutExt}') \n)`,

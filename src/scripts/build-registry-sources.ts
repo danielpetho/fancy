@@ -39,7 +39,6 @@ function processRegistryItem(name: string, item: any) {
   // Add registry dependencies URLs if they exist
   if (item.registryDependencies && item.registryDependencies.length > 0) {
     output.registryDependencies = item.registryDependencies.map((dep: string) => {
-      // Extract the component name from the dependency path (e.g., 'fancy/component-name' -> 'component-name')
       const depName = dep.split('/').pop()
       return `https://fancycomponents.dev/r/${depName}.json`
     })
@@ -50,11 +49,9 @@ function processRegistryItem(name: string, item: any) {
     output.devDependencies = item.devDependencies
   }
 
-  // Only add tailwind config if it exists and has properties
+  // Add tailwind config if it exists
   if (item.tailwind && Object.keys(item.tailwind.config || {}).length > 0) {
-    output.tailwind = {
-      config: item.tailwind.config
-    }
+    output.tailwind = item.tailwind
   }
 
   // Process each file in the registry item

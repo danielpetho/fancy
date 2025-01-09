@@ -1,5 +1,10 @@
 import * as z from "zod"
 
+// Schema for deeply nested tailwind config
+const tailwindSchema = z.object({
+  config: z.record(z.string(), z.unknown()).optional()
+}).optional()
+
 export const registrySchema = z.record(
   z.string(),
   z.object({
@@ -13,6 +18,7 @@ export const registrySchema = z.record(
     })),
     type: z.enum(["registry:ui", "registry:example", "registry:hook" , "registry:lib"]),
     component: z.function().args(z.any()).returns(z.any()).optional(), // lazy loading component for the documentation page. Not part of the output .json file
+    tailwind: tailwindSchema
   })
 )
 
