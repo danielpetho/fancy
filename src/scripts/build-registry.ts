@@ -65,7 +65,7 @@ function findComponentImports(sourceCode: string): string[] {
 function findExternalDependencies(sourceCode: string): string[] {
   // Match all imports that:
   // - Don't start with @/
-  // - Don't start with react (ignore react, react-dom etc)
+  // - Don't start with react or next (ignore react, react-dom, next, etc)
   // - Don't start with ./ or ../
   const externalImportRegex = /from\s+['"]([^'"@\./][^'"]+)['"]/g
   const dependencies = new Set<string>()
@@ -76,8 +76,8 @@ function findExternalDependencies(sourceCode: string): string[] {
     // Get the package name (everything before any / character)
     const packageName = importPath.split('/')[0]
     
-    // Skip react-related packages
-    if (!packageName.startsWith('react')) {
+    // Skip react-related and next-related packages
+    if (!packageName.startsWith('react') && !packageName.startsWith('next')) {
       dependencies.add(packageName)
     }
   }
@@ -156,7 +156,9 @@ function generateRegistryItem(
           ? "registry:hook"
           : type === "example"
             ? "registry:example"
-            : "registry:ui",
+            : type === "util"
+              ? "registry:lib"
+              : "registry:ui",
     },
   ]
 
@@ -326,3 +328,37 @@ const formattedContent = content
 // Write the file
 fs.writeFileSync(path.join(baseDir, "index.ts"), formattedContent)
 console.log("Registry file generated successfully!")
+
+// Create a clean version of the registry for JSON
+function createCleanRegistry(registry: any) {
+  const cleanRegistry = { ...registry }
+  
+  // Remove React.lazy components from all entries
+  Object.values(cleanRegistry).forEach((item: any) => {
+    if (item.component) {
+      delete item.component
+    }
+  })
+  
+  return cleanRegistry
+}
+
+// Generate and write the index.json file
+const cleanRegistry = {
+  ...createCleanRegistry(fancy),
+  ...createCleanRegistry(example),
+  ...createCleanRegistry(hooks),
+  ...createCleanRegistry(utils),
+}
+
+const jsonOutputDir = path.join(__dirname, "..", "..", "public")
+if (!fs.existsSync(jsonOutputDir)) {
+  fs.mkdirSync(jsonOutputDir, { recursive: true })
+}
+
+fs.writeFileSync(
+  path.join(jsonOutputDir, "index.json"), 
+  JSON.stringify(cleanRegistry, null, 2)
+)
+
+console.log("Registry files generated successfully!")
