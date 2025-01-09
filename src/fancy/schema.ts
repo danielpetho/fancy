@@ -8,9 +8,9 @@ export const registrySchema = z.record(
     registryDependencies: z.array(z.string()).optional(),
     files: z.array(z.object({
       path: z.string(),
-      type: z.enum(["registry:ui", "registry:example", "registry:hook"]),
+      type: z.enum(["registry:ui", "registry:example", "registry:hook" , "registry:lib"]),
     })),
-    type: z.enum(["registry:ui", "registry:example", "registry:hook"]),
+    type: z.enum(["registry:ui", "registry:example", "registry:hook" , "registry:lib"]),
     component: z.function().args(z.any()).returns(z.any()).optional(),
   })
 )

@@ -7,8 +7,9 @@ const baseDir = path.join(__dirname, "..", "fancy")
 const componentsDir = path.join(baseDir, "components")
 const examplesDir = path.join(baseDir, "examples")
 const hooksDir = path.join(__dirname, "..", "hooks")
+const utilsDir = path.join(__dirname, "..", "utils")
 
-type RegistryType = "registry:ui" | "registry:example" | "registry:hook"
+type RegistryType = "registry:ui" | "registry:example" | "registry:hook" | "registry:lib"
 
 interface RegistryFile {
   path: string
@@ -84,9 +85,23 @@ function findExternalDependencies(sourceCode: string): string[] {
   return Array.from(dependencies)
 }
 
+function findUtilImports(sourceCode: string): string[] {
+  // Match imports from @/utils/
+  const utilImportRegex = /import\s+{?[^}]*}?\s+from\s+['"]@\/utils\/([^'"]+)['"]/g
+  const utils: string[] = []
+  let match
+
+  while ((match = utilImportRegex.exec(sourceCode)) !== null) {
+    const utilPath = match[1].replace(/\.(ts|tsx)$/, '')
+    utils.push(utilPath)
+  }
+
+  return utils
+}
+
 function generateRegistryItem(
   filePath: string,
-  type: "ui" | "example" | "hook",
+  type: "ui" | "example" | "hook" | "util",
   allHooks: Record<string, string>
 ): RegistryItem | null {
   // Get the relative path from the components or examples directory
@@ -118,7 +133,7 @@ function generateRegistryItem(
 
   const getSimplifiedPath = (
     originalPath: string,
-    itemType: "ui" | "example" | "hook"
+    itemType: "ui" | "example" | "hook" | "util"
   ) => {
     const fileName = path.basename(originalPath, path.extname(originalPath))
     switch (itemType) {
@@ -128,6 +143,8 @@ function generateRegistryItem(
         return `examples/${fileName}`
       case "ui":
         return `fancy/${fileName}`
+      case "util":
+        return `utils/${fileName}`
     }
   }
 
@@ -157,6 +174,26 @@ function generateRegistryItem(
   // Find component dependencies
   const componentDeps = findComponentImports(sourceCode)
   const externalDeps = new Set(findExternalDependencies(sourceCode))
+  
+  // Handle utils dependencies
+  const utilDeps = findUtilImports(sourceCode)
+  if (utilDeps.length > 0) {
+    // Add utils to files
+    utilDeps.forEach(utilPath => {
+      files.push({
+        path: `utils/${utilPath}`,
+        type: "registry:lib"
+      })
+
+      // Add dependencies from utils
+      const utilFilePath = path.join(utilsDir, `${utilPath}.ts`)
+      if (fs.existsSync(utilFilePath)) {
+        const utilCode = fs.readFileSync(utilFilePath, "utf-8")
+        const utilExternalDeps = findExternalDependencies(utilCode)
+        utilExternalDeps.forEach(dep => externalDeps.add(dep))
+      }
+    })
+  }
 
   // If this is not a hook, add dependencies from hook dependencies
   if (type !== "hook") {
@@ -178,7 +215,9 @@ function generateRegistryItem(
         ? "registry:hook"
         : type === "example"
           ? "registry:example"
-          : "registry:ui",
+          : type === "util"
+            ? "registry:lib"
+            : "registry:ui",
     files,
     ...(componentDeps.length > 0 && {
       registryDependencies: componentDeps
@@ -186,7 +225,7 @@ function generateRegistryItem(
     ...(externalDeps.size > 0 && {
       dependencies: Array.from(externalDeps)
     }),
-    ...(type !== "hook" && {
+    ...(type !== "hook" && type !== "util" && {
       component: `React.lazy(\n      () => import('${importPathWithoutExt}') \n)`,
     }),
   }
@@ -221,7 +260,7 @@ const hooksMap = buildHooksMap()
 
 function traverseDirectory(
   dir: string,
-  type: "ui" | "example" | "hook"
+  type: "ui" | "example" | "hook" | "util"
 ): Record<string, RegistryItem> {
   const registry: Record<string, RegistryItem> = {}
 
@@ -251,6 +290,7 @@ function traverseDirectory(
 const fancy = traverseDirectory(componentsDir, "ui")
 const example = traverseDirectory(examplesDir, "example")
 const hooks = traverseDirectory(hooksDir, "hook")
+const utils = traverseDirectory(utilsDir, "util")
 
 // Generate the final index.ts content
 const content = `import * as React from "react";
@@ -264,10 +304,13 @@ const example: Registry = ${JSON.stringify(example, null, 2)};
 
 const hooks: Registry = ${JSON.stringify(hooks, null, 2)};
 
+const utils: Registry = ${JSON.stringify(utils, null, 2)};
+
 export const registry = {
   ...fancy,
   ...example,
   ...hooks,
+  ...utils,
 };
 `
 
