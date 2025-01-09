@@ -2,4 +2,5 @@ User-Agent: *
 Allow: /
 Allow: /api/og/*
 Disallow: /api
+Disallow: /r/
 Sitemap: https://fancycomponents.dev/sitemap.xml
