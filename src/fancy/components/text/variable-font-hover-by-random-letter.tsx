@@ -1,3 +1,5 @@
+"use client"
+
 import { useMemo } from "react"
 import { motion, Transition } from "motion/react"
 

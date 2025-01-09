@@ -1,3 +1,5 @@
+"use client"
+
 import { motion, Transition, Variants } from "motion/react"
 
 interface TextProps {

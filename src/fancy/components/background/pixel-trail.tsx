@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useCallback, useMemo, useRef } from "react"
 import { motion, useAnimationControls } from "motion/react"
 import { v4 as uuidv4 } from "uuid"

@@ -258,7 +258,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     ComponentPreview,
     ComponentSource,
     CodeBlockWrapper: ({ ...props }) => (
-      <CodeBlockWrapper className="rounded-md border" {...props} />
+      <CodeBlockWrapper className="rounded-md border mt-4" {...props} />
     ),
     Table: ({ className, ...props }: React.ComponentProps<typeof Table>) => (
       <Table className={cn("h-full text-xs", className)} {...props} />
