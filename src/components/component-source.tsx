@@ -37,7 +37,7 @@ export function ComponentSource({
         
         // Find the main component file that matches the name
         const mainFile = json.files.find(
-          (file: any) => file.path.split('/').pop() === name
+          (file: any) => file.path.split('/').pop().replace(/\.(tsx|ts)$/, '') === name
         )
         
         if (mainFile) {
