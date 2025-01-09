@@ -6,54 +6,35 @@ component: true
 
 <ComponentPreview name="screensaver-demo" />
 
-## Source code
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/screensaver.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
 
 <Steps>
 
 <Step>Hook for querying the dimensions of an element:</Step>
 
-<CodeBlockWrapper language="typescript">
-{
-`import { RefObject, useEffect, useState } from "react"
-
-interface Dimensions {
-  width: number
-  height: number
-}
-
-export function useDimensions(
-  ref: RefObject<HTMLElement | SVGElement>
-): Dimensions {
-  const [dimensions, setDimensions] = useState<Dimensions>({
-    width: 0,
-    height: 0,
-  })
-
-  useEffect(() => {
-    const updateDimensions = () => {
-      if (ref.current) {
-        const { width, height } = ref.current.getBoundingClientRect()
-        setDimensions({ width, height })
-      }
-    }
-
-    updateDimensions()
-    window.addEventListener("resize", updateDimensions)
-
-    return () => window.removeEventListener("resize", updateDimensions)
-  }, [ref])
-
-  return dimensions
-}
-`}
-
-</CodeBlockWrapper>
+<ComponentSource name="use-dimensions" />
 
 <Step>Then copy and paste the following code into your project:</Step>
 
 <ComponentSource name="screensaver" />
 
 </Steps>
+
+</TabsContent>
+</Tabs>
 
 ## Usage
 

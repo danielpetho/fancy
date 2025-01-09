@@ -6,54 +6,35 @@ component: true
 
 <ComponentPreview name="variable-font-and-cursor-demo" />
 
-## Source code
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/variable-font-and-cursor.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
 
 <Steps>
 
-<Step>Create this hook to query the cursor position:</Step>
+<Step>Create this hook to query the cursor position's ref:</Step>
 
-<CodeBlockWrapper language="typescript">
-{
-`import { useState, useEffect, RefObject } from "react";
-
-export const useMousePosition = (containerRef: RefObject<HTMLElement>) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-useEffect(() => {
-const updateMousePosition = (ev: MouseEvent) => {
-if (containerRef.current) {
-const rect = containerRef.current.getBoundingClientRect();
-setMousePosition({
-x: ev.clientX - rect.left,
-y: ev.clientY - rect.top,
-});
-}
-};
-
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener("mousemove", updateMousePosition);
-    }
-
-    return () => {
-      if (container) {
-        container.removeEventListener("mousemove", updateMousePosition);
-      }
-    };
-
-}, [containerRef]);
-
-return mousePosition;
-}`
-}
-
-</CodeBlockWrapper>
+<ComponentSource name="use-mouse-position-ref" />
 
 <Step>Copy and paste the following code into your project:</Step>
 
 <ComponentSource name="variable-font-and-cursor" />
 
 </Steps>
+
+</TabsContent>
+</Tabs>
 
 ## Usage
 

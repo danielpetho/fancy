@@ -11,7 +11,22 @@ There are two types of animations available for this component:
 1. Forward animation — plays the animation timeline once forward.
 2. Ping Pong animation — plays the animation timeline in a ping pong fashion.
 
-## Source code
+## Installation
+
+### Only forward animation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/random-letter-swap-forward-anim.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
 
 <Steps>
 
@@ -21,13 +36,38 @@ There are two types of animations available for this component:
 
 </Steps>
 
-### Only forward animation
-
 <ComponentSource name="random-letter-swap-forward-anim" />
+
+</TabsContent>
+</Tabs>
 
 ### Ping Pong animation
 
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/random-letter-swap-pingpong-anim.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+<CodeBlockWrapper language="bash">{`npm install lodash`}</CodeBlockWrapper>
+
+</Steps>
+
 <ComponentSource name="random-letter-swap-pingpong-anim" />
+
+</TabsContent>
+</Tabs>
 
 ## Understanding the component
 

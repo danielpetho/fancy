@@ -8,7 +8,20 @@ component: true
 
 Setting up Matter.js for creating physics-based animations can be a bit tricky and cumbersome, especially with React. This component simplifies the process by wrapping your content with a physics world, and transforming your React components into Matter.js bodies.
 
-## Source code
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/gravity.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
 
 <Steps>
 
@@ -25,71 +38,20 @@ We use the `matter-js` library to create the physics simulation. The `poly-decom
 
 One is for parsing SVG paths into a set of vertices:
 
-<CodeBlockWrapper language="typescript" className="mt-2">
-{`import SVGPathCommander from 'svg-path-commander';
-
-// Function to convert SVG path "d" to vertices
-export function parsePathToVertices(path: string, sampleLength = 15) {
-// Convert path to absolute commands
-const commander = new SVGPathCommander(path);
-
-    const points: { x: number, y: number }[] = [];
-    let lastPoint: { x: number, y: number } | null = null;
-
-    // Get total length of the path
-    const totalLength = commander.getTotalLength();
-    let length = 0;
-
-    // Sample points along the path
-    while (length < totalLength) {
-        const point = commander.getPointAtLength(length);
-
-        // Only add point if it's different from the last one
-        if (!lastPoint || point.x !== lastPoint.x || point.y !== lastPoint.y) {
-            points.push({ x: point.x, y: point.y });
-            lastPoint = point;
-        }
-
-        length += sampleLength;
-    }
-
-    // Ensure we get the last point
-    const finalPoint = commander.getPointAtLength(totalLength);
-    if (lastPoint && (finalPoint.x !== lastPoint.x || finalPoint.y !== lastPoint.y)) {
-        points.push({ x: finalPoint.x, y: finalPoint.y });
-    }
-
-    return points;
-
-}
-`}
-
-</CodeBlockWrapper>
+<ComponentSource name="svg-path-to-vertices" />
 
 The other is for calculating the position of an element based on its container, and a posiiton value
 
-<CodeBlockWrapper language="typescript" className="mt-2">
-  {`export function calculatePosition(
-  value: number | string | undefined,
-  containerSize: number,
-  elementSize: number
-) {
-  if (typeof value === "string" && value.endsWith("%")) {
-    const percentage = parseFloat(value) / 100;
-    return containerSize * percentage;
-  }
-  return typeof value === "number"
-    ? value
-    : elementSize - containerSize + elementSize / 2;
-}
-`}
-</CodeBlockWrapper>
+<ComponentSource name="calculate-position" />
 
 <Step>Then, create the component:</Step>
 
 <ComponentSource name="gravity" />
 
 </Steps>
+
+</TabsContent>
+</Tabs>
 
 ## Usage
 

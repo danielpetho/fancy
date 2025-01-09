@@ -6,7 +6,21 @@ component: true
 
 <ComponentPreview name="variable-font-cursor-proximity-demo" />
 
-## Source code
+## Installation 
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/variable-font-cursor-proximity.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+
+<TabsContent value="manual">
 
 <Steps>
 
@@ -14,58 +28,16 @@ component: true
 
 This hook actually returns a ref to the position (instead of a state), so we can avoid re-renders when the cursor moves.
 
-<CodeBlockWrapper language="typescript" className="mt-4">
-{
-`import { useEffect, useRef, RefObject } from "react";
-
-export const useMousePositionRef = (containerRef?: RefObject<HTMLElement | SVGElement>) => {
-  const positionRef = useRef({ x: 0, y: 0 });
-
-useEffect(() => {
-const updatePosition = (x: number, y: number) => {
-if (containerRef && containerRef.current) {
-const rect = containerRef.current.getBoundingClientRect();
-const relativeX = x - rect.left;
-const relativeY = y - rect.top;
-
-        // Calculate relative position even when outside the container
-        positionRef.current = { x: relativeX, y: relativeY };
-      } else {
-        positionRef.current = { x, y };
-      }
-    };
-
-    const handleMouseMove = (ev: MouseEvent) => {
-      updatePosition(ev.clientX, ev.clientY);
-    };
-
-    const handleTouchMove = (ev: TouchEvent) => {
-      const touch = ev.touches[0];
-      updatePosition(touch.clientX, touch.clientY);
-    };
-
-    // Listen for both mouse and touch events
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-
-}, [containerRef]);
-
-return positionRef;
-};`
-}
-
-</CodeBlockWrapper>
+<ComponentSource name="use-mouse-position-ref" />
 
 <Step>Copy and paste the following code into your project:</Step>
 
 <ComponentSource name="variable-font-cursor-proximity" />
 
 </Steps>
+
+</TabsContent>
+</Tabs>
 
 ## Understanding the component
 
