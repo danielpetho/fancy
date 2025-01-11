@@ -45,7 +45,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Text Rotate",
         href: "/docs/components/text/text-rotate",
         items: [],
-        label: "New",
       },
       {
         title: "Variable Font Hover By Letter",
@@ -63,6 +62,12 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
       },
       {
+        title: "Text Cursor Proximity",
+        href: "/docs/components/text/text-cursor-proximity",
+        items: [],
+        label: "New",
+      },
+      {
         title: "Variable Font And Cursor",
         href: "/docs/components/text/variable-font-and-cursor",
         items: [],
@@ -71,7 +76,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Variable Font Cursor Proximity",
         href: "/docs/components/text/variable-font-cursor-proximity",
         items: [],
-        label: "New",
       },
       {
         title: "Breathing Text",
