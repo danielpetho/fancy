@@ -1,0 +1,122 @@
+---
+title: Text Cursor Proximity
+description: A text component that animates the letters based on the cursor proximity
+component: true
+---
+
+<ComponentPreview name="text-cursor-proximity-demo" />
+
+## Installation 
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/text-cursor-proximity.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Create a hook for querying the cursor/mouse position.</Step>
+
+This hook actually returns a ref to the position (instead of a state), so we can avoid re-renders when the cursor moves.
+
+<ComponentSource name="use-mouse-position-ref" />
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="text-cursor-proximity" />
+
+</Steps>
+
+</TabsContent>
+</Tabs>
+
+## Understanding the component
+
+The `TextCursorProximity` splits its text into letters that respond to cursor movement by adjusting their CSS properties based on the distance between the letter and cursor position.
+
+1. Splitting text into individual letters
+2. Tracking cursor position relative to each letter
+3. Smoothly transitioning CSS values with motion's `useTransform` hook
+4. Supporting multiple falloff patterns for the effect
+
+### How it works
+
+The component calculates the distance between the cursor and each letter in real-time. When the cursor comes within the specified `radius` of a letter, that letter's CSS properties (like scale, color, etc.) smoothly interpolate between two states. For this, we use the `motion` library's `useTransform` hook, which maps the CSS properties from the `styles.*.from` state to the `styles.*.to` state based on the proximity value (which ranges from 0 to 1).
+
+- Default state: (defined in `styles.*.from`)
+- Target state (defined in `styles.*.to`)
+
+You can interpolate any value that [motion supports](https://motion.dev/docs/react-animation#animatable-values) (which is actually any CSS value, even those that can't be animated by the browser, like `mask-image`).
+
+The closer the cursor gets to a letter, the closer that letter moves toward its target state.
+
+## Examples
+
+### Falloff
+
+With the `falloff` prop, you can control the type of falloff. It can be either `linear`, `exponential`, or `gaussian`. The following demo showcases the `exponential` one. The effects are best observed on a larger block of text.
+
+<ComponentPreview name="text-cursor-proximity-falloff-demo" />
+
+## Notes
+
+It seems like interpolating on large number of letters simultaneously can be a bit slow, even when we're avoiding re-renders with state updates. If you're experiencing performance issues, try to limit the length of the text you're animating.
+
+## Props
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>label<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text to be displayed and animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>styles<span className="text-red-500">*</span></TableCell>
+      <TableCell>`Partial<{ [K in keyof CSSProperties]: { from: string | number, to: string | number } }>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>CSS properties to animate and their from/to values</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>containerRef<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.RefObject<HTMLDivElement>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Reference to the container for mouse tracking</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>radius</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`50`</TableCell>
+      <TableCell>The radius of the proximity effect in pixels</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>falloff</TableCell>
+      <TableCell>`"linear" | "exponential" | "gaussian"`</TableCell>
+      <TableCell>`"linear"`</TableCell>
+      <TableCell>The falloff pattern for the proximity effect</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

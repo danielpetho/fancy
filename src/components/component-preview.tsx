@@ -34,6 +34,7 @@ export function ComponentPreview({
 }: ComponentPreviewProps) {
   const [sourceCode, setSourceCode] = React.useState("")
   const [previewKey, setPreviewKey] = React.useState(0)
+  const [showRestartButton, setShowRestartButton] = React.useState(true)
 
   React.useEffect(() => {
     async function loadSourceCode() {
@@ -77,6 +78,11 @@ export function ComponentPreview({
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "r" || event.key === "R") {
         handleRestart()
+      }
+      // Toggle restart button visibility with Cmd+D
+      if ((event.metaKey || event.ctrlKey) && event.key === "1") {
+        event.preventDefault()
+        setShowRestartButton(prev => !prev)
       }
     }
 
@@ -143,9 +149,11 @@ export function ComponentPreview({
                 </div>
               }
             >
-              <div className="absolute right-4 top-4 z-50">
-                <RestartButton onRestart={handleRestart} />
-              </div>
+              {showRestartButton && (
+                <div className="absolute right-4 top-4 z-50">
+                  <RestartButton onRestart={handleRestart} />
+                </div>
+              )}
               <React.Fragment key={previewKey}>{Preview}</React.Fragment>
             </React.Suspense>
           </div>
