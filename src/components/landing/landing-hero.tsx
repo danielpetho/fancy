@@ -10,7 +10,7 @@ import { HeroImages } from "./hero-images"
 
 export function LandingHero({ allComps }: { allComps: Component[] }) {
   return (
-    <section className="w-full h-screen overflow-hidden flex flex-col items-center justify-center relative">
+    <section className="w-full h-screen overflow-hidden md:overflow-visible flex flex-col items-center justify-center relative">
       <HeroImages allComps={allComps} />
       <div className=" flex flex-col justify-center items-center w-[250px] sm:w-[300px] md:w-[500px] lg:w-[700px] z-50 pointer-events-auto">
         <motion.h1
@@ -43,10 +43,10 @@ export function LandingHero({ allComps }: { allComps: Component[] }) {
                   "go 🚀",
                   "🔥🔥🔥",
                   "over-animated?",
-                  "✨ pop ✨",
+                  "pop ✨",
                   "rock 🤘",
                 ]}
-                mainClassName="overflow-hidden pr-3 text-yellow-500 py-0 pb-2 md:pb-4 rounded-xl"
+                mainClassName="overflow-hidden pr-3 text-[#0015ff] py-0 pb-2 md:pb-4 rounded-xl"
                 staggerDuration={0.03}
                 staggerFrom="last"
                 rotationInterval={3000}
@@ -73,27 +73,48 @@ export function LandingHero({ allComps }: { allComps: Component[] }) {
           Free & Open Source.
         </motion.p> */}
 
-        <motion.button
-          className="text-sm sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-white bg-black px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas mt-10 sm:mt-16 md:mt-20 lg:mt-20"
-          animate={{ opacity: 1, y: 0 }}
-          initial={{ opacity: 0, y: 20 }}
-          transition={{
-            duration: 0.2,
-            ease: "easeOut",
-            delay: 0.7,
-            scale: {
+        <div className="flex flex-row justify-center space-x-4 items-center mt-10 sm:mt-16 md:mt-20 lg:mt-20 text-xs">
+          <motion.button
+            className=" sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-white bg-black px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas "
+            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            transition={{
               duration: 0.2,
-            },
-          }}
-          whileHover={{
-            scale: 1.05,
-            transition: { type: "spring", damping: 30, stiffness: 400 },
-          }}
-        >
-          <Link href="/docs/introduction">
-            Check docs <span className="font-serif ml-1">→</span>
-          </Link>
-        </motion.button>
+              ease: "easeOut",
+              delay: 0.7,
+              scale: {
+                duration: 0.2,
+              },
+            }}
+            whileHover={{
+              scale: 1.05,
+              transition: { type: "spring", damping: 30, stiffness: 400 },
+            }}
+          >
+            <Link href="/docs/introduction">
+              Check docs <span className="font-serif ml-1">→</span>
+            </Link>
+          </motion.button>
+          <motion.button
+            className=" sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-white bg-[#0015ff] px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas"
+            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            transition={{
+              duration: 0.2,
+              ease: "easeOut",
+              delay: 0.7,
+              scale: {
+                duration: 0.2,
+              },
+            }}
+            whileHover={{
+              scale: 1.05,
+              transition: { type: "spring", damping: 30, stiffness: 400 },
+            }}
+          >
+            <Link href="https://github.com/danielpetho/fancy">★ on GitHub</Link>
+          </motion.button>
+        </div>
       </div>
     </section>
   )

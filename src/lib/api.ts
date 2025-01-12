@@ -1,3 +1,5 @@
+import { Component } from "@/types/types"
+
 const COMPONENT_GRAPHQL_FIELDS = `
   slug
   name
@@ -7,6 +9,7 @@ const COMPONENT_GRAPHQL_FIELDS = `
   demo {
     url
   }
+  category
 `
 
 async function fetchGraphQL(query: string, preview = false): Promise<any> {
@@ -42,7 +45,7 @@ function extractComponentEntries(fetchResponse: any): any[] {
   return fetchResponse?.data?.componentsCollection?.items
 }
 
-export async function getAllComponents(isDraftMode: boolean): Promise<any[]> {
+export async function getAllComponents(isDraftMode: boolean): Promise<Component[]> {
   const entries = await fetchGraphQL(
     `query {
       componentsCollection(where: { slug_exists: true }, preview: ${
