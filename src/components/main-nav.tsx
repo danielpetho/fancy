@@ -20,7 +20,7 @@ export function MainNav() {
               transition={{ duration: 0.2 }}
             />
           </Link>
-          <Link href="/docs/components/text/letter-swap">
+          <Link href="/components">
             <VariableFontHoverByLetter
               label="Components"
               fromFontVariationSettings="'wght' 400, 'slnt' 0"

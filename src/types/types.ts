@@ -37,4 +37,5 @@ export type Component = {
   demo: {
     url: string
   }
+  category: string
 }
