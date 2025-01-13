@@ -1,0 +1,8 @@
+{
+    "devDependencies": [
+        "@types/matter-js"
+    ],
+    "additionalDependencies": [
+        "poly-decomp"
+    ]
+}
