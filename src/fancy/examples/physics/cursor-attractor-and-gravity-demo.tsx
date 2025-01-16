@@ -1,47 +1,74 @@
 import Gravity, {
   MatterBody,
 } from "@/fancy/components/physics/cursor-attractor-and-gravity"
-
-const set = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890,.!?-/'\":;{}[]()@#$%^&*()_+<>$¢£¤¥֏฿₠₡₢₣₤₥₦₧₨₩₪₫€₭₮₯₰₱₲₳₴₵₶₷₸₹₺₻₼₽₾₿"
+import { motion } from "framer-motion"
 
 export default function Preview() {
+  const words = [
+    'we',
+    'analyze',
+    { text: 'millions', highlight: true },
+    { text: 'of', highlight: true },
+    { text: 'data', highlight: true },
+    { text: 'points', highlight: true },
+    'per',
+    'second',
+    'to',
+    'provide',
+    'you',
+    'with',
+    'the',
+    'most',
+    'accurate',
+    'insights.'
+  ]
+
   return (
     <div className="w-full h-full flex flex-col relative font-overusedGrotesk justify-center items-center">
-      
       <Gravity
-        attractorPoint={{ x: "50%", y: "50%" }}
-        attractorStrength={0.000}
+        attractorStrength={0.0}
         cursorStrength={0.0004}
-        cursorFieldRadius={400}
-        className="w-full h-full z-[2] absolute"
+        cursorFieldRadius={200}
+        className="w-full h-full z-0 absolute"
       >
-        {set.split("").map((l, i) => {
-          const size = Math.max(34, Math.random() * 38)
+        {[...Array(150)].map((_, i) => {
+          const size = Math.max(20, Math.random() * 50)
           return (
             <MatterBody
               key={i}
-              className="-z-10"
               matterBodyOptions={{ friction: 0.5, restitution: 0.2 }}
               x={`${Math.random() * 100}%`}
-              y={`${Math.random() * 30}%`}
+              y={`${Math.random() * 100}%`}
             >
               <div
-                className="rounded-full flex items-center justify-center bg-transparent hover:cursor-pointer"
+                className="rounded-full bg-[#eee]"
                 style={{
                   width: `${size}px`,
                   height: `${size}px`,
-                  fontSize: `${size}px`
                 }}
-              >
-                {l}
-              </div>
+              />
             </MatterBody>
           )
         })}
       </Gravity>
-        <p className="text-3xl z-10 sm:text-4xl md:text-5xl bg-black text-white px-2 py-1">
-          Overused Grotesk
-        </p>
+      <span className="text z-10 sm:text-lg md:text-xl text-black px-4 py-2 w-2/3 flex flex-wrap whitespace-pre-wrap">
+        {words.map((word, index) => {
+          const text = typeof word === 'string' ? word : word.text
+          const highlight = typeof word === 'object' && word.highlight
+          
+          return (
+            <motion.span
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 2 + index * 0.05 }}
+              className={`${highlight ? 'text-[#0015ff]' : ''} ${index < words.length - 1 ? 'mr-1' : ''}`}
+            >
+              {text}
+            </motion.span>
+          )
+        })}
+      </span>
     </div>
   )
 }

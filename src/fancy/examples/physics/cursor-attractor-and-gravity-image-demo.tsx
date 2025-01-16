@@ -4,16 +4,16 @@ import Gravity, {
 
 export default function Preview() {
   return (
-    <div className="w-full h-full flex flex-col relative font-azeretMono justify-center items-end">
+    <div className="w-full h-full flex flex-col relative justify-center items-end">
       <div>
-        <p className="z-20 text-3xl sm:text-4xl md:text-5xl text-black  font-calendas italic">
-          community
+        <p className="z-20 text-2xl sm:text-3xl md:text-3xl text-black pr-24">
+          join the <span className="font-calendas  italic">community</span>
         </p>
       </div>
       <Gravity
-        attractorPoint={{ x: "25%", y: "50%" }}
-        attractorStrength={0.0006}
-        cursorStrength={-0.005}
+        attractorPoint={{ x: "33%", y: "50%" }}
+        attractorStrength={0.0005}
+        cursorStrength={-0.004}
         cursorFieldRadius={200}
         className="w-full h-full"
       >
@@ -27,7 +27,7 @@ export default function Preview() {
               y={`${Math.random() * 30}%`}
             >
               <img
-                src={`https://randomuser.me/api/portraits/men/${i}.jpg`}
+                src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i}.jpg`}
                 alt={`Avatar ${i}`}
                 className="rounded-full object-cover hover:cursor-pointer"
                 style={{
