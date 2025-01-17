@@ -86,7 +86,7 @@ Here's how it works:
 
 <ComponentPreview name="cursor-attractor-and-gravity-svg-demo" />
 
-As you can see in the demo above, SVG bodies can produce varying results. Simple shapes like the stars translate well, maintaining their shapes in the physics simulation. More complex shapes like the _fancy_ text at the bottom (which is an SVG path, and not an HTML element) end up with rougher approximations.
+As you can see in the demo above, SVG bodies can produce varying results. Simple shapes like some of the stars translate well, but some of them are a bit rough.
 
 This variance in quality stems from the challenging process of converting SVG paths to physics bodies. Therefore, there are a few caveats to keep in mind:
 
@@ -107,6 +107,75 @@ If you're not getting the desired results, you have several options:
 2. Use basic physics bodies (rectangles/circles) with the SVG as a visual overlay
 3. Fine-tune the vertex sampling with the `sampleLength` prop
 
-While the demo's _fancy_ text on the bottom worked well by chance for me, you more than likely will need to experiment with different settings to get the desired results. Use the `debug` prop to visualize the physics bodies and their vertices, and adjust the `sampleLength` prop to control the accuracy of the conversion.
+You more than likely will need to experiment with different settings to get the desired results. Use the `debug` prop to visualize the physics bodies and their vertices, and adjust the `sampleLength` prop to control the accuracy of the conversion.
 
 For more details on the decomposition process, refer to the [poly-decomp documentation](https://github.com/schteppe/poly-decomp), the [Matter.js documentation](https://brm.io/matter-js/docs/classes/Bodies.html#method_fromVertices), and to the [SVG path commander documentation](https://github.com/thednp/svg-path-commander).
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be displayed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>attractorPoint</TableCell>
+      <TableCell>`{ x: number | string; y: number | string }`</TableCell>
+      <TableCell>`{ x: 0.5, y: 0.5 }`</TableCell>
+      <TableCell>The attractor point coordinates</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>attractorStrength</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.001`</TableCell>
+      <TableCell>The strength of the attractor force</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>cursorStrength</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.0005`</TableCell>
+      <TableCell>The strength of the cursor force</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>cursorFieldRadius</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`100`</TableCell>
+      <TableCell>The radius of the cursor field</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>resetOnResize</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to reset the physics world when the window is resized</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>addTopWall</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to add a wall at the top of the canvas</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoStart</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to automatically start the physics simulation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

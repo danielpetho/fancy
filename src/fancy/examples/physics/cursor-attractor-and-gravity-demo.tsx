@@ -2,8 +2,10 @@ import Gravity, {
   MatterBody,
 } from "@/fancy/components/physics/cursor-attractor-and-gravity"
 import { motion } from "framer-motion"
+import useScreenSize from "@/hooks/use-screen-size"
 
 export default function Preview() {
+  const screenSize = useScreenSize()
   const words = [
     'we',
     'analyze',
@@ -32,7 +34,14 @@ export default function Preview() {
         className="w-full h-full z-0 absolute"
       >
         {[...Array(150)].map((_, i) => {
-          const size = Math.max(20, Math.random() * 50)
+          // Adjust max size based on screen size
+          const maxSize = screenSize.lessThan("sm") ? 20 
+            : screenSize.lessThan("md") ? 30 
+            : 40
+          const size = Math.max(
+            screenSize.lessThan("sm") ? 10 : 20, 
+            Math.random() * maxSize
+          )
           return (
             <MatterBody
               key={i}
@@ -61,7 +70,7 @@ export default function Preview() {
               key={index}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 2 + index * 0.05 }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
               className={`${highlight ? 'text-[#0015ff]' : ''} ${index < words.length - 1 ? 'mr-1' : ''}`}
             >
               {text}
