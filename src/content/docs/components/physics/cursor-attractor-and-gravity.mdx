@@ -1,0 +1,181 @@
+---
+title: Cursor Attractor & Gravity
+description: A set of wrapper components for creating physics-based attractors and gravity animations with Matter.js.
+component: true
+---
+
+<ComponentPreview name="cursor-attractor-and-gravity-demo" />
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/cursor-attractor-and-gravity.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Install the following dependencies:</Step>
+
+<CodeBlockWrapper language="bash">{`npm install matter-js @types/matter-js poly-decomp`}</CodeBlockWrapper>
+
+<Step>Then, create two utility functions for the component.</Step>
+
+One is for parsing SVG paths into a set of vertices:
+
+<ComponentSource name="svg-path-to-vertices" />
+
+The other is for calculating the position of an element based on its container, and a posiiton value
+
+<ComponentSource name="calculate-position" />
+
+<Step>Then, create the component:</Step>
+
+<ComponentSource name="cursor-attractor-and-gravity" />
+
+</Steps>
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+First, you need to wrap your scene / content with the `Gravity` component. Set the attraction point coordinates in the `attractorPoint` prop. This point will either attract or repel all the bodies inside the container. Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). Lastly, set the strength and radius of the cursor attractor, which will also attract or repell all bodies. High-level example:
+
+<CodeBlockWrapper language="typescript" className="mt-2">
+  {`<Gravity attractorPoint={{ x: "50%", y: "50%" }} attractorStrength={0.0006} cursorStrength={-0.005} cursorFieldRadius={200}>
+  <MatterBody x="50%" y="50%">
+    <div>Hello world!</div>
+  </MatterBody>
+  <MatterBody x="10%" y="10%">
+    <div>fancy!</div>
+  </MatterBody>
+</Gravity>`}
+</CodeBlockWrapper>
+
+## Understanding the component
+
+Please refer to the [Gravity](/docs/components/physics/gravity) documentation, since the component is almost identical. The only difference is that in this component that we don't use a directional gravitational force.Instead, we use attractor force(s), either from a defined static point (optional), and/or from the cursor position, that attract or repel all bodies inside the container. This is achieved by calculating the distance between the attractor point(s) and each body, and applying a force in the opposite direction of the body's velocity. The force is proportional to the distance and inversely proportional to the mass of the body.
+
+## Examples
+
+## Repel
+
+By setting one of the attractor points' strength to a negative value, you can create a repelling effect. The following demo showcases a negative force from the cursor by applying a negative value to the `cursorStrength` prop.
+
+<ComponentPreview name="cursor-attractor-and-gravity-image-demo" />
+
+### SVGs
+
+Youy can choose `svg` as a `bodyType` for your matter bodies. This is particularly useful for creating custom-shaped physics objects that match your SVG graphics.
+
+Here's how it works:
+
+1. The component takes your SVG element and extracts the path data
+2. It converts the path into a series of vertices (points) that outline the shape (with a custom converter using the `svg-path-commander` package)
+3. These vertices are then converted into polygons by matter.js (with the help of the `poly-decomp` package).
+4. The resulting polygons are then used to create Matter.js bodies
+
+<ComponentPreview name="cursor-attractor-and-gravity-svg-demo" />
+
+As you can see in the demo above, SVG bodies can produce varying results. Simple shapes like some of the stars translate well, but some of them are a bit rough.
+
+This variance in quality stems from the challenging process of converting SVG paths to physics bodies. Therefore, there are a few caveats to keep in mind:
+
+1. **SVG Requirements**:
+
+   - Keep them simple. The simpler the SVG, the better the decomposition, and the simulation.
+   - It's only tested with single-path SVGs, and it probably won't work with nested paths.
+   - Avoid shapes with holes or complex curves, or shapes that are seem to be too complex to decompose into polygons.
+
+2. **Performance Impact**:
+   - Complex SVGs create more detailed physics bodies, which can slow down the simulation
+   - More vertices mean more calculations
+   - The initial path-to-vertices conversion can be slow.
+
+If you're not getting the desired results, you have several options:
+
+1. Break down complex SVGs into simpler shapes
+2. Use basic physics bodies (rectangles/circles) with the SVG as a visual overlay
+3. Fine-tune the vertex sampling with the `sampleLength` prop
+
+You more than likely will need to experiment with different settings to get the desired results. Use the `debug` prop to visualize the physics bodies and their vertices, and adjust the `sampleLength` prop to control the accuracy of the conversion.
+
+For more details on the decomposition process, refer to the [poly-decomp documentation](https://github.com/schteppe/poly-decomp), the [Matter.js documentation](https://brm.io/matter-js/docs/classes/Bodies.html#method_fromVertices), and to the [SVG path commander documentation](https://github.com/thednp/svg-path-commander).
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be displayed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>attractorPoint</TableCell>
+      <TableCell>`{ x: number | string; y: number | string }`</TableCell>
+      <TableCell>`{ x: 0.5, y: 0.5 }`</TableCell>
+      <TableCell>The attractor point coordinates</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>attractorStrength</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.001`</TableCell>
+      <TableCell>The strength of the attractor force</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>cursorStrength</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.0005`</TableCell>
+      <TableCell>The strength of the cursor force</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>cursorFieldRadius</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`100`</TableCell>
+      <TableCell>The radius of the cursor field</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>resetOnResize</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to reset the physics world when the window is resized</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>addTopWall</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to add a wall at the top of the canvas</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoStart</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to automatically start the physics simulation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for styling</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

@@ -6,7 +6,7 @@ import { DocsSidebarNav } from "@/components/sidebar-nav"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Header />
       <div>
         <div className="flex-1 items-start md:grid md:grid-cols-[120px_minmax(1fr)] lg:grid-cols-[320px_minmax(0,1fr)] ">
@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </aside>
 
-          <div className="flex p-4 w-screen md:w-full">{children}</div>
+          <div className="flex p-4">{children}</div>
         </div>
         {/* <div className="absolute bottom-0 h-36" /> */}
       </div>
