@@ -2,6 +2,8 @@ import Link from "next/link"
 
 import VariableFontHoverByLetter from "@/fancy/components/text/variable-font-hover-by-letter"
 
+import ThemeSwitcher from "./ui/ThemeSwitcher"
+
 export function MainNav() {
   return (
     <nav className="flex items-center justify-end md:justify-between w-full gap-x-4">
@@ -30,7 +32,7 @@ export function MainNav() {
           </Link>
         </div>
       </div>
-      <div className="flex-row gap-x-8 text-xl font-regular hidden md:flex">
+      <div className="flex-row gap-x-8 text-xl font-regular hidden md:flex items-center">
         <a href="https://github.com/danielpetho/fancy">
           <VariableFontHoverByLetter
             label="Github"
@@ -39,6 +41,7 @@ export function MainNav() {
             transition={{ duration: 0.2 }}
           />
         </a>
+        <ThemeSwitcher />
       </div>
     </nav>
   )
