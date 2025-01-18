@@ -32,8 +32,11 @@ export function MainNav() {
           </Link>
         </div>
       </div>
-      <div className="flex-row gap-x-8 text-xl font-regular hidden md:flex items-center">
-        <a href="https://github.com/danielpetho/fancy">
+      <div className="flex-row gap-x-8 text-xl font-regular flex items-center">
+        <a
+          href="https://github.com/danielpetho/fancy"
+          className="hidden md:block"
+        >
           <VariableFontHoverByLetter
             label="Github"
             fromFontVariationSettings="'wght' 400, 'slnt' 0"
