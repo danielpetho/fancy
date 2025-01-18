@@ -62,6 +62,20 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+
+        // Other colors
+        red: "var(--red)",
+        orange: "var(--orange)",
+        pink: "var(--pink)",
+        blue: "var(--blue)",
+        teal: {
+          DEFAULT: "var(--teal)",
+          foreground: "var(--teal-foreground)",
+        },
+        yellow: {
+          DEFAULT: "var(--yellow)",
+          foreground: "var(--yellow-foreground)",
+        }
       },
       borderRadius: {
         lg: "var(--radius)",
