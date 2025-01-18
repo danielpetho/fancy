@@ -15,7 +15,7 @@ export default function Preview() {
         />
       </div>
       <div className="absolute inset-0 flex justify-center items-center">
-        <div className=" grid grid-cols-2 gap-y-12 gap-x-8 w-full text-[#ff5941] font-bold">
+        <div className=" grid grid-cols-2 gap-y-12 gap-x-8 w-full text-red font-bold">
           <TextRotate
             texts={["New York", "Los Angeles", "Chicago", "Miami"]}
             mainClassName="justify-center"

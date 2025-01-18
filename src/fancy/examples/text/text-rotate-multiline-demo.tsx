@@ -23,7 +23,7 @@ export default function Preview() {
           splitBy="words"
         />
         <motion.div
-          className="bg-[#ff5941] w-2 h-2 sm:w-3 sm:h-3 rounded-full my-6"
+          className="bg-red w-2 h-2 sm:w-3 sm:h-3 rounded-full my-6"
           layout
         />
         <TextRotate

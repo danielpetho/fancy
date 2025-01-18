@@ -214,7 +214,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
         <div className="relative flex h-full">
           <pre
             className={cn(
-              "p-4 mb-4 mt-6 max-h-[640px] overflow-hidden border rounded-lg text-[#c5c8c6] bg-[#1d1f21] py-4 dark:bg-zinc-900",
+              "p-4 mb-4 mt-6 max-h-[640px] overflow-hidden border rounded-lg text-secondary bg-primary py-4 dark:bg-zinc-900",
               className
             )}
             {...props}
@@ -249,7 +249,10 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     },
     code: ({ children, className, ...props }: React.ComponentProps<"code">) => (
       <code
-        className={cn("font-azeretMono text-xs p-1 bg-zinc-100", className)}
+        className={cn(
+          "font-azeretMono text-xs p-1 bg-zinc-100 dark:bg-zinc-800",
+          className
+        )}
         {...props}
       >
         {children}
@@ -291,9 +294,9 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.ComponentProps<typeof TableCell>) => (
-      <TableCell 
-        className={cn("font-azeretMono text-xs [&_*]:text-xs", className)} 
-        {...props} 
+      <TableCell
+        className={cn("font-azeretMono text-xs [&_*]:text-xs", className)}
+        {...props}
       />
     ),
     TableHead: ({

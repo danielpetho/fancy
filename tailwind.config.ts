@@ -64,10 +64,10 @@ const config = {
         },
 
         // Other colors
-        red: "var(--red)",
-        orange: "var(--orange)",
-        pink: "var(--pink)",
-        blue: "var(--blue)",
+        primaryRed: "var(--red)",
+        primaryOrange: "var(--orange)",
+        primaryPink: "var(--pink)",
+        primaryBlue: "var(--blue)",
         teal: {
           DEFAULT: "var(--teal)",
           foreground: "var(--teal-foreground)",
