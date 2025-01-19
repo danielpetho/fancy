@@ -69,7 +69,7 @@ export default function RootLayout({
         <script src="https://unpkg.com/react-scan/dist/auto.global.js"/>
       </head> */}
       <body
-        className={`font-overusedGrotesk bg-primary antialiased flex items-center justify-center w-full text-foreground`}
+        className={`font-overusedGrotesk bg-background antialiased flex items-center justify-center w-full text-foreground`}
       >
         <ThemeProvider
           attribute="class"

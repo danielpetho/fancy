@@ -271,7 +271,10 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       ...props
     }: React.ComponentProps<typeof TableHeader>) => (
       <TableHeader
-        className={cn("bg-zinc-100 font-bold text-black", className)}
+        className={cn(
+          "bg-zinc-100 dark:bg-zinc-800 font-bold text-secondary",
+          className
+        )}
         {...props}
       />
     ),
