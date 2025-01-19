@@ -7,8 +7,6 @@ import { useTheme } from "next-themes"
 const ThemeSwitcher = () => {
   const { setTheme, resolvedTheme } = useTheme()
 
-  React.useEffect(() => console.log(resolvedTheme), [resolvedTheme])
-
   return (
     <button
       className="flex items-center justify-center w-8 h-8"
