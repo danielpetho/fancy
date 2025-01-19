@@ -13,7 +13,7 @@ export default function Preview() {
           x="30%"
           y="10%"
         >
-          <div className="text-3xl bg-[#0015ff] text-white rounded-full hover:cursor-pointer px-8 py-4">
+          <div className="text-3xl bg-primaryBlue text-white rounded-full hover:cursor-pointer px-8 py-4">
             react
           </div>
         </MatterBody>
@@ -41,7 +41,7 @@ export default function Preview() {
           x="75%"
           y="10%"
         >
-          <div className="text-2xl bg-[#ff5941]  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-2xl bg-red  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 ">
             tailwind
           </div>
         </MatterBody>

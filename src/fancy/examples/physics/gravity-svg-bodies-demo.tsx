@@ -80,7 +80,7 @@ export default function Preview() {
           y="10%"
           bodyType="circle"
         >
-          <div className="w-32 h-32 bg-[#ff5941]  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 " />
+          <div className="w-32 h-32 bg-red  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 " />
         </MatterBody>
         <MatterBody
           matterBodyOptions={{ friction: 0.5, restitution: 0.2 }}

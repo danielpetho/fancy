@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 
 import { siteConfig } from "@/config/site"
+import { ThemeProvider } from "@/components/theme-provider"
 
 export const metadata: Metadata = {
   title: {
@@ -63,17 +64,24 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       {/* <head>
         <script src="https://unpkg.com/react-scan/dist/auto.global.js"/>
       </head> */}
       <body
-        className={`font-overusedGrotesk bg-[#faf9f9] antialiased flex items-center justify-center w-full`}
+        className={`font-overusedGrotesk bg-background antialiased flex items-center justify-center w-full text-foreground`}
       >
-        <main className="h-full w-full max-w-screen-2xl flex flex-col items-center justify-center">
-          {children}
-          <Analytics />
-        </main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <main className="h-full w-full max-w-screen-2xl flex flex-col items-center justify-center">
+            {children}
+            <Analytics />
+          </main>
+        </ThemeProvider>
       </body>
     </html>
   )

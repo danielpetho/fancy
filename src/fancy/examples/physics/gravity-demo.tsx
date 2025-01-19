@@ -15,7 +15,7 @@ export default function Preview() {
           x="30%"
           y="10%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-[#0015ff] text-white rounded-full hover:cursor-pointer px-8 py-4">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-primaryBlue text-white rounded-full hover:cursor-pointer px-8 py-4">
             react
           </div>
         </MatterBody>
@@ -24,7 +24,7 @@ export default function Preview() {
           x="30%"
           y="30%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-[#E794DA] text-white rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-primaryPink text-white rounded-full hover:cursor-grab px-8 py-4 ">
             typescript
           </div>
         </MatterBody>
@@ -34,7 +34,7 @@ export default function Preview() {
           y="20%"
           angle={10}
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-[#1f464d]  text-white rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-teal text-white rounded-full hover:cursor-grab px-8 py-4 ">
             motion
           </div>
         </MatterBody>
@@ -43,7 +43,7 @@ export default function Preview() {
           x="75%"
           y="10%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-[#ff5941]  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-primaryRed text-white rounded-full hover:cursor-grab px-8 py-4 ">
             tailwind
           </div>
         </MatterBody>
@@ -52,7 +52,7 @@ export default function Preview() {
           x="80%"
           y="20%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-orange-500  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-primaryOrange text-white rounded-full hover:cursor-grab px-8 py-4 ">
             drei
           </div>
         </MatterBody>
@@ -61,7 +61,7 @@ export default function Preview() {
           x="50%"
           y="10%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-[#ffd726]  text-white [#E794DA] rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-yellow-foreground text-white rounded-full hover:cursor-grab px-8 py-4 ">
             matter-js
           </div>
         </MatterBody>
