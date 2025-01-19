@@ -6,7 +6,7 @@ import TextRotate from "@/fancy/components/text/text-rotate"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full flex flex-col items-start font-overusedGrotesk  font-light overflow-hidden p-8 pt-20 sm:pt-16 sm:p-16 md:p-20 bg-background text-base sm:text-xl md:text-2xl leading-tight">
+    <div className="w-full h-full flex flex-col items-start font-overusedGrotesk  font-light overflow-hidden p-8 pt-20 sm:pt-16 sm:p-16 md:p-20 bg-white text-base sm:text-xl md:text-2xl leading-tight dark:text-muted text-foreground">
       <LayoutGroup>
         <TextRotate
           texts={[
@@ -23,7 +23,7 @@ export default function Preview() {
           splitBy="words"
         />
         <motion.div
-          className="bg-red w-2 h-2 sm:w-3 sm:h-3 rounded-full my-6"
+          className="bg-primaryRed w-2 h-2 sm:w-3 sm:h-3 rounded-full my-6"
           layout
         />
         <TextRotate

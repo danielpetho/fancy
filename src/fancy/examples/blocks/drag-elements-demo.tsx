@@ -22,7 +22,7 @@ const DragElementsDemo: React.FC = () => {
   return (
     <div className="w-full h-full relative bg-[#eeeeee] overflow-hidden">
       <h1 className="absolute text-xl md:text-4xl md:ml-36 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-muted-foreground uppercase w-full">
-        all your<span className="font-bold text-foreground"> memories. </span>
+        all your<span className="font-bold text-foreground dark:text-muted"> memories. </span>
       </h1>
       <DragElements dragMomentum={false} className="p-40">
         {urls.map((url, index) => {

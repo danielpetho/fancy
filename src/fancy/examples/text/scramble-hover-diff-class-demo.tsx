@@ -2,7 +2,7 @@ import ScrambleHover from "@/fancy/components/text/scramble-hover"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full flex text-4xl justify-center items-center bg-background font-normal overflow-hidden p-24 space-y-2">
+    <div className="w-full h-full flex text-4xl justify-center items-center bg-white text-foreground dark:text-muted  font-normal overflow-hidden p-24 space-y-2">
       <ScrambleHover
         text={"special symbols"}
         scrambleSpeed={50}

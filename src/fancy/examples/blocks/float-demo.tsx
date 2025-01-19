@@ -8,7 +8,7 @@ import { exampleImages } from "../../../utils/_helpers/exampleImages"
 
 export default function FloatDemo() {
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-background">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-white text-foreground dark:text-muted">
       <div className="flex flex-col items-center justify-center w-full h-full">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

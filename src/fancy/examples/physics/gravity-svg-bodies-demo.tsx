@@ -8,7 +8,7 @@ export default function Preview() {
   const [debug, setDebug] = useState(false)
 
   return (
-    <div className="w-full h-full flex flex-col relative">
+    <div className="w-full h-full flex flex-col relative  bg-white">
       <button
         onClick={() => setDebug(!debug)}
         className="absolute top-4 left-4 px-4 py-2 text-xs border border-border rounded-lg bg-background hover:bg-accent cursor-pointer z-10"

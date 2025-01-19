@@ -6,7 +6,7 @@ import { exampleImages } from "../../../utils/_helpers/exampleImages"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full text-base sm:text-xl md:text-2xl flex flex-row items-center justify-center font-overusedGrotesk bg-background font-light overflow-hidden p-6 uppercase relative">
+    <div className="w-full h-full text-base sm:text-xl md:text-2xl flex flex-row items-center justify-center font-overusedGrotesk bg-white font-light overflow-hidden p-6 uppercase relative text-primaryRed">
       <div className="absolute inset-0 w-full h-full blur-3xl">
         <img
           src={exampleImages[0].url}

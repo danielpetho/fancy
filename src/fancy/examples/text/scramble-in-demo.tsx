@@ -34,7 +34,7 @@ export default function Preview() {
   }, [])
 
   return (
-    <div className="w-full h-full flex flex-col text-sm md:text-lg lg:text-lg xl:text-xl justify-start items-start bg-background font-normal overflow-hidden py-16 px-8 sm:px-16 md:px-20 lg:px-24 text-center">
+    <div className="w-full h-full flex flex-col text-sm md:text-lg lg:text-lg xl:text-xl justify-start items-start bg-white text-foreground dark:text-muted font-normal overflow-hidden py-16 px-8 sm:px-16 md:px-20 lg:px-24 text-center">
       {titles.map((model, index) => (
         <ScrambleIn
           key={index}

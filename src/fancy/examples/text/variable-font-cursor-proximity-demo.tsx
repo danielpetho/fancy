@@ -12,7 +12,7 @@ export default function Preview() {
 
   return (
     <div
-      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk bg-red cursor-pointer relative overflow-hidden"
+      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk bg-primaryRed cursor-pointer relative overflow-hidden"
       ref={containerRef}
     >
       <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-white">

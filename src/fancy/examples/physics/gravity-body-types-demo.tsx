@@ -77,7 +77,7 @@ export default function Preview() {
   ]
 
   return (
-    <div className="w-full h-full flex flex-col items-center relative bg-background">
+    <div className="w-full h-full flex flex-col items-center relative bg-white">
       <h2 className=" text-black pt-24 text-xl ponter-events-none">
         icons from lucide.dev
       </h2>
@@ -99,7 +99,7 @@ export default function Preview() {
               <div
                 className={`p-4 ${
                   bodyType === "circle" ? "rounded-full" : "rounded-md"
-                } bg-white border border-border shadow-md `}
+                } bg-white border border-border shadow-md text-foreground dark:text-muted`}
               >
                 <Icon size={IconData.size} />
               </div>

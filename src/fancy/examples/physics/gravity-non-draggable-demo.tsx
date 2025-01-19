@@ -16,7 +16,7 @@ const stars = ["✱", "✽", "✦", "✸", "✹", "✺"]
 
 export default function Preview() {
   return (
-    <div className="w-full h-full flex flex-col relative bg-background font-calendas">
+    <div className="w-full h-full flex flex-col relative bg-white font-calendas">
       <p className="pt-4 text-6xl sm:text-7xl md:text-9xl text-primaryBlue w-full text-center font-calendas">
         CONTACT
       </p>

@@ -2,7 +2,7 @@ import VariableFontHoverByLetter from "@/fancy/components/text/variable-font-hov
 
 export default function Preview() {
   return (
-    <div className="w-full h-full rounded-lg sm:text-xl xs:text-sm md:text-2xl xl:text-3xl flex flex-col items-center justify-center font-overusedGrotesk">
+    <div className="w-full h-full rounded-lg sm:text-xl xs:text-sm md:text-2xl xl:text-3xl flex flex-col items-center justify-center font-overusedGrotesk bg-white text-foreground dark:text-muted">
       <div className="w-full justify-start items-center p-6 sm:p-8 md:p-12 lg:p-16">
         <div className="w-3/4">
           <h2>OPEN ROLES ✽</h2>

@@ -11,10 +11,10 @@ export default function Preview() {
 
   return (
     <div
-      className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12 md:p-16 lg:p-24 shadow-lg bg-background"
+      className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12 md:p-16 lg:p-24 shadow-lg bg-white"
       ref={containerRef}
     >
-      <div className="relative h-full w-full cursor-pointer overflow-hidden  justify-start items-start shadow-lg flex bg-primaryBlue text-white ">
+      <div className="relative h-full w-full cursor-pointer overflow-hidden  justify-start items-start shadow-lg flex bg-primaryBlue text-white">
         <div className="flex flex-col justify-center uppercase leading-none pt-4 pl-6">
           <TextCursorProximity
             label="DIGITAL"

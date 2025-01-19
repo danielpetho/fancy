@@ -106,7 +106,7 @@ const Card = ({ card, index }: { card: CardProps; index: number }) => {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
-      className={`p-6 bg-gradient-to-b from-50% to-[130%] flex justify-between flex-col ${
+      className={`p-6 bg-gradient-to-b from-50% to-[130%] flex justify-between flex-col text-foreground dark:text-muted ${
         card.gradient
       } ${card.size === "large" ? "col-span-2 row-span-2" : ""}`}
     >

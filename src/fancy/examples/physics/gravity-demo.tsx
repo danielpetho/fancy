@@ -2,11 +2,11 @@ import Gravity, { MatterBody } from "@/fancy/components/physics/gravity"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full flex flex-col relative font-azeretMono">
-      <div className="pt-20 text-6xl sm:text-7xl md:text-8xl text-black w-full text-center font-calendas italic">
+    <div className="w-full h-full flex flex-col relative font-azeretMono bg-white">
+      <div className="pt-20 text-6xl sm:text-7xl md:text-8xl text-foreground dark:text-muted w-full text-center font-calendas italic">
         fancy
       </div>
-      <p className="pt-4 text-base sm:text-xl md:text-2xl text-black w-full text-center">
+      <p className="pt-4 text-base sm:text-xl md:text-2xl text-foreground dark:text-muted w-full text-center">
         components made with:
       </p>
       <Gravity gravity={{ x: 0, y: 1 }} className="w-full h-full">

@@ -58,7 +58,7 @@ export default function Preview() {
 
   return (
     <div className="w-full h-full overflow-auto absolute snap-y snap-mandatory">
-      <div className="sticky inset-0 h-full w-full flex items-center justify-end">
+      <div className="sticky inset-0 h-full w-full flex items-center justify-end bg-white dark:text-muted text-foreground">
         <div className="w-2/3">
           <TextRotate
             ref={textRotateRef}

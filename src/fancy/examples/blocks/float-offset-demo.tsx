@@ -32,7 +32,7 @@ export default function FloatDemo() {
   ]
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center bg-background relative">
+    <div className="w-full h-full flex flex-col items-center justify-center bg-white relative">
       {texts.map((item, i) => (
         <Float
           key={i}

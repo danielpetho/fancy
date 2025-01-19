@@ -10,7 +10,7 @@ export default function Preview() {
   const textRotateRef = useRef<TextRotateRef>(null)
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center font-overusedGrotesk bg-background font-light overflow-hidden p-8 sm:p-20 md:p-24 gap-8">
+    <div className="w-full h-full flex flex-col items-center justify-center font-overusedGrotesk bg-white text-foreground dark:text-muted font-light overflow-hidden p-8 sm:p-20 md:p-24 gap-8">
       <LayoutGroup>
         <motion.p className="" layout>
           <TextRotate
@@ -42,13 +42,13 @@ export default function Preview() {
       <div className="flex gap-4">
         <button
           onClick={() => textRotateRef.current?.previous()}
-          className="px-2 py-2 text-black "
+          className="px-2 py-2 text-foreground dark:text-muted"
         >
           <MoveLeft className="w-3 h-3 sm:w-4 sm:h-4" />
         </button>
         <button
           onClick={() => textRotateRef.current?.next()}
-          className="px-2 py-2 text-black "
+          className="px-2 py-2 text-foreground dark:text-muted"
         >
           <MoveRight className="w-3 h-3 sm:w-4 sm:h-4" />
         </button>

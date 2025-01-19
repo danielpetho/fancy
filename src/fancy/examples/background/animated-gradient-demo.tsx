@@ -45,7 +45,7 @@ const BentoCard: React.FC<BentoCardProps> = ({
     >
       <AnimatedGradient colors={colors} speed={0.05} blur="medium" />
       <motion.div
-        className="relative z-10 p-3 sm:p-5 md:p-8 text-foreground"
+        className="relative z-10 p-3 sm:p-5 md:p-8 text-foreground dark:text-muted"
         variants={container}
         initial="hidden"
         animate="show"

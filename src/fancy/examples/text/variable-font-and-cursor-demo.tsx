@@ -19,7 +19,7 @@ export default function Preview() {
       <div className="w-full h-full items-center justify-center flex">
         <VariableFontAndCursor
           label="fancy!"
-          className="text-5xl sm:text-7xl md:text-9xl text-orange-500"
+          className="text-5xl sm:text-7xl md:text-9xl text-primaryOrange"
           fontVariationMapping={{
             y: { name: "wght", min: 100, max: 900 },
             x: { name: "slnt", min: 0, max: -10 },
@@ -40,19 +40,19 @@ export default function Preview() {
       </div>
 
       <div
-        className="absolute w-px h-screen bg-foreground/20 top-0 -translate-x-1/2"
+        className="absolute w-px h-screen bg-foreground/20 dark:bg-foreground top-0 -translate-x-1/2"
         style={{
           left: `${x}px`,
         }}
       />
       <div
-        className="absolute w-screen h-px bg-foreground/20 left-0 -translate-y-1/2"
+        className="absolute w-screen h-px bg-foreground/20 dark:bg-foreground left-0 -translate-y-1/2"
         style={{
           top: `${y}px`,
         }}
       />
       <div
-        className="absolute w-2 h-2 bg-orange-500 -translate-x-1/2 -translate-y-1/2 rounded-xs"
+        className="absolute w-2 h-2 bg-primaryOrange -translate-x-1/2 -translate-y-1/2 rounded-xs"
         style={{
           top: `${y}px`,
           left: `${x}px`,

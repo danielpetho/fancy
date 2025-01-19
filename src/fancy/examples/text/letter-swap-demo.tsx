@@ -3,7 +3,7 @@ import LetterSwapPingPong from "@/fancy/components/text/letter-swap-pingpong-ani
 
 export default function Preview() {
   return (
-    <div className="w-full h-full rounded-lg text-xl md:text-3xl  flex flex-col items-center justify-center font-calendas">
+    <div className="w-full h-full rounded-lg bg-white text-xl md:text-3xl  flex flex-col items-center justify-center font-calendas">
       <div className=" p-12 text-primaryBlue rounded-xl align-text-top  gap-y-1 md:gap-y-2 flex flex-col">
         <LetterSwapForward
           label="Hover me chief!"

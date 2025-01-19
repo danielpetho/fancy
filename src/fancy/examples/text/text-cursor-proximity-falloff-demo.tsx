@@ -9,7 +9,7 @@ export default function Preview() {
 
   return (
     <div
-      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-8 sm:p-16 md:p-20 lg:p-24 bg-background cursor-pointer relative overflow-hidden"
+      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-8 sm:p-16 md:p-20 lg:p-24 bg-white cursor-pointer relative overflow-hidden"
       ref={containerRef}
     >
       {/* this is the important stuff */}

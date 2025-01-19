@@ -6,7 +6,7 @@ import TextRotate from "@/fancy/components/text/text-rotate"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full text-2xl sm:text-3xl md:text-5xl flex flex-row items-center justify-center font-overusedGrotesk bg-background font-light overflow-hidden p-12 sm:p-20 md:p-24">
+    <div className="w-full h-full text-2xl sm:text-3xl md:text-5xl flex flex-row items-center justify-center font-overusedGrotesk bg-white dark:text-muted text-foreground font-light overflow-hidden p-12 sm:p-20 md:p-24">
       <LayoutGroup>
         <motion.p className="flex whitespace-pre" layout>
           <motion.span
@@ -26,7 +26,7 @@ export default function Preview() {
               "rock",
               "🕶️🕶️🕶️",
             ]}
-            mainClassName="text-white px-2 sm:px-2 md:px-3 bg-red overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+            mainClassName="text-white px-2 sm:px-2 md:px-3 bg-primaryRed overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
             staggerFrom={"last"}
             initial={{ y: "100%" }}
             animate={{ y: 0 }}

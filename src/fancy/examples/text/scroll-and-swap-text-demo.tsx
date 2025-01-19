@@ -9,7 +9,7 @@ export default function Preview() {
 
   return (
     <div
-      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-2 overflow-auto overscroll-auto text-[#E794DA] relative"
+      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-2 overflow-auto overscroll-auto bg-white text-[#E794DA] relative"
       ref={containerRef}
     >
       <div className="h-[100%] flex justify-center items-center uppercase relative">

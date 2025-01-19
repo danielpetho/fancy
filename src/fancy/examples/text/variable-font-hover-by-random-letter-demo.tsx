@@ -2,7 +2,7 @@ import VariableFontHoverByRandomLetter from "@/fancy/components/text/variable-fo
 
 export default function Preview() {
   return (
-    <div className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-24 bg-gradient-to-br text-[#3bb6ab] ">
+    <div className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-24 bg-gradient-to-br text-teal bg-white ">
       <div className="w-full h-full items-center justify-center flex">
         <VariableFontHoverByRandomLetter
           label="Let's Go!"
