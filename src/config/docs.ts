@@ -68,7 +68,7 @@ export const docsConfig: SidebarNavItem[] = [
         label: "New",
       },
       {
-        title: "Variable Font And Cursor",
+        title: "Variable Font & Cursor",
         href: "/docs/components/text/variable-font-and-cursor",
         items: [],
       },
@@ -144,6 +144,12 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/physics/gravity",
         items: [],
       },
+      {
+        title: "Cursor Attractor & Gravity",
+        href: "/docs/components/physics/cursor-attractor-and-gravity",
+        items: [],
+        label: "New",
+      }
     ],
   },
   {
