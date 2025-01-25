@@ -62,7 +62,7 @@ export default function GooeyDemo() {
       <Button
         variant="outline"
         onClick={() => setIsGooeyEnabled(!isGooeyEnabled)}
-        className="absolute top-4 left-4"
+        className="absolute top-4 left-4 font-overusedGrotesk"
       >
         {isGooeyEnabled ? "Disable filter" : "Enable filter"}
       </Button>
