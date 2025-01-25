@@ -9,7 +9,7 @@ const socialLinks = [
   { name: "X (Twitter)", x: "30%", y: "30%" },
   { name: "Instagram", x: "40%", y: "20%", angle: 10 },
   { name: "GitHub", x: "75%", y: "10%", angle: -4 },
-  { name: "primaryBlueSky", x: "80%", y: "20%", angle: 5 },
+  { name: "BlueSky", x: "80%", y: "20%", angle: 5 },
 ]
 
 const stars = ["✱", "✽", "✦", "✸", "✹", "✺"]
