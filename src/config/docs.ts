@@ -65,7 +65,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Text Cursor Proximity",
         href: "/docs/components/text/text-cursor-proximity",
         items: [],
-        label: "New",
       },
       {
         title: "Variable Font & Cursor",
@@ -127,6 +126,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Pixel Trail",
         href: "/docs/components/background/pixel-trail",
         items: [],
+        label: "Updated",
       },
     ],
   },
@@ -148,7 +148,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Cursor Attractor & Gravity",
         href: "/docs/components/physics/cursor-attractor-and-gravity",
         items: [],
-        label: "New",
       }
     ],
   },
@@ -166,6 +165,18 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Parallax Floating",
         href: "/docs/components/image/parallax-floating",
         items: [],
+      },
+    ],
+  },
+  {
+    title: "Filter",
+    href: "/docs/components/filter",
+    items: [
+      {
+        title: "Gooey Filter",
+        href: "/docs/components/filter/gooey-filter",
+        items: [],
+        label: "New",
       },
     ],
   },

@@ -58,6 +58,12 @@ You can customize the individual pixels by passing a `pixelClassName` prop.
 
 <ComponentPreview name="pixel-trail-custom-pixel-demo" />
 
+### Combining with SVG Filters
+
+The following example combines the [GooeyFilter](/docs/components/filter/gooey-filter) component with the PixelTrail component to create a fluid interface. Unfortunately, the component doesn't support Safari, so you'll need to create a fallback for that.
+
+<ComponentPreview name="gooey-filter-pixel-trail-demo" />
+
 ## Notes
 
 1. The component operates by dividing the container into a grid of pixels and dynamically recoloring them as you move your cursor. Each pixel is represented by a single div element, so perf may be impacted when using a large number of pixels, especially on the first render.
