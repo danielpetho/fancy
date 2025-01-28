@@ -2,6 +2,7 @@ import dynamic from "next/dynamic"
 
 import useScreenSize from "@/hooks/use-screen-size"
 import PixelTrail from "@/fancy/components/background/pixel-trail"
+import useDetectBrowser from "@/hooks/use-detect-browser"
 
 const GooeyFilter = dynamic(
   () => import("@/fancy/components/filter/gooey-filter"),
@@ -10,6 +11,8 @@ const GooeyFilter = dynamic(
 
 export default function GooeyDemo() {
   const screenSize = useScreenSize()
+  const browserName = useDetectBrowser()
+  const isSafari = browserName === "Safari"
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center gap-8 bg-black text-center text-pretty">
@@ -23,7 +26,7 @@ export default function GooeyDemo() {
 
       <div
         className="absolute inset-0 z-0"
-        style={{ filter: "url(#gooey-filter-pixel-trail)" }}
+        style={{ filter: isSafari ? "none" : "url(#gooey-filter-pixel-trail)" }}
       >
         <PixelTrail
           pixelSize={screenSize.lessThan(`md`) ? 24 : 32}
