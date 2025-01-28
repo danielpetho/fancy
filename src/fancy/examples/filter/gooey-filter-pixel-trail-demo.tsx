@@ -1,6 +1,12 @@
+import dynamic from "next/dynamic"
+
 import useScreenSize from "@/hooks/use-screen-size"
 import PixelTrail from "@/fancy/components/background/pixel-trail"
-import GooeyFilter from "@/fancy/components/filter/gooey-filter"
+
+const GooeyFilter = dynamic(
+  () => import("@/fancy/components/filter/gooey-filter"),
+  { ssr: false }
+)
 
 export default function GooeyDemo() {
   const screenSize = useScreenSize()
@@ -27,8 +33,10 @@ export default function GooeyDemo() {
         />
       </div>
 
-
-        <p className="text-white text-7xl z-10 font-calendas w-1/2 font-bold">Speaking things into existence<span className="font-overusedGrotesk"></span></p>
+      <p className="text-white text-7xl z-10 font-calendas w-1/2 font-bold">
+        Speaking things into existence
+        <span className="font-overusedGrotesk"></span>
+      </p>
     </div>
   )
 }

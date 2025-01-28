@@ -1,10 +1,15 @@
 import { useState } from "react"
+import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "framer-motion"
 
+import useDetectBrowser from "@/hooks/use-detect-browser"
 import useScreenSize from "@/hooks/use-screen-size"
 import { Button } from "@/components/ui/button"
-import GooeyFilter from "@/fancy/components/filter/gooey-filter"
-import useDetectBrowser from "@/hooks/use-detect-browser"
+
+const GooeyFilter = dynamic(
+  () => import("@/fancy/components/filter/gooey-filter"),
+  { ssr: false }
+)
 
 const TAB_CONTENT = [
   {
