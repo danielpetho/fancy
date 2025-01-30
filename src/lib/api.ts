@@ -26,7 +26,7 @@ async function fetchGraphQL(query: string, preview = false): Promise<any> {
         }`,
       },
       body: JSON.stringify({ query }),
-      cache: "force-cache",
+      //cache: "force-cache",
       next: { tags: ["components"] },
     }
   ).then((response) => {

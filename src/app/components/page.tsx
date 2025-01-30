@@ -38,8 +38,8 @@ export default async function ComponentsPage() {
                 className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-0 "
               />
 
-              {/* Component Info Overlay
-              <div className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-black from-[-100%] to-30% to-transparent p-4 h-full">
+              {/* Component Info Overlay */}
+              {/* <div className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-black from-[-100%] to-30% to-transparent p-4 h-full">
                 <h3 className="text-sm font-semibold text-white bottom-0">
                   {component.name
                     .split("-")
