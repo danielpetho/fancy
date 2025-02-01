@@ -4,7 +4,7 @@ interface PixelateSvgFilterProps {
   crossLayers?: boolean
 }
 
-export function PixelateSvgFilter({
+export default function PixelateSvgFilter({
   id = "pixelate-filter",
   size = 16,
   crossLayers = false,
