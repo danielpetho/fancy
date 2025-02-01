@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { animate, useMotionValue, useMotionValueEvent } from "motion/react"
 
-import { PixelateSvgFilter } from "@/fancy/components/filter/pixelate-svg-filter"
+import PixelateSvgFilter from "@/fancy/components/filter/pixelate-svg-filter"
 
 export default function PixelateSVGFilterDemo() {
   const containerRef = useRef<HTMLDivElement>(null)

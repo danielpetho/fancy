@@ -1,5 +1,5 @@
 import { useRef } from "react"
-import { PixelateSvgFilter } from "@/fancy/components/filter/pixelate-svg-filter"
+import PixelateSvgFilter from "@/fancy/components/filter/pixelate-svg-filter"
 import { useMousePosition } from "@/hooks/use-mouse-position"
 
 export default function PixelateSVGFilterDemo() {
@@ -9,7 +9,7 @@ export default function PixelateSVGFilterDemo() {
 
   return (
     <div className="relative flex flex-col items-center justify-center w-full h-full gap-4 bg-black" ref={containerRef}>
-      <PixelateSvgFilter id="pixelate-filter" size={pixelSize} useFallback />
+      <PixelateSvgFilter id="pixelate-filter" size={pixelSize} crossLayers />
       <div 
         id="image-container"
         className="w-1/3 h-1/2 overflow-hidden relative text-white"
