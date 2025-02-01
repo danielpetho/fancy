@@ -32,7 +32,7 @@ export default function GooeyDemo() {
         />
       </div>
 
-      <p className="text-white text-7xl z-10 font-calendas w-1/2 font-bold">
+      <p className="text-white text-4xl sm:text-5xl md:text-7xl z-10 font-calendas w-1/2 font-bold">
         Speaking things into existence
         <span className="font-overusedGrotesk"></span>
       </p>

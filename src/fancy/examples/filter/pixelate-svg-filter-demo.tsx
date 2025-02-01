@@ -12,7 +12,7 @@ export default function PixelateSVGFilterDemo() {
       <PixelateSvgFilter id="pixelate-filter" size={pixelSize} crossLayers />
       <div 
         id="image-container"
-        className="w-1/3 h-1/2 overflow-hidden relative text-white"
+        className="w-1/2 md:w-1/3 h-1/2 overflow-hidden relative text-white"
         style={{ filter: "url(#pixelate-filter)" }}
       >
         <video

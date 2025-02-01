@@ -25,7 +25,7 @@ export default function PixelateSVGFilterDemo() {
 
   return (
     <div
-      className="relative flex w-full h-full bg-background p-12"
+      className="relative flex flex-col md:flex-row w-full h-full bg-background p-4 sm:p-8 md:p-12"
       ref={containerRef}
     >
       {isAnimating && (
@@ -34,29 +34,29 @@ export default function PixelateSVGFilterDemo() {
 
       {/* Left Content */}
       <div
-        className="flex-1"
+        className="flex-1 mb-8 md:mb-0"
         style={{
           filter: isAnimating ? "url(#pixelate-text-filter)" : undefined,
         }}
       >
-        <div className="mb-6">
-          <h1 className="text-xl mb-1">Ari — Yu</h1>
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-lg sm:text-xl mb-1">Ari — Yu</h1>
           <a
             href="mailto:hello@arianexus.io"
-            className="text-muted-foreground text-sm"
+            className="text-muted-foreground text-xs sm:text-sm"
           >
             hello@ariyu.co
           </a>
         </div>
 
-        <div className="mb-24">
-          <h2 className="font-bold">Creative Director</h2>
-          <h2 className="font-bold">& Writer</h2>
+        <div className="mb-12 sm:mb-16 md:mb-24">
+          <h2 className="text-base sm:text-lg font-bold">Creative Director</h2>
+          <h2 className="text-base sm:text-lg font-bold">& Writer</h2>
         </div>
 
-        <div className="w-1/2">
-          <h3 className="text font-medium mb-2">Selected Works</h3>
-          <p className="text-xs text-muted-foreground">
+        <div className="w-full md:w-1/2">
+          <h3 className="text-sm sm:text-base font-medium mb-2">Selected Works</h3>
+          <p className="text-[10px] sm:text-xs text-muted-foreground">
             Dreamweaver #93 Dec 2023 Starlight #87 "digital dreams" The Quantum
             Mirror Press Holograph Vol.5 crystal edition 2020 Byte Flow Vol.12
             Neural Canvas #9 Synthmagazin 11/2020 VOID 2020 zine Nebula #4 VOID
@@ -67,7 +67,7 @@ export default function PixelateSVGFilterDemo() {
       </div>
 
       {/* Right Content - Image */}
-      <div className="w-36 h-36 relative mr-12">
+      <div className="hidden md:block md:w-36 md:h-36 relative mx-auto md:mr-12">
         <img
           className="w-full h-full object-cover absolute inset-0"
           src={
