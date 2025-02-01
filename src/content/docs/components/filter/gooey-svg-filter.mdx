@@ -1,10 +1,10 @@
 ---
-title: Gooey Filter
+title: Gooey SVG Filter
 description: An svg filter component that creates a gooey effect on the background. Can be used to create fluid interfaces or rounded-at-all-corners panels. Limited support for Safari.
 component: true
 ---
 
-<ComponentPreview name="gooey-filter-demo" />
+<ComponentPreview name="gooey-svg-filter-demo" />
 
 ## Installation
 
@@ -16,7 +16,7 @@ component: true
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/gooey-filter.json"`}</CodeBlockWrapper>
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/gooey-svg-filter.json"`}</CodeBlockWrapper>
 
 </TabsContent>
 <TabsContent value="manual">
@@ -25,7 +25,7 @@ component: true
 
 <Step>Copy and paste the following code into your project:</Step>
 
-<ComponentSource name="gooey-filter" />
+<ComponentSource name="gooey-svg-filter" />
 
 </Steps>
 
@@ -34,10 +34,10 @@ component: true
 
 ## Usage
 
-Add the `GooeyFilter` component to your project, pass an `id` prop to the component (optional), then use the same `id` prop in the `filter` CSS property of the container you want to apply the filter to. High-level example:
+Add the `GooeySvgFilter` component to your project, pass an `id` prop to the component (optional), then use the same `id` prop in the `filter` CSS property of the container you want to apply the filter to. High-level example:
 
 <CodeBlockWrapper language="typescript" className="mt-4">
-  {`<GooeyFilter id="gooey-filter" />
+  {`<GooeySvgFilter id="gooey-filter" />
 <div style={{ filter: "url(#gooey-filter)" }}>
  filter will be applied here
 </div>`}
@@ -53,13 +53,13 @@ Please refer to [this article](https://css-tricks.com/gooey-effect/) by [Lucas B
 
 ### Fluid interface
 
-<ComponentPreview name="gooey-filter-menu-demo" />
+<ComponentPreview name="gooey-svg-filter-menu-demo" />
 
 ### Rounded corners
 
-The following example combines the [PixelTrail](/docs/components/background/pixel-trail) component with the GooeyFilter component to create a rounded-at-all-corners effect. Unfortunately, the component doesn't support Safari, so you'll need to create a fallback for that.
+The following example combines the [PixelTrail](/docs/components/background/pixel-trail) component with this svg filter to create a rounded-at-all-corners effect. Unfortunately, the component doesn't support Safari, so you'll need to create a fallback for that.
 
-<ComponentPreview name="gooey-filter-pixel-trail-demo" />
+<ComponentPreview name="gooey-svg-filter-pixel-trail-demo" />
 
 ## Notes
 

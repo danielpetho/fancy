@@ -179,8 +179,8 @@ export const docsConfig: SidebarNavItem[] = [
     href: "/docs/components/filter",
     items: [
       {
-        title: "Gooey Filter",
-        href: "/docs/components/filter/gooey-filter",
+        title: "Gooey SVG Filter",
+        href: "/docs/components/filter/gooey-svg-filter",
         items: [],
         label: "New",
       },

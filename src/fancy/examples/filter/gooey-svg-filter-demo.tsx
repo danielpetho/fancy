@@ -1,15 +1,10 @@
 import { useState } from "react"
-import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "framer-motion"
 
 import useDetectBrowser from "@/hooks/use-detect-browser"
 import useScreenSize from "@/hooks/use-screen-size"
 import { Button } from "@/components/ui/button"
-
-const GooeyFilter = dynamic(
-  () => import("@/fancy/components/filter/gooey-filter"),
-  { ssr: false }
-)
+import GooeySvgFilter from "@/fancy/components/filter/gooey-svg-filter"
 
 const TAB_CONTENT = [
   {
@@ -59,7 +54,7 @@ export default function GooeyDemo() {
 
   return (
     <div className="relative w-full h-full flex justify-center p-8 font-calendas md:text-base text-xs sm:text-sm bg-white dark:bg-black">
-      <GooeyFilter
+      <GooeySvgFilter
         id="gooey-filter"
         strength={screenSize.lessThan("md") ? 8 : 15}
       />
