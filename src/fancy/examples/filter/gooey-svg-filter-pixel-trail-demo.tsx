@@ -1,13 +1,9 @@
 import dynamic from "next/dynamic"
 
+import useDetectBrowser from "@/hooks/use-detect-browser"
 import useScreenSize from "@/hooks/use-screen-size"
 import PixelTrail from "@/fancy/components/background/pixel-trail"
-import useDetectBrowser from "@/hooks/use-detect-browser"
-
-const GooeyFilter = dynamic(
-  () => import("@/fancy/components/filter/gooey-filter"),
-  { ssr: false }
-)
+import GooeySvgFilter from "@/fancy/components/filter/gooey-svg-filter"
 
 export default function GooeyDemo() {
   const screenSize = useScreenSize()
@@ -22,7 +18,7 @@ export default function GooeyDemo() {
         className="w-full h-full object-cover absolute inset-0 opacity-70"
       />
 
-      <GooeyFilter id="gooey-filter-pixel-trail" strength={5} />
+      <GooeySvgFilter id="gooey-filter-pixel-trail" strength={5} />
 
       <div
         className="absolute inset-0 z-0"

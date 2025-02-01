@@ -111,6 +111,12 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/scramble-in",
         items: [],
       },
+      // {
+      //   title: "Text Along Path",
+      //   href: "/docs/components/text/text-along-path",
+      //   items: [],
+      //   label: "New",
+      // }
     ],
   },
   {
@@ -173,13 +179,20 @@ export const docsConfig: SidebarNavItem[] = [
     href: "/docs/components/filter",
     items: [
       {
-        title: "Gooey Filter",
-        href: "/docs/components/filter/gooey-filter",
+        title: "Gooey SVG Filter",
+        href: "/docs/components/filter/gooey-svg-filter",
         items: [],
         label: "New",
       },
+      {
+        title: "Pixelate SVG Filter",
+        href: "/docs/components/filter/pixelate-svg-filter",
+        items: [],
+        label: "New",
+      }
     ],
   },
+
   {
     title: "Blocks",
     href: "/docs/components/blocks",

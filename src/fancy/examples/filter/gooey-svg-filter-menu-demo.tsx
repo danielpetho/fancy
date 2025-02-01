@@ -1,14 +1,10 @@
 import { useState } from "react"
-import dynamic from "next/dynamic"
 import { AnimatePresence, motion } from "framer-motion"
 import { Home, Mail, Menu, Settings, User, X } from "lucide-react"
 
 import useDetectBrowser from "@/hooks/use-detect-browser"
+import GooeySvgFilter from "@/fancy/components/filter/gooey-svg-filter"
 
-const GooeyFilter = dynamic(
-  () => import("@/fancy/components/filter/gooey-filter"),
-  { ssr: false }
-)
 const MENU_ITEMS = [
   { icon: Home, label: "Home" },
   { icon: Mail, label: "Contact" },
@@ -23,7 +19,7 @@ export default function GooeyDemo() {
 
   return (
     <div className="relative w-full h-full flex items-center justify-center dark:bg-black bg-white">
-      <GooeyFilter id="gooey-filter-menu" strength={5} />
+      <GooeySvgFilter id="gooey-filter-menu" strength={5} />
 
       <div
         className="absolute top-4 left-4"

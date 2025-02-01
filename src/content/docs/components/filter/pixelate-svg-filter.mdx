@@ -1,0 +1,113 @@
+---
+title: Pixelate SVG Filter
+description: A filter component that applies a pixelation effect with an SVG filter. Safari is not supported.
+component: true
+---
+
+<ComponentPreview name="pixelate-svg-filter-demo" />
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/pixelate-svg-filter.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="pixelate-svg-filter" />
+
+</Steps>
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+Add the `PixelateSvgFilter` component to your project, pass an `id` prop to the component (optional), then use the same `id` prop in the `filter` CSS property of the container you want to apply the filter to. High-level example:
+
+<CodeBlockWrapper language="typescript" className="mt-4">
+  {`<PixelateSvgFilter id="pixelate-filter" />
+<div style={{ filter: "url(#pixelate-filter)" }}>
+ filter will be applied here
+</div>`}
+</CodeBlockWrapper>
+
+## Understanding the component
+
+The pixelation effect is achieved using SVG filters. The process works in three steps:
+
+1. The filter divides the input into a grid using `feFlood` and `feComposite` operations, where each cell represents a future "pixel"
+2. The `feTile` operation repeats this grid pattern across the entire target area
+3. Finally, `feColorMatrix` and `feComposite` are used to blend the original image with the grid, creating the pixelated effect
+
+The component accepts two optional props to customize the pixelation effect:
+
+- `size` (default: 16): Controls the size of each "pixel" in the resulting effect. A larger value creates a more blocky appearance, while a smaller value produces finer pixelation.
+
+- `crossLayers` (default: false): When enabled, adds two additional filter layers that help prevent visual artifacts:
+  - A second layer that ensures full-width coverage by using half-width pixels
+  - A third layer that ensures full-height coverage by using half-height pixels
+  
+  This is particularly useful when applying dynamic filters where the target area's dimensions may not perfectly align with the pixel grid, preventing unwanted "jumpiness" in the effect.
+
+Please have a look at the following [thread](https://stackoverflow.com/questions/37451189/can-one-pixelate-images-with-an-svg-filter) for more details. Props to the folks who shared their insights and code!
+
+## Examples
+
+### Text
+
+The filter can be applied to text as well. Hit the refresh button to see the effect.
+
+<ComponentPreview name="pixelate-svg-filter-text" />
+
+## Notes
+
+Safari is unfortunately not supported. If you have any suggestions or ideas for how to make this component work with it, please let us know!
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>id</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"pixelate-filter"`</TableCell>
+      <TableCell>The ID of the filter</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>size</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`16`</TableCell>
+      <TableCell>The size of each pixel in the resulting effect</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>crossLayers</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to add two additional filter layers</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Credits
+
+The effect is derived from multiple people's work from this [thread](https://stackoverflow.com/questions/37451189/can-one-pixelate-images-with-an-svg-filter).

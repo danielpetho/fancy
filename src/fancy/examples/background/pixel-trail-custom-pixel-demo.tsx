@@ -5,10 +5,10 @@ const PixelTrailDemo: React.FC = () => {
   const screenSize = useScreenSize()
 
   return (
-    <div className="relative w-full h-full bg-[#dcddd7] text-black flex flex-col font-calendas">
+    <div className="relative w-full h-full bg-white text-black flex flex-col font-calendas">
       <div className="absolute inset-0 z-0">
         <PixelTrail
-          pixelSize={screenSize.lessThan(`md`) ? 48 : 80}
+          pixelSize={screenSize.lessThan(`md`) ? 28 : 40}
           fadeDuration={0}
           delay={1200}
           pixelClassName="rounded-full bg-[#ffa04f]"
@@ -23,10 +23,6 @@ const PixelTrailDemo: React.FC = () => {
           with react, motion, and typrscript.
         </p>
       </div>
-
-      <p className="absolute text-xs md:text-base bottom-4 right-4 pointer-events-none">
-        make the web fun again.
-      </p>
     </div>
   )
 }

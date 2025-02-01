@@ -1,5 +1,5 @@
-const GooeyFilter = ({
-  id = "goo-filter",
+const GooeySvgFilter = ({
+  id = "gooey-filter",
   strength = 10,
 }: {
   id?: string
@@ -27,4 +27,4 @@ const GooeyFilter = ({
   )
 }
 
-export default GooeyFilter
+export default GooeySvgFilter
