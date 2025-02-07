@@ -30,6 +30,7 @@ function getSourceContent(filePath: string): string {
 
 function processRegistryItem(name: string, item: any) {
   const output: any = {
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
     name,
     type: item.type,
     dependencies: item.dependencies || [],
@@ -76,7 +77,7 @@ function processRegistryItem(name: string, item: any) {
       const componentPath = file.path.replace('fancy/', '')
       sourceFilePath = path.join(baseDir, "src", "fancy", "components", `${componentPath}.tsx`)
       targetPath = `/components/fancy/${fileName}.tsx`
-    } else if (file.type === "registry:example") {
+    } else if (file.type === "registry:block") {
       const examplePath = file.path.replace('examples/', '')
       sourceFilePath = path.join(baseDir, "src", "fancy", "examples", `${examplePath}.tsx`)
       targetPath = `/components/fancy/${fileName}.tsx`
@@ -89,7 +90,7 @@ function processRegistryItem(name: string, item: any) {
     if (sourceFilePath !== "") {
       const content = getSourceContent(sourceFilePath)
       // Add appropriate extension based on file type
-      const pathWithExt = file.type === "registry:ui" || file.type === "registry:example"
+      const pathWithExt = file.type === "registry:ui" || file.type === "registry:block"
         ? `${file.path}.tsx`
         : `${file.path}.ts`
 

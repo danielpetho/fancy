@@ -6,13 +6,14 @@ import ReactSyntaxHighlighter, {
 } from "react-syntax-highlighter"
 import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
-import { cn } from "@/lib/utils"
+import { absoluteUrl, cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Icons } from "@/components/icons"
 import { registry } from "@/fancy/index"
 
 import { CopyButton } from "./copy-button"
 import { RestartButton } from "./restart-button"
+import { OpenInV0Button } from "./open-in-v0"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -150,7 +151,8 @@ export function ComponentPreview({
               }
             >
               {showRestartButton && (
-                <div className="absolute right-4 top-4 z-50">
+                <div className="absolute right-4 top-4 z-50 flex gap-2 flex-row">
+                  <OpenInV0Button url={`https://fancycomponents.dev/r/${name}.json`} />
                   <RestartButton onRestart={handleRestart} />
                 </div>
               )}

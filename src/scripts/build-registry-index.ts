@@ -10,7 +10,7 @@ const examplesDir = path.join(baseDir, "examples")
 const hooksDir = path.join(__dirname, "..", "hooks")
 const utilsDir = path.join(__dirname, "..", "utils")
 
-type RegistryType = "registry:ui" | "registry:example" | "registry:hook" | "registry:lib"
+type RegistryType = "registry:ui" | "registry:block" | "registry:hook" | "registry:lib"
 
 interface RegistryFile {
   path: string
@@ -187,7 +187,7 @@ function generateRegistryItem(
         type === "hook"
           ? "registry:hook"
           : type === "example"
-            ? "registry:example"
+            ? "registry:block"
             : type === "util"
               ? "registry:lib"
               : "registry:ui",
@@ -256,7 +256,7 @@ function generateRegistryItem(
     type: type === "hook"
       ? "registry:hook"
       : type === "example"
-        ? "registry:example"
+        ? "registry:block"
         : type === "util"
           ? "registry:lib"
           : "registry:ui",
