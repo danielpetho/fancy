@@ -34,7 +34,6 @@ function processRegistryItem(name: string, item: any) {
     name,
     type: item.type,
     dependencies: item.dependencies || [],
-    files: []
   }
 
   // Add registry dependencies URLs if they exist
@@ -54,6 +53,9 @@ function processRegistryItem(name: string, item: any) {
   if (item.tailwind && Object.keys(item.tailwind.config || {}).length > 0) {
     output.tailwind = item.tailwind
   }
+
+  // Initialize files array last
+  output.files = []
 
   // Process each file in the registry item
   item.files.forEach((file: any) => {
