@@ -67,6 +67,14 @@ function processRegistryItem(name: string, item: any) {
     // Get the file name without prefix
     const fileName = file.path.split('/').pop()
 
+    // Get the category from the file path (the directory structure)
+    const getCategory = (filePath: string) => {
+      const parts = filePath.split('/')
+      // Remove the filename and get the parent directory if it exists
+      parts.pop()
+      return parts.length > 0 ? parts[parts.length - 1] : ''
+    }
+
     // Determine target path based on file type
     let targetPath = ""
     if (file.type === "registry:hook") {
@@ -76,15 +84,24 @@ function processRegistryItem(name: string, item: any) {
     } else if (file.type === "registry:ui") {
       const componentPath = file.path.replace('fancy/', '')
       sourceFilePath = path.join(baseDir, "src", "fancy", "components", `${componentPath}.tsx`)
-      targetPath = `/components/fancy/${fileName}.tsx`
+      const category = getCategory(componentPath)
+      targetPath = category 
+        ? `/fancy/components/${category}/${fileName}.tsx`
+        : `/fancy/components/${fileName}.tsx`
     } else if (file.type === "registry:block") {
       const examplePath = file.path.replace('examples/', '')
       sourceFilePath = path.join(baseDir, "src", "fancy", "examples", `${examplePath}.tsx`)
-      targetPath = `/components/fancy/${fileName}.tsx`
+      const category = getCategory(examplePath)
+      targetPath = category 
+        ? `/fancy/components/${category}/${fileName}.tsx`
+        : `/fancy/components/${fileName}.tsx`
     } else if (file.type === "registry:lib") {
       const utilPath = file.path.replace('utils/', '')
       sourceFilePath = path.join(baseDir, "src", "utils", `${utilPath}.ts`)
-      targetPath = `/utils/${fileName}.ts`
+      const category = getCategory(utilPath)
+      targetPath = category 
+        ? `/utils/${category}/${fileName}.ts`
+        : `/utils/${fileName}.ts`
     }
 
     if (sourceFilePath !== "") {
