@@ -308,12 +308,12 @@ function generateRegistryItem(
     ...(componentDeps.length > 0 && {
       registryDependencies: componentDeps,
     }),
-    ...(externalDeps.size > 0 && {
-      dependencies: Array.from(externalDeps),
-    }),
-    ...(additionalConfig?.devDependencies && {
-      devDependencies: additionalConfig.devDependencies,
-    }),
+    ...(externalDeps.size > 0 || additionalConfig?.devDependencies ? {
+      dependencies: [
+        ...Array.from(externalDeps),
+        ...(additionalConfig?.devDependencies || [])
+      ],
+    } : null),
     ...(additionalConfig?.tailwind && {
       tailwind: additionalConfig.tailwind,
     }),
