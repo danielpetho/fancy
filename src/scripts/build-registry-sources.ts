@@ -40,6 +40,40 @@ function getSourceContent(filePath: string): string {
   }
 }
 
+function resolveColorInContent(content: string): string {
+  const colorMappings = {
+    'primaryRed': '#ff5941',
+    'primaryOrange': '#f97316',
+    'primaryPink': '#e794da',
+    'primaryBlue': '#0015ff',
+    'teal': '#1f464d',
+    'teal-foreground': '#3bb6ab',
+    'yellow': '#eab308',
+    'yellow-foreground': '#ffd726'
+  }
+
+  // Replace color classes with their hex values
+  let newContent = content
+  
+  // Handle basic color classes (bg-red, text-red, etc.)
+  Object.entries(colorMappings).forEach(([color, hex]) => {
+    // Match patterns like bg-red, text-red, border-red, etc.
+    const regex = new RegExp(`(bg|text|border|ring|outline|fill|stroke)-${color}(?![\\w-])`, 'g')
+    newContent = newContent.replace(regex, `$1-[${hex}]`)
+  })
+
+  // Handle opacity modifiers (bg-red/50, text-red/75, etc.)
+  Object.entries(colorMappings).forEach(([color, hex]) => {
+    const opacityRegex = new RegExp(`(bg|text|border|ring|outline|fill|stroke)-${color}/([0-9]+)`, 'g')
+    newContent = newContent.replace(opacityRegex, (_, prefix, opacity) => {
+      const alpha = parseInt(opacity) / 100
+      return `${prefix}-[${hex}${alpha.toString(16).padStart(2, '0')}]`
+    })
+  })
+
+  return newContent
+}
+
 // ---------------------------------------------------------------------------
 // "file => { path, content, target }"
 function processItemFiles(registryItem: any): any[] {
@@ -71,7 +105,8 @@ function processItemFiles(registryItem: any): any[] {
 
     if (!sourceFilePath) return
 
-    const content = getSourceContent(sourceFilePath)
+    let content = getSourceContent(sourceFilePath)
+
     // Add appropriate extension for the path
     let extension = file.type === "registry:ui" || file.type === "registry:block"
       ? ".tsx"
@@ -101,6 +136,12 @@ function processItemFiles(registryItem: any): any[] {
         ? `/utils/${category}/${fileName}.ts`
         : `/utils/${fileName}.ts`
     }
+
+    // Only resolve colors for block registry items
+    if (file.type === "registry:block") {
+      content = resolveColorInContent(content)
+    }
+    
 
     out.push({
       path: pathWithExt,
@@ -291,7 +332,7 @@ function processRegistryItem(name: string, item: any): any {
       }
     }
   }
-  
+
   return output
 }
 
