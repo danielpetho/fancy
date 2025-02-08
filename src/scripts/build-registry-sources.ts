@@ -10,20 +10,18 @@ const registryJsonPath = path.join(baseDir, "public", "index.json")
 // Single output directory for all registry items
 const registryOutputDir = path.join(baseDir, "public/r")
 
- // Get the category from the file path (the directory structure)
- const getCategory = (filePath: string) => {
-  const parts = filePath.split('/')
+// Get the category from the file path (the directory structure)
+const getCategory = (filePath: string) => {
+  const parts = filePath.split("/")
   // Remove the filename and get the parent directory if it exists
   parts.pop()
-  return parts.length > 0 ? parts[parts.length - 1] : ''
+  return parts.length > 0 ? parts[parts.length - 1] : ""
 }
-
 
 // Ensure output directory exists
 if (!fs.existsSync(registryOutputDir)) {
   fs.mkdirSync(registryOutputDir, { recursive: true })
 }
-
 
 // ---------------------------------------------------------------------------
 // Helper: Safely read file content
@@ -42,14 +40,14 @@ function getSourceContent(filePath: string): string {
 
 function resolveColorInContent(content: string): string {
   const colorMappings = {
-    'primaryRed': '#ff5941',
-    'primaryOrange': '#f97316',
-    'primaryPink': '#e794da',
-    'primaryBlue': '#0015ff',
-    'teal': '#1f464d',
-    'teal-foreground': '#3bb6ab',
-    'yellow': '#eab308',
-    'yellow-foreground': '#ffd726'
+    primaryRed: "#ff5941",
+    primaryOrange: "#f97316",
+    primaryPink: "#e794da",
+    primaryBlue: "#0015ff",
+    teal: "#1f464d",
+    "teal-foreground": "#3bb6ab",
+    yellow: "#eab308",
+    "yellow-foreground": "#ffd726",
   }
 
   // Replace color classes with their hex values
@@ -57,25 +55,34 @@ function resolveColorInContent(content: string): string {
 
   // Handle the container transformation first (before color replacements). this is for v0.
   // Look for the first occurrence of a container with w-full h-full
-  const containerRegex = /(<(?:div|section)[^>]*\bclass(?:Name)?=["'](?:[^"']*\s)?)(w-full\s+h-full|h-full\s+w-full)(\s[^"']*["'][^>]*>)/i
-  newContent = newContent.replace(containerRegex, (match, prefix, dimensions, suffix) => {
-    return `${prefix}w-dvw h-dvh${suffix}`
-  })
+  const containerRegex =
+    /(<(?:div|section)[^>]*\bclass(?:Name)?=["'](?:[^"']*\s)?)(w-full\s+h-full|h-full\s+w-full)(\s[^"']*["'][^>]*>)/i
+  newContent = newContent.replace(
+    containerRegex,
+    (match, prefix, dimensions, suffix) => {
+      return `${prefix}w-dvw h-dvh${suffix}`
+    }
+  )
 
-  
   // Handle basic color classes (bg-red, text-red, etc.)
   Object.entries(colorMappings).forEach(([color, hex]) => {
     // Match patterns like bg-red, text-red, border-red, etc.
-    const regex = new RegExp(`(bg|text|border|ring|outline|fill|stroke)-${color}(?![\\w-])`, 'g')
+    const regex = new RegExp(
+      `(bg|text|border|ring|outline|fill|stroke)-${color}(?![\\w-])`,
+      "g"
+    )
     newContent = newContent.replace(regex, `$1-[${hex}]`)
   })
 
   // Handle opacity modifiers (bg-red/50, text-red/75, etc.)
   Object.entries(colorMappings).forEach(([color, hex]) => {
-    const opacityRegex = new RegExp(`(bg|text|border|ring|outline|fill|stroke)-${color}/([0-9]+)`, 'g')
+    const opacityRegex = new RegExp(
+      `(bg|text|border|ring|outline|fill|stroke)-${color}/([0-9]+)`,
+      "g"
+    )
     newContent = newContent.replace(opacityRegex, (_, prefix, opacity) => {
       const alpha = parseInt(opacity) / 100
-      return `${prefix}-[${hex}${alpha.toString(16).padStart(2, '0')}]`
+      return `${prefix}-[${hex}${alpha.toString(16).padStart(2, "0")}]`
     })
   })
 
@@ -95,19 +102,31 @@ function processItemFiles(registryItem: any): any[] {
     // }
 
     let sourceFilePath = ""
-    const fileName = file.path.split('/').pop()
+    const fileName = file.path.split("/").pop()
 
     if (file.type === "registry:hook") {
-      const hookPath = file.path.replace('hooks/', '')
+      const hookPath = file.path.replace("hooks/", "")
       sourceFilePath = path.join(baseDir, "src", "hooks", `${hookPath}.ts`)
     } else if (file.type === "registry:ui") {
-      const componentPath = file.path.replace('fancy/', '')
-      sourceFilePath = path.join(baseDir, "src", "fancy", "components", `${componentPath}.tsx`)
+      const componentPath = file.path.replace("fancy/", "")
+      sourceFilePath = path.join(
+        baseDir,
+        "src",
+        "fancy",
+        "components",
+        `${componentPath}.tsx`
+      )
     } else if (file.type === "registry:block") {
-      const examplePath = file.path.replace('examples/', '')
-      sourceFilePath = path.join(baseDir, "src", "fancy", "examples", `${examplePath}.tsx`)
+      const examplePath = file.path.replace("examples/", "")
+      sourceFilePath = path.join(
+        baseDir,
+        "src",
+        "fancy",
+        "examples",
+        `${examplePath}.tsx`
+      )
     } else if (file.type === "registry:lib") {
-      const utilPath = file.path.replace('utils/', '')
+      const utilPath = file.path.replace("utils/", "")
       sourceFilePath = path.join(baseDir, "src", "utils", `${utilPath}.ts`)
     }
 
@@ -116,29 +135,31 @@ function processItemFiles(registryItem: any): any[] {
     let content = getSourceContent(sourceFilePath)
 
     // Add appropriate extension for the path
-    let extension = file.type === "registry:ui" || file.type === "registry:block"
-      ? ".tsx"
-      : ".ts"
-    const pathWithExt =
-      file.path.startsWith("/") ? file.path + extension : `/${file.path}${extension}`
+    let extension =
+      file.type === "registry:ui" || file.type === "registry:block"
+        ? ".tsx"
+        : ".ts"
+    const pathWithExt = file.path.startsWith("/")
+      ? file.path + extension
+      : `/${file.path}${extension}`
 
     // We also compute the "target" path as your original code does
     let targetPath = ""
     if (file.type === "registry:hook") {
       targetPath = `/hooks/${fileName}.ts`
     } else if (file.type === "registry:ui") {
-      const category = getCategory(file.path.replace('fancy/', ''))
+      const category = getCategory(file.path.replace("fancy/", ""))
       targetPath = category
         ? `/fancy/components/${category}/${fileName}.tsx`
         : `/fancy/components/${fileName}.tsx`
     } else if (file.type === "registry:block") {
-      const examplePath = file.path.replace('examples/', '')
+      const examplePath = file.path.replace("examples/", "")
       const category = getCategory(examplePath)
       targetPath = category
         ? `/fancy/components/${category}/${fileName}.tsx`
         : `/fancy/components/${fileName}.tsx`
     } else if (file.type === "registry:lib") {
-      const utilPath = file.path.replace('utils/', '')
+      const utilPath = file.path.replace("utils/", "")
       const category = getCategory(utilPath)
       targetPath = category
         ? `/utils/${category}/${fileName}.ts`
@@ -149,13 +170,12 @@ function processItemFiles(registryItem: any): any[] {
     if (file.type === "registry:block") {
       content = resolveColorInContent(content)
     }
-    
 
     out.push({
       path: pathWithExt,
       content,
       type: file.type,
-      target: targetPath
+      target: targetPath,
     })
   })
 
@@ -189,13 +209,31 @@ function gatherAllDependencyFiles(
     item.registryDependencies.forEach((depUrl: string) => {
       // depUrl is e.g. 'https://fancycomponents.dev/r/gravity.json'
       // we want just "gravity"
-      const depName = depUrl.split('/').pop()?.replace('.json', '')
+      const depName = depUrl.split("/").pop()?.replace(".json", "")
       if (depName && registry[depName]) {
         const subFiles = gatherAllDependencyFiles(depName, registry, visited)
         allFiles.push(...subFiles)
       }
     })
   }
+
+  // 3) NEW: Also check imports in each file's content for additional dependencies
+  processedFiles.forEach((file) => {
+    const imports = parseImports(file.content)
+    imports.forEach((importPath) => {
+      // Look for imports from @/hooks or @/utils
+      if (
+        importPath.startsWith("@/hooks/") ||
+        importPath.startsWith("@/utils/")
+      ) {
+        const depName = importPath.split("/").pop()
+        if (depName && registry[depName] && !visited.has(depName)) {
+          const subFiles = gatherAllDependencyFiles(depName, registry, visited)
+          allFiles.push(...subFiles)
+        }
+      }
+    })
+  })
 
   return allFiles
 }
@@ -217,7 +255,7 @@ function parseImports(content: string): string[] {
 // This now builds a single item's .json file
 function processRegistryItem(name: string, item: any): any {
   const output: any = {
-    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name,
     type: item.type,
     dependencies: item.dependencies || [],
@@ -227,7 +265,7 @@ function processRegistryItem(name: string, item: any): any {
   const registryDeps = new Set<string>()
   if (item.registryDependencies) {
     item.registryDependencies.forEach((dep: string) => {
-      const fileName = dep.split('/').pop()
+      const fileName = dep.split("/").pop()
       registryDeps.add(`https://fancycomponents.dev/r/${fileName}.json`)
     })
   }
@@ -235,7 +273,7 @@ function processRegistryItem(name: string, item: any): any {
   // Also add hooks/libs from item.files
   item.files.forEach((f: any) => {
     if (f.type === "registry:hook" || f.type === "registry:lib") {
-      const fileName = f.path.split('/').pop()
+      const fileName = f.path.split("/").pop()
       registryDeps.add(`https://fancycomponents.dev/r/${fileName}.json`)
     }
   })
@@ -260,13 +298,29 @@ function processRegistryItem(name: string, item: any): any {
         return
       }
 
-      // 2) If it's a local reference (like @/hooks/... or @/fancy/...), 
+      // 2) If it's a local reference (like @/hooks/... or @/fancy/...),
       //    see if it corresponds to another known registry item:
       const possibleName = importPath.split("/").pop() || ""
       // For example, importPath: "@/hooks/use-detect-browser" => name: "use-detect-browser"
       // If there's a known registry item with that name, add it to registryDeps:
       if (registry[possibleName]) {
         registryDeps.add(`https://fancycomponents.dev/r/${possibleName}.json`)
+      }
+    })
+  })
+
+  // Also update registryDependencies to include all discovered dependencies
+  allFiles.forEach((file) => {
+    const imports = parseImports(file.content)
+    imports.forEach((importPath) => {
+      if (
+        importPath.startsWith("@/hooks/") ||
+        importPath.startsWith("@/utils/")
+      ) {
+        const depName = importPath.split("/").pop()
+        if (depName && registry[depName]) {
+          registryDeps.add(`https://fancycomponents.dev/r/${depName}.json`)
+        }
       }
     })
   })
@@ -302,8 +356,8 @@ function processRegistryItem(name: string, item: any): any {
         teal: "#1f464d",
         "teal-foreground": "#3bb6ab",
         yellow: "#eab308",
-        "yellow-foreground": "#ffd726"
-      }
+        "yellow-foreground": "#ffd726",
+      },
     }
 
     // Merge existing tailwind config with our new colors
@@ -319,7 +373,7 @@ function processRegistryItem(name: string, item: any): any {
     if (!output.tailwind.config.theme.extend) {
       output.tailwind.config.theme.extend = {}
     }
-    
+
     // Merge colors with existing extend colors if any
     output.tailwind.config.theme.extend = {
       ...output.tailwind.config.theme.extend,
@@ -336,8 +390,8 @@ function processRegistryItem(name: string, item: any): any {
         yellow: {
           DEFAULT: "var(--yellow)",
           foreground: "var(--yellow-foreground)",
-        }
-      }
+        },
+      },
     }
   }
 
@@ -362,10 +416,10 @@ function buildSourceFiles() {
     })
   }
 
-  processItemsByType("registry:lib")    // Utils first
-  processItemsByType("registry:hook")   // Then hooks
-  processItemsByType("registry:ui")     // Then UI components
-  processItemsByType("registry:block")  // Finally blocks/demos
+  processItemsByType("registry:lib") // Utils first
+  processItemsByType("registry:hook") // Then hooks
+  processItemsByType("registry:ui") // Then UI components
+  processItemsByType("registry:block") // Finally blocks/demos
 
   console.log("Source files generation completed.")
 }
