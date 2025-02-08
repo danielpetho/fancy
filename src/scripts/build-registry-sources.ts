@@ -89,10 +89,10 @@ function processItemFiles(registryItem: any): any[] {
   if (!registryItem.files) return out
 
   registryItem.files.forEach((file: any) => {
-    // skip any _helpers folder
-    if (file.path.includes('_helpers')) {
-      return
-    }
+    // // skip any _helpers folder
+    // if (file.path.includes('_helpers')) {
+    //   return
+    // }
 
     let sourceFilePath = ""
     const fileName = file.path.split('/').pop()

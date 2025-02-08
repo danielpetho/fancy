@@ -2,7 +2,7 @@
 
 import TextRotate from "@/fancy/components/text/text-rotate"
 
-import { exampleImages } from "../../../utils/_helpers/exampleImages"
+import { exampleImages } from "@/utils/_helpers/exampleImages"
 
 export default function Preview() {
   return (

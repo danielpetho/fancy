@@ -7,7 +7,7 @@ import Floating, {
   FloatingElement,
 } from "@/fancy/components/image/parallax-floating"
 
-import { exampleImages } from "../../../utils/_helpers/exampleImages"
+import { exampleImages } from "@/utils/_helpers/exampleImages"
 
 const Preview = () => {
   const [scope, animate] = useAnimate()

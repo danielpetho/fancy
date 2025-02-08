@@ -4,7 +4,7 @@ import Image from "next/image"
 import useScreenSize from "@/hooks/use-screen-size"
 import CirclingElements from "@/fancy/components/blocks/circling-elements"
 
-import { exampleImages } from "../../../utils/_helpers/exampleImages"
+import { exampleImages } from "@/utils/_helpers/exampleImages"
 
 const CirclingElementsDemo: React.FC = () => {
   const screenSize = useScreenSize()
