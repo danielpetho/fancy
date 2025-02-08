@@ -242,6 +242,56 @@ function processRegistryItem(name: string, item: any): any {
   })
   output.files = Array.from(uniqueMap.values())
 
+  // add cssVars for blocks
+  if (item.type === "registry:block") {
+    output.cssVars = {
+      light: {
+        red: "#ff5941",
+        orange: "#f97316",
+        pink: "#e794da",
+        blue: "#0015ff",
+        teal: "#1f464d",
+        "teal-foreground": "#3bb6ab",
+        yellow: "#eab308",
+        "yellow-foreground": "#ffd726"
+      }
+    }
+
+    // Merge existing tailwind config with our new colors
+    if (!output.tailwind) {
+      output.tailwind = { config: { theme: { extend: {} } } }
+    }
+    if (!output.tailwind.config) {
+      output.tailwind.config = { theme: { extend: {} } }
+    }
+    if (!output.tailwind.config.theme) {
+      output.tailwind.config.theme = { extend: {} }
+    }
+    if (!output.tailwind.config.theme.extend) {
+      output.tailwind.config.theme.extend = {}
+    }
+    
+    // Merge colors with existing extend colors if any
+    output.tailwind.config.theme.extend = {
+      ...output.tailwind.config.theme.extend,
+      colors: {
+        ...(output.tailwind.config.theme.extend.colors || {}),
+        primaryRed: "var(--red)",
+        primaryOrange: "var(--orange)",
+        primaryPink: "var(--pink)",
+        primaryBlue: "var(--blue)",
+        teal: {
+          DEFAULT: "var(--teal)",
+          foreground: "var(--teal-foreground)",
+        },
+        yellow: {
+          DEFAULT: "var(--yellow)",
+          foreground: "var(--yellow-foreground)",
+        }
+      }
+    }
+  }
+  
   return output
 }
 
