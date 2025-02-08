@@ -79,7 +79,7 @@ function processItemFiles(registryItem: any): any[] {
     const pathWithExt =
       file.path.startsWith("/") ? file.path + extension : `/${file.path}${extension}`
 
-    // We also compute the “target” path as your original code does
+    // We also compute the "target" path as your original code does
     let targetPath = ""
     if (file.type === "registry:hook") {
       targetPath = `/hooks/${fileName}.ts`
@@ -115,7 +115,7 @@ function processItemFiles(registryItem: any): any[] {
 
 // ---------------------------------------------------------------------------
 // A function to recursively collect *all* files from a given registry
-// item name, including that item’s own files plus all of its nested
+// item name, including that item's own files plus all of its nested
 // registryDependencies. We gather them in an array so we can feed them
 // into the final "files" for a block.
 function gatherAllDependencyFiles(
@@ -124,14 +124,14 @@ function gatherAllDependencyFiles(
   visited = new Set<string>()
 ): any[] {
   if (!registry[itemName]) return []
-  // If we’ve already processed this item, skip to avoid duplicates / loops:
+  // If we've already processed this item, skip to avoid duplicates / loops:
   if (visited.has(itemName)) return []
   visited.add(itemName)
 
   const item = registry[itemName]
   let allFiles: any[] = []
 
-  // 1) Collect *this* item’s own files
+  // 1) Collect *this* item's own files
   const processedFiles = processItemFiles(item)
   allFiles.push(...processedFiles)
 
@@ -152,7 +152,20 @@ function gatherAllDependencyFiles(
 }
 
 // ---------------------------------------------------------------------------
-// This now builds a single item’s .json file
+// Helper to parse import statements from file content.
+// We'll match lines like: import foo from "..."
+function parseImports(content: string): string[] {
+  const regex = /import\s+[^"'\n]+?\s+from\s+['"]([^'"]+)['"]/g
+  const imports: string[] = []
+  let match
+  while ((match = regex.exec(content)) !== null) {
+    imports.push(match[1])
+  }
+  return imports
+}
+
+// ---------------------------------------------------------------------------
+// This now builds a single item's .json file
 function processRegistryItem(name: string, item: any): any {
   const output: any = {
     "$schema": "https://ui.shadcn.com/schema/registry-item.json",
@@ -161,8 +174,7 @@ function processRegistryItem(name: string, item: any): any {
     dependencies: item.dependencies || [],
   }
 
-  // Collect all dependencies (just the direct URLs for the field)
-  // The original code sets registryDependencies. We'll keep that:
+  // Collect direct registryDependencies
   const registryDeps = new Set<string>()
   if (item.registryDependencies) {
     item.registryDependencies.forEach((dep: string) => {
@@ -170,6 +182,7 @@ function processRegistryItem(name: string, item: any): any {
       registryDeps.add(`https://fancycomponents.dev/r/${fileName}.json`)
     })
   }
+
   // Also add hooks/libs from item.files
   item.files.forEach((f: any) => {
     if (f.type === "registry:hook" || f.type === "registry:lib") {
@@ -177,6 +190,38 @@ function processRegistryItem(name: string, item: any): any {
       registryDeps.add(`https://fancycomponents.dev/r/${fileName}.json`)
     }
   })
+
+  // -------------------------------------------------------------------------
+  // Gather all *actual* files for this item, including dependencies:
+  const registry = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
+  let allFiles = gatherAllDependencyFiles(name, registry)
+
+  // -------------------------------------------------------------------------
+  // NEW: Detect in-file imports and handle them dynamically:
+  allFiles.forEach((file) => {
+    const imports = parseImports(file.content)
+    imports.forEach((importPath) => {
+      // 1) If it's from @/components/ui/... we treat it as shadcn external:
+      if (importPath.startsWith("@/components/ui/")) {
+        const name = importPath.split("/").pop() || ""
+        // Only add if not already present
+        if (!registryDeps.has(name)) {
+          registryDeps.add(name)
+        }
+        return
+      }
+
+      // 2) If it's a local reference (like @/hooks/... or @/fancy/...), 
+      //    see if it corresponds to another known registry item:
+      const possibleName = importPath.split("/").pop() || ""
+      // For example, importPath: "@/hooks/use-detect-browser" => name: "use-detect-browser"
+      // If there's a known registry item with that name, add it to registryDeps:
+      if (registry[possibleName]) {
+        registryDeps.add(`https://fancycomponents.dev/r/${possibleName}.json`)
+      }
+    })
+  })
+
   if (registryDeps.size > 0) {
     output.registryDependencies = Array.from(registryDeps)
   }
@@ -190,22 +235,7 @@ function processRegistryItem(name: string, item: any): any {
     output.tailwind = item.tailwind
   }
 
-  // -------------------------------------------------------------------------
-  // ADDED: if item.type === "registry:block", we gather everything recursively.
-  //        But for consistency, you can do it for all items if you like
-  //        (that way “ui” items also get all nested files).
-  //
-  //        Here we’ll do it for *all* items, but you can restrict to “block”
-  //        if you only want this to apply for demos.
-  const registry = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
-
-  let allFiles = gatherAllDependencyFiles(name, registry)
-  // If you only want to do it for “block” items, do:
-  //    let allFiles = item.type === "registry:block"
-  //      ? gatherAllDependencyFiles(name, registry)
-  //      : processItemFiles(item)
-
-  // Remove any duplicates by comparing path:
+  // Remove duplicates by path in allFiles:
   const uniqueMap = new Map<string, any>()
   allFiles.forEach((f) => {
     uniqueMap.set(f.path, f)

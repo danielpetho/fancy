@@ -29,15 +29,17 @@ interface RegistryItem {
 }
 
 function findHookImports(sourceCode: string): string[] {
-  // Only match imports from @/hooks/
-  const hookImportRegex = /import\s+{[^}]*}\s+from\s+['"]@\/hooks\/([^'"]+)['"]/g
+  // This will match lines such as:
+  //   import useDetectBrowser from "@/hooks/use-detect-browser"
+  //   import { useScreenSize } from "@/hooks/use-screen-size"
+  //   import useDebounce, { useSomethingElse } from "@/hooks/use-debounce"
+  const hookImportRegex = /import\s+[^'"]+\s+from\s+['"]@\/hooks\/([^'"]+)['"]/g
   const hooks: string[] = []
   let match
 
   while ((match = hookImportRegex.exec(sourceCode)) !== null) {
-    // Get the hook name from the file path
-    // e.g., "use-dimensions" from "@/hooks/use-dimensions"
-    const hookName = match[1].replace(/\.(ts|tsx)$/, '')
+    // e.g. "use-detect-browser" from "@/hooks/use-detect-browser"
+    const hookName = match[1].replace(/\.(ts|tsx)$/, "")
     hooks.push(hookName)
   }
 
@@ -45,25 +47,51 @@ function findHookImports(sourceCode: string): string[] {
 }
 
 function findComponentImports(sourceCode: string): string[] {
-  // Match imports from @/fancy/components/ or @/fancy/examples/
+  // Match static imports from @/fancy/components/ or @/fancy/examples/
   const componentImportRegex = /import\s+{?[^}]*}?\s+from\s+['"]@\/fancy\/(components|examples)\/([^'"]+)['"]/g
   const components: string[] = []
   let match
 
   while ((match = componentImportRegex.exec(sourceCode)) !== null) {
     const [_, type, componentPath] = match
-    // Get the component name from the path and convert to kebab case
+    // Convert the path to a simplified form like "fancy/filter/gooey-filter"
     const componentName = componentPath
-      .replace(/\.(ts|tsx)$/, '')
-      .replace(/([A-Z])/g, '-$1')
+      .replace(/\.(ts|tsx)$/, "")
+      .replace(/([A-Z])/g, "-$1")
       .toLowerCase()
-      .replace(/^-/, '')
-    
+      .replace(/^-/, "")
     components.push(`fancy/${componentName}`)
   }
 
+  // Collect dynamic imports as well
+  components.push(...findDynamicComponentImports(sourceCode))
+
   return components
 }
+
+// ---------------------------------------------------------------------------
+// NEW helper to detect dynamic imports, e.g. dynamic(() => import("@/fancy/..."))
+function findDynamicComponentImports(sourceCode: string): string[] {
+  // Looks for lines like: dynamic(() => import("@/fancy/components/..."))
+  // Capture the part after "@/fancy/{components|examples}/"
+  const dynamicImportRegex = /dynamic\(\s*\(\)\s*=>\s*import\(\s*['"]@\/fancy\/(components|examples)\/([^'"]+)['"]\s*\)/g
+  const dynComponents: string[] = []
+  let match
+
+  while ((match = dynamicImportRegex.exec(sourceCode)) !== null) {
+    const [_, type, componentPath] = match
+    const componentName = componentPath
+      .replace(/\.(ts|tsx)$/, "")
+      .replace(/([A-Z])/g, "-$1")
+      .toLowerCase()
+      .replace(/^-/, "")
+    dynComponents.push(`fancy/${componentName}`)
+  }
+
+  return dynComponents
+}
+
+// ---------------------------------------------------------------------------
 
 function findExternalDependencies(sourceCode: string): string[] {
   // Match all imports that:
@@ -194,8 +222,9 @@ function generateRegistryItem(
     },
   ]
 
+  // ADD the discovered hooks
   if (type !== "hook") {
-    // Add associated hooks to files array
+    // Now we capture all the hooks we find (including default imports)
     const usedHooks = findHookImports(sourceCode)
     usedHooks.forEach((hookName) => {
       files.push({
