@@ -54,6 +54,14 @@ function resolveColorInContent(content: string): string {
 
   // Replace color classes with their hex values
   let newContent = content
+
+  // Handle the container transformation first (before color replacements). this is for v0.
+  // Look for the first occurrence of a container with w-full h-full
+  const containerRegex = /(<(?:div|section)[^>]*\bclass(?:Name)?=["'](?:[^"']*\s)?)(w-full\s+h-full|h-full\s+w-full)(\s[^"']*["'][^>]*>)/i
+  newContent = newContent.replace(containerRegex, (match, prefix, dimensions, suffix) => {
+    return `${prefix}w-dv h-dh${suffix}`
+  })
+
   
   // Handle basic color classes (bg-red, text-red, etc.)
   Object.entries(colorMappings).forEach(([color, hex]) => {
