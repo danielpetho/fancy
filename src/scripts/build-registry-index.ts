@@ -10,7 +10,11 @@ const examplesDir = path.join(baseDir, "examples")
 const hooksDir = path.join(__dirname, "..", "hooks")
 const utilsDir = path.join(__dirname, "..", "utils")
 
-type RegistryType = "registry:ui" | "registry:block" | "registry:hook" | "registry:lib"
+type RegistryType =
+  | "registry:ui"
+  | "registry:block"
+  | "registry:hook"
+  | "registry:lib"
 
 interface RegistryFile {
   path: string
@@ -48,33 +52,39 @@ function findHookImports(sourceCode: string): string[] {
 
 function findComponentImports(sourceCode: string): string[] {
   // Match static imports from @/fancy/components/ or @/fancy/examples/
-  const componentImportRegex = /import\s+{?[^}]*}?\s+from\s+['"]@\/fancy\/(components|examples)\/([^'"]+)['"]/g
+  const componentImportRegex =
+    /import\s+([^'"]+?)\s+from\s+['"]@\/fancy\/(components|examples)\/([^'"]+)['"]/g
   const components: string[] = []
   let match
 
   while ((match = componentImportRegex.exec(sourceCode)) !== null) {
-    const [_, type, componentPath] = match
-    // Convert the path to a simplified form like "fancy/filter/gooey-filter"
-    const componentName = componentPath
+    const [_, importStatement, type, componentPath] = match
+
+    // Handle the path for all imports from this line
+    const basePath = componentPath
       .replace(/\.(ts|tsx)$/, "")
       .replace(/([A-Z])/g, "-$1")
       .toLowerCase()
       .replace(/^-/, "")
-    components.push(`fancy/${componentName}`)
+
+    // Add the path once
+    components.push(`fancy/${basePath}`)
   }
 
   // Collect dynamic imports as well
   components.push(...findDynamicComponentImports(sourceCode))
 
-  return components
+  // Remove duplicates
+  return Array.from(new Set(components))
 }
 
 // ---------------------------------------------------------------------------
-// NEW helper to detect dynamic imports, e.g. dynamic(() => import("@/fancy/..."))
+// helper to detect dynamic imports, e.g. dynamic(() => import("@/fancy/..."))
 function findDynamicComponentImports(sourceCode: string): string[] {
   // Looks for lines like: dynamic(() => import("@/fancy/components/..."))
   // Capture the part after "@/fancy/{components|examples}/"
-  const dynamicImportRegex = /dynamic\(\s*\(\)\s*=>\s*import\(\s*['"]@\/fancy\/(components|examples)\/([^'"]+)['"]\s*\)/g
+  const dynamicImportRegex =
+    /dynamic\(\s*\(\)\s*=>\s*import\(\s*['"]@\/fancy\/(components|examples)\/([^'"]+)['"]\s*\)/g
   const dynComponents: string[] = []
   let match
 
@@ -105,10 +115,10 @@ function findExternalDependencies(sourceCode: string): string[] {
   while ((match = externalImportRegex.exec(sourceCode)) !== null) {
     const [_, importPath] = match
     // Get the package name (everything before any / character)
-    const packageName = importPath.split('/')[0]
-    
+    const packageName = importPath.split("/")[0]
+
     // Skip react-related and next-related packages
-    if (!packageName.startsWith('react') && !packageName.startsWith('next')) {
+    if (!packageName.startsWith("react") && !packageName.startsWith("next")) {
       dependencies.add(packageName)
     }
   }
@@ -118,12 +128,13 @@ function findExternalDependencies(sourceCode: string): string[] {
 
 function findUtilImports(sourceCode: string): string[] {
   // Match imports from @/utils/
-  const utilImportRegex = /import\s+{?[^}]*}?\s+from\s+['"]@\/utils\/([^'"]+)['"]/g
+  const utilImportRegex =
+    /import\s+{?[^}]*}?\s+from\s+['"]@\/utils\/([^'"]+)['"]/g
   const utils: string[] = []
   let match
 
   while ((match = utilImportRegex.exec(sourceCode)) !== null) {
-    const utilPath = match[1].replace(/\.(ts|tsx)$/, '')
+    const utilPath = match[1].replace(/\.(ts|tsx)$/, "")
     utils.push(utilPath)
   }
 
@@ -134,10 +145,10 @@ function getAdditionalConfig(filePath: string): any {
   const dir = path.dirname(filePath)
   const baseName = path.basename(filePath, path.extname(filePath))
   const configPath = path.join(dir, `${baseName}.json`)
-  
+
   if (fs.existsSync(configPath)) {
     try {
-      return JSON.parse(fs.readFileSync(configPath, 'utf-8'))
+      return JSON.parse(fs.readFileSync(configPath, "utf-8"))
     } catch (error) {
       console.warn(`Error reading config for ${baseName}:`, error)
     }
@@ -149,6 +160,7 @@ function generateRegistryItem(
   filePath: string,
   type: "ui" | "example" | "hook" | "util",
   allHooks: Record<string, string>
+  // @ts-ignore
 ): RegistryItem | null {
   // Get the relative path from the components or examples directory
   const baseDirectory =
@@ -182,19 +194,21 @@ function generateRegistryItem(
     itemType: "ui" | "example" | "hook" | "util"
   ) => {
     // Get the relative path from the base directory
-    const relativePath = path.relative(
-      itemType === "hook"
-        ? hooksDir
-        : itemType === "example"
-          ? examplesDir
-          : itemType === "util"
-            ? utilsDir
-            : componentsDir,
-      originalPath
-    ).replace(/\\/g, '/')
+    const relativePath = path
+      .relative(
+        itemType === "hook"
+          ? hooksDir
+          : itemType === "example"
+            ? examplesDir
+            : itemType === "util"
+              ? utilsDir
+              : componentsDir,
+        originalPath
+      )
+      .replace(/\\/g, "/")
 
     // Remove the file extension
-    const pathWithoutExt = relativePath.replace(/\.(ts|tsx)$/, '')
+    const pathWithoutExt = relativePath.replace(/\.(ts|tsx)$/, "")
 
     switch (itemType) {
       case "hook":
@@ -237,15 +251,15 @@ function generateRegistryItem(
   // Find component dependencies
   const componentDeps = findComponentImports(sourceCode)
   const externalDeps = new Set(findExternalDependencies(sourceCode))
-  
+
   // Handle utils dependencies
   const utilDeps = findUtilImports(sourceCode)
   if (utilDeps.length > 0) {
     // Add utils to files
-    utilDeps.forEach(utilPath => {
+    utilDeps.forEach((utilPath) => {
       files.push({
         path: `utils/${utilPath}`,
-        type: "registry:lib"
+        type: "registry:lib",
       })
 
       // Add dependencies from utils
@@ -253,7 +267,7 @@ function generateRegistryItem(
       if (fs.existsSync(utilFilePath)) {
         const utilCode = fs.readFileSync(utilFilePath, "utf-8")
         const utilExternalDeps = findExternalDependencies(utilCode)
-        utilExternalDeps.forEach(dep => externalDeps.add(dep))
+        utilExternalDeps.forEach((dep) => externalDeps.add(dep))
       }
     })
   }
@@ -266,45 +280,47 @@ function generateRegistryItem(
       if (fs.existsSync(hookPath)) {
         const hookCode = fs.readFileSync(hookPath, "utf-8")
         const hookDeps = findExternalDependencies(hookCode)
-        hookDeps.forEach(dep => externalDeps.add(dep))
+        hookDeps.forEach((dep) => externalDeps.add(dep))
       }
     })
   }
-  
+
   const additionalConfig = getAdditionalConfig(filePath)
-  
+
   // Add additional dependencies if they exist
   if (additionalConfig?.additionalDependencies) {
     additionalConfig.additionalDependencies.forEach((dep: string) => {
       externalDeps.add(dep)
     })
   }
-  
+
   const item: RegistryItem = {
     name,
-    type: type === "hook"
-      ? "registry:hook"
-      : type === "example"
-        ? "registry:block"
-        : type === "util"
-          ? "registry:lib"
-          : "registry:ui",
+    type:
+      type === "hook"
+        ? "registry:hook"
+        : type === "example"
+          ? "registry:block"
+          : type === "util"
+            ? "registry:lib"
+            : "registry:ui",
     files,
     ...(componentDeps.length > 0 && {
-      registryDependencies: componentDeps
+      registryDependencies: componentDeps,
     }),
     ...(externalDeps.size > 0 && {
-      dependencies: Array.from(externalDeps)
+      dependencies: Array.from(externalDeps),
     }),
     ...(additionalConfig?.devDependencies && {
-      devDependencies: additionalConfig.devDependencies
+      devDependencies: additionalConfig.devDependencies,
     }),
     ...(additionalConfig?.tailwind && {
-      tailwind: additionalConfig.tailwind
+      tailwind: additionalConfig.tailwind,
     }),
-    ...(type !== "hook" && type !== "util" && {
-      component: `React.lazy(\n      () => import('${importPathWithoutExt}') \n)`,
-    }),
+    ...(type !== "hook" &&
+      type !== "util" && {
+        component: `React.lazy(\n      () => import('${importPathWithoutExt}') \n)`,
+      }),
   }
 
   return item
@@ -412,14 +428,14 @@ console.log("Registry file generated successfully!")
 // Create a clean version of the registry for JSON
 function createCleanRegistry(registry: any) {
   const cleanRegistry = { ...registry }
-  
+
   // Remove React.lazy components from all entries
   Object.values(cleanRegistry).forEach((item: any) => {
     if (item.component) {
       delete item.component
     }
   })
-  
+
   return cleanRegistry
 }
 
@@ -437,7 +453,7 @@ if (!fs.existsSync(jsonOutputDir)) {
 }
 
 fs.writeFileSync(
-  path.join(jsonOutputDir, "index.json"), 
+  path.join(jsonOutputDir, "index.json"),
   JSON.stringify(cleanRegistry, null, 2)
 )
 
