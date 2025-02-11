@@ -16,6 +16,7 @@ import { CodeBlockWrapper } from "@/components/code-block-wrapper"
 import { ComponentPreview } from "@/components/component-preview"
 import { ComponentSource } from "@/components/component-source"
 import { CopyButton, CopyNpmCommandButton } from "@/components/copy-button"
+import { InstallBlockWrapper } from "./components/install-block-wrapper"
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -262,6 +263,9 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     ComponentSource,
     CodeBlockWrapper: ({ ...props }) => (
       <CodeBlockWrapper className="rounded-md border mt-4" {...props} />
+    ),
+    InstallBlockWrapper: ({ ...props }) => (
+      <InstallBlockWrapper className="rounded-md border mt-4" {...props} />
     ),
     Table: ({ className, ...props }: React.ComponentProps<typeof Table>) => (
       <Table className={cn("h-full text-xs", className)} {...props} />
