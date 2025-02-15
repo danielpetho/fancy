@@ -208,6 +208,12 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
       },
       {
+        title: "Media Between Text",
+        href: "/docs/components/blocks/media-between-text",
+        items: [],
+        label: "New",
+      },
+      {
         title: "Screensaver",
         href: "/docs/components/blocks/screensaver",
         items: [],

@@ -1,0 +1,41 @@
+---
+title: Media Between Text
+description: A component that animates a media (image or video) between two text elements.
+component: true
+---
+
+<ComponentPreview name="media-between-text-demo" />
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/media-between-text.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="media-between-text" />
+
+</Steps>
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+The component accepts two text elements, and a media element (either an image or a video). The media element will be animated between the two text elements. The component will automatically detect when the media is visible, and animate accordingly.
+
+<ComponentPreview name="media-between-text-scroll-demo" />
+
+<ComponentPreview name="media-between-text-vertical-demo" />
