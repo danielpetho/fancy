@@ -1,0 +1,47 @@
+---
+title: Stacking Cards
+description: A component used in websites to display layered cards that stack on top of one another, often with interactive animations.
+component: true
+author: "[Khoa Phan](https://www.pldkhoa.dev)"
+---
+
+<ComponentPreview name="stacking-cards" />
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+
+    <CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/stacking-cards.json"`}</CodeBlockWrapper>
+
+  </TabsContent>
+<TabsContent value="manual">
+
+<ComponentSource name="stacking-cards" />
+
+</TabsContent>
+</Tabs>
+
+## Understanding the component
+
+The component creates a smooth stacking animation by scaling elements based on their index. The first element is the largest, while the last is the smallest, creating a layered effect.  
+
+1. **Scroll Progress**: Tracks the container’s scroll progress using `scrollYProgress` from `useScroll` to determine the scale of each element.  
+
+2. **Scaling Logic**: Each card's scale is calculated as `1 - (cards.length - index) * 0.03`, starting at 1 (full size) and decreasing down the stack. Adjusting `0.03` modifies the scaling intensity. `rangeScale` ensures lower-index cards shrink earlier in the scroll.  
+
+3. **Smooth Animation**: `useTransform` maps scroll progress to scale values, creating a fluid shrinking effect as the user scrolls.
+
+## Notes
+
+This component uses `Lenis` for smooth scrolling, configured only for the demo container. To apply it to the entire page, refer to the [Lenis documentation](https://github.com/darkroomengineering/lenis) for a simpler setup.
+
+Alternatively, you can remove smooth scrolling as shown in this demo.
+
+### No Smooth Scrolling Version
+
+<ComponentPreview name="stacking-cards-demo" />
