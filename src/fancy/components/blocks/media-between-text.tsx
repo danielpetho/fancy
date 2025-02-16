@@ -5,18 +5,25 @@ import { motion,  useInView, UseInViewOptions, Variants } from "motion/react"
 import { cn } from "@/lib/utils"
 
 type MediaBetweenTextProps = {
-  firstWord: string
-  secondWord: string
+  firstText: string
+  secondText: string
   // Media props
   mediaUrl: string
   mediaType: "image" | "video"
   mediaContainerClassName?: string
   fallbackUrl?: string
+  // Video props
+  autoPlay?: boolean
+  loop?: boolean
+  muted?: boolean
+  playsInline?: boolean
+  // Image props
+  alt?: string
   // Animation props
   triggerType?: "hover" | "ref" | "inView"
   containerRef?: React.RefObject<HTMLDivElement>
   useInViewOptionsProp?: UseInViewOptions
-  cursorAnimationVariants?: {
+  animationVariants?: {
     initial: Variants["initial"]
     animate: Variants["animate"]
   }
@@ -32,12 +39,17 @@ export type MediaBetweenTextRef = {
 }
 
 export const MediaBetweenText = forwardRef<MediaBetweenTextRef, MediaBetweenTextProps>(({
-  firstWord,
-  secondWord,
+  firstText,
+  secondText,
   mediaUrl,
   mediaType,
   mediaContainerClassName,
   fallbackUrl,
+  autoPlay = true,
+  loop = true,
+  muted = true,
+  playsInline = true,
+  alt,
   triggerType = "hover",
   containerRef,
   useInViewOptionsProp = {
@@ -45,7 +57,7 @@ export const MediaBetweenText = forwardRef<MediaBetweenTextRef, MediaBetweenText
     amount: 0.5,
     root: containerRef,
   },
-  cursorAnimationVariants = {
+  animationVariants = {
     initial: { width: 0, opacity: 1},
     animate: { width: "auto", opacity: 1, transition: { duration: 0.4, type: "spring", bounce: 0 }  },
   },
@@ -53,7 +65,6 @@ export const MediaBetweenText = forwardRef<MediaBetweenTextRef, MediaBetweenText
   leftTextClassName,
   rightTextClassName
 }, ref) => {
-  const mediaRef = useRef<HTMLVideoElement | HTMLImageElement>(null)
   const componentRef = useRef<HTMLDivElement>(null)
   const [isAnimating, setIsAnimating] = useState(false)
   
@@ -78,21 +89,20 @@ export const MediaBetweenText = forwardRef<MediaBetweenTextRef, MediaBetweenText
       onMouseEnter={() => triggerType === "hover" && setIsHovered(true)}
       onMouseLeave={() => triggerType === "hover" && setIsHovered(false)}
     >
-      <motion.p layout className={leftTextClassName}>{firstWord}</motion.p>
+      <motion.p layout className={leftTextClassName}>{firstText}</motion.p>
       <motion.div
         className={mediaContainerClassName}
-        variants={cursorAnimationVariants}
+        variants={animationVariants}
         initial="initial"
         animate={shouldAnimate ? "animate" : "initial"}
       >
         {mediaType === "video" ? (
           <video
             className="w-full h-full object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline
-            ref={mediaRef as React.RefObject<HTMLVideoElement>}
+            autoPlay={autoPlay}
+            loop={loop}
+            muted={muted}
+            playsInline={playsInline}
             poster={fallbackUrl}
           >
             <source src={mediaUrl} type="video/mp4" />
@@ -100,13 +110,12 @@ export const MediaBetweenText = forwardRef<MediaBetweenTextRef, MediaBetweenText
         ) : (
           <img
             src={mediaUrl}
-            alt={`${firstWord} ${secondWord}`}
+            alt={alt || `${firstText} ${secondText}`}
             className="w-full h-full object-cover"
-            ref={mediaRef as React.RefObject<HTMLImageElement>}
           />
         )}
       </motion.div>
-      <motion.p layout className={rightTextClassName}>{secondWord}</motion.p>
+      <motion.p layout className={rightTextClassName}>{secondText}</motion.p>
     </div>
   )
 })

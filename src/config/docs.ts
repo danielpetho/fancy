@@ -132,7 +132,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Pixel Trail",
         href: "/docs/components/background/pixel-trail",
         items: [],
-        label: "Updated",
       },
     ],
   },
@@ -182,13 +181,11 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Gooey SVG Filter",
         href: "/docs/components/filter/gooey-svg-filter",
         items: [],
-        label: "New",
       },
       {
         title: "Pixelate SVG Filter",
         href: "/docs/components/filter/pixelate-svg-filter",
         items: [],
-        label: "New",
       }
     ],
   },

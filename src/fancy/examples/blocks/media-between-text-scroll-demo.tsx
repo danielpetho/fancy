@@ -1,6 +1,7 @@
 import React from "react"
 
 import MediaBetweenText from "@/fancy/components/blocks/media-between-text"
+import useScreenSize from "@/hooks/use-screen-size"
 
 const elements = [
     {src: "https://cdn.cosmos.so/53454cbe-a4ec-4782-923f-a82d70e12645.mp4", left: "Tim", right: "Rodenböker", url: "https://www.instagram.com/tim_rodenbroeker/"},
@@ -11,6 +12,7 @@ const elements = [
 
 export default function MediaBetweenTextScrollDemo() {
   const ref = React.useRef<HTMLDivElement>(null)
+  const screenSize = useScreenSize()
 
   return (
     <div
@@ -18,8 +20,8 @@ export default function MediaBetweenTextScrollDemo() {
       ref={ref}
     >
       <div className="h-full relative w-full flex">
-      <h3 className="text-8xl tracking-wide absolute bottom-12 left-12 w-64">today's inspo</h3>
-      <p className="right-12 bottom-12 absolute">Scroll down ↓</p>
+      <h3 className="text-5xl sm:text-8xl tracking-wide absolute sm:bottom-12 sm:left-12 bottom-4 left-4 w-64">today's inspo</h3>
+      <p className="bottom-4 right-4 sm:right-12 sm:bottom-12 absolute ">Scroll down ↓</p>
 
       </div>
 
@@ -28,20 +30,20 @@ export default function MediaBetweenTextScrollDemo() {
             <a href={element.url} target="_blank" rel="noreferrer">
               <MediaBetweenText
                 key={index}
-                firstWord={element.left}
-                secondWord={element.right}
+                firstText={element.left}
+                secondText={element.right}
                 mediaUrl={element.src}
                 mediaType="video"
                 triggerType="inView"
                 useInViewOptionsProp={{ once: false, amount: 1, root: ref, margin: "-5% 0px -0% 0px" }}
                 containerRef={ref}
-                mediaContainerClassName="w-full h-[80px] overflow-hidden mx-3 mt-4"
-                className="cursor-pointer text-4xl font-light flex flex-row items-center justify-center"
-                cursorAnimationVariants={{
+                mediaContainerClassName="w-full h-[40px] sm:h-[80px] overflow-hidden mx-1 sm:mx-3 mt-1 sm:mt-4"
+                className="cursor-pointer text-lg sm:text-4xl font-light flex flex-row items-center justify-center"
+                animationVariants={{
                   initial: { width: 0 },
                   animate: {
-                    width: "80px",
-                    transition: { duration: 0.4, type: "spring", bounce: 0 },
+                    width: screenSize.lessThan("sm") ? "40px" : "100px",
+                    transition: { duration: 1., type: "spring", bounce: 0, delay: 0.1 },
                   },
                 }}
               />
