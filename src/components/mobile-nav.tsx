@@ -87,7 +87,7 @@ export function MobileNav() {
                           >
                             {item.title}
                             {item.label && (
-                              <span className="ml-2 rounded-md bg-[#ffd726] px-1.5 py-0.5 text-xs leading-none text-[#000000] no-underline group-hover:no-underline">
+                              <span className="ml-2 rounded-md bg-primaryBlue px-1.5 py-0.5 text-xs leading-none text-white no-underline group-hover:no-underline">
                                 {item.label}
                               </span>
                             )}
