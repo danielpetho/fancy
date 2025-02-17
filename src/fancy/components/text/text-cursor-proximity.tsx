@@ -105,7 +105,7 @@ const TextCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
         {...props}
       >
         {words.map((word, wordIndex) => (
-          <span key={wordIndex} className="inline-block whitespace-nowrap">
+          <span key={wordIndex} className="inline-block whitespace-nowrap" aria-hidden={true}>
             {word.split("").map((letter) => {
               const currentLetterIndex = letterIndex++
               const proximity = letterProximities.current[currentLetterIndex]

@@ -102,13 +102,12 @@ const LetterSwapPingPong = ({
 
       {label.split("").map((letter: string, i: number) => {
         return (
-          <span className="whitespace-pre relative flex" key={i}>
+          <span className="whitespace-pre relative flex" key={i} aria-hidden={true}>
             <motion.span className={`relative letter`} style={{ top: 0 }}>
               {letter}
             </motion.span>
             <motion.span
               className="absolute letter-secondary "
-              aria-hidden={true}
               style={{ top: reverse ? "-100%" : "100%" }}
             >
               {letter}
