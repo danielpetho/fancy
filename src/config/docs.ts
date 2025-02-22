@@ -111,12 +111,12 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/scramble-in",
         items: [],
       },
-      // {
-      //   title: "Text Along Path",
-      //   href: "/docs/components/text/text-along-path",
-      //   items: [],
-      //   label: "New",
-      // }
+      {
+        title: "Text Along Path",
+        href: "/docs/components/text/text-along-path",
+        items: [],
+        label: "New",
+      }
     ],
   },
   {

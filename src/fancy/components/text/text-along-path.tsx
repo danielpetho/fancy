@@ -77,11 +77,11 @@ const AnimatedPathText = ({
             begin="0s"
             dur={`${duration}s`}
             repeatCount={repeatCount}
-            // {...(ease && {
-            //     calcMode: "spline",
-            //     keyTimes: "0;1",
-            //     keySplines: "0.4 0 0.2 1"
-            //   })}
+            {...(ease && {
+                calcMode: "spline",
+                keyTimes: "0;1",
+                keySplines: "0.762 0.002 0.253 0.999"
+              })}
           />
           {text}
         </textPath>
@@ -101,11 +101,11 @@ const AnimatedPathText = ({
             begin="0s"
             dur={`${duration}s`}
             repeatCount={repeatCount}
-            // {...(ease && {
-            //     calcMode: "spline",
-            //     keyTimes: "0;1",
-            //     keySplines: "0.4 0 0.2 1"
-            //   })}
+            {...(ease && {
+                calcMode: "spline",
+                keyTimes: "0;1",
+                keySplines: "0.762 0.002 0.253 0.999"
+              })}
           />
           
           {text}
