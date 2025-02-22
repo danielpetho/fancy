@@ -31,7 +31,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "flubber": "^0.4.2",
-    "lenis": "^1.1.14",
+    "lenis": "^1.1.20",
     "lodash": "^4.17.21",
     "lucide-react": "^0.383.0",
     "matter-js": "^0.20.0",

@@ -1,0 +1,148 @@
+---
+title: Stacking Cards
+description: A component used in websites to display layered cards that stack on top of one another, often with interactive animations.
+component: true
+author: "[Khoa Phan](https://www.pldkhoa.dev)"
+---
+
+<ComponentPreview name="stacking-cards-demo" />
+
+## Installation
+
+<Tabs defaultValue="cli">
+  <TabsList>
+    <TabsTrigger value="cli">CLI</TabsTrigger>
+    <TabsTrigger value="manual">Manual</TabsTrigger>
+  </TabsList>
+  <TabsContent value="cli">
+
+    <CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/stacking-cards.json"`}</CodeBlockWrapper>
+
+  </TabsContent>
+<TabsContent value="manual">
+
+<ComponentSource name="stacking-cards-demo" />
+
+</TabsContent>
+</Tabs>
+
+## Understanding the component
+
+The component utilizes scroll progress to determine the scale of each element. The first element has the highest scale multiplier, making it the smallest when it reaches the bottom of the container's scroll area, while the last element follows the opposite pattern, creating a layered effect.
+
+To achieve this, I use each element's index to calculate its scale multiplier. Just simple as that! 😀
+
+## Usage
+
+Wrap `StackingCards` around the content you want to animate and `StackingCardItem` around each card you want to animate.
+The structure looks like this:
+
+<CodeBlockWrapper language="typescript">
+  {`<StackingCards>
+  <StackingCardItem>
+      {/* Your card go here */}
+  </StackingCardItem>
+</StackingCards>
+`}
+</CodeBlockWrapper>
+
+## Props
+
+### StackingCards
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        totalCards<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0`</TableCell>
+      <TableCell>
+        Total number of cards to be animated (this is for calculating the scale
+        intensity)
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scaleMultiplier</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.03`</TableCell>
+      <TableCell>The intensity of the card to scale</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollOptons</TableCell>
+      <TableCell>`UseScrollOptions`</TableCell>
+      <TableCell>`{offset: ["start start", "end end"]}`</TableCell>
+      <TableCell>Scroll options for `useScroll` hook from `motion`.</TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>`className` for the container</TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>Other Props</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>All attributes for `HTMLDivElement`</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### StackingCardItem
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+   <TableRow>
+      <TableCell>index<span className="text-red-500">*</span></TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>`index` value of your card (to calculate scale intensity)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>
+        topPosition
+      </TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`5 + index * 3`</TableCell>
+      <TableCell>
+         The top position of the card
+      </TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>`className` for the `StackingCardItem` element</TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>Other Props</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>All attributes for `HTMLDivElement`</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Notes
+
+- By default, this component uses the `window` to track scroll progress. However, in some cases, you may want to wrap it inside another scrollable container. To achieve this, simply define the container for `useScroll` from `motion`. In the `Demo` above, I defined the `containerRef` and passed it to the `scrollOptions` prop of the `StackingCards` component.
+
+- To ensure `StackingCardItem` works correctly, you need to define its height. This allows the wrapper to have a larger height than the card itself, ensuring that the `topPosition` functions properly.

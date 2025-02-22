@@ -153,7 +153,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Cursor Attractor & Gravity",
         href: "/docs/components/physics/cursor-attractor-and-gravity",
         items: [],
-      }
+      },
     ],
   },
   {
@@ -224,6 +224,12 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Float",
         href: "/docs/components/blocks/float",
         items: [],
+      },
+      {
+        title: "Stacking Cards",
+        href: "/docs/components/blocks/stacking-cards",
+        items: [],
+        label: "New",
       },
     ],
   },
