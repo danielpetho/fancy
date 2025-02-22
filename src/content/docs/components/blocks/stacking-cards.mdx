@@ -5,7 +5,7 @@ component: true
 author: "[Khoa Phan](https://www.pldkhoa.dev)"
 ---
 
-<ComponentPreview name="stacking-cards" />
+<ComponentPreview name="stacking-cards-demo" />
 
 ## Installation
 
@@ -21,27 +21,128 @@ author: "[Khoa Phan](https://www.pldkhoa.dev)"
   </TabsContent>
 <TabsContent value="manual">
 
-<ComponentSource name="stacking-cards" />
+<ComponentSource name="stacking-cards-demo" />
 
 </TabsContent>
 </Tabs>
 
 ## Understanding the component
 
-The component creates a smooth stacking animation by scaling elements based on their index. The first element is the largest, while the last is the smallest, creating a layered effect.  
+The component utilizes scroll progress to determine the scale of each element. The first element has the highest scale multiplier, making it the smallest when it reaches the bottom of the container's scroll area, while the last element follows the opposite pattern, creating a layered effect.
 
-1. **Scroll Progress**: Tracks the container’s scroll progress using `scrollYProgress` from `useScroll` to determine the scale of each element.  
+To achieve this, I use each element's index to calculate its scale multiplier. Just simple as that! 😀
 
-2. **Scaling Logic**: Each card's scale is calculated as `1 - (cards.length - index) * 0.03`, starting at 1 (full size) and decreasing down the stack. Adjusting `0.03` modifies the scaling intensity. `rangeScale` ensures lower-index cards shrink earlier in the scroll.  
+## Usage
 
-3. **Smooth Animation**: `useTransform` maps scroll progress to scale values, creating a fluid shrinking effect as the user scrolls.
+Wrap `StackingCards` around the content you want to animate and `StackingCardItem` around each card you want to animate.
+The structure looks like this:
+
+<CodeBlockWrapper language="typescript">
+  {`<StackingCards>
+  <StackingCardItem>
+      {/* Your card go here */}
+  </StackingCardItem>
+</StackingCards>
+`}
+</CodeBlockWrapper>
+
+## Props
+
+### StackingCards
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        totalCards<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0`</TableCell>
+      <TableCell>
+        Total number of cards to be animated (this is for calculating the scale
+        intensity)
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scaleMultiplier</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.03`</TableCell>
+      <TableCell>The intensity of the card to scale</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollOptons</TableCell>
+      <TableCell>`UseScrollOptions`</TableCell>
+      <TableCell>`{offset: ["start start", "end end"]}`</TableCell>
+      <TableCell>Scroll options for `useScroll` hook from `motion`.</TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>`className` for the container</TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>Other Props</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>All attributes for `HTMLDivElement`</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### StackingCardItem
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        topPosition
+      </TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`5 + index * 3`</TableCell>
+      <TableCell>
+         The top position of the card
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>index</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>`index` value of your card (to calculate scale intensity)</TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>`className` for the `StackingCardItem` element</TableCell>
+    </TableRow>
+     <TableRow>
+      <TableCell>Other Props</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>All attributes for `HTMLDivElement`</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Notes
 
-This component uses `Lenis` for smooth scrolling, configured only for the demo container. To apply it to the entire page, refer to the [Lenis documentation](https://github.com/darkroomengineering/lenis) for a simpler setup.
+- By default, this component uses the `window` to track scroll progress. However, in some cases, you may want to wrap it inside another scrollable container. To achieve this, simply define the container for `useScroll` from `motion`. In the `Demo` above, I defined the `containerRef` and passed it to the `scrollOptions` prop of the `StackingCards` component.
 
-Alternatively, you can remove smooth scrolling as shown in this demo.
-
-### No Smooth Scrolling Version
-
-<ComponentPreview name="stacking-cards-demo" />
+- To ensure `StackingCardItem` works correctly, you need to define its height. This allows the wrapper to have a larger height than the card itself, ensuring that the `topPosition` functions properly.

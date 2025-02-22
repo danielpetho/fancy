@@ -2,25 +2,11 @@
 
 import { useRef } from "react"
 import Image from "next/image"
-import clsx from "clsx"
-import {
-  motion,
-  MotionValue,
-  useMotionValueEvent,
-  useScroll,
-  useTransform,
-} from "motion/react"
 
-interface CardProps {
-  bgColor: string
-  index: number
-  progress: MotionValue<number>
-  rangeScale: number[]
-  scaleTo: number
-  title: string
-  description: string
-  image: string
-}
+import { cn } from "@/lib/utils"
+import StackingCards, {
+  StackingCardItem,
+} from "@/fancy/components/blocks/stacking-cards"
 
 const cards = [
   {
@@ -67,81 +53,48 @@ const cards = [
 
 export default function StackingCardsDemo() {
   const containerRef = useRef<HTMLDivElement>(null)
-
-  const { scrollYProgress } = useScroll({
-    container: containerRef,
-    offset: ["start start", "end end"],
-  })
-
-  useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    console.log("first", latest)
-  })
-
   return (
-    <div ref={containerRef} className="overflow-auto h-full bg-white">
-      <div>
-        <div className="py-10 max-h-[620px] h-screen sm:py-12">
-          <div className="relative font-calendas h-full w-full z-10 text-2xl md:text-7xl font-bold uppercase flex justify-center items-center text-primaryRed whitespace-pre">
-            Scroll down ↓
-          </div>
+    <div className="h-[620px] bg-white overflow-auto" ref={containerRef}>
+      <StackingCards
+        totalCards={cards.length}
+        scrollOptons={{ container: containerRef }}
+      >
+        <div className="relative font-calendas h-[620px] w-full z-10 text-2xl md:text-7xl font-bold uppercase flex justify-center items-center text-primaryRed whitespace-pre">
+          Scroll down ↓
         </div>
-        {cards.map((card, index) => {
-          const scaleTo = 1 - (cards.length - index) * 0.03
-          const rangeScale = [index * (1 / cards.length), 1]
+        {cards.map(({ bgColor, description, image, title }, index) => {
           return (
-            <Card
-              {...card}
-              progress={scrollYProgress}
-              scaleTo={scaleTo}
-              rangeScale={rangeScale}
-              key={index}
-              index={index}
-            />
+            <StackingCardItem key={index} index={index} className="h-[620px]">
+              <div
+                className={cn(
+                  bgColor,
+                  "h-[80%] sm:h-[70%] flex-col sm:flex-row aspect-video gap-5 px-8 py-10 flex w-11/12 rounded-3xl mx-auto relative"
+                )}
+              >
+                <div className="flex-1 flex flex-col justify-center">
+                  <h3 className="font-bold text-2xl mb-5">{title}</h3>
+                  <p>{description}</p>
+                </div>
+
+                <div className="w-full sm:w-1/2 rounded-xl aspect-video relative overflow-hidden shrink-0">
+                  <Image
+                    src={image}
+                    alt={title}
+                    className="object-cover"
+                    fill
+                  />
+                </div>
+              </div>
+            </StackingCardItem>
           )
         })}
-      </div>
 
-      <div className="w-full h-80 relative overflow-hidden">
-        <h2 className="absolute bottom-0 left-0 translate-y-1/3 sm:text-[192px] text-[80px] text-primaryRed font-calendas">
-          fancy
-        </h2>
-      </div>
-    </div>
-  )
-}
-
-const Card = (props: CardProps) => {
-  const {
-    bgColor,
-    index,
-    progress,
-    rangeScale,
-    scaleTo,
-    description,
-    image,
-    title,
-  } = props
-
-  const scale = useTransform(progress, rangeScale, [1, scaleTo])
-
-  return (
-    <div className="h-screen text-white max-h-[620px] w-full sticky top-0">
-      <motion.div
-        className={clsx(
-          bgColor,
-          "min-h-[80%] sm:min-h-[70%] flex-col sm:flex-row aspect-video gap-5 px-8 py-10 flex w-11/12 rounded-3xl mx-auto relative origin-top"
-        )}
-        style={{ top: `${5 + index * 3}%`, scale }}
-      >
-        <div className="flex-1 flex flex-col justify-center">
-          <h3 className="font-bold text-2xl mb-5">{title}</h3>
-          <p>{description}</p>
+        <div className="w-full h-80 relative overflow-hidden">
+          <h2 className="absolute bottom-0 left-0 translate-y-1/3 sm:text-[192px] text-[80px] text-primaryRed font-calendas">
+            fancy
+          </h2>
         </div>
-
-        <div className="w-full sm:w-1/2 rounded-xl aspect-video relative overflow-hidden shrink-0">
-          <Image src={image} alt={title} className="object-cover" fill />
-        </div>
-      </motion.div>
+      </StackingCards>
     </div>
   )
 }
