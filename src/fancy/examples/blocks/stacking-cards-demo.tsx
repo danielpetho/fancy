@@ -54,7 +54,7 @@ const cards = [
 export default function StackingCardsDemo() {
   const containerRef = useRef<HTMLDivElement>(null)
   return (
-    <div className="h-[620px] bg-white overflow-auto" ref={containerRef}>
+    <div className="h-[620px] w-full text-white bg-white overflow-auto" ref={containerRef}>
       <StackingCards
         totalCards={cards.length}
         scrollOptons={{ container: containerRef }}
