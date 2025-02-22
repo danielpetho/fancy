@@ -106,7 +106,7 @@ const RandomLetterSwapPingPong = ({
 
       {label.split("").map((letter: string, i: number) => {
         return (
-          <span className="whitespace-pre relative flex" key={i}>
+          <span className="whitespace-pre relative flex" key={i} aria-hidden={true}>
             <motion.span
               className={`relative pb-2 letter-${i}`}
               style={{ top: 0 }}
@@ -115,7 +115,6 @@ const RandomLetterSwapPingPong = ({
             </motion.span>
             <motion.span
               className={`absolute letter-secondary-${i}`}
-              aria-hidden={true}
               style={{ top: reverse ? "-100%" : "100%" }}
             >
               {letter}
