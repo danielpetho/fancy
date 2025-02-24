@@ -12,8 +12,8 @@ import { Icons } from "@/components/icons"
 import { registry } from "@/fancy/index"
 
 import { CopyButton } from "./copy-button"
-import { RestartButton } from "./restart-button"
 import { OpenInV0Button } from "./open-in-v0"
+import { RestartButton } from "./restart-button"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -42,12 +42,12 @@ export function ComponentPreview({
       try {
         const mod = await import(`../../public/r/${name}.json`)
         const json = mod.default
-        
+
         // Find the main component file that matches the name
         const mainFile = json.files.find(
-          (file: any) => file.path.split('/').pop().replace('.tsx', '') === name
+          (file: any) => file.path.split("/").pop().replace(".tsx", "") === name
         )
-        
+
         if (mainFile) {
           setSourceCode(mainFile.content)
         } else {
@@ -66,8 +66,10 @@ export function ComponentPreview({
     () => ({
       borderRadius: "var(--radius) var(--radius)",
       padding: "1rem",
+      overflow: "auto",
+      //position: "absolute",
       width: "100%",
-      maxWidth: "100%",
+      height: "100%",
     }),
     []
   )
@@ -83,7 +85,7 @@ export function ComponentPreview({
       // Toggle restart button visibility with Cmd+D
       if ((event.metaKey || event.ctrlKey) && event.key === "1") {
         event.preventDefault()
-        setShowRestartButton(prev => !prev)
+        setShowRestartButton((prev) => !prev)
       }
     }
 
@@ -112,13 +114,13 @@ export function ComponentPreview({
   return (
     <div
       className={cn(
-        "group relative my-4 flex flex-col space-y-2 h-full",
+        "group relative my-4 flex flex-col space-y-2 h-full w-full",
         className
       )}
       {...props}
     >
       <Tabs defaultValue="preview" className="relative mr-auto w-full">
-        <div className="flex items-center  justify-between">
+        <div className="flex items-center justify-between">
           <TabsList className="w-full justify-start rounded-none p-0 h-14 bg-transparent">
             <TabsTrigger
               value="preview"
@@ -152,7 +154,9 @@ export function ComponentPreview({
             >
               {showRestartButton && (
                 <div className="absolute right-4 top-4 z-50 flex gap-2 flex-row">
-                  <OpenInV0Button url={`https://fancycomponents.dev/r/${name}.json`} />
+                  <OpenInV0Button
+                    url={`https://fancycomponents.dev/r/${name}.json`}
+                  />
                   <RestartButton onRestart={handleRestart} />
                 </div>
               )}
@@ -161,8 +165,8 @@ export function ComponentPreview({
           </div>
         </TabsContent>
         <TabsContent value="code">
-          <div className="flex flex-col space-y-4">
-            <div className="w-full [&_pre]:my-0 [&_pre]:max-h-[350px] [&_pre]:overflow-auto relative rounded-lg">
+          <div className="flex flex-col h-[520px] space-y-4 ">
+            <div className="w-full h-full [&_pre]:my-0 [&_pre]:overflow-auto relative rounded-lg">
               <div className="absolute right-4 top-4">
                 <CopyButton
                   value={sourceCode}
@@ -170,14 +174,16 @@ export function ComponentPreview({
                   event={"copy_npm_command"}
                 />
               </div>
-              <ReactSyntaxHighlighter
-                language="typescript"
-                style={hybrid}
-                customStyle={syntaxHighlighterStyle}
-                wrapLongLines={true}
-              >
-                {sourceCode}
-              </ReactSyntaxHighlighter>
+              <div className="inset-0 absolute">
+                <ReactSyntaxHighlighter
+                  language="typescript"
+                  style={hybrid}
+                  customStyle={syntaxHighlighterStyle}
+                  wrapLongLines={true}
+                >
+                  {sourceCode}
+                </ReactSyntaxHighlighter>
+              </div>
             </div>
           </div>
         </TabsContent>
