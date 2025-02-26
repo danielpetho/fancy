@@ -1,3 +1,6 @@
+import { RefObject, useEffect, useMemo, useRef, useState } from "react"
+import { MotionValue, useMotionValueEvent, useScroll, useTransform } from "motion/react"
+
 interface AnimatedPathTextProps {
   // Path properties
   path: string
@@ -14,15 +17,26 @@ interface AnimatedPathTextProps {
   text: string
   textClassName?: string
   textAnchor?: "start" | "middle" | "end"
+  side?: "inside" | "outside"
 
   // Animation properties
+  animationType?: "auto" | "scroll"
+
+  // Animation properties if animationType is auto
   duration?: number
   repeatCount?: number | "indefinite"
   from?: string
   to?: string
+  easingFunction?: {
+    calcMode?: string
+    keyTimes?: string
+    keySplines?: string
+  }
 
-  side?: 'inside' | 'outside'
-  ease?: boolean
+  // Scroll animation properties if animationType is scroll
+  scrollContainer?: RefObject<HTMLElement>
+  scrollOffset?: [string, string]
+  scrollTransformValues?: [number, number]
 }
 
 const AnimatedPathText = ({
@@ -41,16 +55,57 @@ const AnimatedPathText = ({
   text,
   textClassName,
   textAnchor = "middle",
+  side = "outside",
+
+  // Animation type
+  animationType = "auto",
 
   // Animation defaults
   duration = 4,
   repeatCount = "indefinite",
   from = "0%",
   to = "100%",
-  side = 'outside',
-  ease = true,
+
+  easingFunction = {},
+
+  // Scroll animation defaults
+  scrollContainer,
+  scrollOffset = ["start end", "end end"],
+  scrollTransformValues = [0, 100],
+  
 }: AnimatedPathTextProps) => {
-    const transform = side === 'inside' ? 'scale(1, -1)' : undefined;
+  const transform = side === "inside" ? "scale(1, -1)" : undefined
+
+  const container = useRef<HTMLDivElement>(null)
+  const textPathRefs = useRef<SVGTextPathElement[]>([])
+
+  const { scrollYProgress } = useScroll({
+    target: scrollContainer || container,
+    container: scrollContainer || container,
+    offset: ["start end", "end end"],
+  })
+
+  const t = useTransform(scrollYProgress, [0, 1], scrollTransformValues)
+
+  useEffect(() => {
+    scrollYProgress.on("change", (e) => {
+      textPathRefs.current.forEach((textPath, i) => {
+        textPath.setAttribute("startOffset", `${t.get()}%`)
+      })
+    })
+  }, [])
+
+  const animationProps =
+    animationType === "auto"
+      ? {
+          from: from,
+          to: to,
+          begin: "0s",
+          dur: `${duration}s`,
+          repeatCount: repeatCount,
+          ...(easingFunction && easingFunction),
+        }
+      : null
 
   return (
     <svg
@@ -68,49 +123,37 @@ const AnimatedPathText = ({
         <textPath
           className={textClassName}
           href={`#${pathId}`}
-          startOffset="0%"
+          startOffset={"0%"}
+          ref={(ref) => (textPathRefs.current[0] = ref as SVGTextPathElement)}
         >
-          <animate
-            attributeName="startOffset"
-            from="0%"
-            to="100%"
-            begin="0s"
-            dur={`${duration}s`}
-            repeatCount={repeatCount}
-            {...(ease && {
-                calcMode: "spline",
-                keyTimes: "0;1",
-                keySplines: "0.762 0.002 0.253 0.999"
-              })}
-          />
+          {animationType === "auto" && (
+            <animate attributeName="startOffset" {...animationProps} />
+          )}
           {text}
         </textPath>
       </text>
 
       {/* Second text element (offset to hide the jump) */}
-      <text textAnchor={textAnchor} transform={transform} fill="currentColor">
-        <textPath
-          className={textClassName}
-          href={`#${pathId}`}
-          startOffset="0%"
-        >
-          <animate
-            attributeName="startOffset"
-            from="-100%"
-            to="0%"
-            begin="0s"
-            dur={`${duration}s`}
-            repeatCount={repeatCount}
-            {...(ease && {
-                calcMode: "spline",
-                keyTimes: "0;1",
-                keySplines: "0.762 0.002 0.253 0.999"
-              })}
-          />
-          
-          {text}
-        </textPath>
-      </text>
+      {animationType === "auto" && (
+        <text textAnchor={textAnchor} transform={transform} fill="currentColor">
+          <textPath
+            className={textClassName}
+            href={`#${pathId}`}
+            startOffset={"-100%"}
+            ref={(ref) => (textPathRefs.current[1] = ref as SVGTextPathElement)}
+          >
+            {animationType === "auto" && (
+              <animate
+                attributeName="startOffset"
+                {...animationProps}
+                from="-100%"
+                to="0%"
+              />
+            )}
+            {text}
+          </textPath>
+        </text>
+      )}
     </svg>
   )
 }

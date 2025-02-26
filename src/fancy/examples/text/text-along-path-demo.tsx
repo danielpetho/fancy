@@ -38,7 +38,7 @@ export default function Preview() {
     <div className="w-full h-full flex justify-center items-center text-primaryBlue relative">
       <AnimatedPathText
         path={rectPath}
-        svgClassName="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full"
+        svgClassName="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5"
         viewBox="10 10 180 180"
         text="JOIN THE WAITLIST ✉ JOIN THE WAITLIST ✉ JOIN THE WAITLIST ✉ JOIN THE WAITLIST ✉ JOIN THE WAITLIST ✉ "
         textClassName="text-[10.6px] lowercase font-azeretMono text-primaryBlue"

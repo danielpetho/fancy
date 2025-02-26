@@ -30,6 +30,11 @@ export default function Preview() {
               "-rotate-90": rotation === 270,
             }
           )}
+          easingFunction={{
+            calcMode: "spline",
+            keyTimes: "0;1",
+            keySplines: "0.762 0.002 0.253 0.999"
+          }}
           viewBox="0 0 200 200"
           text="loading"
           textClassName="text-[11px] font-bold"
