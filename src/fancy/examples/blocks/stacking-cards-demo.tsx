@@ -72,7 +72,7 @@ export default function StackingCardsDemo() {
               <div
                 className={cn(
                   bgColor,
-                  "h-[80%] sm:h-[70%] flex-col sm:flex-row aspect-video gap-5 px-8 py-10 flex w-11/12 rounded-3xl mx-auto relative"
+                  "h-[80%] sm:h-[70%] flex-col sm:flex-row aspect-video px-8 py-10 flex w-11/12 rounded-3xl mx-auto relative"
                 )}
               >
                 <div className="flex-1 flex flex-col justify-center">
@@ -80,7 +80,7 @@ export default function StackingCardsDemo() {
                   <p>{description}</p>
                 </div>
 
-                <div className="w-full sm:w-1/2 rounded-xl aspect-video relative overflow-hidden shrink-0">
+                <div className="w-full sm:w-1/2 rounded-xl aspect-video relative overflow-hidden">
                   <Image
                     src={image}
                     alt={title}

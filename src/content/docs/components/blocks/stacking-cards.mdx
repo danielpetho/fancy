@@ -21,16 +21,10 @@ author: "[Khoa Phan](https://www.pldkhoa.dev)"
   </TabsContent>
 <TabsContent value="manual">
 
-<ComponentSource name="stacking-cards-demo" />
+<ComponentSource name="stacking-cards" />
 
 </TabsContent>
 </Tabs>
-
-## Understanding the component
-
-The component utilizes scroll progress to determine the scale of each element. The first element has the highest scale multiplier, making it the smallest when it reaches the bottom of the container's scroll area, while the last element follows the opposite pattern, creating a layered effect.
-
-To achieve this, I use each element's index to calculate its scale multiplier. Just simple as that! 😀
 
 ## Usage
 
@@ -45,6 +39,18 @@ The structure looks like this:
 </StackingCards>
 `}
 </CodeBlockWrapper>
+
+## Understanding the component
+
+The component utilizes scroll progress to determine the scale of each element. The first element has the highest scale multiplier, making it the smallest when it reaches the bottom of the container's scroll area, while the last element follows the opposite pattern, creating a layered effect.
+
+To achieve this, I use each element's index to calculate its scale multiplier. Just simple as that! 😀
+
+## Notes
+
+- By default, this component uses the `window` to track scroll progress. However, in some cases, you may want to wrap it inside another scrollable container. To achieve this, simply define the container for `useScroll` from `motion`. In the `Demo` above, I defined the `containerRef` and passed it to the `scrollOptions` prop of the `StackingCards` component.
+
+- To ensure `StackingCardItem` works correctly, you need to define its height. This allows the wrapper to have a larger height than the card itself, ensuring that the `topPosition` functions properly.
 
 ## Props
 
@@ -110,29 +116,29 @@ The structure looks like this:
     </TableRow>
   </TableHeader>
   <TableBody>
-   <TableRow>
-      <TableCell>index<span className="text-red-500">*</span></TableCell>
-      <TableCell>`number`</TableCell>
-      <TableCell>-</TableCell>
-      <TableCell>`index` value of your card (to calculate scale intensity)</TableCell>
-    </TableRow>
     <TableRow>
       <TableCell>
-        topPosition
+        index<span className="text-red-500">*</span>
       </TableCell>
-      <TableCell>`string`</TableCell>
-      <TableCell>`5 + index * 3`</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
       <TableCell>
-         The top position of the card
+        `index` value of your card (to calculate scale intensity)
       </TableCell>
     </TableRow>
-     <TableRow>
+    <TableRow>
+      <TableCell>topPosition</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`5 + index * 3`</TableCell>
+      <TableCell>The top position of the card</TableCell>
+    </TableRow>
+    <TableRow>
       <TableCell>className</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>`className` for the `StackingCardItem` element</TableCell>
     </TableRow>
-     <TableRow>
+    <TableRow>
       <TableCell>Other Props</TableCell>
       <TableCell>-</TableCell>
       <TableCell>-</TableCell>
@@ -140,9 +146,3 @@ The structure looks like this:
     </TableRow>
   </TableBody>
 </Table>
-
-## Notes
-
-- By default, this component uses the `window` to track scroll progress. However, in some cases, you may want to wrap it inside another scrollable container. To achieve this, simply define the container for `useScroll` from `motion`. In the `Demo` above, I defined the `containerRef` and passed it to the `scrollOptions` prop of the `StackingCards` component.
-
-- To ensure `StackingCardItem` works correctly, you need to define its height. This allows the wrapper to have a larger height than the card itself, ensuring that the `topPosition` functions properly.
