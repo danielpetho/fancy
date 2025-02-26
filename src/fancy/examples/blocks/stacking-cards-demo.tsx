@@ -56,7 +56,7 @@ export default function StackingCardsDemo() {
 
   return (
     <div
-      className="h-[620px] bg-white overflow-auto"
+      className="h-[620px] bg-white overflow-auto text-white"
       ref={(node) => setContainer(node)}
     >
       <StackingCards
