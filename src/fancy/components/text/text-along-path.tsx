@@ -90,7 +90,7 @@ const AnimatedPathText = ({
   const id = pathId || `animated-path-${Math.random().toString(36).substring(7)}`
 
   const { scrollYProgress } = useScroll({
-    target: scrollContainer || container,
+    // target: scrollContainer || container,
     container: scrollContainer || container,
     offset: scrollOffset,
   })
