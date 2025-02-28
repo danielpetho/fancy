@@ -1,25 +1,9 @@
-import { useEffect, useRef, useState } from "react"
-import type { LenisRef } from "lenis/react"
-import { ReactLenis } from "lenis/react"
-import { cancelFrame, frame } from "motion/react"
+import { useState } from "react"
 
 import AnimatedPathText from "@/fancy/components/text/text-along-path"
 
 export default function Preview() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const lenisRef = useRef<LenisRef>(null)
-  const wrapperRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    function update(data: { timestamp: number }) {
-      const time = data.timestamp
-      lenisRef.current?.lenis?.raf(time)
-    }
-
-    frame.update(update, true)
-
-    return () => cancelFrame(update)
-  }, [])
+  const [container, setContainer] = useState<HTMLElement | null>(null)  
 
   const paths = [
     "M1 254C177 219 61 -64 269 15C477 94 332 285 214 348C96 411 155 546 331 486C507 426 410 267 667 215C872.6 173.4 951.333 264.333 965 315",
@@ -43,7 +27,7 @@ export default function Preview() {
   ]
 
   return (
-    <div className="w-full h-full overflow-auto relative font-calendas" ref={containerRef}>
+    <div className="w-full h-full overflow-auto relative font-calendas" ref={(node) => setContainer(node)}>
       <div className="h-[200%] absolute top-0 left-0 w-full flex flex-col items-center mt-40 text-4xl">
         <p>SCROLL DOWN</p>
       </div>
@@ -53,7 +37,7 @@ export default function Preview() {
             key={`path-${i}`}
             path={path}
             // showPath
-            scrollContainer={containerRef}
+            scrollContainer={{ current: container } }
             pathId={`flowing-path-${i}`}
             svgClassName={`absolute -left-[100px] top-0 w-[calc(100%+200px)] h-full`}
             viewBox="0 0 900 600"
