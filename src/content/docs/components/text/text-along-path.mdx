@@ -1,0 +1,240 @@
+---
+title: Text Along Path
+description: A text component that animates along an SVG path.
+component: true
+---
+
+<ComponentPreview name="text-along-path-demo" />{" "}
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/text-along-path.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
+
+<ComponentSource name="text-along-path" />
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+There are two types of animations available for this component, which you can control with the `animationType` prop:
+
+1. `auto` — plays the animation automatically when the text is initially rendered. This is the default setting.
+2. `scroll` — drives the animation with the scroll position of the container.
+   To use this component, you'll need to provide an SVG path via the `path` prop. You can create this path using:
+
+- Design tools like Figma, Illustrator, or any online SVG editor
+- Code, by constructing the path programmatically
+
+The component only requires the `d` attribute from your SVG path and the `viewBox` attribute from the SVG container.
+
+### Path ID
+
+Each path needs a unique `id` to properly reference it in the text elements. While the component includes a basic ID generator, it's recommended to provide your own via the `pathId` prop, especially when using multiple instances of the component. This ensures animations remain distinct and don't interfere with each other.
+
+### Sizing and ViewBox
+
+The SVG container can be sized flexibly - by default it will expand to fill its parent container. The `viewBox` attribute can be any dimensions, but it's recommended to:
+
+1. Match the aspect ratio you want the final component to have
+2. Use dimensions that make sense for your path coordinates
+
+For example, if your path coordinates span 0-500 on x and 0-100 on y, a viewBox of "0 0 500 100" would be appropriate.
+
+## Understanding the component
+
+The component consist an svg container with a path element, and two text elements with `textPath` elements inside. The `textPath` elements are used to animate the text along the path. When it is used with the `auto` animation type, we use an `animate` element to animate the text along the path. When it is used with the `scroll` animation type, we animate the `startOffset` attribute of the `textPath` elements to scroll the text along the path.
+
+## Auto animation
+
+The `auto` animation type is the default setting, and it plays the animation automatically when the text is initially rendered. We start at 0% offset and animate to 100% offset, which means the text will start at the beginning of the path and end at the end of the path.
+
+The relevant props for the `auto` animation type are:
+
+- `duration` — the duration of the animation in milliseconds
+- `repeatCount` — the number of times the animation should repeat. You can also set this to `indefinite` to make the animation repeat indefinitely (default setting)
+
+<ComponentPreview name="text-along-path-auto-demo" />
+
+## Animation on closed paths
+
+You might notice the component uses two identical text elements with `textPath` elements when you use the `auto` animation type. The reason for this to achieve the illusion of continuous movement on a closed path. Here is how it works:
+
+1. The first text element starts at the beginning of the path and animates forward
+2. The second text element follows behind the first one at an offset
+3. When the first text reaches the end of the path, the second text has moved into position to continue the animation
+4. This creates the illusion of continuous movement without any visible jumps or gaps
+
+This dual-text approach is necessary because animating a single text element would result in a noticeable "jump" when the animation resets back to the start position.
+
+See an example of this in the first, and the following demo above:
+
+<ComponentPreview name="text-along-path-circle-demo" />
+
+This example above also demonstrates how to use the `easingFunction` prop to create more interesting animations. Please refer to the (mdn docs)[https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function] on what values you can use.
+
+Another important note here is that you have to experiment with the text length and size, to ensure the text doesn't overlap with each other, since it's not calculated automatically.
+
+## Preserve aspect ratio
+
+The `preserveAspectRatio` attribute controls how the SVG content scales to fit its container when their aspect ratios differ. This is determined by comparing the `viewBox` dimensions to the actual SVG container size. For example, with `preserveAspectRatio="xMidYMid meet"`, the path and text will be centered both horizontally and vertically while maintaining proportions.
+
+Please refer to the [MDN docs](https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/preserveAspectRatio) for the poossible values. In short, the default value `xMidYMid meet` will work for most cases. If you set it to `none`, the SVG container will be stretched to the container size, but will also result in a distortion of the text. Check out this behaviour on the first demo. Resize your viewport to see the difference.
+
+### Scroll
+
+By setting the `animationType` prop to `scroll`, you can control the animation with the scroll position of the container. For tracking the scroll position, we use the `useScroll` hook from `motion/react`.
+
+The relevant props are:
+
+- `scrollContainer` — a ref to the container element that the scroll animation will be driven by
+- `scrollOffset` — the scroll offset range for the animation
+- `scrollTransformValues` — The `scrollYProgress` value returned by `useScroll` hook ranges between 0 and 1, and this prop defines how we should map these values to the `startOffset` attribute of the text elements. It will be converted to percentage values.
+
+Please refer to the [motion docs](https://motion.dev/docs/react-scroll-animations) for more details.
+
+<ComponentPreview name="text-along-path-scroll-demo" />
+
+## Notes
+
+The performance impact of the animation increases with the length and complexity of the path. For optimal performance, especially if you're using multiple instances. Keep an eye on the perf :).
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>path<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The path to be animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>text<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text to be animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>pathId</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The ID for the path</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>pathClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for the path</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>preserveAspectRatio</TableCell>
+      <TableCell>`PerserveAspectRatio`</TableCell>
+      <TableCell>`"xMidYMid meet"`</TableCell>
+      <TableCell>The aspect ratio to preserve when scaling the SVG</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showPath</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to show the path</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>width</TableCell>
+      <TableCell>`string | number`</TableCell>
+      <TableCell>`100%`</TableCell>
+      <TableCell>The width of the SVG container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>height</TableCell>
+      <TableCell>`string | number`</TableCell>
+      <TableCell>`100%`</TableCell>
+      <TableCell>The height of the SVG container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>viewBox</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"0 0 100 100"`</TableCell>
+      <TableCell>The viewBox of the SVG container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>svgClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for the SVG container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>textClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for the text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>textAnchor</TableCell>
+      <TableCell>`"start" | "middle" | "end"`</TableCell>
+      <TableCell>`"start"`</TableCell>
+      <TableCell>The text anchor of the text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>animationType</TableCell>
+      <TableCell>`"auto" | "scroll"`</TableCell>
+      <TableCell>`"auto"`</TableCell>
+      <TableCell>The animation type</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>duration</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`4`</TableCell>
+      <TableCell>The duration of the animation in milliseconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>repeatCount</TableCell>
+      <TableCell>`number | "indefinite"`</TableCell>
+      <TableCell>`"indefinite"`</TableCell>
+      <TableCell>The number of times the animation should repeat</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>easingFunction</TableCell>
+      <TableCell>`{ calcMode?: string; keyTimes?: string; keySplines?: string }`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The easing function for the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollContainer</TableCell>
+      <TableCell>`RefObject<HTMLElement>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The ref to the container element that the scroll animation will be driven by</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollOffset</TableCell>
+      <TableCell>`UseScrollOptions["offset"]`</TableCell>
+      <TableCell>`["start end", "end end"]`</TableCell>
+      <TableCell>The scroll offset range for the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollTransformValues</TableCell>
+      <TableCell>`[number, number]`</TableCell>
+      <TableCell>`[0, 100]`</TableCell>
+      <TableCell>The scrollYProgress value returned by `useScroll` hook ranges between 0 and 1, and this prop defines how we should map these values to the `startOffset` attribute of the text elements. It will be converted to percentage values.</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
