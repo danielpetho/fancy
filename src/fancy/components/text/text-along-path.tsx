@@ -90,7 +90,6 @@ const AnimatedPathText = ({
   const id = pathId || `animated-path-${Math.random().toString(36).substring(7)}`
 
   const { scrollYProgress } = useScroll({
-    // target: scrollContainer || container,
     container: scrollContainer || container,
     offset: scrollOffset,
   })
@@ -98,12 +97,21 @@ const AnimatedPathText = ({
   const t = useTransform(scrollYProgress, [0, 1], scrollTransformValues)
 
   useEffect(() => {
-    scrollYProgress.on("change", (e) => {
-      textPathRefs.current.forEach((textPath, i) => {
-        textPath.setAttribute("startOffset", `${t.get()}%`)
+    // Re-initialize scroll handler when container ref changes
+    const handleChange = (e: number) => {
+      textPathRefs.current.forEach((textPath) => {
+        if (textPath) {
+          textPath.setAttribute("startOffset", `${t.get()}%`)
+        }
       })
-    })
-  }, [])
+    }
+    
+    scrollYProgress.on("change", handleChange)
+    
+    return () => {
+      scrollYProgress.clearListeners()
+    }
+  }, [scrollYProgress, t])
 
 
   const animationProps =
