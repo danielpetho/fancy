@@ -1,11 +1,25 @@
-import { RefObject, useEffect, useMemo, useRef, useState } from "react"
-import { MotionValue, useMotionValueEvent, useScroll, useTransform } from "motion/react"
+import { RefObject, useEffect, useRef } from "react"
+import { useScroll, UseScrollOptions, useTransform } from "motion/react"
+
+type PreserveAspectRatioAlign = 
+  | 'none' 
+  | 'xMinYMin' | 'xMidYMin' | 'xMaxYMin' 
+  | 'xMinYMid' | 'xMidYMid' | 'xMaxYMid' 
+  | 'xMinYMax' | 'xMidYMax' | 'xMaxYMax';
+
+type PreserveAspectRatioMeetOrSlice = 'meet' | 'slice';
+
+type PreserveAspectRatio = 
+  | PreserveAspectRatioAlign 
+  | `${Exclude<PreserveAspectRatioAlign, 'none'>} ${PreserveAspectRatioMeetOrSlice}`;
 
 interface AnimatedPathTextProps {
   // Path properties
   path: string
   pathId?: string
   pathClassName?: string
+  preserveAspectRatio?: PreserveAspectRatio
+  showPath?: boolean
 
   // SVG properties
   width?: string | number
@@ -17,7 +31,6 @@ interface AnimatedPathTextProps {
   text: string
   textClassName?: string
   textAnchor?: "start" | "middle" | "end"
-  side?: "inside" | "outside"
 
   // Animation properties
   animationType?: "auto" | "scroll"
@@ -25,8 +38,6 @@ interface AnimatedPathTextProps {
   // Animation properties if animationType is auto
   duration?: number
   repeatCount?: number | "indefinite"
-  from?: string
-  to?: string
   easingFunction?: {
     calcMode?: string
     keyTimes?: string
@@ -35,15 +46,17 @@ interface AnimatedPathTextProps {
 
   // Scroll animation properties if animationType is scroll
   scrollContainer?: RefObject<HTMLElement>
-  scrollOffset?: [string, string]
+  scrollOffset?: UseScrollOptions["offset"]
   scrollTransformValues?: [number, number]
 }
 
 const AnimatedPathText = ({
   // Path defaults
   path,
-  pathId = "animated-path",
+  pathId,
   pathClassName,
+  preserveAspectRatio = "xMidYMid meet",
+  showPath = false,
 
   // SVG defaults
   width = "100%",
@@ -54,8 +67,7 @@ const AnimatedPathText = ({
   // Text defaults
   text,
   textClassName,
-  textAnchor = "middle",
-  side = "outside",
+  textAnchor = "start",
 
   // Animation type
   animationType = "auto",
@@ -63,8 +75,6 @@ const AnimatedPathText = ({
   // Animation defaults
   duration = 4,
   repeatCount = "indefinite",
-  from = "0%",
-  to = "100%",
 
   easingFunction = {},
 
@@ -72,17 +82,17 @@ const AnimatedPathText = ({
   scrollContainer,
   scrollOffset = ["start end", "end end"],
   scrollTransformValues = [0, 100],
-  
 }: AnimatedPathTextProps) => {
-  const transform = side === "inside" ? "scale(1, -1)" : undefined
-
   const container = useRef<HTMLDivElement>(null)
   const textPathRefs = useRef<SVGTextPathElement[]>([])
+
+  // naive id for the path. you should rather use yours :)
+  const id = pathId || `animated-path-${Math.random().toString(36).substring(7)}`
 
   const { scrollYProgress } = useScroll({
     target: scrollContainer || container,
     container: scrollContainer || container,
-    offset: ["start end", "end end"],
+    offset: scrollOffset,
   })
 
   const t = useTransform(scrollYProgress, [0, 1], scrollTransformValues)
@@ -95,11 +105,12 @@ const AnimatedPathText = ({
     })
   }, [])
 
+
   const animationProps =
     animationType === "auto"
       ? {
-          from: from,
-          to: to,
+          from: "0%",
+          to: "100%",
           begin: "0s",
           dur: `${duration}s`,
           repeatCount: repeatCount,
@@ -114,17 +125,28 @@ const AnimatedPathText = ({
       width={width}
       height={height}
       viewBox={viewBox}
-      preserveAspectRatio="xMidYMid meet"
+      preserveAspectRatio={preserveAspectRatio}
     >
-      <path id={pathId} className={pathClassName} d={path} fill="none" />
+      <path
+        id={id}
+        className={pathClassName}
+        d={path}
+        stroke={showPath ? "currentColor" : "none"}
+        fill="none"
+      />
 
       {/* First text element */}
-      <text textAnchor={textAnchor} transform={transform} fill="currentColor">
+      <text
+        textAnchor={textAnchor}
+        fill="currentColor"
+      >
         <textPath
           className={textClassName}
-          href={`#${pathId}`}
+          href={`#${id}`}
           startOffset={"0%"}
-          ref={(ref) => (textPathRefs.current[0] = ref as SVGTextPathElement)}
+          ref={(ref) => {
+            if (ref) textPathRefs.current[0] = ref
+          }}
         >
           {animationType === "auto" && (
             <animate attributeName="startOffset" {...animationProps} />
@@ -135,12 +157,17 @@ const AnimatedPathText = ({
 
       {/* Second text element (offset to hide the jump) */}
       {animationType === "auto" && (
-        <text textAnchor={textAnchor} transform={transform} fill="currentColor">
+        <text
+          textAnchor={textAnchor}
+          fill="currentColor"
+        >
           <textPath
             className={textClassName}
-            href={`#${pathId}`}
+            href={`#${id}`}
             startOffset={"-100%"}
-            ref={(ref) => (textPathRefs.current[1] = ref as SVGTextPathElement)}
+            ref={(ref) => {
+              if (ref) textPathRefs.current[1] = ref
+            }}
           >
             {animationType === "auto" && (
               <animate

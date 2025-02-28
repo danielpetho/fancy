@@ -14,7 +14,7 @@ export default function Preview() {
   const buttonCopy = {
     idle: "Subscribe",
     loading: (
-      <motion.div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+      <motion.div className="h-2 w-2 sm:h-4 sm:w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
     ),
     success: "Done ✓",
   } as const
@@ -35,32 +35,33 @@ export default function Preview() {
   }, [buttonState])
 
   return (
-    <div className="w-full h-full flex justify-center items-center text-primaryBlue relative">
+    <div className="w-full h-full flex justify-center items-center text-primaryBlue relative bg-white">
       <AnimatedPathText
         path={rectPath}
-        svgClassName="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4/5 h-4/5"
-        viewBox="10 10 180 180"
+        svgClassName="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 py-2 sm:py-8"
+        viewBox="-20 10 240 180"
         text="JOIN THE WAITLIST ✉ JOIN THE WAITLIST ✉ JOIN THE WAITLIST ✉ JOIN THE WAITLIST ✉ JOIN THE WAITLIST ✉ "
         textClassName="text-[10.6px] lowercase font-azeretMono text-primaryBlue"
-        side="outside"
         duration={20}
+        preserveAspectRatio="none"
         textAnchor="start"
       />
 
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 p-6 bg-white/90 backdrop-blur-sm">
+      {/* This is just fluff for the demo */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-56 sm:w-80 p-6 ">
         <div className="space-y-2">
           <input
             type="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-primaryBlue focus:outline-none focus:none focus:ring-primaryBlue/50 font-azeretMono text-base placeholder:text-primaryBlue rounded-lg"
+            className="w-full px-3 py-2 sm:px-4 sm:py-2 border border-primaryBlue focus:outline-none focus:ring-primaryBlue/50 font-azeretMono text-xs sm:text-base placeholder:text-primaryBlue rounded-lg bg-white"
           />
           <Button
             type="submit"
             onClick={handleSubmit}
             disabled={buttonState === "loading"}
-            className="w-full px-8 py-2 bg-primaryBlue text-white hover:bg-primaryBlue/90 transition-colors font-azeretMono text-base rounded-lg"
+            className="w-full px-3 py-2 h-9 sm:h-11 sm:px-8 sm:py-2 bg-primaryBlue text-white hover:bg-primaryBlue/90 transition-colors font-azeretMono text-xs sm:text-base rounded-lg"
           >
             <AnimatePresence mode="popLayout" initial={false}>
               <motion.span
