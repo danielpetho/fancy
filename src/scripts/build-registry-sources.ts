@@ -40,10 +40,10 @@ function getSourceContent(filePath: string): string {
 
 function resolveColorInContent(content: string): string {
   const colorMappings = {
-    primaryRed: "#ff5941",
-    primaryOrange: "#f97316",
-    primaryPink: "#e794da",
-    primaryBlue: "#0015ff",
+    "primary-red": "#ff5941",
+    "primary-orange": "#f97316",
+    "primary-pink": "#e794da",
+    "primary-blue": "#0015ff",
     teal: "#1f464d",
     "teal-foreground": "#3bb6ab",
     yellow: "#eab308",
@@ -68,7 +68,7 @@ function resolveColorInContent(content: string): string {
   Object.entries(colorMappings).forEach(([color, hex]) => {
     // Match patterns like bg-red, text-red, border-red, etc.
     const regex = new RegExp(
-      `(bg|text|border|ring|outline|fill|stroke)-${color}(?![\\w-])`,
+      `(bg|text|border|ring-3|outline|fill|stroke)-${color}(?![\\w-])`,
       "g"
     )
     newContent = newContent.replace(regex, `$1-[${hex}]`)
@@ -77,7 +77,7 @@ function resolveColorInContent(content: string): string {
   // Handle opacity modifiers (bg-red/50, text-red/75, etc.)
   Object.entries(colorMappings).forEach(([color, hex]) => {
     const opacityRegex = new RegExp(
-      `(bg|text|border|ring|outline|fill|stroke)-${color}/([0-9]+)`,
+      `(bg|text|border|ring-3|outline|fill|stroke)-${color}/([0-9]+)`,
       "g"
     )
     newContent = newContent.replace(opacityRegex, (_, prefix, opacity) => {
@@ -379,10 +379,10 @@ function processRegistryItem(name: string, item: any): any {
       ...output.tailwind.config.theme.extend,
       colors: {
         ...(output.tailwind.config.theme.extend.colors || {}),
-        primaryRed: "var(--red)",
-        primaryOrange: "var(--orange)",
-        primaryPink: "var(--pink)",
-        primaryBlue: "var(--blue)",
+        "primary-red": "var(--red)",
+        "primary-orange": "var(--orange)",
+        "primary-pink": "var(--pink)",
+        "primary-blue": "var(--blue)",
         teal: {
           DEFAULT: "var(--teal)",
           foreground: "var(--teal-foreground)",

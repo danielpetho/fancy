@@ -12,7 +12,7 @@ const CirclingElementsDemo: React.FC = () => {
       className="w-full h-full bg-[#efefef] overflow-hidden flex items-center justify-center relative text-foreground dark:text-muted"
       ref={containerRef}
     >
-      <h1 className="z-30 text-3xl md:text-6xl font-overusedGrotesk">
+      <h1 className="z-30 text-3xl md:text-6xl font-overused-grotesk">
         page not found
       </h1>
       {[...exampleImages, ...exampleImages].map((image, index) => (

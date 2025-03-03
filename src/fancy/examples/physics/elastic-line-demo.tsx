@@ -20,7 +20,7 @@ export default function Preview() {
   }
 
   return (
-    <div className="w-full h-full flex flex-row items-center justify-center font-overusedGrotesk overflow-hidden bg-white text-foreground dark:text-muted">
+    <div className="w-full h-full flex flex-row items-center justify-center font-overused-grotesk overflow-hidden bg-white text-foreground dark:text-muted">
       <div className="absolute left-0 top-0 w-full h-full px-6 sm:px-8 md:px-12 z-10">
         {/* Animated elastic line */}
         <ElasticLine

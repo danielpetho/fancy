@@ -14,7 +14,7 @@ export default function Preview() {
         mediaType="image"
         triggerType="hover"
         mediaContainerClassName="w-full h-[30px] sm:h-[100px] overflow-hidden mx-px mt-1 sm:mx-2 sm:mt-4" 
-        className="cursor-pointer sm:text-6xl text-2xl text-primaryRed lowercase font-light flex flex-row items-center justify-center w-full"
+        className="cursor-pointer sm:text-6xl text-2xl text-primary-red lowercase font-light flex flex-row items-center justify-center w-full"
         animationVariants = {{
             initial: { width: 0 },
             animate: { width: screenSize.lessThan("sm") ? "30px" : "100px", transition: { duration: 0.4, type: "spring", bounce: 0 }  },

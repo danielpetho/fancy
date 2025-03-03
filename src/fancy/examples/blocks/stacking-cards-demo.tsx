@@ -10,7 +10,7 @@ import StackingCards, {
 
 const cards = [
   {
-    bgColor: "bg-primaryOrange",
+    bgColor: "bg-primary-orange",
     title: "The Guiding Light",
     description:
       "Lighthouses have stood as beacons of hope for centuries, guiding sailors safely through treacherous waters. Their glowing light and towering presence serve as a reminder of humanity’s connection to the sea.",
@@ -18,7 +18,7 @@ const cards = [
       "https://plus.unsplash.com/premium_vector-1739262161806-d954eb02427c?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MXxxdGU5Smx2R3d0b3x8ZW58MHx8fHx8",
   },
   {
-    bgColor: "bg-primaryBlue",
+    bgColor: "bg-primary-blue",
     title: "Life Beneath the Waves",
     description:
       "From shimmering schools of fish to solitary hunters, the ocean is home to an incredible variety of marine life. Each species plays a vital role in maintaining the balance of underwater ecosystems.",
@@ -26,7 +26,7 @@ const cards = [
       "https://plus.unsplash.com/premium_vector-1739200616200-69a138d91627?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MnxxdGU5Smx2R3d0b3x8ZW58MHx8fHx8",
   },
   {
-    bgColor: "bg-primaryRed",
+    bgColor: "bg-primary-red",
     title: "Alone on the Open Sea",
     description:
       "Drifting across the endless horizon, traveling alone on the sea is a test of courage and resilience. With nothing but the waves and the sky, solitude becomes both a challenge and a source of deep reflection.",
@@ -42,7 +42,7 @@ const cards = [
       "https://plus.unsplash.com/premium_vector-1738935247245-97940c74cced?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8MTZ8cXRlOUpsdkd3dG98fGVufDB8fHx8fA%3D%3D",
   },
   {
-    bgColor: "bg-primaryBlue",
+    bgColor: "bg-primary-blue",
     title: "The Era of Whaling",
     description:
       "Once a thriving industry, whale hunting shaped economies and cultures across the world. Today, efforts to protect these majestic creatures highlight the shift toward conservation and respect for marine life.",
@@ -63,7 +63,7 @@ export default function StackingCardsDemo() {
         totalCards={cards.length}
         scrollOptons={{ container: { current: container } }}
       >
-        <div className="relative font-calendas h-[620px] w-full z-10 text-2xl md:text-7xl font-bold uppercase flex justify-center items-center text-primaryRed whitespace-pre">
+        <div className="relative font-calendas h-[620px] w-full z-10 text-2xl md:text-7xl font-bold uppercase flex justify-center items-center text-primary-red whitespace-pre">
           Scroll down ↓
         </div>
         {cards.map(({ bgColor, description, image, title }, index) => {
@@ -94,7 +94,7 @@ export default function StackingCardsDemo() {
         })}
 
         <div className="w-full h-80 relative overflow-hidden">
-          <h2 className="absolute bottom-0 left-0 translate-y-1/3 sm:text-[192px] text-[80px] text-primaryRed font-calendas">
+          <h2 className="absolute bottom-0 left-0 translate-y-1/3 sm:text-[192px] text-[80px] text-primary-red font-calendas">
             fancy
           </h2>
         </div>

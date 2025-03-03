@@ -26,7 +26,7 @@ export default function Preview() {
   ]
 
   return (
-    <div className="w-full h-full flex flex-col relative font-overusedGrotesk justify-center items-center bg-white">
+    <div className="w-full h-full flex flex-col relative font-overused-grotesk justify-center items-center bg-white">
       <Gravity
         attractorStrength={0.0}
         cursorStrength={0.0004}

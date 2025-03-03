@@ -34,7 +34,7 @@ export default function GooeyDemo() {
 
       <p className="text-white text-4xl sm:text-5xl md:text-7xl z-10 font-calendas w-1/2 font-bold">
         Speaking things into existence
-        <span className="font-overusedGrotesk"></span>
+        <span className="font-overused-grotesk"></span>
       </p>
     </div>
   )

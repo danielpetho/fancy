@@ -20,7 +20,7 @@ export function DocsPager({ doc }: DocsPagerProps) {
       {pager?.prev?.href && (
         <Link
           href={pager.prev.href}
-          className="items-center flex flex-row justify-center bg-zinc-200/50 rounded-lg pl-2 pr-6 py-2 shadow "
+          className="items-center flex flex-row justify-center bg-zinc-200/50 rounded-lg pl-2 pr-6 py-2 shadow-sm "
         >
           <p className="font-serif sm:mr-2 h-7 w-7 rotate-180 ">&#8594;</p>
           <span className="truncate hidden sm:block">{pager.prev.title}</span>
@@ -29,7 +29,7 @@ export function DocsPager({ doc }: DocsPagerProps) {
       {pager?.next?.href && (
         <Link
           href={pager.next.href}
-          className=" flex flex-row  items-center justify-center bg-zinc-200/50 rounded-lg pr-2 pl-6 py-2 shadow"
+          className=" flex flex-row  items-center justify-center bg-zinc-200/50 rounded-lg pr-2 pl-6 py-2 shadow-sm"
         >
           <span className="truncate hidden sm:block">{pager.next.title}</span>
           <span className="font-serif h-7 w-7 sm:ml-2">&#8594;</span>

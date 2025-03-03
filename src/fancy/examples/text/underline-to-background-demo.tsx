@@ -23,7 +23,7 @@ export default function UnderlineToBackgroundDemo() {
   return (
     <div className="w-full h-full flex flex-col items-center justify-center bg-[#f5f5f5]">
       <motion.h2
-        className="text-primaryBlue text-xl p-12 md:p-24"
+        className="text-primary-blue text-xl p-12 md:p-24"
         initial="hidden"
         animate="visible"
         variants={fadeInVariants}

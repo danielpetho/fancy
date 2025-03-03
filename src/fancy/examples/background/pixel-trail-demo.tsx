@@ -5,7 +5,7 @@ const PixelTrailDemo: React.FC = () => {
   const screenSize = useScreenSize()
 
   return (
-    <div className="w-full h-full bg-black text-white flex flex-col font-azeretMono">
+    <div className="w-full h-full bg-black text-white flex flex-col font-azeret-mono">
       <div className="absolute inset-0 z-0">
         <PixelTrail
           pixelSize={screenSize.lessThan(`md`) ? 16 : 24}

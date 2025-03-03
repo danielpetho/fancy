@@ -39,7 +39,7 @@ export default async function ComponentsPage() {
               />
 
               {/* Component Info Overlay */}
-              {/* <div className="absolute inset-x-0 bottom-0 flex items-end bg-gradient-to-t from-black from-[-100%] to-30% to-transparent p-4 h-full">
+              {/* <div className="absolute inset-x-0 bottom-0 flex items-end bg-linear-to-t from-black from-[-100%] to-30% to-transparent p-4 h-full">
                 <h3 className="text-sm font-semibold text-white bottom-0">
                   {component.name
                     .split("-")

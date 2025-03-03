@@ -12,14 +12,14 @@ export default function Preview() {
 
   return (
     <div
-      className="w-full h-full rounded-lg items-center justify-center font-overusedGrotesk p-24 bg-background relative cursor-none overflow-hidden"
+      className="w-full h-full rounded-lg items-center justify-center font-overused-grotesk p-24 bg-background relative cursor-none overflow-hidden"
       ref={containerRef}
     >
       {/* this is the important stuff */}
       <div className="w-full h-full items-center justify-center flex">
         <VariableFontAndCursor
           label="fancy!"
-          className="text-5xl sm:text-7xl md:text-9xl text-primaryOrange"
+          className="text-5xl sm:text-7xl md:text-9xl text-primary-orange"
           fontVariationMapping={{
             y: { name: "wght", min: 100, max: 900 },
             x: { name: "slnt", min: 0, max: -10 },
@@ -30,7 +30,7 @@ export default function Preview() {
 
       {/* this is just fluff for the demo */}
 
-      <div className="absolute bottom-8 left-8 flex flex-col font-azeretMono">
+      <div className="absolute bottom-8 left-8 flex flex-col font-azeret-mono">
         <span className="text-xs text-foreground/60 tabular-nums">
           x: {Math.round(x)}
         </span>
@@ -52,7 +52,7 @@ export default function Preview() {
         }}
       />
       <div
-        className="absolute w-2 h-2 bg-primaryOrange -translate-x-1/2 -translate-y-1/2 rounded-xs"
+        className="absolute w-2 h-2 bg-primary-orange -translate-x-1/2 -translate-y-1/2 rounded-xs"
         style={{
           top: `${y}px`,
           left: `${x}px`,

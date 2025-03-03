@@ -2,7 +2,7 @@ import VerticalCutReveal from "@/fancy/components/text/vertical-cut-reveal"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full xs:text-2xl bg-white text-2xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl flex flex-col items-start justify-center font-overusedGrotesk p-10 md:p-16 lg:p-24 text-primaryBlue tracking-wide uppercase">
+    <div className="w-full h-full xs:text-2xl bg-white text-2xl sm:text-4xl md:text-5xl lg:text-5xl xl:text-5xl flex flex-col items-start justify-center font-overused-grotesk p-10 md:p-16 lg:p-24 text-primary-blue tracking-wide uppercase">
       <VerticalCutReveal
         splitBy="characters"
         staggerDuration={0.025}
