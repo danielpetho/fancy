@@ -103,7 +103,7 @@ export function ComponentSource({
           <CollapsibleTrigger asChild>
             <Button
               variant="secondary"
-              className="h-8 text-xs bg-white hover:bg-accent"
+              className="h-8 text-xs bg-white text-black hover:bg-accent"
             >
               {isOpened ? "Collapse" : expandButtonTitle}
             </Button>
