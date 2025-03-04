@@ -4,7 +4,7 @@ import { motion } from "motion/react"
 
 import Float from "@/fancy/components/blocks/float"
 
-import { exampleImages } from "@/utils/_helpers/exampleImages"
+import { exampleImages } from "@/utils/demo-images"
 
 export default function FloatDemo() {
   return (
