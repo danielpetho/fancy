@@ -1,3 +1,5 @@
+// author: Khoa Phan <https://www.pldkhoa.dev>
+
 "use client"
 
 import {
@@ -6,7 +8,6 @@ import {
   useRef,
   type HTMLAttributes,
   type PropsWithChildren,
-  type RefObject,
 } from "react"
 import {
   motion,

@@ -150,7 +150,29 @@ export default async function DocPage({ params }: DocPageProps) {
                             </span>
                           )
                         })
-                      : doc.author}
+                      : doc.author.match(/(.*?)\s*<(https?:\/\/[^>]+)>/g)
+                        ? doc.author.split(",").map((author, i) => {
+                            const match = author.match(
+                              /(.*?)\s*<(https?:\/\/[^>]+)>/
+                            )
+                            if (match) {
+                              return (
+                                <span key={i}>
+                                  {i > 0 && " "}
+                                  <a href={match[2]} className="underline">
+                                    {match[1].trim()}
+                                  </a>
+                                </span>
+                              )
+                            }
+                            return (
+                              <span key={i}>
+                                {i > 0 && " "}
+                                {author.trim()}
+                              </span>
+                            )
+                          })
+                        : doc.author}
                   </p>
                 </>
               )}

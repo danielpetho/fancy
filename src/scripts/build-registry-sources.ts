@@ -259,6 +259,7 @@ function processRegistryItem(name: string, item: any): any {
     name,
     type: item.type,
     dependencies: item.dependencies || [],
+    author: item.author, // Add this line
   }
 
    // Collect direct registryDependencies

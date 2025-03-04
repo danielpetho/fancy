@@ -19,6 +19,11 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/components",
         items: [],
       },
+      {
+        title: "Changelog",
+        href: "/docs/changelog",
+        items: [],
+      }
     ],
   },
 

@@ -31,6 +31,34 @@ interface RegistryItem {
   devDependencies?: string[]
   tailwind?: string
   cssVars?: string
+  author?: string
+}
+
+function getAuthor(componentName: string, type: "ui" | "example" | "hook" | "util"): string {
+  const defaultAuthor = "daniel petho <https://www.danielpetho.com>"
+  
+  // Get the source file path based on type
+  let sourceFilePath
+  if (type === "example") {
+    sourceFilePath = path.join(baseDir, "examples", "blocks", `${componentName}.tsx`)
+  } else if (type === "ui") {
+    sourceFilePath = path.join(baseDir, "components", "blocks", `${componentName}.tsx`)
+  } else if (type === "hook") {
+    sourceFilePath = path.join(__dirname, "..", "hooks", `${componentName}.ts`)
+  } else if (type === "util") {
+    sourceFilePath = path.join(__dirname, "..", "utils", `${componentName}.ts`)
+  }
+
+  if (sourceFilePath && fs.existsSync(sourceFilePath)) {
+    const content = fs.readFileSync(sourceFilePath, "utf-8")
+    const authorMatch = content.match(/\/\/\s*author:\s*([^<]+)<([^>]+)>/)
+    if (authorMatch) {
+      const [_, name, url] = authorMatch
+      return `${name.trim()} <${url.trim()}>`
+    }
+  }
+
+  return defaultAuthor
 }
 
 function findHookImports(sourceCode: string): string[] {
@@ -300,6 +328,7 @@ function generateRegistryItem(
             ? "registry:lib"
             : "registry:ui",
     files,
+    author: getAuthor(name, type),
     ...(componentDeps.length > 0 && {
       registryDependencies: componentDeps,
     }),

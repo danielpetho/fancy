@@ -1,0 +1,25 @@
+---
+title: Changelog
+component: false
+description: ""
+---
+
+### 2025-03-04
+
+#### Tailwind v4 Migration 🎉
+We've upgraded to Tailwind v4! This major version brings several important changes:
+
+**Breaking Changes:**
+- Configuration is now stored directly in `global.css` instead of `tailwind.config.ts`
+- The open-in-v0 feature currently doesn't support CSS variables - these need to be added manually
+- CLI installation behavior has changed: CSS variables won't automatically merge with `global.css` when using layers, so you need to add them manually for now. 
+- Syntax changes for Tailwind classes and colors (see official [migration guide](https://tailwindcss.com/docs/upgrade-guide))
+
+**Affected Components:**
+- Circling Elements
+- Animated Gradient With SVG
+
+**Documentation Updates:**
+- Contribution guidelines have been updated to reflect v4 changes
+
+For a complete overview of syntax changes and new features, please refer to the official [Tailwind v4 announcement](https://tailwindcss.com/blog/tailwindcss-v4#css-first-configuration).

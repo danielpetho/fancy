@@ -94,13 +94,14 @@ If you think your component is a good fit, read on.
 4. If you're using new hooks, please add them to the `src/hooks` directory.
 5. If you're using new utilities, please add them to the `src/utils` directory, unless you want them in the same file as the component.
 6. When importing hooks and utilities, always use the `@/hooks` and `@/utils` path aliases (e.g. `import { useHook } from "@/hooks/use-hook"`). This is crucial because the registry build script looks for these specific import paths in the source code to determine which files and dependencies to include in the generated registry. Without the correct import paths, the CLI installation won't work properly.
+7. Please add yourself (or others if there are multiple ones) as the author in all files as a comment, in the following format: `// author: author_1 <https://x.com/author_1>, author_2 <https://x.com/author_2?`. Please refer to [this example](./src/fancy/components/blocks/stacking-cards.tsx) for reference.
 
 Some things cannot be fetched from the source file, such as: 
  - CSS variables, if applicable.
  - The component's dev dependencies (eg. types for matter-js), if applicable.
  - The component's additional dependencies, which aren't listed in the source file of the component, but are required for the component to work properly.
 
-Therefore, you need to add these config in a .json file with the same name as the component, next to the component .tsx file. The schema for this json is defined the [registry schema file](./src/fancy/schema.ts). Please, refer to [this example](./src/fancy/components/blocks/circling-elements.json) (additional tailwind config) and [this example](./src/fancy/components/text/gravity.json) (additional dependencies) for reference.
+Therefore, you need to add these config in a .json file with the same name as the component, next to the component .tsx file. The schema for this json is defined the [registry schema file](./src/fancy/schema.ts). Please, refer to [this example](./src/fancy/components/blocks/circling-elements.json) (additional css config) and [this example](./src/fancy/components/text/gravity.json) (additional dependencies) for reference.
 
 ### 2. Component demo(s)
 
@@ -116,7 +117,7 @@ Therefore, you need to add these config in a .json file with the same name as th
 1. Navigate to the `src/content/docs/components` directory.
 2. In the same category folder as the component source, create a new `.mdx` file for the documentation.
 3. In the component header, add a title, description.
-4. Also add yourself as the author (and others, if there are multiple ones) in a markdown format, ideally with a link to your website or other profile. It expects the following format: `author: "[author_1](https://x.com/author_1), [author_2](https://x.com/author_2)"`. Please, ensure that it's a string, either in single or double quotes.
+4. Also add yourself as the author (and others, if there are multiple ones) in the following format, ideally with a link to your website or other profile: `author: author_1 <https://x.com/author_1>, author_2 <https://x.com/author_2?`.
 
 An example of a component header:
 
@@ -125,7 +126,7 @@ An example of a component header:
 title: Letter Swap Hover
 description: A text component that swaps the letters vertically on hover.
 component: true
-author: "[johndoe](https://example.com)"
+author: johndoe <https://example.com>
 ---
 ```
 
