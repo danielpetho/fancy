@@ -41,6 +41,7 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
         {colors.map((color, index) => {
           const animationProps = {
             animation: `background-gradient ${speed}s infinite ease-in-out`,
+            animationDuration: `${speed}s`,
             top: `${Math.random() * 50}%`,
             left: `${Math.random() * 50}%`,
             "--tx-1": Math.random() - 0.5,
@@ -56,7 +57,7 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
           return (
             <svg
               key={index}
-              className={cn("absolute")}
+              className={cn("absolute", 'animate-background-gradient')}
               width={circleSize * randomInt(0.5, 1.5)}
               height={circleSize * randomInt(0.5, 1.5)}
               viewBox="0 0 100 100"

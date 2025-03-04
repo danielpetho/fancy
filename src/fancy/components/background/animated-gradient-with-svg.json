@@ -1,6 +1,7 @@
 {
   "cssVars": {
     "@theme": {
+      "--animate-background-gradient": "background-gradient",
       "@keyframes background-gradient": {
         "0%, 100%": {
           "transform": "translate(0, 0)",
