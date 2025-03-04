@@ -30,6 +30,7 @@ interface RegistryItem {
   component?: string
   devDependencies?: string[]
   tailwind?: string
+  cssVars?: string
 }
 
 function findHookImports(sourceCode: string): string[] {
@@ -316,6 +317,9 @@ function generateRegistryItem(
     } : null),
     ...(additionalConfig?.tailwind && {
       tailwind: additionalConfig.tailwind,
+    }),
+    ...(additionalConfig?.cssVars && {
+      cssVars: additionalConfig.cssVars,
     }),
     ...(type !== "hook" &&
       type !== "util" && {

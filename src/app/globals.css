@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @source '../**/*.{ts,tsx}';
 
@@ -58,11 +58,6 @@
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
-  --animate-circling: circling calc(var(--circling-duration) * 1s) linear
-    infinite;
-  --animate-background-gradient: background-gradient
-    var(--background-gradient-speed, 15s) cubic-bezier(0.445, 0.05, 0.55, 0.95)
-    infinite;
 
   @keyframes accordion-down {
     from {
@@ -226,7 +221,6 @@
     --input: 12 6.5% 15.1%;
     --ring: 24 5.7% 82.9%;
 
-
     /* Other colors */
     --red: #ff5941;
     --orange: #f97316;
@@ -251,8 +245,10 @@
   @font-face {
     font-family: "Overused Grotesk";
     src:
-      url("../../public/fonts/OverusedGrotesk-VF.woff2") format("woff2 supports variations"),
-      url("../../public/fonts/OverusedGrotesk-VF.woff2") format("woff2-variations");
+      url("../../public/fonts/OverusedGrotesk-VF.woff2")
+        format("woff2 supports variations"),
+      url("../../public/fonts/OverusedGrotesk-VF.woff2")
+        format("woff2-variations");
     font-weight: 300 900;
   }
 
@@ -276,13 +272,15 @@
 
   @font-face {
     font-family: "Azeret Mono";
-    src: url("../../public/fonts/AzeretMono-Variable.woff2") format("woff2-variations");
+    src: url("../../public/fonts/AzeretMono-Variable.woff2")
+      format("woff2-variations");
     font-weight: 100 900;
   }
 
   @font-face {
     font-family: "Noto Sans Symbols";
-    src: url("../../public/fonts/NotoSansSymbols-VariableFont_wght.ttf") format("truetype-variations");
+    src: url("../../public/fonts/NotoSansSymbols-VariableFont_wght.ttf")
+      format("truetype-variations");
     font-weight: 100 900;
   }
 }

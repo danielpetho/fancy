@@ -46,7 +46,6 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
               {
                 top: `${Math.random() * 50}%`,
                 left: `${Math.random() * 50}%`,
-                "--background-gradient-speed": `${1 / speed}s`,
                 "--tx-1": Math.random() - 0.5,
                 "--ty-1": Math.random() - 0.5,
                 "--tx-2": Math.random() - 0.5,
@@ -55,6 +54,7 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
                 "--ty-3": Math.random() - 0.5,
                 "--tx-4": Math.random() - 0.5,
                 "--ty-4": Math.random() - 0.5,
+                animation: `background-gradient ${speed}s linear infinite`,
               } as React.CSSProperties
             }
             width={circleSize * randomInt(0.5, 1.5)}

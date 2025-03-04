@@ -1,21 +1,12 @@
 {
-  "tailwind": {
-    "config": {
-      "theme": {
-        "extend": {
-          "animation": {
-            "circling": "circling calc(var(--duration-duration)*1s) linear infinite"
-          },
-          "keyframes": {
-            "circling": {
-              "0%": {
-                "transform": "rotate(calc(var(--offset) * 1deg)) translate(calc(var(--radius) * 1px), 0) rotate(calc(var(--offset) * -1deg))"
-              },
-              "100%": {
-                "transform": "rotate(calc(360deg + (var(--offset) * 1deg))) translate(calc(var(--radius) * 1px), 0) rotate(calc(-360deg + (var(--offset) * -1deg)))"
-              }
-            }
-          }
+  "cssVars": {
+    "@theme": {
+      "@keyframes circling": {
+        "0%": {
+          "transform": "rotate(calc(var(--circling-offset) * 1deg)) translate(calc(var(--circling-radius) * 1px), 0) rotate(calc(var(--circling-offset) * -1deg))"
+        },
+        "100%": {
+          "transform": "rotate(calc(360deg + (var(--circling-offset) * 1deg))) translate(calc(var(--circling-radius) * 1px), 0) rotate(calc(-360deg + (var(--circling-offset) * -1deg)))"
         }
       }
     }

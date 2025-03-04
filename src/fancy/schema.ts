@@ -18,7 +18,8 @@ export const registrySchema = z.record(
     })),
     type: z.enum(["registry:ui", "registry:block", "registry:hook" , "registry:lib"]),
     component: z.function().args(z.any()).returns(z.any()).optional(), // lazy loading component for the documentation page. Not part of the output .json file
-    tailwind: tailwindSchema
+    tailwind: tailwindSchema,
+    cssVars: z.record(z.string(), z.unknown()).optional()
   })
 )
 
