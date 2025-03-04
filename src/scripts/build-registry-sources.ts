@@ -354,7 +354,7 @@ function processRegistryItem(name: string, item: any): any {
   if (item.type === "registry:block") {
     output.cssVars = {
       ...output.cssVars,
-      light: {
+      ":root": {
         red: "#ff5941",
         orange: "#f97316",
         pink: "#e794da",

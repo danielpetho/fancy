@@ -1,6 +1,6 @@
 {
   "cssVars": {
-    "@theme": {
+    "@theme inline": {
       "--animate-background-gradient": "background-gradient",
       "@keyframes background-gradient": {
         "0%, 100%": {

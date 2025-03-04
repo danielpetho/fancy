@@ -1,6 +1,6 @@
 {
   "cssVars": {
-    "@theme": {
+    "@theme inline": {
       "--animate-circling": "circling",
       "@keyframes circling": {
         "0%": {
