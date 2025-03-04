@@ -47,10 +47,7 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
             viewBox="0 0 100 100"
             style={
               {
-                animation: `background-gradient`,
-                animationDuration: `${speed}s`,
-                animationTimingFunction: "ease-in-out",
-                animationIterationCount: "infinite",
+                animation: `background-gradient ${speed}s infinite ease-in-out`,
                 top: `${Math.random() * 50}%`,
                 left: `${Math.random() * 50}%`,
                 "--tx-1": Math.random() - 0.5,

@@ -19,8 +19,6 @@ const CirclingElements: React.FC<CirclingElementsProps> = ({
   easing = "linear",
   className,
 }) => {
-  //const animation = useMemo(() => `animate-[circling_${duration}s_${easing}]`, [duration, easing])
-
   return (
     <div className={`relative w-full h-full ${className}`}>
       {React.Children.map(children, (child, index) => {
@@ -28,13 +26,13 @@ const CirclingElements: React.FC<CirclingElementsProps> = ({
         return (
           <motion.div
             key={index}
-            className={cn("transform-gpu absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-circling")}
+            className={cn("transform-gpu absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2")}
             style={
               {
-                //"--circling-duration": duration,
+                "--circling-duration": duration,
                 "--circling-radius": radius,
                 "--circling-offset": offset,
-                animation: `circling ${duration}s ${easing} infinite`,
+                animation: `circling ${duration}s infinite ${easing}`,
               } as React.CSSProperties
             }
           >

@@ -58,6 +58,8 @@
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-circling: circling;
+  --animate-background-gradient: background-gradient;
 
   @keyframes accordion-down {
     from {

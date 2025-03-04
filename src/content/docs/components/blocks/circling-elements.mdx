@@ -30,28 +30,21 @@ Inspiration from [Bakken & Bæck](https://www.instagram.com/p/DBG5fLdiN4Q/?img_i
 <ComponentSource name="circling-elements" />
 
 <Step>
-  Add the following animation and keyframes to your `tailwind.config.js` file:
+  Add the following animation and keyframes to your `globals.css` file:
 </Step>
 
 <CodeBlockWrapper language="typescript">
-  {`module.exports = {
+  {`
   // ...
-  theme: {
+  @theme: {
     // ...
-    animation: {
-      "circling": "circling calc(var(--duration)*1s) linear infinite",
-    },
-    keyframes: {
-      "circling": {
-        "0%": {
-          transform:
-            "rotate(calc(var(--offset) * 1deg)) translate(calc(var(--radius) * 1px), 0) rotate(calc(var(--offset) * -1deg))",
-        },
-        "100%": {
-          transform:
-            "rotate(calc(360deg + (var(--offset) * 1deg))) translate(calc(var(--radius) * 1px), 0) rotate(calc(-360deg + (var(--offset) * -1deg)))",
-        },
-      },
+    @keyframes circling {
+      0% {
+        transform: rotate(calc(var(--offset) * 1deg)) translate(calc(var(--radius) * 1px), 0) rotate(calc(var(--offset) * -1deg));
+      }
+      100% {
+        transform: rotate(calc(360deg + (var(--offset) * 1deg))) translate(calc(var(--radius) * 1px), 0) rotate(calc(-360deg + (var(--offset) * -1deg)));
+      } 
     },
   },
 };

@@ -2,7 +2,7 @@ import Link from "next/link"
 
 import VariableFontHoverByLetter from "@/fancy/components/text/variable-font-hover-by-letter"
 
-import ThemeSwitcher from "./ui/ThemeSwitcher"
+import ThemeSwitcher from "./theme-switcher"
 
 export function MainNav() {
   return (
