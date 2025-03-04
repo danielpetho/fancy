@@ -10,7 +10,7 @@ If you need any help, feel free to reach out to [daniel](https://x.com/nonzeroex
 
 ## Stack
 
-- Tailwind CSS for styling the components.
+- Tailwind v4 for styling the components.
 - Motion (formerly Framer Motion) for animations. Please use the latest version.
 - React 18 (React 19 is not supported yet).
 - MDX for the documentation.
@@ -96,7 +96,7 @@ If you think your component is a good fit, read on.
 6. When importing hooks and utilities, always use the `@/hooks` and `@/utils` path aliases (e.g. `import { useHook } from "@/hooks/use-hook"`). This is crucial because the registry build script looks for these specific import paths in the source code to determine which files and dependencies to include in the generated registry. Without the correct import paths, the CLI installation won't work properly.
 
 Some things cannot be fetched from the source file, such as: 
- - The component's tailwind config, if applicable.
+ - CSS variables, if applicable.
  - The component's dev dependencies (eg. types for matter-js), if applicable.
  - The component's additional dependencies, which aren't listed in the source file of the component, but are required for the component to work properly.
 
@@ -139,6 +139,10 @@ author: "[johndoe](https://example.com)"
 12. Add an `Credits` section, if applicable. Make sure to also include the credits under each demo, if applicable.
 
 Please, have a look at an [existing component](./src/content/docs/components/blocks/circling-elements.mdx) for reference.
+
+### 5. Update the navbar
+
+In the `src/config/docs.ts` file, add a new item to the `docsConfig` array, at the correct category. Please make sure to add the `href`, and `New` as the `label`.
 
 When you're done and ready to submit your PR, please create a quick recording of your work, and upload it to the PR description. It will help us to speed up the review process. Check out [this PR](https://github.com/danielpetho/fancy/pull/2) for reference.
 
