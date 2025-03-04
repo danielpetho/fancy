@@ -21,7 +21,7 @@ export default function Preview() {
   }, [isInView])
 
   return (
-    <div className="w-full h-full font-overusedGrotesk bg-primaryBlue overflow-auto text-white text md:text-4xl lg:text-4xl font-bold text-xl">
+    <div className="w-full h-full font-overused-grotesk bg-primary-blue overflow-auto text-white text md:text-4xl lg:text-4xl font-bold text-xl">
       <div className="h-full flex w-full  justify-center items-center ">
         Scroll down champ ↓
       </div>

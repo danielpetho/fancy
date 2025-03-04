@@ -16,7 +16,7 @@ export default function NotFound() {
       ref={containerRef}
     >
       <div className="flex flex-col items-center justify-center z-30 space-y-8">
-        <h1 className="text-3xl md:text-6xl font-overusedGrotesk">
+        <h1 className="text-3xl md:text-6xl font-overused-grotesk">
           page not found
         </h1>
 
@@ -41,9 +41,9 @@ export default function NotFound() {
         { speed: 1.8, pos: [15, 65], angle: -80, color: "bg-red" },
         { speed: 1.5, pos: [15, -50], angle: 15, color: "bg-[#1f464d]" },
         { speed: 1.3, pos: [-20, 40], angle: 55, color: "bg-[#ffd726]" },
-        { speed: 1.4, pos: [70, -25], angle: -40, color: "bg-primaryBlue" },
+        { speed: 1.4, pos: [70, -25], angle: -40, color: "bg-primary-blue" },
         { speed: 1.6, pos: [-45, -55], angle: 70, color: "bg-[#E794DA] " },
-        { speed: 1.9, pos: [40, 85], angle: -30, color: "bg-primaryBlue" },
+        { speed: 1.9, pos: [40, 85], angle: -30, color: "bg-primary-blue" },
         { speed: 1.4, pos: [80, 75], angle: -60, color: "bg-[#E794DA]" },
         { speed: 1.6, pos: [5, -35], angle: 25, color: "bg-orange-500" },
       ].map(({ speed, pos, angle, color }, i) => (

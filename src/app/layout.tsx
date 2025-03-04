@@ -69,7 +69,7 @@ export default function RootLayout({
         <script src="https://unpkg.com/react-scan/dist/auto.global.js"/>
       </head> */}
       <body
-        className={`font-overusedGrotesk bg-background antialiased flex items-center justify-center w-full text-foreground`}
+        className={`font-overused-grotesk bg-background antialiased flex items-center justify-center w-full text-foreground`}
       >
         <ThemeProvider
           attribute="class"
@@ -77,7 +77,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <main className="h-full w-full max-w-screen-2xl flex flex-col items-center justify-center">
+          <main className="h-full w-full max-w-(--breakpoint-2xl) flex flex-col items-center justify-center">
             {children}
             <Analytics />
           </main>

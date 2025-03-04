@@ -10,7 +10,7 @@ export default function Preview() {
           sequential={true}
           revealDirection="start"
           useOriginalCharsOnly={false}
-          className="font-azeretMono"
+          className="font-azeret-mono"
           characters="abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;':\,./<>?"
         />
       </div>
@@ -21,7 +21,7 @@ export default function Preview() {
           sequential={true}
           revealDirection="center"
           useOriginalCharsOnly={false}
-          className="font-azeretMono"
+          className="font-azeret-mono"
           characters="abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;':\,./<>?"
         />
       </div>
@@ -32,7 +32,7 @@ export default function Preview() {
           sequential={true}
           revealDirection="end"
           useOriginalCharsOnly={false}
-          className="font-azeretMono"
+          className="font-azeret-mono"
           characters="abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+-=[]{}|;':\,./<>?"
         />
       </div>

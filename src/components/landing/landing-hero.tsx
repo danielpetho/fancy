@@ -46,7 +46,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
                   "pop ✨",
                   "rock 🤘",
                 ]}
-                mainClassName="overflow-hidden pr-3 text-primaryBlue py-0 pb-2 md:pb-4 rounded-xl"
+                mainClassName="overflow-hidden pr-3 text-primary-blue py-0 pb-2 md:pb-4 rounded-xl"
                 staggerDuration={0.03}
                 staggerFrom="last"
                 rotationInterval={3000}
@@ -56,7 +56,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
           </LayoutGroup>
         </motion.h1>
         <motion.p
-          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-center font-overusedGrotesk pt-4 sm:pt-8 md:pt-10 lg:pt-12"
+          className="text-sm sm:text-lg md:text-xl lg:text-2xl text-center font-overused-grotesk pt-4 sm:pt-8 md:pt-10 lg:pt-12"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.5 }}
@@ -65,7 +65,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
           microinteractions. free & open source.
         </motion.p>
         {/* <motion.p
-          className="text-2xl text-center font-overusedGrotesk pt-4"
+          className="text-2xl text-center font-overused-grotesk pt-4"
           animate={{ opacity: 1, y: 0 }}
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.2, ease: "easeOut", delay: 0.1 }}
@@ -96,7 +96,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
             </Link>
           </motion.button>
           <motion.button
-            className=" sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-white bg-primaryBlue px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas"
+            className=" sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-white bg-primary-blue px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{

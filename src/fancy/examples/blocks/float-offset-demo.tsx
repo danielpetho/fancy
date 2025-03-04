@@ -49,7 +49,7 @@ export default function FloatDemo() {
           ]}
           speed={0.3 + Math.random() * 0.4}
           className={cn(
-            "absolute text-lg flex sm:text-xl md:text-2xl font-light hover:underline cursor-pointer text-primaryBlue",
+            "absolute text-lg flex sm:text-xl md:text-2xl font-light hover:underline cursor-pointer text-primary-blue",
             item.position
           )}
         >

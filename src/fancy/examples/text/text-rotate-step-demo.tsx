@@ -10,7 +10,7 @@ export default function Preview() {
   const textRotateRef = useRef<TextRotateRef>(null)
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center font-overusedGrotesk bg-white text-foreground dark:text-muted font-light overflow-hidden p-8 sm:p-20 md:p-24 gap-8">
+    <div className="w-full h-full flex flex-col items-center justify-center font-overused-grotesk bg-white text-foreground dark:text-muted font-light overflow-hidden p-8 sm:p-20 md:p-24 gap-8">
       <LayoutGroup>
         <motion.p className="" layout>
           <TextRotate

@@ -114,7 +114,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.HTMLAttributes<HTMLParagraphElement>) => (
       <p
         className={cn(
-          "leading-7 [&:not(:first-child)]:mt-3 text-lg",
+          "leading-7 not-first:mt-3 text-lg",
           className
         )}
         {...props}
@@ -250,7 +250,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     code: ({ children, className, ...props }: React.ComponentProps<"code">) => (
       <code
         className={cn(
-          "font-azeretMono text-xs p-1 bg-zinc-100 dark:bg-zinc-800",
+          "font-azeret-mono text-xs p-1 bg-zinc-100 dark:bg-zinc-800",
           className
         )}
         {...props}
@@ -283,7 +283,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       ...props
     }: React.ComponentProps<typeof TableBody>) => (
       <TableBody
-        className={cn("font-azeretMono font-light text-xs", className)}
+        className={cn("font-azeret-mono font-light text-xs", className)}
         {...props}
       />
     ),
@@ -298,7 +298,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       ...props
     }: React.ComponentProps<typeof TableCell>) => (
       <TableCell
-        className={cn("font-azeretMono text-xs [&_*]:text-xs", className)}
+        className={cn("font-azeret-mono text-xs **:text-xs", className)}
         {...props}
       />
     ),

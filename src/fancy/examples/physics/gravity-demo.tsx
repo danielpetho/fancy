@@ -2,7 +2,7 @@ import Gravity, { MatterBody } from "@/fancy/components/physics/gravity"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full flex flex-col relative font-azeretMono bg-white">
+    <div className="w-full h-full flex flex-col relative font-azeret-mono bg-white">
       <div className="pt-20 text-6xl sm:text-7xl md:text-8xl text-foreground dark:text-muted w-full text-center font-calendas italic">
         fancy
       </div>
@@ -15,7 +15,7 @@ export default function Preview() {
           x="30%"
           y="10%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-primaryBlue text-white rounded-full hover:cursor-pointer px-8 py-4">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-primary-blue text-white rounded-full hover:cursor-pointer px-8 py-4">
             react
           </div>
         </MatterBody>
@@ -24,7 +24,7 @@ export default function Preview() {
           x="30%"
           y="30%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-primaryPink text-white rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-primary-pink text-white rounded-full hover:cursor-grab px-8 py-4 ">
             typescript
           </div>
         </MatterBody>
@@ -43,7 +43,7 @@ export default function Preview() {
           x="75%"
           y="10%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-primaryRed text-white rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-primary-red text-white rounded-full hover:cursor-grab px-8 py-4 ">
             tailwind
           </div>
         </MatterBody>
@@ -52,7 +52,7 @@ export default function Preview() {
           x="80%"
           y="20%"
         >
-          <div className="text-xl sm:text-2xl md:text-3xl bg-primaryOrange text-white rounded-full hover:cursor-grab px-8 py-4 ">
+          <div className="text-xl sm:text-2xl md:text-3xl bg-primary-orange text-white rounded-full hover:cursor-grab px-8 py-4 ">
             drei
           </div>
         </MatterBody>

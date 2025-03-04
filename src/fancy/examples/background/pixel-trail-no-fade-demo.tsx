@@ -11,7 +11,7 @@ const PixelTrailDemo: React.FC = () => {
         fill
         className="absolute inset-0 z-0 contrast-[70%]"
       />
-      <div className="absolute inset-0 z-[1]">
+      <div className="absolute inset-0 z-1">
         <PixelTrail
           pixelSize={20}
           delay={130}

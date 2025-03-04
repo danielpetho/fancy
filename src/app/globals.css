@@ -1,6 +1,155 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@source '../**/*.{ts,tsx}';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-calendas: Calendas Plus, sans-serif;
+  --font-overused-grotesk: Overused Grotesk, sans-serif;
+  --font-cotham: Cotham Sans;
+  --font-VT323: VT323;
+  --font-azeret-mono: Azeret Mono;
+  --font-noto-sans-symbols: Noto Sans Symbols;
+
+  --color-lavender: #ecbfff;
+  --color-reddish: #ff4a48;
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+
+  --color-primary-red: var(--red);
+  --color-primary-orange: var(--orange);
+  --color-primary-pink: var(--pink);
+  --color-primary-blue: var(--blue);
+
+  --color-teal: var(--teal);
+  --color-teal-foreground: var(--teal-foreground);
+
+  --color-yellow: var(--yellow);
+  --color-yellow-foreground: var(--yellow-foreground);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-circling: circling;
+  --animate-background-gradient: background-gradient;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+    to {
+      height: 0;
+    }
+  }
+  @keyframes circling {
+    0% {
+      transform: rotate(calc(var(--circling-offset) * 1deg))
+        translate(calc(var(--circling-radius) * 1px), 0)
+        rotate(calc(var(--circling-offset) * -1deg));
+    }
+    100% {
+      transform: rotate(calc(360deg + (var(--circling-offset) * 1deg)))
+        translate(calc(var(--circling-radius) * 1px), 0)
+        rotate(calc(-360deg + (var(--circling-offset) * -1deg)));
+    }
+  }
+  @keyframes background-gradient {
+    0%,
+    100% {
+      transform: translate(0, 0);
+      animation-delay: var(--background-gradient-delay, 0s);
+    }
+    20% {
+      transform: translate(
+        calc(100% * var(--tx-1, 1)),
+        calc(100% * var(--ty-1, 1))
+      );
+    }
+    40% {
+      transform: translate(
+        calc(100% * var(--tx-2, -1)),
+        calc(100% * var(--ty-2, 1))
+      );
+    }
+    60% {
+      transform: translate(
+        calc(100% * var(--tx-3, 1)),
+        calc(100% * var(--ty-3, -1))
+      );
+    }
+    80% {
+      transform: translate(
+        calc(100% * var(--tx-4, -1)),
+        calc(100% * var(--ty-4, -1))
+      );
+    }
+  }
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 2rem;
+  @media (width >= --theme(--breakpoint-sm)) {
+    max-width: none;
+  }
+  @media (width >= 1400px) {
+    max-width: 1400px;
+  }
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 @layer base {
   :root {
@@ -74,7 +223,6 @@
     --input: 12 6.5% 15.1%;
     --ring: 24 5.7% 82.9%;
 
-
     /* Other colors */
     --red: #ff5941;
     --orange: #f97316;
@@ -99,8 +247,10 @@
   @font-face {
     font-family: "Overused Grotesk";
     src:
-      url("../../public/fonts/OverusedGrotesk-VF.woff2") format("woff2 supports variations"),
-      url("../../public/fonts/OverusedGrotesk-VF.woff2") format("woff2-variations");
+      url("../../public/fonts/OverusedGrotesk-VF.woff2")
+        format("woff2 supports variations"),
+      url("../../public/fonts/OverusedGrotesk-VF.woff2")
+        format("woff2-variations");
     font-weight: 300 900;
   }
 
@@ -124,13 +274,15 @@
 
   @font-face {
     font-family: "Azeret Mono";
-    src: url("../../public/fonts/AzeretMono-Variable.woff2") format("woff2-variations");
+    src: url("../../public/fonts/AzeretMono-Variable.woff2")
+      format("woff2-variations");
     font-weight: 100 900;
   }
 
   @font-face {
     font-family: "Noto Sans Symbols";
-    src: url("../../public/fonts/NotoSansSymbols-VariableFont_wght.ttf") format("truetype-variations");
+    src: url("../../public/fonts/NotoSansSymbols-VariableFont_wght.ttf")
+      format("truetype-variations");
     font-weight: 100 900;
   }
 }
