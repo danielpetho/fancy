@@ -68,8 +68,16 @@ function findComponentImports(sourceCode: string): string[] {
       .toLowerCase()
       .replace(/^-/, "")
 
-    // Add the path once
-    components.push(`fancy/${basePath}`)
+    // no self-reference
+    const currentComponent = path
+      .basename(componentPath, path.extname(componentPath))
+      .replace(/([A-Z])/g, "-$1")
+      .toLowerCase()
+      .replace(/^-/, "")
+
+    if (basePath !== currentComponent) {
+      components.push(`fancy/${basePath}`)
+    }
   }
 
   // Collect dynamic imports as well
@@ -237,31 +245,30 @@ function generateRegistryItem(
     },
   ]
 
+  const registryDependencies: string[] = []
+
   // ADD the discovered hooks
   if (type !== "hook") {
-    // Now we capture all the hooks we find (including default imports)
     const usedHooks = findHookImports(sourceCode)
     usedHooks.forEach((hookName) => {
-      files.push({
-        path: `hooks/${hookName}`,
-        type: "registry:hook",
-      })
+      registryDependencies.push(`hooks/${hookName}`)
     })
   }
 
   // Find component dependencies
-  const componentDeps = findComponentImports(sourceCode)
   const externalDeps = new Set(findExternalDependencies(sourceCode))
+
+  // Find component dependencies
+  const componentDeps = findComponentImports(sourceCode)
+  componentDeps.forEach((dep) => {
+    registryDependencies.push(dep)
+  })
 
   // Handle utils dependencies
   const utilDeps = findUtilImports(sourceCode)
   if (utilDeps.length > 0) {
-    // Add utils to files
     utilDeps.forEach((utilPath) => {
-      files.push({
-        path: `utils/${utilPath}`,
-        type: "registry:lib",
-      })
+      registryDependencies.push(`utils/${utilPath}`)
 
       // Add dependencies from utils
       const utilFilePath = path.join(utilsDir, `${utilPath}.ts`)
@@ -269,19 +276,6 @@ function generateRegistryItem(
         const utilCode = fs.readFileSync(utilFilePath, "utf-8")
         const utilExternalDeps = findExternalDependencies(utilCode)
         utilExternalDeps.forEach((dep) => externalDeps.add(dep))
-      }
-    })
-  }
-
-  // If this is not a hook, add dependencies from hook dependencies
-  if (type !== "hook") {
-    const usedHooks = findHookImports(sourceCode)
-    usedHooks.forEach((hookName) => {
-      const hookPath = path.join(hooksDir, `${hookName}.ts`)
-      if (fs.existsSync(hookPath)) {
-        const hookCode = fs.readFileSync(hookPath, "utf-8")
-        const hookDeps = findExternalDependencies(hookCode)
-        hookDeps.forEach((dep) => externalDeps.add(dep))
       }
     })
   }
@@ -309,12 +303,14 @@ function generateRegistryItem(
     ...(componentDeps.length > 0 && {
       registryDependencies: componentDeps,
     }),
-    ...(externalDeps.size > 0 || additionalConfig?.devDependencies ? {
-      dependencies: [
-        ...Array.from(externalDeps),
-        ...(additionalConfig?.devDependencies || [])
-      ],
-    } : null),
+    ...(externalDeps.size > 0 || additionalConfig?.devDependencies
+      ? {
+          dependencies: [
+            ...Array.from(externalDeps),
+            ...(additionalConfig?.devDependencies || []),
+          ],
+        }
+      : null),
     ...(additionalConfig?.tailwind && {
       tailwind: additionalConfig.tailwind,
     }),

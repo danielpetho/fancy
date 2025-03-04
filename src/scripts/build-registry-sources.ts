@@ -261,69 +261,73 @@ function processRegistryItem(name: string, item: any): any {
     dependencies: item.dependencies || [],
   }
 
-  // Collect direct registryDependencies
-  const registryDeps = new Set<string>()
-  if (item.registryDependencies) {
-    item.registryDependencies.forEach((dep: string) => {
-      const fileName = dep.split("/").pop()
-      registryDeps.add(`https://fancycomponents.dev/r/${fileName}.json`)
-    })
-  }
+   // Collect direct registryDependencies
+   const registryDeps = new Set<string>()
+   if (item.registryDependencies) {
+     item.registryDependencies.forEach((dep: string) => {
+       // Don't add self as dependency
+       const fileName = dep.split("/").pop()
+       if (fileName !== name) {
+         registryDeps.add(`https://fancycomponents.dev/r/${fileName}.json`)
+       }
+     })
+   }
 
   // Also add hooks/libs from item.files
   item.files.forEach((f: any) => {
     if (f.type === "registry:hook" || f.type === "registry:lib") {
       const fileName = f.path.split("/").pop()
-      registryDeps.add(`https://fancycomponents.dev/r/${fileName}.json`)
+      if (fileName !== name) {
+        registryDeps.add(`https://fancycomponents.dev/r/${fileName}.json`)
+      }
     }
   })
 
   // -------------------------------------------------------------------------
   // Gather all *actual* files for this item, including dependencies:
   const registry = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
-  let allFiles = gatherAllDependencyFiles(name, registry)
+  //let allFiles = gatherAllDependencyFiles(name, registry)
 
-  // -------------------------------------------------------------------------
-  // NEW: Detect in-file imports and handle them dynamically:
-  allFiles.forEach((file) => {
+  const allFiles = processItemFiles(item)
+
+
+   // NEW: Detect in-file imports and handle them dynamically:
+   allFiles.forEach((file) => {
     const imports = parseImports(file.content)
     imports.forEach((importPath) => {
-      // 1) If it's from @/components/ui/... we treat it as shadcn external:
+      // Handle shadcn components
       if (importPath.startsWith("@/components/ui/")) {
-        const name = importPath.split("/").pop() || ""
-        // Only add if not already present
-        if (!registryDeps.has(name)) {
-          registryDeps.add(name)
+        const componentName = importPath.split("/").pop() || ""
+        if (componentName !== name) {
+          registryDeps.add(componentName)
         }
         return
       }
 
-      // 2) If it's a local reference (like @/hooks/... or @/fancy/...),
-      //    see if it corresponds to another known registry item:
+      // Handle local references
       const possibleName = importPath.split("/").pop() || ""
-      // For example, importPath: "@/hooks/use-detect-browser" => name: "use-detect-browser"
-      // If there's a known registry item with that name, add it to registryDeps:
-      if (registry[possibleName]) {
+      const registry = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
+      if (registry[possibleName] && possibleName !== name) {
         registryDeps.add(`https://fancycomponents.dev/r/${possibleName}.json`)
       }
     })
   })
 
-  // Also update registryDependencies to include all discovered dependencies
-  allFiles.forEach((file) => {
-    const imports = parseImports(file.content)
-    imports.forEach((importPath) => {
-      if (
-        importPath.startsWith("@/hooks/") ||
-        importPath.startsWith("@/utils/")
-      ) {
-        const depName = importPath.split("/").pop()
-        if (depName && registry[depName]) {
-          registryDeps.add(`https://fancycomponents.dev/r/${depName}.json`)
-        }
-      }
-    })
-  })
+  // // Also update registryDependencies to include all discovered dependencies
+  // allFiles.forEach((file) => {
+  //   const imports = parseImports(file.content)
+  //   imports.forEach((importPath) => {
+  //     if (
+  //       importPath.startsWith("@/hooks/") ||
+  //       importPath.startsWith("@/utils/")
+  //     ) {
+  //       const depName = importPath.split("/").pop()
+  //       if (depName && registry[depName]) {
+  //         registryDeps.add(`https://fancycomponents.dev/r/${depName}.json`)
+  //       }
+  //     }
+  //   })
+  // })
 
   if (registryDeps.size > 0) {
     output.registryDependencies = Array.from(registryDeps)

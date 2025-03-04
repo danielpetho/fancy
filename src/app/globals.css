@@ -4,7 +4,7 @@
 
 @custom-variant dark (&:is(.dark *));
 
-@theme {
+@theme inline {
   --font-calendas: Calendas Plus, sans-serif;
   --font-overused-grotesk: Overused Grotesk, sans-serif;
   --font-cotham: Cotham Sans;
