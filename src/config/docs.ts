@@ -208,12 +208,12 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Circling Elements",
         href: "/docs/components/blocks/circling-elements",
         items: [],
+        label: "Updated",
       },
       {
         title: "Media Between Text",
         href: "/docs/components/blocks/media-between-text",
         items: [],
-        label: "New",
       },
       {
         title: "Screensaver",
@@ -234,7 +234,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Stacking Cards",
         href: "/docs/components/blocks/stacking-cards",
         items: [],
-        label: "New",
       },
     ],
   },
