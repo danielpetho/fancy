@@ -13,12 +13,14 @@ const CirclingElementsDemo: React.FC = () => {
       <CirclingElements
         radius={screenSize.lessThan(`md`) ? 100 : 180}
         duration={5}
+        direction="reverse"
         easing="0.944, 0.008, 0.147, 1.002"
+        pauseOnHover
       >
         {[...exampleImages, ...exampleImages].map((image, index) => (
           <div
             key={index}
-            className="w-20 h-20 md:w-28 md:h-28 absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+            className="w-20 h-20 md:w-28 md:h-28 absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-125 duration-200 ease-out"
           >
             <Image src={image.url} fill alt="image" className="object-cover shadow-2xl " />
           </div>
