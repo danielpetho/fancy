@@ -12,10 +12,9 @@ const CirclingElementsDemo: React.FC = () => {
     <div className="relative w-full h-full bg-[#efefef] flex items-center justify-center">
       <CirclingElements
         radius={screenSize.lessThan(`md`) ? 100 : 180}
-        duration={5}
+        duration={8}
         direction="reverse"
         easing="0.944, 0.008, 0.147, 1.002"
-        pauseOnHover
       >
         {[...exampleImages, ...exampleImages].map((image, index) => (
           <div

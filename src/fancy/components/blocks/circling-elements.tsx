@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useMemo } from "react"
+import { Children } from "react"
 import { motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -25,9 +25,9 @@ const CirclingElements: React.FC<CirclingElementsProps> = ({
   pauseOnHover = false,
 }) => {
   return (
-    <div className={`relative w-full h-full ${className}`}>
-      {React.Children.map(children, (child, index) => {
-        const offset = (index * 360) / React.Children.count(children)
+    <div className={cn("relative z-0 group/circling", className)}>
+      {Children.map(children, (child, index) => {
+        const offset = (index * 360) / Children.count(children)
 
         const animationProps = {
           "--circling-duration": duration,
@@ -46,9 +46,8 @@ const CirclingElements: React.FC<CirclingElementsProps> = ({
             key={index}
             style={animationProps}
             className={cn(
-              "transform-gpu absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-circling",
-              pauseOnHover && "hover:animation-play-state:paused"
-
+              "transform-gpu animate-circling absolute -translate-x-1/2 -translate-y-1/2",
+              pauseOnHover && "group-hover/circling:![animation-play-state:paused]"
             )}
           >
             {child}
