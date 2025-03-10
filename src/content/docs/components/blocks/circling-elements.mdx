@@ -62,7 +62,15 @@ You only need to wrap your elements with the `CirclingElements` component, every
 
 Under the hood, the component wraps all the children in a `relative` container, then sets all children to `absolute` to allow the circling movement.
 
-The animation is done with only a few animation keyframes, as you can see in the tailwind config above.
+The animation is done with only a few animation keyframes, as you can see in the css config above.
+
+## Examples
+
+### Easing
+
+You can set custom easings for the animation, as you can see in this demo.
+
+<ComponentPreview name="circling-elements-easing-demo" />
 
 ## Props
 
@@ -95,6 +103,16 @@ The animation is done with only a few animation keyframes, as you can see in the
       <TableCell>`number`</TableCell>
       <TableCell>`10`</TableCell>
       <TableCell>The duration of one complete rotation in seconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>easing</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`linear`</TableCell>
+      <TableCell>
+        The easing function for the animation. Refer to the official [mdn
+        docs](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function)
+        for more details
+      </TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>

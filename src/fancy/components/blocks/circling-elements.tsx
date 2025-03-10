@@ -21,7 +21,7 @@ const CirclingElements: React.FC<CirclingElementsProps> = ({
   className,
 }) => {
   return (
-    <div className={`relative w-full h-full ${className}`}>
+    <div className={`relative w-full h-full group ${className}`}>
       {React.Children.map(children, (child, index) => {
         const offset = (index * 360) / React.Children.count(children)
 
@@ -30,13 +30,17 @@ const CirclingElements: React.FC<CirclingElementsProps> = ({
           "--circling-radius": radius,
           "--circling-offset": offset,
           animation: `circling ${duration}s ${easing} infinite`,
+          animationName: "circling",
+          animationDuration: `${duration}s`,
+          animationTimingFunction: easing,
+          animationIterationCount: "infinite",
         } as React.CSSProperties
 
         return (
           <motion.div
             key={index}
             className={cn(
-              "transform-gpu absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-circling"
+              "transform-gpu absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 animate-circling group-hover:pause-animation"
             )}
             style={animationProps}
           >
