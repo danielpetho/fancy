@@ -235,6 +235,12 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/blocks/stacking-cards",
         items: [],
       },
+      {
+        title: "Simple Marquee",
+        href: "/docs/components/blocks/simple-marquee",
+        items: [],
+        label: "New",
+      },
     ],
   },
 ]
