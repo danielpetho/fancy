@@ -29,6 +29,18 @@ const nextConfig = {
         hostname: "videos.ctfassets.net",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        port: "",
+        hostname: "musicbrainz.org",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.cosmos.so",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 }

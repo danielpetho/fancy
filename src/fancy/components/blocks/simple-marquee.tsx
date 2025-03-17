@@ -253,7 +253,7 @@ const SimpleMarquee = ({
   return (
     <motion.div
       className={cn(
-        " flex",
+        "flex",
         isHorizontal ? "flex-row" : "flex-col",
         className
       )}
