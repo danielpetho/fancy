@@ -31,7 +31,6 @@ export default function SimpleMarqueeDemo() {
 
   const [container, setContainer] = useState<HTMLElement | null>(null)
 
-
   return (
     <div className="flex w-full h-full relative justify-center items-center flex-col bg-black overflow-auto" ref={(node) => setContainer(node)}>
       <h1 className="absolute text-center text-6xl top-1/4 text-white font-calendas">Weekly Finds</h1>

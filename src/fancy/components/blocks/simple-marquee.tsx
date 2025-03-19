@@ -24,6 +24,7 @@ interface SimpleMarqueeProps {
   className?: string
   direction?: "left" | "right" | "up" | "down"
   baseVelocity?: number
+  easing?: (value: number) => number
   slowdownOnHover?: boolean
   slowDownFactor?: number
   slowDownSpringConfig?: SpringOptions
@@ -33,7 +34,11 @@ interface SimpleMarqueeProps {
   scrollContainer?: RefObject<HTMLElement> | HTMLElement | null
   repeat?: number
   draggable?: boolean
-  easing?: (value: number) => number
+  dragSensitivity?: number
+  dragVelocityDecay?: number
+  dragAwareDirection?: boolean
+  dragAngle?: number
+  grabCursor?: boolean
   delay?: number
 }
 
@@ -51,6 +56,11 @@ const SimpleMarquee = ({
   scrollContainer,
   repeat = 3,
   draggable = false,
+  dragSensitivity = 0.2,
+  dragVelocityDecay = 0.96,
+  dragAwareDirection = false,
+  dragAngle = 0,
+  grabCursor = false,
   easing,
   delay = 0,
 }: SimpleMarqueeProps) => {
@@ -60,9 +70,10 @@ const SimpleMarquee = ({
 
   const lastCycleTime = useRef(0)
   const isPaused = useRef(false)
-  
+
   const { scrollY } = useScroll({
-    container: scrollContainer as RefObject<HTMLDivElement> || innterContainer.current,
+    container:
+      (scrollContainer as RefObject<HTMLDivElement>) || innterContainer.current,
   })
 
   const scrollVelocity = useVelocity(scrollY)
@@ -72,19 +83,18 @@ const SimpleMarquee = ({
   const defaultVelocity = useMotionValue(1)
 
   const [animationStarted, setAnimationStarted] = useState(false)
-  
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      setAnimationStarted(true);
-    }, delay * 1000); // Convert delay from seconds to milliseconds
-    
-    return () => clearTimeout(timer);
-  }, [delay]);
+      setAnimationStarted(true)
+    }, delay * 1000) // Convert delay from seconds to milliseconds
+
+    return () => clearTimeout(timer)
+  }, [delay])
 
   // Track if user is currently dragging
   const isDragging = useRef(false)
-  // Store last drag position for calculating drag velocity
-  const lastDragPosition = useRef({ x: 0, y: 0 })
+
   // Store drag velocity
   const dragVelocity = useRef(0)
 
@@ -127,9 +137,9 @@ const SimpleMarquee = ({
   })
 
   useAnimationFrame((t, delta) => {
-    if (!animationStarted) return;
+    //if (!animationStarted) return;
 
-    // // Check if we're in a pause state
+    // Check if we're in a pause state
     // if (isPaused.current) {
     //   // Check if pause duration has elapsed
     //   if (t - lastCycleTime.current >= delay * 1000) {
@@ -140,7 +150,7 @@ const SimpleMarquee = ({
     //   }
     // }
 
-    // // Check if we've completed a cycle (when baseX or baseY crosses a multiple of 100)
+    // Check if we've completed a cycle (when baseX or baseY crosses a multiple of 100)
     // const currentPosition = isHorizontal ? baseX.get() : baseY.get();
     // if (Math.abs(currentPosition) % 100 < (delta / 1000) * Math.abs(actualBaseVelocity) * 2) {
     //   // We're crossing a cycle boundary
@@ -151,25 +161,24 @@ const SimpleMarquee = ({
     //   }
     // }
 
-    //console.log(isDragging.current, draggable)
-    // if (isDragging.current && draggable) {
-    //   if (isHorizontal) {
-    //     baseX.set(baseX.get() + dragVelocity.current)
-    //   } else {
-    //     baseY.set(baseY.get() + dragVelocity.current)
-    //   }
+    if (isDragging.current && draggable) {
+      if (isHorizontal) {
+        baseX.set(baseX.get() + dragVelocity.current)
+      } else {
+        baseY.set(baseY.get() + dragVelocity.current)
+      }
 
-    //   // Add decay to dragVelocity when not moving
-    //   // This will gradually reduce the velocity to zero when the pointer isn't moving
-    //   dragVelocity.current *= 0.9
+      // Add decay to dragVelocity when not moving
+      // This will gradually reduce the velocity to zero when the pointer isn't moving
+      dragVelocity.current *= 0.9
 
-    //   // Stop completely if velocity is very small
-    //   if (Math.abs(dragVelocity.current) < 0.01) {
-    //     dragVelocity.current = 0
-    //   }
+      // Stop completely if velocity is very small
+      if (Math.abs(dragVelocity.current) < 0.01) {
+        dragVelocity.current = 0
+      }
 
-    //   return
-    // }
+      return
+    }
 
     // Update hover factor
     if (isHovered.current) {
@@ -186,7 +195,7 @@ const SimpleMarquee = ({
       smoothHoverFactor.get()
 
     // Adjust movement based on scroll velocity if scrollAwareDirection is enabled
-    if (scrollAwareDirection) {
+    if (scrollAwareDirection && !isDragging.current) {
       if (velocityFactor.get() < 0) {
         directionFactor.current = -1
       } else if (velocityFactor.get() > 0) {
@@ -196,6 +205,25 @@ const SimpleMarquee = ({
 
     moveBy += directionFactor.current * moveBy * velocityFactor.get()
 
+    if (draggable) {
+      moveBy += dragVelocity.current
+
+      // Update direction based on drag direction if dragAwareDirection is true
+      if (dragAwareDirection && Math.abs(dragVelocity.current) > 0.1) {
+        console.log(dragVelocity.current)
+        // If dragging in negative direction, set directionFactor to -1
+        // If dragging in positive direction, set directionFactor to 1
+        directionFactor.current = Math.sign(dragVelocity.current)
+      }
+
+      // Gradually decay drag velocity back to zero
+      if (!isDragging.current && Math.abs(dragVelocity.current) > 0.01) {
+        dragVelocity.current *= dragVelocityDecay
+      } else if (!isDragging.current) {
+        dragVelocity.current = 0
+      }
+    }
+
     if (isHorizontal) {
       baseX.set(baseX.get() + moveBy)
     } else {
@@ -203,7 +231,6 @@ const SimpleMarquee = ({
     }
   })
 
-  const startPointerPosition = useRef({ x: 0, y: 0 })
   const lastPointerPosition = useRef({ x: 0, y: 0 })
 
   const handlePointerDown = (e: React.PointerEvent) => {
@@ -211,8 +238,11 @@ const SimpleMarquee = ({
       return // Capture the pointer to receive events even when pointer moves outside
     ;(e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
 
+    if (grabCursor) {
+      ;(e.currentTarget as HTMLElement).style.cursor = "grabbing"
+    }
+
     isDragging.current = true
-    startPointerPosition.current = { x: e.clientX, y: e.clientY }
     lastPointerPosition.current = { x: e.clientX, y: e.clientY }
 
     // Pause automatic animation by setting velocity to 0
@@ -228,14 +258,19 @@ const SimpleMarquee = ({
     const deltaX = currentPosition.x - lastPointerPosition.current.x
     const deltaY = currentPosition.y - lastPointerPosition.current.y
 
-    // Update drag velocity based on movement
-    if (isHorizontal) {
-      dragVelocity.current = deltaX * 0.2
-    } else {
-      dragVelocity.current = deltaY * 0.2
-    }
+    // Convert dragAngle from degrees to radians
+    const angleInRadians = (dragAngle * Math.PI) / 180
 
-    console.log(dragVelocity.current)
+    // Calculate the projection of the movement along the angle direction
+    // Using the dot product of the movement vector and the direction vector
+    const directionX = Math.cos(angleInRadians)
+    const directionY = Math.sin(angleInRadians)
+
+    // Project the movement onto the angle direction
+    const projectedDelta = deltaX * directionX + deltaY * directionY
+
+    // Update drag velocity based on the projected movement
+    dragVelocity.current = projectedDelta * dragSensitivity
 
     // Update last position
     lastPointerPosition.current = currentPosition
@@ -246,17 +281,11 @@ const SimpleMarquee = ({
     ;(e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId)
 
     isDragging.current = false
-    // Keep the drag velocity for smooth transition
-    // It will decay naturally in the animation frame
   }
 
   return (
     <motion.div
-      className={cn(
-        "flex",
-        isHorizontal ? "flex-row" : "flex-col",
-        className
-      )}
+      className={cn("flex", isHorizontal ? "flex-row" : "flex-col", className)}
       onHoverStart={() => (isHovered.current = true)}
       onHoverEnd={() => (isHovered.current = false)}
       onPointerDown={handlePointerDown}
@@ -271,8 +300,7 @@ const SimpleMarquee = ({
           className={cn(
             "shrink-0",
             isHorizontal && "flex",
-            draggable && "cursor-grab",
-            isDragging.current && "cursor-grabbing"
+            draggable && grabCursor && "cursor-grab"
           )}
           style={isHorizontal ? { x } : { y }}
         >

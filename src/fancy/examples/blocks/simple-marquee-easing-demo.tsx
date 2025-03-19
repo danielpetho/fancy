@@ -100,6 +100,7 @@ export default function SimpleMarqueeDemo() {
                 <img
                   src={src}
                   alt={`Image ${i + 1}`}
+                  draggable={false}
                   className="w-32 object-cover"
                 />
               </MarqueeItem>
@@ -118,6 +119,7 @@ export default function SimpleMarqueeDemo() {
               <MarqueeItem key={i}>
                 <img
                   src={src}
+                  draggable={false}
                   alt={`Image ${i + firstThird.length}`}
                   className="w-32 object-cover"
                 />
@@ -137,6 +139,7 @@ export default function SimpleMarqueeDemo() {
               <MarqueeItem key={i}>
                 <img
                   src={src}
+                  draggable={false}
                   alt={`Image ${i + firstThird.length + secondThird.length}`}
                   className="w-32 object-cover"
                 />

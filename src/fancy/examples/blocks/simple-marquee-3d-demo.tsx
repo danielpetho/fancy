@@ -164,6 +164,7 @@ export default function SimpleMarqueeDemo() {
         <motion.img
           src={album.coverArt}
           alt={`${album.title} by ${album.artist}`}
+          draggable={false}
           className={imageClasses}
           variants={imageVariants}
         />
@@ -188,7 +189,7 @@ export default function SimpleMarqueeDemo() {
             className="absolute h-full w-[200%] top-32 -left-1/2 justify-center items-center flex flex-col space-y-4 perspective-near"
             style={{
               transform:
-                " rotateX(45deg) rotateY(-15deg) rotateZ(35deg) translateZ(-200px)",
+                "rotateX(45deg) rotateY(-15deg) rotateZ(35deg) translateZ(-200px)",
             }}
           >
             <SimpleMarquee
