@@ -1,7 +1,6 @@
 import { RefObject, useEffect, useRef, useState } from "react"
 import {
   motion,
-  PanInfo,
   SpringOptions,
   useAnimationFrame,
   useMotionValue,
@@ -13,40 +12,39 @@ import {
 
 import { cn } from "@/lib/utils"
 
-// Custom wrap function to replace the one from @motionone/utils
+// Custom wrap function
 const wrap = (min: number, max: number, value: number): number => {
   const range = max - min
   return ((((value - min) % range) + range) % range) + min
 }
 
 interface SimpleMarqueeProps {
-  children: React.ReactNode
-  className?: string
-  direction?: "left" | "right" | "up" | "down"
-  baseVelocity?: number
-  easing?: (value: number) => number
-  slowdownOnHover?: boolean
-  slowDownFactor?: number
-  slowDownSpringConfig?: SpringOptions
-  useScrollVelocity?: boolean
-  scrollAwareDirection?: boolean
-  scrollSpringConfig?: SpringOptions
-  scrollContainer?: RefObject<HTMLElement> | HTMLElement | null
-  repeat?: number
-  draggable?: boolean
-  dragSensitivity?: number
-  dragVelocityDecay?: number
-  dragAwareDirection?: boolean
-  dragAngle?: number
-  grabCursor?: boolean
-  delay?: number
+  children: React.ReactNode // The elements to be scrolled
+  className?: string // Additional CSS classes for the container
+  direction?: "left" | "right" | "up" | "down" // The direction of the marquee
+  baseVelocity?: number // The base velocity of the marquee in pixels per second
+  easing?: (value: number) => number // The easing function for the animation
+  slowdownOnHover?: boolean // Whether to slow down the animation on hover
+  slowDownFactor?: number // The factor to slow down the animation on hover
+  slowDownSpringConfig?: SpringOptions // The spring config for the slow down animation
+  useScrollVelocity?: boolean // Whether to use the scroll velocity to control the marquee speed
+  scrollAwareDirection?: boolean // Whether to adjust the direction based on the scroll direction
+  scrollSpringConfig?: SpringOptions // The spring config for the scroll velocity-based direction adjustment
+  scrollContainer?: RefObject<HTMLElement> | HTMLElement | null // The container to use for the scroll velocity
+  repeat?: number // The number of times to repeat the children.
+  draggable?: boolean // Whether to allow dragging of the marquee
+  dragSensitivity?: number // The sensitivity of the drag movement
+  dragVelocityDecay?: number // The decay of the drag velocity. This means how fast the velocity will gradually reduce to baseVelocity when we release the drag
+  dragAwareDirection?: boolean // Whether to adjust the direction based on the drag velocity
+  dragAngle?: number // The angle of the drag movement in degrees. This is useful if you eg. rotating your marquee by 45 degrees
+  grabCursor?: boolean // Whether to change the cursor to grabbing when dragging
 }
 
 const SimpleMarquee = ({
   children,
   className,
   direction = "right",
-  baseVelocity = 5, // pixels per second
+  baseVelocity = 5,
   slowdownOnHover = false,
   slowDownFactor = 0.3,
   slowDownSpringConfig = { damping: 50, stiffness: 400 },
@@ -62,18 +60,14 @@ const SimpleMarquee = ({
   dragAngle = 0,
   grabCursor = false,
   easing,
-  delay = 0,
 }: SimpleMarqueeProps) => {
-  const innterContainer = useRef<HTMLDivElement>(null)
+  const innerContainer = useRef<HTMLDivElement>(null)
   const baseX = useMotionValue(0)
   const baseY = useMotionValue(0)
 
-  const lastCycleTime = useRef(0)
-  const isPaused = useRef(false)
-
   const { scrollY } = useScroll({
     container:
-      (scrollContainer as RefObject<HTMLDivElement>) || innterContainer.current,
+      (scrollContainer as RefObject<HTMLDivElement>) || innerContainer.current,
   })
 
   const scrollVelocity = useVelocity(scrollY)
@@ -81,16 +75,6 @@ const SimpleMarquee = ({
 
   const hoverFactorValue = useMotionValue(1)
   const defaultVelocity = useMotionValue(1)
-
-  const [animationStarted, setAnimationStarted] = useState(false)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimationStarted(true)
-    }, delay * 1000) // Convert delay from seconds to milliseconds
-
-    return () => clearTimeout(timer)
-  }, [delay])
 
   // Track if user is currently dragging
   const isDragging = useRef(false)
@@ -110,7 +94,7 @@ const SimpleMarquee = ({
     }
   )
 
-  // Determine if movement is horizontal or vertical
+  // Determine if movement is horizontal or vertical. 
   const isHorizontal = direction === "left" || direction === "right"
 
   // Convert baseVelocity to the correct direction
@@ -120,11 +104,11 @@ const SimpleMarquee = ({
   // Reference to track if mouse is hovering
   const isHovered = useRef(false)
 
-  // Direction factor for changing direction based on scroll
+  // Direction factor for changing direction based on scroll or drag
   const directionFactor = useRef(1)
 
   // Transform baseX/baseY into a percentage for the transform
-  // The wrap function ensures the value stays between the specified range
+  // The wrap function ensures the value stays between 0 and -100
   const x = useTransform(baseX, (v) => {
     // Apply easing if provided, otherwise use linear (v directly)
     const wrappedValue = wrap(0, -100, v)
@@ -137,30 +121,6 @@ const SimpleMarquee = ({
   })
 
   useAnimationFrame((t, delta) => {
-    //if (!animationStarted) return;
-
-    // Check if we're in a pause state
-    // if (isPaused.current) {
-    //   // Check if pause duration has elapsed
-    //   if (t - lastCycleTime.current >= delay * 1000) {
-    //     isPaused.current = false;
-    //   } else {
-    //     // Still in pause, don't animate
-    //     return;
-    //   }
-    // }
-
-    // Check if we've completed a cycle (when baseX or baseY crosses a multiple of 100)
-    // const currentPosition = isHorizontal ? baseX.get() : baseY.get();
-    // if (Math.abs(currentPosition) % 100 < (delta / 1000) * Math.abs(actualBaseVelocity) * 2) {
-    //   // We're crossing a cycle boundary
-    //   if (delay > 0) {
-    //     isPaused.current = true;
-    //     lastCycleTime.current = t;
-    //     return;
-    //   }
-    // }
-
     if (isDragging.current && draggable) {
       if (isHorizontal) {
         baseX.set(baseX.get() + dragVelocity.current)
@@ -210,7 +170,6 @@ const SimpleMarquee = ({
 
       // Update direction based on drag direction if dragAwareDirection is true
       if (dragAwareDirection && Math.abs(dragVelocity.current) > 0.1) {
-        console.log(dragVelocity.current)
         // If dragging in negative direction, set directionFactor to -1
         // If dragging in positive direction, set directionFactor to 1
         directionFactor.current = Math.sign(dragVelocity.current)
@@ -292,7 +251,7 @@ const SimpleMarquee = ({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      ref={innterContainer}
+      ref={innerContainer}
     >
       {Array.from({ length: repeat }, (_, i) => i).map((i) => (
         <motion.div

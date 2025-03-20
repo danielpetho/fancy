@@ -65,9 +65,9 @@ export function ComponentPreview({
   const syntaxHighlighterStyle = React.useMemo(
     () => ({
       borderRadius: "var(--radius) var(--radius)",
-      padding: "1rem",
       overflow: "auto",
-      //position: "absolute",
+      padding: "1rem",
+      fontSize: "0.9rem",
       width: "100%",
       height: "100%",
     }),
