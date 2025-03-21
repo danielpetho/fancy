@@ -328,20 +328,9 @@ if (dragAwareDirection && Math.abs(dragVelocity.current) > 0.1) {
 
 ## 3D Transforms
 
-A powerful feature of this component is its ability to work with CSS 3D transforms. You can apply perspective and rotation to the marquee container or its children:
+To make a 3d effect, you can apply CSS 3D perspective and rotation to the marquee container or its children. The following example shows how you can apply them on the container.
 
-```jsx
-<div
-  style={{
-    perspective: "1000px",
-    transformStyle: "preserve-3d",
-  }}
->
-  <SimpleMarquee dragAngle={45}>
-    <div style={{ transform: "rotateY(20deg)" }}>{/* Content */}</div>
-  </SimpleMarquee>
-</div>
-```
+<ComponentPreview name="simple-marquee-3d-demo" />
 
 For angled marquees, the `dragAngle` prop becomes particularly useful:
 
@@ -358,8 +347,6 @@ const projectedDelta = deltaX * directionX + deltaY * directionY
 ```
 
 This ensures that dragging works intuitively even when the marquee is rotated or transformed in 3D space.
-
-<ComponentPreview name="simple-marquee-3d-demo" />
 
 ## Props
 

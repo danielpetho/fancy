@@ -138,13 +138,14 @@ export default function SimpleMarqueeDemo() {
     }
 
     const containerClasses = cn(
-      "mx-4 h-48 w-48 cursor-pointer",
+      "mx-2 sm:mx-3 md:mx-4 cursor-pointer",
+      "h-32 w-32 sm:h-40 sm:w-40 md:h-48 md:w-48",
       "relative flex shadow-white/20 shadow-md",
       "overflow-hidden flex-col transform-gpu bg-black"
     )
 
     const textContainerClasses = cn(
-      "justify-end p-3 h-full flex items-start flex-col",
+      "justify-end p-2 sm:p-2.5 md:p-3 h-full flex items-start flex-col",
       "leading-tight"
     )
 
@@ -158,8 +159,8 @@ export default function SimpleMarqueeDemo() {
         variants={variants}
       >
         <motion.div className={textContainerClasses} variants={textVariants}>
-          <h3 className="text-white font-medium z-30">{album.title}</h3>
-          <p className="text-neutral-300 text-sm z-30">{album.artist}</p>
+          <h3 className="text-white text-sm sm:text-base md:text-lg font-medium z-30">{album.title}</h3>
+          <p className="text-neutral-300 text-xs sm:text-sm md:text-base z-30">{album.artist}</p>
         </motion.div>
         <motion.img
           src={album.coverArt}
@@ -177,7 +178,7 @@ export default function SimpleMarqueeDemo() {
       className="flex w-full h-full relative justify-center items-center flex-col bg-black overflow-y-auto overflow-x-hidden"
       ref={(node) => setContainer(node)}
     >
-      <h1 className="absolute text-center text-6xl top-1/4 text-white font-calendas">
+      <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-1/4 text-white font-calendas">
         Weekly Mix
       </h1>
 
@@ -186,7 +187,7 @@ export default function SimpleMarqueeDemo() {
       ) : (
         <>
           <div
-            className="absolute h-full w-[200%] top-32 -left-1/2 justify-center items-center flex flex-col space-y-4 perspective-near"
+            className="absolute h-1/2 sm:h-full w-[200%] top-32 -left-3/4 justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4 perspective-near"
             style={{
               transform:
                 "rotateX(45deg) rotateY(-15deg) rotateZ(35deg) translateZ(-200px)",

@@ -6,7 +6,7 @@ import VerticalCutReveal from "@/fancy/components/text/vertical-cut-reveal"
 
 const imgs = [
   "https://cdn.cosmos.so/97fd931c-28cc-480f-91a8-cffb635cf832?format=jpeg",
-  "https://cdn.cosmos.so/305a25f2-cc53-4ff3-95a5-6a5ca1517ff8?format=jpeg",
+  "https://cdn.cosmos.so/305a25f2-cc53-4ff3-95a5-6a5ca1517ff8?format=jpeg", 
   "https://cdn.cosmos.so/2a024234-6713-41b2-a2f2-1d5e385ac490?format=jpeg",
   "https://cdn.cosmos.so/89cc65c1-b0bf-42f6-9afc-4db6678ae652?format=jpeg",
   "https://cdn.cosmos.so/211e0ca7-4126-4222-9de8-03aeb1e4688e?format=jpeg",
@@ -28,7 +28,7 @@ const MarqueeItem = ({
   index: number
 }) => (
   <motion.div
-    className="mx-4  border-neutral-600 p-4 shadow shadow-white/20 flex justify-center items-center flex-col perspective-near transform-3d rotate-y-45 rotate-z-12 bg-black"
+    className="mx-2 sm:mx-3 md:mx-4 border-neutral-600 p-2 sm:p-3 md:p-4 shadow shadow-white/20 flex justify-center items-center flex-col perspective-near transform-3d rotate-y-45 rotate-z-12 bg-black"
     initial={{ opacity: 0, y: 0, filter: "blur(10px)" }}
     animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
     transition={{ duration: 0.5, ease: "easeOut", delay: 0.3 + 0.1 * index }}
@@ -49,10 +49,10 @@ export default function SimpleMarqueeDemo() {
       className="flex w-full h-full relative justify-center items-center flex-col bg-black overflow-y-auto overflow-x-hidden"
       ref={(node) => setContainer(node)}
     >
-      <h1 className="absolute text-center text-6xl top-1/4 text-white font-calendas">
+      <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-32 sm:top-1/4 text-white font-calendas">
         <VerticalCutReveal splitBy="characters" staggerDuration={0.04}>New Arrivals</VerticalCutReveal>
       </h1>
-      <div className="absolute h-full top-2/4 w-full justify-center items-center flex flex-col space-y-4 z-0">
+      <div className="absolute h-full top-1/5 sm:top-2/4 w-full justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4 z-0">
         <SimpleMarquee
           className="w-full z-10 relative"
           baseVelocity={8}
@@ -73,11 +73,8 @@ export default function SimpleMarqueeDemo() {
                 src={src}
                 alt={`Image ${i + 1}`}
                 draggable={false}
-                className="w-44 select-none"
+                className="w-32 sm:w-36 md:w-44 select-none"
               />
-              {/* <p className="text-white text-center">
-                {(Math.random() * 20 + 15).toFixed(2)} €
-              </p> */}
             </MarqueeItem>
           ))}
         </SimpleMarquee>
@@ -102,7 +99,7 @@ export default function SimpleMarqueeDemo() {
                 src={src}
                 alt={`Image ${i + 6}`}
                 draggable={false}
-                className="w-44 select-none"
+                className="w-32 sm:w-36 md:w-44 select-none"
               />
             </MarqueeItem>
           ))}
