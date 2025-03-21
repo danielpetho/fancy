@@ -173,7 +173,7 @@ let moveBy = directionFactor.current *
 Key props for this feature:
 
 - `slowDownFactor` controls how much to slow down (default: 0.3 or 30% of original speed)
-- `smoothHoverFactor` uses spring physics for smooth transitions between speeds. This ensures that the velocity change is not happening instantly, but with a smooth animation. For this, we use the `useSpring` hook form Motion. 
+- `smoothHoverFactor` uses spring physics for smooth transitions between speeds. This ensures that the velocity change is not happening instantly, but with a smooth animation. For this, we use the `useSpring` hook from Motion. 
 - `slowDownSpringConfig` lets you customize the spring animation parameters. Please refer to the [Motion documentation](https://motion.dev/docs/react-use-spring) for more details.
 
 ### Scroll-Based Velocity
@@ -213,7 +213,7 @@ This creates an interactive effect where:
 
 - Scrolling adds to the marquee's velocity
 - If `scrollAwareDirection` is enabled, the scroll direction can reverse the marquee direction
-- Similarly to the hover, we interpolate between the current and scroll velocity by using Spring physics with the `useSpring` hook from Motion. You can customize the spring animation parameters using the `scrollSpringConfig` prop.
+- Similar to the hover, we interpolate between the current and scroll velocity by using Spring physics with the `useSpring` hook from Motion. You can customize the spring animation parameters using the `scrollSpringConfig` prop.
 
 ### Custom Easing Functions
 
@@ -227,7 +227,7 @@ const x = useTransform(baseX, (v) => {
 })
 ```
 
-The easing function receives a normalized value between 0 and 1 and should return a transformed value. You need an actual function here, and not keyframes defined.
+The easing function receives a normalized value between 0 and 1 and should return a transformed value. You need to provide an actual function here, not defined keyframes.
 
 You can find ready-to-use easing functions at [easings.net](https://easings.net/).
 
@@ -338,7 +338,7 @@ To make a 3d effect, you can apply 3D CSS transforms to the marquee container or
 
 <ComponentPreview name="simple-marquee-3d-demo" />
 
-For angled marquees, you can also apply the `dragAngle` prop to change the direction of the drag movement. This is useful if you want to rotate the marquee eg. by 45 degrees.
+For angled marquees, you can also apply the `dragAngle` prop to change the direction of the drag movement. This is useful if you want to rotate the marquee e.g. by 45 degrees.
 
 ```jsx
 // Convert dragAngle from degrees to radians
@@ -356,6 +356,7 @@ const projectedDelta = deltaX * directionX + deltaY * directionY
 
 - [Scroll animations from Motion](https://motion.dev/docs/react-scroll-animations)
 - [Easings](https://easings.net/)
+- [CSS Only implementation from Frontend FYI](https://www.youtube.com/watch?v=uw5jVO1eNF8)
 - [Gradient artworks](https://www.cosmos.so/danielpetho/gradients)
 - [Album covers](https://musicbrainz.org/doc/Cover_Art_Archive/API)
 
