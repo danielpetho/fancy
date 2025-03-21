@@ -34,6 +34,7 @@ export function CodeBlockWrapper({
     () => ({
       borderRadius: "var(--radius) var(--radius)",
       padding: "1rem",
+      fontSize: "0.9rem",
       width: "100%",
       maxWidth: "100%",
     }),

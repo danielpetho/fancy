@@ -58,6 +58,7 @@ export function ComponentSource({
     () => ({
       borderRadius: "var(--radius) var(--radius)",
       padding: "1rem",
+      fontSize: "0.9rem",
       width: "100%",
       maxWidth: "100%",
     }),
@@ -84,7 +85,7 @@ export function ComponentSource({
             </div>
           )}
           <ReactSyntaxHighlighter
-            language="typescript"
+            language="tsx"
             style={hybrid}
             customStyle={syntaxHighlighterStyle}
             wrapLongLines={true}
