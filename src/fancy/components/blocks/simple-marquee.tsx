@@ -258,10 +258,11 @@ const SimpleMarquee = ({
           key={i}
           className={cn(
             "shrink-0",
-            isHorizontal && "flex",
+            isHorizontal && "flex", 
             draggable && grabCursor && "cursor-grab"
           )}
           style={isHorizontal ? { x } : { y }}
+          aria-hidden={i > 0}
         >
           {children}
         </motion.div>

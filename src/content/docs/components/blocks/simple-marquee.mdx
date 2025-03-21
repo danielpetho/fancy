@@ -6,6 +6,12 @@ component: true
 
 <ComponentPreview name="simple-marquee-demo" />
 
+Artworks from [Cosmos](https://www.cosmos.so/danielpetho/gradients/).
+
+## Credits
+
+This component is inspired by [this scroll example](https://codesandbox.io/p/sandbox/framer-motion-scroll-velocity-r1dy4u?from-embed) by Motion. 
+
 ## Installation
 
 <Tabs defaultValue="cli">
@@ -47,7 +53,7 @@ Unlike most marquee implementations that use simple CSS animations, this compone
 
 ### Core Animation
 
-At the heart of the component is the `useAnimationFrame` hook from Motion, which executes our anim code on every frame. Here's how it works:
+The main magic of this component is the `useAnimationFrame` hook from Motion, which executes our anim code on every frame. Here's how it works:
 
 1. We create motion values (using `useMotionValue`) to track the x or y position:
 
@@ -64,27 +70,28 @@ At the heart of the component is the `useAnimationFrame` hook from Motion, which
      direction === "left" || direction === "up" ? -baseVelocity : baseVelocity
    ```
 
-3. We use `useTransform` to convert these values to percentages and apply wrapping:
-
-   ```jsx
-   const x = useTransform(baseX, (v) => {
-     // Apply easing if provided, otherwise use linear
-     const wrappedValue = wrap(0, -100, v)
-     return `${easing ? easing(wrappedValue / -100) * -100 : wrappedValue}%`
-   })
-   ```
-
-4. On each animation frame, we increment the position values:
+3. On each animation frame inside the `useAnimationFrame` hook, we increment the position values, by adding that velocity to the current position:
 
    ```jsx
    // Inside useAnimationFrame
-   let moveBy = directionFactor.current * actualBaseVelocity * (delta / 1000)
+   let moveBy = directionFactor.current * baseVelocity * (delta / 1000)
 
    if (isHorizontal) {
      baseX.set(baseX.get() + moveBy)
    } else {
      baseY.set(baseY.get() + moveBy)
    }
+   ```
+
+4. Since we're constantly increasing/decreasing that value, at some point our elements would move out far away from the viewport. Therefore, we use the `useTransform` hook to convert that x/y value to a percentage, and wrapping it between 0 and -100. With this, we essentially force our elements to always move from 0 to -100. Once they reach -100, they will start their journey from 0% again.
+
+   ```jsx
+   const x = useTransform(baseX, (v) => {
+     // wrap it between 0 and -100
+     const wrappedValue = wrap(0, -100, v)
+     // Apply easing if provided, otherwise use linear
+     return `${easing ? easing(wrappedValue / -100) * -100 : wrappedValue}%`
+   })
    ```
 
 5. The `wrap` helper function ensures values stay between 0 and -100:
@@ -95,7 +102,7 @@ At the heart of the component is the `useAnimationFrame` hook from Motion, which
    }
    ```
 
-This example demonstrates the basic wrapping mechanism:
+This example demonstrates the basic mechanism:
 
 <ComponentPreview name="simple-marquee-explainer-demo" />
 
@@ -103,7 +110,7 @@ This example demonstrates the basic wrapping mechanism:
 
 As you can see above, elements eventually leave the container and jump back to the beginning when they reach -100%. This creates a visible "jump" in the animation.
 
-The component solves this by using the `repeat` prop to duplicate all child elements multiple times:
+We can solve this by using the `repeat` prop to duplicate all child elements multiple times inside the component:
 
 ```jsx
 {
@@ -116,6 +123,7 @@ The component solves this by using the `repeat` prop to duplicate all child elem
         draggable && grabCursor && "cursor-grab"
       )}
       style={isHorizontal ? { x } : { y }}
+      aria-hidden={i > 0}
     >
       {children}
     </motion.div>
@@ -123,7 +131,7 @@ The component solves this by using the `repeat` prop to duplicate all child elem
 }
 ```
 
-By default, the `repeat` value is 3, which means your content is duplicated three times. With enough repetitions, new elements enter the visible area before existing ones leave, creating a seamless continuous animation. Try increasing the `repeat` value in the demo above to see how it eliminates the jumpiness.
+By default, the `repeat` value is 3, which means your content is duplicated three times. With enough repetitions, new elements enter the visible area before existing ones leave, creating an illusion of continuous animation. Try increasing the `repeat` value in the demo above to see how it eliminates the jumpiness.
 
 ## Features
 
@@ -162,15 +170,15 @@ let moveBy = directionFactor.current *
              smoothHoverFactor.get()
 ```
 
-Key features of this implementation:
+Key props for this feature:
 
 - `slowDownFactor` controls how much to slow down (default: 0.3 or 30% of original speed)
-- `smoothHoverFactor` uses spring physics for smooth transitions between speeds
-- `slowDownSpringConfig` lets you customize the spring animation parameters
+- `smoothHoverFactor` uses spring physics for smooth transitions between speeds. This ensures that the velocity change is not happening instantly, but with a smooth animation. For this, we use the `useSpring` hook form Motion. 
+- `slowDownSpringConfig` lets you customize the spring animation parameters. Please refer to the [Motion documentation](https://motion.dev/docs/react-use-spring) for more details.
 
 ### Scroll-Based Velocity
 
-When `useScrollVelocity` is enabled, the component tracks scroll velocity and uses it to influence the marquee:
+When `useScrollVelocity` is enabled, the component tracks scroll velocity and uses it to influence the final velocity of the marquee:
 
 ```jsx
 const { scrollY } = useScroll({
@@ -205,7 +213,7 @@ This creates an interactive effect where:
 
 - Scrolling adds to the marquee's velocity
 - If `scrollAwareDirection` is enabled, the scroll direction can reverse the marquee direction
-- Spring physics ensure smooth transitions as scroll velocity changes
+- Similarly to the hover, we interpolate between the current and scroll velocity by using Spring physics with the `useSpring` hook from Motion. You can customize the spring animation parameters using the `scrollSpringConfig` prop.
 
 ### Custom Easing Functions
 
@@ -219,11 +227,7 @@ const x = useTransform(baseX, (v) => {
 })
 ```
 
-The easing function receives a normalized value between 0 and 1 and should return a transformed value. This can create effects like:
-
-- Accelerating/decelerating movement
-- Bounce effects at certain points
-- Any custom motion pattern
+The easing function receives a normalized value between 0 and 1 and should return a transformed value. You need an actual function here, and not keyframes defined.
 
 You can find ready-to-use easing functions at [easings.net](https://easings.net/).
 
@@ -231,7 +235,7 @@ You can find ready-to-use easing functions at [easings.net](https://easings.net/
 
 ### Draggable Marquee
 
-The drag implementation uses pointer events for direct user control:
+The marquee can also be dragged. It uses pointer events for tracking the cursor position and applying the drag velocity:
 
 ```jsx
 // State for tracking dragging
@@ -279,7 +283,7 @@ const handlePointerMove = (e: React.PointerEvent) => {
 }
 ```
 
-During animation frames, dragging takes precedence over other movement factors:
+During animation frames, dragging takes precedence over other movement factors. Meaning, when the user is dragging, the marquee will move according to the drag velocity, and we ignore all other factors (such as the hover, scroll and the basic velocity).
 
 ```jsx
 // Inside useAnimationFrame
@@ -302,7 +306,7 @@ if (isDragging.current && draggable) {
 }
 ```
 
-When the user stops dragging, velocity gradually decays:
+When the user stops dragging, velocity gradually decays back to the base velocity. You can customize the decay factor using the `dragVelocityDecay` prop.
 
 ```jsx
 // Gradually decay drag velocity back to zero
@@ -326,13 +330,15 @@ if (dragAwareDirection && Math.abs(dragVelocity.current) > 0.1) {
 
 <ComponentPreview name="simple-marquee-drag-demo" />
 
+Artwork credits: Artworks are from [Cosmos](https://cosmos.so/). I couldn't track down the original artists.
+
 ## 3D Transforms
 
-To make a 3d effect, you can apply CSS 3D perspective and rotation to the marquee container or its children. The following example shows how you can apply them on the container.
+To make a 3d effect, you can apply 3D CSS transforms to the marquee container or its children. The following example shows how you can apply them on the container.
 
 <ComponentPreview name="simple-marquee-3d-demo" />
 
-For angled marquees, the `dragAngle` prop becomes particularly useful:
+For angled marquees, you can also apply the `dragAngle` prop to change the direction of the drag movement. This is useful if you want to rotate the marquee eg. by 45 degrees.
 
 ```jsx
 // Convert dragAngle from degrees to radians
@@ -346,7 +352,12 @@ const directionY = Math.sin(angleInRadians)
 const projectedDelta = deltaX * directionX + deltaY * directionY
 ```
 
-This ensures that dragging works intuitively even when the marquee is rotated or transformed in 3D space.
+## Resources
+
+- [Scroll animations from Motion](https://motion.dev/docs/react-scroll-animations)
+- [Easings](https://easings.net/)
+- [Gradient artworks](https://www.cosmos.so/danielpetho/gradients)
+- [Album covers](https://musicbrainz.org/doc/Cover_Art_Archive/API)
 
 ## Props
 
