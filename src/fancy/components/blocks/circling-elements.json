@@ -1,14 +1,11 @@
 {
   "cssVars": {
-    "@theme inline": {
-      "--animate-circling": "circling",
-      "@keyframes circling": {
-        "0%": {
-          "transform": "rotate(calc(var(--circling-offset) * 1deg)) translate(calc(var(--circling-radius) * 1px), 0) rotate(calc(var(--circling-offset) * -1deg))"
-        },
-        "100%": {
-          "transform": "rotate(calc(360deg + (var(--circling-offset) * 1deg))) translate(calc(var(--circling-radius) * 1px), 0) rotate(calc(-360deg + (var(--circling-offset) * -1deg)))"
-        }
+    "@keyframes circling": {
+      "0%": {
+        "transform": "rotate(calc(var(--circling-direction, 1) * (var(--circling-offset) * 1deg))) translate(calc(var(--circling-radius) * 1px), 0) rotate(calc(var(--circling-direction, 1) * (var(--circling-offset) * -1deg)))"
+      },
+      "100%": {
+        "transform": "rotate(calc(var(--circling-direction, 1) * (360deg + (var(--circling-offset) * 1deg)))) translate(calc(var(--circling-radius) * 1px), 0) rotate(calc(var(--circling-direction, 1) * (-360deg + (var(--circling-offset) * -1deg))))"
       }
     }
   }

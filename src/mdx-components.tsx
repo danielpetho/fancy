@@ -113,10 +113,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       ...props
     }: React.HTMLAttributes<HTMLParagraphElement>) => (
       <p
-        className={cn(
-          "leading-7 not-first:mt-3 text-lg",
-          className
-        )}
+        className={cn("leading-7 not-first:mt-3 text-lg", className)}
         {...props}
       />
     ),
@@ -210,54 +207,53 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       __src__?: string
       __event__?: Event["name"]
     } & NpmCommands) => {
+      const isNpmCommand =
+        __npmCommand__ && __yarnCommand__ && __pnpmCommand__ && __bunCommand__
+
+      // if (isNpmCommand) {
+      //   return (
+      //     <CodeBlockCommand
+      //       __npmCommand__={__npmCommand__}
+      //       __yarnCommand__={__yarnCommand__}
+      //       __pnpmCommand__={__pnpmCommand__}
+      //       __bunCommand__={__bunCommand__}
+      //     />
+      //   )
+      // }
+
       return (
-        <div className="relative flex h-full">
-          <pre
+        <pre
+          className={cn(
+            "mb-4 mt-6 max-h-[650px] overflow-x-auto rounded-lg bg-zinc-950 dark:bg-zinc-900",
+            className
+          )}
+          {...props}
+        />
+      )
+    },
+    code: ({ children, className, ...props }: React.ComponentProps<"code">) => {
+      const isInlineCode = !className?.includes("language-")
+
+      if (isInlineCode) {
+        return (
+          <code
             className={cn(
-              "p-4 mb-4 mt-6 max-h-[640px] overflow-hidden border rounded-lg text-secondary bg-primary py-4 dark:bg-zinc-900",
+              "font-azeret-mono text-xs p-1 bg-zinc-100 dark:bg-zinc-800",
               className
             )}
             {...props}
-          />
-          {__rawString__ && !__npmCommand__ && (
-            <CopyButton
-              value={__rawString__}
-              src={__src__}
-              event={__event__}
-              className={cn("absolute right-4 top-4", __withMeta__ && "top-16")}
-            />
-          )}
-          {__npmCommand__ &&
-            __yarnCommand__ &&
-            __pnpmCommand__ &&
-            __bunCommand__ && (
-              <CopyNpmCommandButton
-                commands={{
-                  __npmCommand__,
-                  __yarnCommand__,
-                  __pnpmCommand__,
-                  __bunCommand__,
-                }}
-                className={cn(
-                  "absolute right-4 top-4",
-                  __withMeta__ && "top-16"
-                )}
-              />
-            )}
-        </div>
+          >
+            {children}
+          </code>
+        )
+      }
+
+      return (
+        <CodeBlockWrapper className="my-0 py-0">
+          {children}
+        </CodeBlockWrapper>
       )
     },
-    code: ({ children, className, ...props }: React.ComponentProps<"code">) => (
-      <code
-        className={cn(
-          "font-azeret-mono text-xs p-1 bg-zinc-100 dark:bg-zinc-800",
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </code>
-    ),
     ComponentPreview,
     ComponentSource,
     CodeBlockWrapper: ({ ...props }) => (

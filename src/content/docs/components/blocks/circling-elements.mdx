@@ -60,9 +60,25 @@ Inspiration from [Bakken & Bæck](https://www.instagram.com/p/DBG5fLdiN4Q/?img_i
 
 You only need to wrap your elements with the `CirclingElements` component, everything else is taken care of by the component itself.
 
+## Understanding the component
+
 Under the hood, the component wraps all the children in a `relative` container, then sets all children to `absolute` to allow the circling movement.
 
-The animation is done with only a few animation keyframes, as you can see in the tailwind config above.
+The animation is achieved through CSS keyframes that create a circular motion. At the start (0%), each element is rotated by its offset angle, translated outward by the radius, and counter-rotated to maintain orientation. At the end (100%), it completes a full 360-degree rotation while maintaining the same radius and orientation. The `--circling-direction` variable allows reversing the animation direction.
+
+The keyframes use CSS calc() to dynamically compute the transforms based on the following variables:
+
+- `--circling-offset` (element's starting angle)
+- `--circling-radius` (circle size)
+- `--circling-direction` (1 or -1 for direction)
+
+## Examples
+
+### Easing & direction
+
+You can set custom easings and reverse direction for the animation, as you can see in this demo.
+
+<ComponentPreview name="circling-elements-easing-demo" />
 
 ## Props
 
@@ -95,6 +111,31 @@ The animation is done with only a few animation keyframes, as you can see in the
       <TableCell>`number`</TableCell>
       <TableCell>`10`</TableCell>
       <TableCell>The duration of one complete rotation in seconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>easing</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`linear`</TableCell>
+      <TableCell>
+        The easing function for the animation. Refer to the official [mdn
+        docs](https://developer.mozilla.org/en-US/docs/Web/CSS/easing-function)
+        for more details
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>direction</TableCell>
+      <TableCell>`"normal" | "reverse"`</TableCell>
+      <TableCell>`normal`</TableCell>
+      <TableCell>
+        The direction of the animation. Set to `"reverse"` to reverse the
+        animation
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>pauseOnHover</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Pause the animation on hover</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>

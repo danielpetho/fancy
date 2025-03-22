@@ -1,0 +1,499 @@
+---
+title: Simple Marquee
+description: A simple marquee component for scrolling HTML elements.
+component: true
+---
+
+<ComponentPreview name="simple-marquee-demo" />
+
+Artworks from [Cosmos](https://www.cosmos.so/danielpetho/gradients/).
+
+## Credits
+
+This component is inspired by [this scroll example](https://codesandbox.io/p/sandbox/framer-motion-scroll-velocity-r1dy4u?from-embed) by Motion. 
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/simple-marquee.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy and paste the following code into your project:</Step>
+
+<ComponentSource name="simple-marquee" />
+
+</Steps>
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+You only need to wrap your elements with the `SimpleMarquee` component, everything else is taken care of by the component itself.
+
+## Understanding the component
+
+Unlike most marquee implementations that use simple CSS animations, this component uses Motion's `useAnimationFrame` hook to provide more control over the animation. This allows for a bunch of fancy effects, such as:
+
+- Changing velocity and direction by dragging
+- Adjusting speed in response to scrolling
+- Adding custom easing functions
+- Creating pause/slow on hover effects
+
+### Core Animation
+
+The main magic of this component is the `useAnimationFrame` hook from Motion, which executes our anim code on every frame. Here's how it works:
+
+1. We create motion values (using `useMotionValue`) to track the x or y position:
+
+   ```jsx
+   const baseX = useMotionValue(0)
+   const baseY = useMotionValue(0)
+   ```
+
+2. We define a `baseVelocity` prop that determines the default speed and direction:
+
+   ```jsx
+   // Convert baseVelocity to the correct direction
+   const actualBaseVelocity =
+     direction === "left" || direction === "up" ? -baseVelocity : baseVelocity
+   ```
+
+3. On each animation frame inside the `useAnimationFrame` hook, we increment the position values, by adding that velocity to the current position:
+
+   ```jsx
+   // Inside useAnimationFrame
+   let moveBy = directionFactor.current * baseVelocity * (delta / 1000)
+
+   if (isHorizontal) {
+     baseX.set(baseX.get() + moveBy)
+   } else {
+     baseY.set(baseY.get() + moveBy)
+   }
+   ```
+
+4. Since we're constantly increasing/decreasing that value, at some point our elements would move out far away from the viewport. Therefore, we use the `useTransform` hook to convert that x/y value to a percentage, and wrapping it between 0 and -100. With this, we essentially force our elements to always move from 0 to -100. Once they reach -100, they will start their journey from 0% again.
+
+   ```jsx
+   const x = useTransform(baseX, (v) => {
+     // wrap it between 0 and -100
+     const wrappedValue = wrap(0, -100, v)
+     // Apply easing if provided, otherwise use linear
+     return `${easing ? easing(wrappedValue / -100) * -100 : wrappedValue}%`
+   })
+   ```
+
+5. The `wrap` helper function ensures values stay between 0 and -100:
+   ```jsx
+   const wrap = (min: number, max: number, value: number): number => {
+     const range = max - min
+     return ((((value - min) % range) + range) % range) + min
+   }
+   ```
+
+This example demonstrates the basic mechanism:
+
+<ComponentPreview name="simple-marquee-explainer-demo" />
+
+### Preventing "Jumps" With Repetition
+
+As you can see above, elements eventually leave the container and jump back to the beginning when they reach -100%. This creates a visible "jump" in the animation.
+
+We can solve this by using the `repeat` prop to duplicate all child elements multiple times inside the component:
+
+```jsx
+{
+  Array.from({ length: repeat }, (_, i) => i).map((i) => (
+    <motion.div
+      key={i}
+      className={cn(
+        "shrink-0",
+        isHorizontal && "flex",
+        draggable && grabCursor && "cursor-grab"
+      )}
+      style={isHorizontal ? { x } : { y }}
+      aria-hidden={i > 0}
+    >
+      {children}
+    </motion.div>
+  ))
+}
+```
+
+By default, the `repeat` value is 3, which means your content is duplicated three times. With enough repetitions, new elements enter the visible area before existing ones leave, creating an illusion of continuous animation. Try increasing the `repeat` value in the demo above to see how it eliminates the jumpiness.
+
+## Features
+
+The marquee's final velocity and behavior are determined by combining several factors that can be enabled through props:
+
+### Slow Down On Hover
+
+When `slowdownOnHover` is set to `true`, the component tracks hover state and applies a slowdown factor:
+
+```jsx
+// Track hover state
+const isHovered = useRef(false)
+const hoverFactorValue = useMotionValue(1)
+const smoothHoverFactor = useSpring(hoverFactorValue, slowDownSpringConfig)
+
+// In component JSX
+<motion.div
+  onHoverStart={() => (isHovered.current = true)}
+  onHoverEnd={() => (isHovered.current = false)}
+  // ...other props
+>
+  {/* ... */}
+</motion.div>
+
+// In animation frame
+if (isHovered.current) {
+  hoverFactorValue.set(slowdownOnHover ? slowDownFactor : 1)
+} else {
+  hoverFactorValue.set(1)
+}
+
+// Apply the hover factor to movement calculation
+let moveBy = directionFactor.current *
+             actualBaseVelocity *
+             (delta / 1000) *
+             smoothHoverFactor.get()
+```
+
+Key props for this feature:
+
+- `slowDownFactor` controls how much to slow down (default: 0.3 or 30% of original speed)
+- `smoothHoverFactor` uses spring physics for smooth transitions between speeds. This ensures that the velocity change is not happening instantly, but with a smooth animation. For this, we use the `useSpring` hook from Motion. 
+- `slowDownSpringConfig` lets you customize the spring animation parameters. Please refer to the [Motion documentation](https://motion.dev/docs/react-use-spring) for more details.
+
+### Scroll-Based Velocity
+
+When `useScrollVelocity` is enabled, the component tracks scroll velocity and uses it to influence the final velocity of the marquee:
+
+```jsx
+const { scrollY } = useScroll({
+  container: (scrollContainer as RefObject<HTMLDivElement>) || innerContainer.current,
+})
+const scrollVelocity = useVelocity(scrollY)
+const smoothVelocity = useSpring(scrollVelocity, scrollSpringConfig)
+
+// Transform scroll velocity into a factor for marquee speed
+const velocityFactor = useTransform(
+  useScrollVelocity ? smoothVelocity : defaultVelocity,
+  [0, 1000],
+  [0, 5],
+  { clamp: false }
+)
+
+// In animation frame
+// Adjust movement based on scroll velocity
+moveBy += directionFactor.current * moveBy * velocityFactor.get()
+
+// Change direction based on scroll if enabled
+if (scrollAwareDirection && !isDragging.current) {
+  if (velocityFactor.get() < 0) {
+    directionFactor.current = -1
+  } else if (velocityFactor.get() > 0) {
+    directionFactor.current = 1
+  }
+}
+```
+
+This creates an interactive effect where:
+
+- Scrolling adds to the marquee's velocity
+- If `scrollAwareDirection` is enabled, the scroll direction can reverse the marquee direction
+- Similar to the hover, we interpolate between the current and scroll velocity by using Spring physics with the `useSpring` hook from Motion. You can customize the spring animation parameters using the `scrollSpringConfig` prop.
+
+### Custom Easing Functions
+
+The `easing` prop allows you to transform the linear animation with custom easing curves:
+
+```jsx
+const x = useTransform(baseX, (v) => {
+  // Apply easing if provided, otherwise use linear
+  const wrappedValue = wrap(0, -100, v)
+  return `${easing ? easing(wrappedValue / -100) * -100 : wrappedValue}%`
+})
+```
+
+The easing function receives a normalized value between 0 and 1 and should return a transformed value. You need to provide an actual function here, not defined keyframes.
+
+You can find ready-to-use easing functions at [easings.net](https://easings.net/).
+
+<ComponentPreview name="simple-marquee-easing-demo" />
+
+### Draggable Marquee
+
+The marquee can also be dragged. It uses pointer events for tracking the cursor position and applying the drag velocity:
+
+```jsx
+// State for tracking dragging
+const isDragging = useRef(false)
+const dragVelocity = useRef(0)
+const lastPointerPosition = useRef({ x: 0, y: 0 })
+
+const handlePointerDown = (e: React.PointerEvent) => {
+  if (!draggable) return
+  // Capture pointer events
+  (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+
+  if (grabCursor) {
+    (e.currentTarget as HTMLElement).style.cursor = "grabbing"
+  }
+
+  isDragging.current = true
+  lastPointerPosition.current = { x: e.clientX, y: e.clientY }
+
+  // Pause automatic animation
+  dragVelocity.current = 0
+}
+
+const handlePointerMove = (e: React.PointerEvent) => {
+  if (!draggable || !isDragging.current) return
+
+  const currentPosition = { x: e.clientX, y: e.clientY }
+
+  // Calculate movement delta
+  const deltaX = currentPosition.x - lastPointerPosition.current.x
+  const deltaY = currentPosition.y - lastPointerPosition.current.y
+
+  // Support for angled dragging
+  const angleInRadians = (dragAngle * Math.PI) / 180
+  const directionX = Math.cos(angleInRadians)
+  const directionY = Math.sin(angleInRadians)
+
+  // Project movement along angle direction
+  const projectedDelta = deltaX * directionX + deltaY * directionY
+
+  // Set drag velocity
+  dragVelocity.current = projectedDelta * dragSensitivity
+
+  lastPointerPosition.current = currentPosition
+}
+```
+
+During animation frames, dragging takes precedence over other movement factors. Meaning, when the user is dragging, the marquee will move according to the drag velocity, and we ignore all other factors (such as the hover, scroll and the basic velocity).
+
+```jsx
+// Inside useAnimationFrame
+if (isDragging.current && draggable) {
+  if (isHorizontal) {
+    baseX.set(baseX.get() + dragVelocity.current)
+  } else {
+    baseY.set(baseY.get() + dragVelocity.current)
+  }
+
+  // Add decay to dragVelocity when not moving
+  dragVelocity.current *= 0.9
+
+  // Stop completely if velocity is very small
+  if (Math.abs(dragVelocity.current) < 0.01) {
+    dragVelocity.current = 0
+  }
+
+  return
+}
+```
+
+When the user stops dragging, velocity gradually decays back to the base velocity. You can customize the decay factor using the `dragVelocityDecay` prop.
+
+```jsx
+// Gradually decay drag velocity back to zero
+if (!isDragging.current && Math.abs(dragVelocity.current) > 0.01) {
+  dragVelocity.current *= dragVelocityDecay
+} else if (!isDragging.current) {
+  dragVelocity.current = 0
+}
+```
+
+The component also supports changing direction based on drag movement:
+
+```jsx
+// Update direction based on drag direction
+if (dragAwareDirection && Math.abs(dragVelocity.current) > 0.1) {
+  // If dragging in negative direction, set directionFactor to -1
+  // If dragging in positive direction, set directionFactor to 1
+  directionFactor.current = Math.sign(dragVelocity.current)
+}
+```
+
+<ComponentPreview name="simple-marquee-drag-demo" />
+
+Artwork credits: Artworks are from [Cosmos](https://cosmos.so/). I couldn't track down the original artists.
+
+## 3D Transforms
+
+To make a 3d effect, you can apply 3D CSS transforms to the marquee container or its children. The following example shows how you can apply them on the container.
+
+<ComponentPreview name="simple-marquee-3d-demo" />
+
+For angled marquees, you can also apply the `dragAngle` prop to change the direction of the drag movement. This is useful if you want to rotate the marquee e.g. by 45 degrees.
+
+```jsx
+// Convert dragAngle from degrees to radians
+const angleInRadians = (dragAngle * Math.PI) / 180
+
+// Calculate the projection of the movement along the angle direction
+const directionX = Math.cos(angleInRadians)
+const directionY = Math.sin(angleInRadians)
+
+// Project the movement onto the angle direction
+const projectedDelta = deltaX * directionX + deltaY * directionY
+```
+
+## Resources
+
+- [Scroll animations from Motion](https://motion.dev/docs/react-scroll-animations)
+- [Easings](https://easings.net/)
+- [CSS Only implementation from Frontend FYI](https://www.youtube.com/watch?v=uw5jVO1eNF8)
+- [Gradient artworks](https://www.cosmos.so/danielpetho/gradients)
+- [Album covers](https://musicbrainz.org/doc/Cover_Art_Archive/API)
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        children<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The elements to be scrolled</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for the container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>direction</TableCell>
+      <TableCell>`"left" | "right" | "up" | "down"`</TableCell>
+      <TableCell>`right`</TableCell>
+      <TableCell>
+        The direction of the marquee. Set to `"left"` or `"right"` to scroll
+        from left to right, or `"up"` or `"down"` to scroll from top to bottom
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>baseVelocity</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`5`</TableCell>
+      <TableCell>The base velocity of the marquee in pixels per second</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>easing</TableCell>
+      <TableCell>`(value: number) => number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>
+        The easing function for the animation
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>slowdownOnHover</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to slow down the animation on hover</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>slowDownFactor</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.3`</TableCell>
+      <TableCell>The factor to slow down the animation on hover</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>slowDownSpringConfig</TableCell>
+      <TableCell>`SpringOptions`</TableCell>
+      <TableCell>`{ damping: 50, stiffness: 400 }`</TableCell>
+      <TableCell>
+        The spring config for the slow down animation
+      </TableCell> 
+    </TableRow>
+    <TableRow>
+      <TableCell>useScrollVelocity</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to use the scroll velocity to control the marquee speed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollAwareDirection</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to adjust the direction based on the scroll direction</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollSpringConfig</TableCell>
+      <TableCell>`SpringOptions`</TableCell>
+      <TableCell>`{ damping: 50, stiffness: 400 }`</TableCell>
+      <TableCell>The spring config for the scroll velocity-based direction adjustment</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollContainer</TableCell>
+      <TableCell>`RefObject<HTMLElement> | HTMLElement | null`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The container to use for the scroll velocity. If not provided, the window will be used.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>repeat</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`3`</TableCell>
+      <TableCell>The number of times to repeat the children</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>draggable</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to allow dragging of the marquee</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragSensitivity</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.2`</TableCell>
+      <TableCell>The sensitivity of the drag movement</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragVelocityDecay</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.96`</TableCell>
+      <TableCell>The decay of the drag velocity when released</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragAwareDirection</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to adjust the direction based on the drag velocity</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragAngle</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0`</TableCell>
+      <TableCell>The angle of the drag movement in degrees</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>grabCursor</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to change the cursor to grabbing when dragging</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
