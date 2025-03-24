@@ -86,7 +86,7 @@ const MarqueeAlongSvgPath = ({
   pathId,
   preserveAspectRatio = "xMidYMid meet",
   showPath = false,
-  gap = 4,
+  gap = 0,
 
   // SVG defaults
   width = "100%",
@@ -119,6 +119,24 @@ const MarqueeAlongSvgPath = ({
 }: MarqueeAlongSvgPathProps) => {
   const container = useRef<HTMLDivElement>(null)
   const baseOffset = useMotionValue(0)
+
+  const items = React.useMemo(() => {
+    const childrenArray = React.Children.toArray(children);
+    const totalItems = childrenArray.length * repeat;
+    
+    return childrenArray.flatMap((child, childIndex) =>
+      Array.from({ length: repeat }, (_, repeatIndex) => {
+        const itemIndex = repeatIndex * childrenArray.length + childIndex;
+        return {
+          child,
+          childIndex,
+          repeatIndex,
+          itemIndex,
+          totalItems
+        };
+      })
+    );
+  }, [children, repeat]);
 
   // Generate a random ID for the path if not provided
   const id = pathId || `marquee-path-${Math.random().toString(36).substring(7)}`
@@ -291,44 +309,44 @@ const MarqueeAlongSvgPath = ({
         />
       </svg>
 
-      {React.Children.toArray(children).flatMap(
-        (child, childIndex, childrenArray) => {
-          return Array.from(
-            { length: Math.ceil(repeat / childrenArray.length) },
-            (_, repeatIndex) => {
-              const itemIndex = repeatIndex * childrenArray.length + childIndex
+      {items.map(({ child, childIndex, repeatIndex, itemIndex, totalItems }) => {
+        // Create a unique offset transform for each item
+        const itemOffset = useTransform(baseOffset, (v) => {
+          // Total items determines the base spacing
+          const baseUnitWidth = 100 / totalItems;
+          
+          // Gap as a percentage (0 means no gap, 100 means gap equal to item width)
+          const gapWidth = (gap / 100) * baseUnitWidth;
+          
+          // Position calculation with proper gap
+          const position = itemIndex * (baseUnitWidth + gapWidth);
+          
+          // Wrap for continuous motion
+          const wrappedValue = wrap(0, 100, v + position);
+          
+          // Apply easing if provided
+          return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`;
+        });
 
-              // Only render up to the repeat count
-              if (itemIndex >= repeat) return null
-
-              return (
-                <motion.div
-                  key={`${childIndex}-${repeatIndex}`}
-                  className={cn(
-                    "absolute top-0 left-0",
-                    draggable && grabCursor && "cursor-grab"
-                  )}
-                  style={{
-                    offsetPath: `path('${path}')`,
-                    offsetDistance: useTransform(baseOffset, (v) => {
-                      // Add an individual offset for each item based on its position
-                      const individualOffset =
-                        itemIndex * (100 / repeat) - gap * itemIndex
-                      const wrappedValue = wrap(0, 100, v + individualOffset)
-                      return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
-                    }),
-                  }}
-                  aria-hidden={itemIndex > 0}
-                  onMouseEnter={() => (isHovered.current = true)}
-                  onMouseLeave={() => (isHovered.current = false)}
-                >
-                  {child}
-                </motion.div>
-              )
-            }
-          ).filter(Boolean)
-        }
-      )}
+        return (
+          <motion.div
+            key={`${childIndex}-${repeatIndex}`}
+            className={cn(
+              "absolute top-0 left-0",
+              draggable && grabCursor && "cursor-grab"
+            )}
+            style={{
+              offsetPath: `path('${path}')`,
+              offsetDistance: itemOffset,
+            }}
+            aria-hidden={repeatIndex > 0}
+            onMouseEnter={() => (isHovered.current = true)}
+            onMouseLeave={() => (isHovered.current = false)}
+          >
+            {child}
+          </motion.div>
+        );
+      })}
     </div>
   )
 }

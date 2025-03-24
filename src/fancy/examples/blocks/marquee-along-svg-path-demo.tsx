@@ -1,5 +1,4 @@
 import MarqueeAlongSvgPath from "@/fancy/components/blocks/marquee-along-svg-path"
-import { z } from "zod";
 
 const imgs = [
   "https://cdn.cosmos.so/b9909337-7a53-48bc-9672-33fbd0f040a1?format=jpeg",
@@ -15,70 +14,40 @@ const imgs = [
   "https://cdn.cosmos.so/e899f9c3-ed48-4899-8c16-fbd5a60705da?format=jpeg",
   "https://cdn.cosmos.so/24e83c11-c607-45cd-88fb-5059960b56a0?format=jpeg",
   "https://cdn.cosmos.so/cd346bce-f415-4ea7-8060-99c5f7c1741a?format=jpeg",
-
-
-
 ]
 
 export default function MarqueeAlongSvgPathDemo() {
-  // Helper function to split text into individual letter spans
-  const splitTextIntoLetters = (text: string) => {
-    return text.split('').map((letter, index) => (
-      <span key={index} className="text-3xl font-bold inline-block mx-1">
-        {letter}
-      </span>
-    ));
-  };
-
-
-
-  // Create the letters for each text
-  const graphicDesignLetters = splitTextIntoLetters("GRAPHIC DESIGN");
-  const motionDesignLetters = splitTextIntoLetters("MOTION DESIGN");
-  const typographyLetters = splitTextIntoLetters("TYPOGRAPHY");
-
   return (
     <div className="w-full h-full bg-zinc-50">
       <MarqueeAlongSvgPath
         path="M1 209.434C58.5872 255.935 387.926 325.938 482.583 209.434C600.905 63.8051 525.516 -43.2211 427.332 19.9613C329.149 83.1436 352.902 242.723 515.041 267.302C644.752 286.966 943.56 181.94 995 156.5"
         viewBox="0 0 996 274"
         baseVelocity={8}
+        showPath={true}
         slowdownOnHover={true}
         draggable={true}
-        repeat={imgs.length * 2}
-        dragSensitivity={0.1}
+        repeat={1}
         gap={0}
+        dragSensitivity={0.1}
         className="absolute -left-20 top-32 w-full h-full"
         grabCursor
       >
         {imgs.map((img, i) => (
-          <div key={i} className="w-16 h-full cursor-pointer hover:scale-150 duration-300 ease-in-out">
+          <div
+            key={i}
+            className="w-16 h-full cursor-pointer hover:scale-150 duration-300 ease-in-out"
+          >
             <img
               src={img}
               alt={`Example ${i}`}
               className="w-full h-full object-cover"
-              style={{
-                zIndex: i % 2 === 0 ? 1 : 0,
-              }}
+              // style={{
+              //   zIndex: i % 2 === 0 ? 1 : 0,
+              // }}
               draggable={false}
             />
           </div>
         ))}
-        {/* All the individual letters and images */}
-        {/* {graphicDesignLetters}
-        <div className="inline-block mx-4">
-          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-            <span className="text-white">🖌️</span>
-          </div>
-        </div>
-        {motionDesignLetters}
-        <div className="inline-block mx-4">
-          <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center">
-            <span className="text-white">🎬</span>
-          </div>
-        </div>
-        {typographyLetters} */}
-
       </MarqueeAlongSvgPath>
     </div>
   )
