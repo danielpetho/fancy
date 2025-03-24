@@ -242,6 +242,11 @@ export const docsConfig: SidebarNavItem[] = [
         label: "New",
       },
       {
+        title: "Marquee Along SVG Path",
+        href: "/docs/components/blocks/marquee-along-svg-path",
+        items: [],
+      },
+      {
         title: "Element Along SVG Path",
         href: "/docs/components/blocks/element-along-svg-path",
         items: [],

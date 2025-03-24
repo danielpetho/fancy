@@ -12,7 +12,6 @@ import {
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
-import { start } from "repl"
 
 type PreserveAspectRatioAlign =
   | "none"
@@ -120,15 +119,15 @@ export const ElementAlongPathItem = ({
   return (
     <motion.div
       className={cn("absolute top-0 left-0", className)}
-      // initial={{ offsetDistance: initialOffset }}
-      // animate={{
-      //   offsetDistance: animationType === "auto" ? animateOffset : undefined,
-      // }}
+      initial={{ offsetDistance: initialOffset }}
+      animate={{
+        offsetDistance: animationType === "auto" ? animateOffset : undefined,
+      }}
       style={{
         offsetPath: `path('${path}')`,
         offsetDistance: animationType === "scroll" ? scp : undefined,
       }}
-      // transition={transition}
+      transition={transition}
       // onHoverStart={() => setHovered(true)}
       // onHoverEnd={() => setHovered(false)}
     >
