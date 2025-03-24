@@ -18,7 +18,7 @@ const imgs = [
 
 export default function MarqueeAlongSvgPathDemo() {
   return (
-    <div className="w-full h-full bg-zinc-50">
+    <div className="w-full h-full bg-zinc-50 flex">
       <MarqueeAlongSvgPath
         path="M1 209.434C58.5872 255.935 387.926 325.938 482.583 209.434C600.905 63.8051 525.516 -43.2211 427.332 19.9613C329.149 83.1436 352.902 242.723 515.041 267.302C644.752 286.966 943.56 181.94 995 156.5"
         viewBox="0 0 996 274"
@@ -26,10 +26,10 @@ export default function MarqueeAlongSvgPathDemo() {
         showPath={true}
         slowdownOnHover={true}
         draggable={true}
-        repeat={1}
+        repeat={2}
         gap={0}
         dragSensitivity={0.1}
-        className="absolute -left-20 top-32 w-full h-full"
+        className="absolute -left-12 top-32 w-full h-full"
         grabCursor
       >
         {imgs.map((img, i) => (

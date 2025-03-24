@@ -1,4 +1,11 @@
-import React, { RefObject, useEffect, useRef } from "react"
+import React, {
+  RefObject,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react"
 import {
   motion,
   SpringOptions,
@@ -120,23 +127,82 @@ const MarqueeAlongSvgPath = ({
   const container = useRef<HTMLDivElement>(null)
   const baseOffset = useMotionValue(0)
 
+  const pathRef = useRef<SVGPathElement>(null)
+  const [pathLength, setPathLength] = useState<number>(0)
+
+  const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map())
+  const [itemWidths, setItemWidths] = useState<Map<string, number>>(new Map())
+  const [totalWidth, setTotalWidth] = useState(0)
+
+  // Create an array of items outside of the render function
   const items = React.useMemo(() => {
-    const childrenArray = React.Children.toArray(children);
-    const totalItems = childrenArray.length * repeat;
-    
+    const childrenArray = React.Children.toArray(children)
+
     return childrenArray.flatMap((child, childIndex) =>
       Array.from({ length: repeat }, (_, repeatIndex) => {
-        const itemIndex = repeatIndex * childrenArray.length + childIndex;
+        const itemIndex = repeatIndex * childrenArray.length + childIndex
+        const key = `${childIndex}-${repeatIndex}`
         return {
           child,
           childIndex,
           repeatIndex,
           itemIndex,
-          totalItems
-        };
+          key,
+        }
       })
-    );
-  }, [children, repeat]);
+    )
+  }, [children, repeat])
+
+  // Calculate widths and positions once items are rendered
+  useEffect(() => {
+    // Skip if no items have been measured yet
+    if (itemRefs.current.size === 0) return
+
+    const newWidths = new Map<string, number>()
+    let widthSum = 0
+
+    // Measure each item's width
+    itemRefs.current.forEach((element, key) => {
+      const width = element.offsetWidth
+      newWidths.set(key, width)
+      widthSum += width
+    })
+
+    setItemWidths(newWidths)
+    setTotalWidth(widthSum)
+
+    const pathLength = pathRef.current?.getTotalLength()
+    setPathLength(pathLength || 0)
+  }, [items.length])
+
+  // Calculate position of each item based on accumulated widths
+  const getItemPosition = useCallback(
+    (itemKey: string, itemIndex: number) => {
+      // If widths aren't measured yet, distribute evenly as fallback
+      if (totalWidth === 0 || itemWidths.size === 0) {
+        return (itemIndex * 100) / items.length
+      }
+
+      let position = 0
+      let currentIndex = 0
+      // Loop through items to calculate accumulated position
+      Array.from(itemWidths).forEach(([key, width]) => {
+        if (currentIndex >= itemIndex) return
+
+        // Add width of item plus gap
+        position += width + gap
+        currentIndex++
+      })
+
+      // Normalize to percentage of total path (0-100)
+      // We add all gaps to totalWidth for normalization
+      const normalizedPosition =
+        (position / (pathLength + gap * (items.length - 1))) * 100
+      console.log(normalizedPosition)
+      return normalizedPosition
+    },
+    [totalWidth, itemWidths, items.length, gap]
+  )
 
   // Generate a random ID for the path if not provided
   const id = pathId || `marquee-path-${Math.random().toString(36).substring(7)}`
@@ -169,12 +235,6 @@ const MarqueeAlongSvgPath = ({
     [0, 5],
     { clamp: false }
   )
-
-  // Transform baseOffset to a percentage between 0-100
-  const offsetDistance = useTransform(baseOffset, (v) => {
-    const wrappedValue = wrap(0, 100, v + gap * repeat)
-    return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
-  })
 
   // Animation frame handler
   useAnimationFrame((_, delta) => {
@@ -284,58 +344,64 @@ const MarqueeAlongSvgPath = ({
     }
   }
 
+  const viewBoxValues = useMemo(() => {
+    const values = viewBox.split(" ").map((v) => parseFloat(v))
+    if (values.length === 4) {
+      return {
+        minX: values[0],
+        minY: values[1],
+        width: values[2],
+        height: values[3],
+      }
+    }
+    return { minX: 0, minY: 0, width: 100, height: 100 }
+  }, [viewBox])
+
+
   return (
     <div
       ref={container}
-      className={cn("relative", className)}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
+      className={cn("relative", className)}
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        viewBox={viewBox}
         width={width}
         height={height}
         preserveAspectRatio={preserveAspectRatio}
-        // className="absolute inset-0 w-full h-full"
       >
         <path
           id={id}
           d={path}
           stroke={showPath ? "currentColor" : "none"}
           fill="none"
+          ref={pathRef}
         />
       </svg>
 
-      {items.map(({ child, childIndex, repeatIndex, itemIndex, totalItems }) => {
+      {items.map(({ child, childIndex, repeatIndex, itemIndex, key }) => {
         // Create a unique offset transform for each item
         const itemOffset = useTransform(baseOffset, (v) => {
-          // Total items determines the base spacing
-          const baseUnitWidth = 100 / totalItems;
-          
-          // Gap as a percentage (0 means no gap, 100 means gap equal to item width)
-          const gapWidth = (gap / 100) * baseUnitWidth;
-          
-          // Position calculation with proper gap
-          const position = itemIndex * (baseUnitWidth + gapWidth);
-          
-          // Wrap for continuous motion
-          const wrappedValue = wrap(0, 100, v + position);
-          
-          // Apply easing if provided
-          return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`;
-        });
+          const position = getItemPosition(key, itemIndex)
+          const wrappedValue = wrap(0, 100, v + position)
+          return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
+        })
 
         return (
           <motion.div
-            key={`${childIndex}-${repeatIndex}`}
+            key={key}
+            ref={(el) => {
+              if (el) itemRefs.current.set(key, el)
+            }}
             className={cn(
               "absolute top-0 left-0",
               draggable && grabCursor && "cursor-grab"
             )}
             style={{
+              // Use the path with appropriate coordinate box
               offsetPath: `path('${path}')`,
               offsetDistance: itemOffset,
             }}
@@ -345,7 +411,7 @@ const MarqueeAlongSvgPath = ({
           >
             {child}
           </motion.div>
-        );
+        )
       })}
     </div>
   )
