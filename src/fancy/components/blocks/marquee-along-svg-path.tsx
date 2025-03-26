@@ -37,6 +37,12 @@ type PreserveAspectRatioAlign =
   | "xMidYMax"
   | "xMaxYMax"
 
+interface CSSVariableInterpolation {
+    property: string;
+    from: number | string;
+    to: number | string;
+  }
+
 type PreserveAspectRatioMeetOrSlice = "meet" | "slice"
 
 type PreserveAspectRatio =
@@ -82,6 +88,16 @@ interface MarqueeAlongSvgPathProps {
   dragVelocityDecay?: number
   dragAwareDirection?: boolean
   grabCursor?: boolean
+
+  // Z-index properties
+  enableRollingZIndex?: boolean;
+  zIndexStrategy?: "progress" | "segment" | "custom";
+  zIndexSegments?: number;
+  customZIndexMapper?: (distance: number) => number;
+  zIndexBase?: number;
+  zIndexRange?: number;
+
+  cssVariableInterpolation?: CSSVariableInterpolation[];
 }
 
 const MarqueeAlongSvgPath = ({
@@ -123,6 +139,16 @@ const MarqueeAlongSvgPath = ({
   dragVelocityDecay = 0.96,
   dragAwareDirection = false,
   grabCursor = false,
+
+  // Z-index defaults
+  enableRollingZIndex = true,
+  zIndexStrategy = "progress", // "progress", "segment", "custom"
+  zIndexSegments = 5, // Number of segments to divide the path into
+  zIndexBase = 1, // Base z-index value
+  zIndexRange = 10, // Range of z-index values to use
+  customZIndexMapper = undefined,
+
+  cssVariableInterpolation = [],
 }: MarqueeAlongSvgPathProps) => {
   const container = useRef<HTMLDivElement>(null)
   const baseOffset = useMotionValue(0)
@@ -198,11 +224,52 @@ const MarqueeAlongSvgPath = ({
       // We add all gaps to totalWidth for normalization
       const normalizedPosition =
         (position / (pathLength + gap * (items.length - 1))) * 100
-      console.log(normalizedPosition)
       return normalizedPosition
     },
     [totalWidth, itemWidths, items.length, gap]
   )
+
+  // Function to calculate z-index based on offset distance
+  const calculateZIndex = useCallback(
+    (offsetDistance: number) => {
+      // Normalize offsetDistance to 0-1 range
+      const normalizedDistance = offsetDistance / 100;
+
+      if (!enableRollingZIndex) {
+        return undefined; // Use default DOM order
+      }
+
+      switch (zIndexStrategy) {
+        case "progress":
+          // Simple progress-based strategy: higher z-index as element progresses
+          return Math.floor(zIndexBase + normalizedDistance * zIndexRange);
+
+        case "segment":
+          // Segment-based strategy: divide path into segments with different z-indices
+          const segmentSize = 1 / zIndexSegments;
+          const segmentIndex = Math.floor(normalizedDistance / segmentSize) % zIndexSegments;
+          return zIndexBase + segmentIndex;
+
+        case "custom":
+          // Use custom mapper function if provided
+          if (customZIndexMapper) {
+            return customZIndexMapper(normalizedDistance);
+          }
+          return zIndexBase;
+
+        default:
+          return zIndexBase;
+      }
+    },
+    [
+      enableRollingZIndex,
+      zIndexStrategy,
+      zIndexSegments,
+      customZIndexMapper,
+      zIndexBase,
+      zIndexRange,
+    ]
+  );
 
   // Generate a random ID for the path if not provided
   const id = pathId || `marquee-path-${Math.random().toString(36).substring(7)}`
@@ -344,20 +411,6 @@ const MarqueeAlongSvgPath = ({
     }
   }
 
-  const viewBoxValues = useMemo(() => {
-    const values = viewBox.split(" ").map((v) => parseFloat(v))
-    if (values.length === 4) {
-      return {
-        minX: values[0],
-        minY: values[1],
-        width: values[2],
-        height: values[3],
-      }
-    }
-    return { minX: 0, minY: 0, width: 100, height: 100 }
-  }, [viewBox])
-
-
   return (
     <div
       ref={container}
@@ -378,17 +431,47 @@ const MarqueeAlongSvgPath = ({
           d={path}
           stroke={showPath ? "currentColor" : "none"}
           fill="none"
+          // strokeWidth={60}
           ref={pathRef}
         />
       </svg>
 
-      {items.map(({ child, childIndex, repeatIndex, itemIndex, key }) => {
+      {items.map(({ child, repeatIndex, itemIndex, key }) => {
         // Create a unique offset transform for each item
         const itemOffset = useTransform(baseOffset, (v) => {
           const position = getItemPosition(key, itemIndex)
           const wrappedValue = wrap(0, 100, v + position)
           return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
         })
+
+         // Create a motion value for the current offset distance
+         const currentOffsetDistance = useMotionValue(0);
+        
+         // Update z-index when offset distance changes
+         const zIndex = useTransform(
+           currentOffsetDistance,
+           (value) => calculateZIndex(value)
+         );
+ 
+         // Update current offset distance value when animation runs
+         useEffect(() => {
+           const unsubscribe = itemOffset.on("change", (value: string) => {
+             // Parse percentage string to get numerical value
+             const match = value.match(/^([\d.]+)%$/);
+             if (match && match[1]) {
+               currentOffsetDistance.set(parseFloat(match[1]));
+
+             }
+           });
+           return unsubscribe;
+         }, [itemOffset, currentOffsetDistance]);
+
+         const cssVariables = Object.fromEntries(
+          (cssVariableInterpolation || []).map(({ property, from, to }) => [
+            property,
+            useTransform(currentOffsetDistance, [0, 100], [from, to])
+          ])
+        );
 
         return (
           <motion.div
@@ -404,6 +487,8 @@ const MarqueeAlongSvgPath = ({
               // Use the path with appropriate coordinate box
               offsetPath: `path('${path}')`,
               offsetDistance: itemOffset,
+              zIndex: enableRollingZIndex ? zIndex : undefined,
+              ...cssVariables
             }}
             aria-hidden={repeatIndex > 0}
             onMouseEnter={() => (isHovered.current = true)}

@@ -16,38 +16,58 @@ const imgs = [
   "https://cdn.cosmos.so/cd346bce-f415-4ea7-8060-99c5f7c1741a?format=jpeg",
 ]
 
-const path = "M1 209.434C58.5872 255.935 387.926 325.938 482.583 209.434C600.905 63.8051 525.516 -43.2211 427.332 19.9613C329.149 83.1436 352.902 242.723 515.041 267.302C644.752 286.966 943.56 181.94 995 156.5"
+function generateSpiralPath(turns = 5, centerX = 500, centerY = 137) {
+  const points = []
+  const numPoints = turns * 300 // number of points to create smooth spiral
+  const spacing = 18 // controls how far apart the spiral arms are
 
+  for (let i = 0; i < numPoints; i++) {
+    const angle = (i / numPoints) * turns * 2 * Math.PI
+    const radius = spacing * angle // radius increases with angle
+    const x = centerX + radius * Math.cos(angle)
+    const y = centerY + radius * Math.sin(angle)
+    points.push(`${i === 0 ? "M" : "L"} ${x} ${y}`)
+  }
 
+  return points.join(" ")
+}
+
+const path = generateSpiralPath(4)
 
 export default function MarqueeAlongSvgPathDemo() {
   return (
-    <div className="w-full h-full bg-zinc-50 flex">
+    <div className="w-full h-full bg-zinc-50 flex items-center justify-center">
+      <h2 className="text-black text-8xl">fancy</h2>
       <MarqueeAlongSvgPath
         path={path}
-        viewBox="0 0 996 274"
-        baseVelocity={8}
-        showPath={true}
+        viewBox="0 0 400 474" // Adjusted to center the spiral
+        baseVelocity={1}
+        showPath={false}
         slowdownOnHover={true}
         draggable={true}
-        repeat={2}
-        gap={0}
-        dragSensitivity={0.1}
-        className="absolute -left-12 top-32 w-full h-full"
+        dragAwareDirection
+        dragVelocityDecay={0.98}
+        repeat={8}
+        gap={10}
+        enableRollingZIndex={false}
+        dragSensitivity={0.01}
+        className="absolute top-36 -left-32 w-full h-full transform-3d"
+        cssVariableInterpolation={[
+          { property: "opacity", from: 0, to: 1.5 },
+          { property: "scale", from: 0.1, to: 1 },
+          //{ property: "transform", from: -1000, to: 500 }
+        ]}
         grabCursor
       >
         {imgs.map((img, i) => (
           <div
             key={i}
-            className="w-16 h-full cursor-pointer hover:scale-150 duration-300 ease-in-out"
+            className="w-14 h-full cursor-pointer transform-3d hover:rotate-y-0 duration-300 ease-in-out hover:rotate-x-0 perspective-midrange -rotate-x-35 rotate-y-35 hover:scale-200"
           >
             <img
               src={img}
               alt={`Example ${i}`}
               className="w-full h-full object-cover"
-              // style={{
-              //   zIndex: i % 2 === 0 ? 1 : 0,
-              // }}
               draggable={false}
             />
           </div>
