@@ -1,4 +1,5 @@
 import MarqueeAlongSvgPath from "@/fancy/components/blocks/marquee-along-svg-path"
+import { useState } from "react"
 
 const imgs = [
   "https://cdn.cosmos.so/b9909337-7a53-48bc-9672-33fbd0f040a1?format=jpeg",
@@ -16,63 +17,47 @@ const imgs = [
   "https://cdn.cosmos.so/cd346bce-f415-4ea7-8060-99c5f7c1741a?format=jpeg",
 ]
 
-function generateSpiralPath(turns = 5, centerX = 500, centerY = 137) {
-  const points = []
-  const numPoints = turns * 300 // number of points to create smooth spiral
-  const spacing = 18 // controls how far apart the spiral arms are
-
-  for (let i = 0; i < numPoints; i++) {
-    const angle = (i / numPoints) * turns * 2 * Math.PI
-    const radius = spacing * angle // radius increases with angle
-    const x = centerX + radius * Math.cos(angle)
-    const y = centerY + radius * Math.sin(angle)
-    points.push(`${i === 0 ? "M" : "L"} ${x} ${y}`)
-  }
-
-  return points.join(" ")
-}
-
-const path = generateSpiralPath(4)
+const path =
+  "M1.12756 531.57C28.0893 516.8 74.8013 483.241 115.862 435.167M115.862 435.167C142.71 403.734 167.142 366.095 182.056 323.447C229.212 188.604 -65.6747 303.582 53.6794 397.09C73.8056 412.858 94.5052 425.626 115.862 435.167ZM115.862 435.167C221.157 482.211 342.426 450.85 489.709 314.125C517.752 288.093 540.139 265.319 557.876 245.305M557.876 245.305C652.19 138.884 615.024 110.493 597.546 85.1004C576.782 54.9327 401.867 14.2899 417.559 188.351C424.308 263.214 481.985 261.608 557.876 245.305ZM557.876 245.305C646.667 226.232 760.389 187.041 846.65 226.667M846.65 226.667C858.081 231.918 869.031 238.554 879.376 246.804C1034.5 370.518 957.576 540.884 843.253 562.658C768.137 576.964 767.606 395.943 846.65 226.667ZM846.65 226.667C887.908 138.309 950.848 53.1511 1036.18 0.642822"
 
 export default function MarqueeAlongSvgPathDemo() {
+
+  const [container, setContainer] = useState<HTMLElement | null>(null)
+
   return (
-    <div className="w-full h-full bg-zinc-50 flex items-center justify-center">
-      <h2 className="text-black text-8xl">fancy</h2>
-      <MarqueeAlongSvgPath
-        path={path}
-        viewBox="0 0 400 474" // Adjusted to center the spiral
-        baseVelocity={1}
-        showPath={false}
-        slowdownOnHover={true}
-        draggable={true}
-        dragAwareDirection
-        dragVelocityDecay={0.98}
-        repeat={8}
-        gap={10}
-        enableRollingZIndex={false}
-        dragSensitivity={0.01}
-        className="absolute top-36 -left-32 w-full h-full transform-3d"
-        cssVariableInterpolation={[
-          { property: "opacity", from: 0, to: 1.5 },
-          { property: "scale", from: 0.1, to: 1 },
-          //{ property: "transform", from: -1000, to: 500 }
-        ]}
-        grabCursor
-      >
-        {imgs.map((img, i) => (
-          <div
-            key={i}
-            className="w-14 h-full cursor-pointer transform-3d hover:rotate-y-0 duration-300 ease-in-out hover:rotate-x-0 perspective-midrange -rotate-x-35 rotate-y-35 hover:scale-200"
-          >
-            <img
-              src={img}
-              alt={`Example ${i}`}
-              className="w-full h-full object-cover"
-              draggable={false}
-            />
-          </div>
-        ))}
-      </MarqueeAlongSvgPath>
+    <div className="w-full h-full relative bg-zinc-50 flex justify-center overflow-auto" ref={(node) => setContainer(node)}>
+      <h2 className="mt-36 text-4xl">scroll down</h2>
+      <div className="absolute h-[120%] sm:h-[150%] top-40 w-full justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4">
+        <MarqueeAlongSvgPath
+          path={path}
+          baseVelocity={4}
+          showPath={false}
+          slowdownOnHover={true}
+          draggable={true}
+          dragAwareDirection
+          dragVelocityDecay={0.98}
+          scrollAwareDirection={true}
+          useScrollVelocity={true}
+          scrollContainer={{ current: container }}
+          repeat={4}
+          gap={0}
+          enableRollingZIndex={true}
+          dragSensitivity={0.01}
+          className="absolute top-0 w-full h-full scale-[80%] -left-24"
+          grabCursor
+        >
+          {imgs.map((img, i) => (
+            <div key={i} className="w-14 h-full cursor-pointer">
+              <img
+                src={img}
+                alt={`Example ${i}`}
+                className="w-full h-full object-cover"
+                draggable={false}
+              />
+            </div>
+          ))}
+        </MarqueeAlongSvgPath>
+      </div>
     </div>
   )
 }
