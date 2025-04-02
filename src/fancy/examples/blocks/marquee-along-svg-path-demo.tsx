@@ -25,29 +25,25 @@ export default function MarqueeAlongSvgPathDemo() {
     <div className="w-full h-full bg-zinc-50 flex">
       <MarqueeAlongSvgPath
         path={path}
-        viewBox="0 0 996 274"
         baseVelocity={8}
-        showPath={true}
         slowdownOnHover={true}
         draggable={true}
         repeat={2}
         gap={0}
         dragSensitivity={0.1}
-        className="absolute -left-12 top-32 w-full h-full"
+        className="absolute -left-24 sm:-left-32 top-32 scale-60 sm:scale-100"
         grabCursor
       >
         {imgs.map((img, i) => (
           <div
             key={i}
-            className="w-16 h-full cursor-pointer hover:scale-150 duration-300 ease-in-out"
+            className="w-14 h-full cursor-pointer hover:scale-150 duration-300 ease-in-out"
           >
             <img
               src={img}
               alt={`Example ${i}`}
               className="w-full h-full object-cover"
-              // style={{
-              //   zIndex: i % 2 === 0 ? 1 : 0,
-              // }}
+
               draggable={false}
             />
           </div>

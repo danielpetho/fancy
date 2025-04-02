@@ -37,7 +37,7 @@ const path = generateSpiralPath(4)
 export default function MarqueeAlongSvgPathDemo() {
   return (
     <div className="w-full h-full bg-zinc-50 flex items-center justify-center">
-      <h2 className="text-black text-8xl">fancy</h2>
+      <h2 className="text-black text-6xl sm:text-8xl z-10">fancy</h2>
       <MarqueeAlongSvgPath
         path={path}
         viewBox="0 0 400 474" // Adjusted to center the spiral
@@ -51,11 +51,10 @@ export default function MarqueeAlongSvgPathDemo() {
         gap={10}
         enableRollingZIndex={false}
         dragSensitivity={0.01}
-        className="absolute top-36 -left-32 w-full h-full transform-3d"
+        className="absolute top-30 -left-60 scale-70 sm:-left-32 w-full h-full transform-3d"
         cssVariableInterpolation={[
           { property: "opacity", from: 0, to: 1.5 },
           { property: "scale", from: 0.1, to: 1 },
-          //{ property: "transform", from: -1000, to: 500 }
         ]}
         grabCursor
       >

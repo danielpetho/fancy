@@ -40,10 +40,9 @@ export default function MarqueeAlongSvgPathDemo() {
           useScrollVelocity={true}
           scrollContainer={{ current: container }}
           repeat={4}
-          gap={0}
           enableRollingZIndex={true}
           dragSensitivity={0.01}
-          className="absolute top-0 w-full h-full scale-[80%] -left-24"
+          className="absolute top-0 w-full h-full scale-35 -left-30 sm:scale-80 sm:-left-24"
           grabCursor
         >
           {imgs.map((img, i) => (
