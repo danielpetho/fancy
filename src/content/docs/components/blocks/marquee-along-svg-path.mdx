@@ -35,11 +35,109 @@ npx shadcn@latest add "https://fancycomponents.dev/r/marquee-along-svg-path.json
 
 ## Usage
 
-You only need to wrap your elements with the `MarqueeAlongSvgPath` component, everything else is taken care of by the component itself.
+The `MarqueeAlongSvgPath` component allows you to animate elements along an SVG path. Here's how to use it:
+
+1. Wrap your elements with the `MarqueeAlongSvgPath` component
+2. Provide an SVG path via the required `path` prop (the `d` attribute of an SVG path)
+3. Configure the SVG viewport with optional `viewBox` and `preserveAspectRatio` props for proper scaling
+4. The elements are distributed evenly along the path, so you'll need to experiment with:
+   - The `repeat` prop to control how many copies of your elements appear
+   - The size of your elements (width/height)
 
 ## Understanding the component
 
-Please refer to the [Marquee Along SVG Path](https://github.com/danielpetho/fancy/blob/main/src/fancy/components/blocks/marquee-along-svg-path.tsx) source code, as this component is almost identical to it. The main difference is that we don't 
+Before you dive into this documentation, please refer and understand the [Marquee Along SVG Path](https://github.com/danielpetho/fancy/blob/main/src/fancy/components/blocks/marquee-along-svg-path.tsx) componnet, as this component works almost the same way.
+
+The main difference is that we move the children along an SVG path (instead of a "straight line" positioned with `flexbox` system). The magic that makes this possible is the `offsetPath` CSS property.
+
+> The `offset-path` CSS property specifies a path for an element to follow and determines the element's positioning within the path's parent container or the SVG coordinate system. The path is a line, a curve, or a geometrical shape along which the element gets positioned or moves.
+>
+as per the [offset-path documentation on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-path)
+
+We also use the `offsetDistance` property to actually move/offset the element to the correct position along the path in the `offset-path` CSS property.
+
+```jsx
+style={{
+  ...
+  offsetPath: `path('${path}')`,
+  offsetDistance: itemOffset,
+}}
+```
+
+Each item's offset is calculated separately using the `useTransform` hook from `motion/react`:
+
+### Z-Index Management
+When elements cross over the path, we automatically manage z-indices to create proper depth sorting:
+
+```jsx
+// Calculates z-index based on progress along path
+const calculateZIndex = (offsetDistance: number) => {
+  return Math.floor(zIndexBase + (offsetDistance/100) * zIndexRange)
+}
+
+// Applied through Motion's useTransform
+const zIndex = useTransform(currentOffsetDistance, calculateZIndex)
+```
+
+This ensures elements further along the path appear above earlier ones, creating natural overlap.
+
+### Path Distribution
+Elements are evenly distributed along the path using:
+
+```jsx
+const getItemPosition = (itemIndex: number) => {
+  return (itemIndex * 100) / totalItems
+}
+```
+
+This creates a perfect loop where the first element seamlessly follows the last.
+
+## CSS Variable Interpolation
+Map CSS properties to path progress using `cssVariableInterpolation`:
+
+```jsx
+<MarqueeAlongSvgPath
+  path="M0,0 C0,0 100,0 100,100"
+  cssVariableInterpolation={[
+    {
+      property: "--opacity",
+      from: 1,
+      to: 0
+    },
+    {
+      property: "--scale",
+      from: 1,
+      to: 1.5
+    }
+  ]}
+>
+  <div className="opacity-[var(--opacity)] scale-[var(--scale)]">
+    {/* Your content */}
+  </div>
+</MarqueeAlongSvgPath>
+```
+
+Variables are interpolated from 0% to 100% along the path.
+
+## Path Configuration Tips
+
+1. **ViewBox Matching**  
+   Set `viewBox` to match your path's coordinate system:
+   ```jsx
+   viewBox="0 0 500 200" // Matches path coordinates
+   ```
+
+2. **Aspect Ratio Control**  
+   Use `preserveAspectRatio` to handle different container sizes:
+   ```jsx
+   preserveAspectRatio="xMidYMid slice" // Crop to fit
+   ```
+
+3. **Gap Management**  
+   Adjust the `gap` prop to space elements along the path:
+   ```jsx
+   gap={10} // Adds 10% spacing between elements
+   ```
 
 <ComponentPreview name="marquee-along-svg-path-mapping-demo" />
 

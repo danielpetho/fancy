@@ -2,9 +2,7 @@ import React, {
   RefObject,
   useCallback,
   useEffect,
-  useMemo,
   useRef,
-  useState,
 } from "react"
 import {
   motion,
@@ -58,7 +56,6 @@ interface MarqueeAlongSvgPathProps {
   pathId?: string
   preserveAspectRatio?: PreserveAspectRatio
   showPath?: boolean
-  gap?: number
 
   // SVG properties
   width?: string | number
@@ -106,7 +103,6 @@ const MarqueeAlongSvgPath = ({
   pathId,
   preserveAspectRatio = "xMidYMid meet",
   showPath = false,
-  gap = 0,
 
   // SVG defaults
   width = "100%",
@@ -408,7 +404,6 @@ const MarqueeAlongSvgPath = ({
               draggable && grabCursor && "cursor-grab"
             )}
             style={{
-              // Use the path with appropriate coordinate box
               offsetPath: `path('${path}')`,
               offsetDistance: itemOffset,
               zIndex: enableRollingZIndex ? zIndex : undefined,

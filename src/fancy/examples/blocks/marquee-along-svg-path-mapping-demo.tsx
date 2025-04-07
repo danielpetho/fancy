@@ -51,7 +51,7 @@ export default function MarqueeAlongSvgPathDemo() {
         gap={10}
         enableRollingZIndex={false}
         dragSensitivity={0.01}
-        className="absolute top-30 -left-60 scale-70 sm:-left-32 w-full h-full transform-3d"
+        className="absolute top-40 scale-100 -left-32 w-full h-full transform-3d"
         cssVariableInterpolation={[
           { property: "opacity", from: 0, to: 1.5 },
           { property: "scale", from: 0.1, to: 1 },
