@@ -4,27 +4,26 @@ import { exampleImages } from "@/utils/demo-images"
 import ImageTrail from "@/fancy/components/image/image-trail"
 
 const ImageTrailDemo = () => {
-  const ref = useRef<HTMLDivElement>(null)
-
   return (
-    <div className="flex w-full h-full justify-center items-center bg-white text-foreground dark:text-muted">
-      <div className="absolute top-0 left-0 z-0" ref={ref}>
-        <ImageTrail containerRef={ref}>
-          {exampleImages.map((image, index) => (
-            <div
-              key={index}
-              className="flex relative overflow-hidden w-24 h-24 "
-            >
-              <img
+    <div className="w-full h-full bg-white relative text-foreground dark:text-muted">
+      <ImageTrail threshold={80}>
+        {exampleImages.map((image, index) => (
+          <ImageTrailItem key={index}>
+            <div className="w-28 h-24 relative overflow-hidden">
+              <Image
                 src={image.url}
                 alt="image"
-                className="object-cover absolute inset-0"
+                fill
+                className="object-cover"
+                sizes="96px"
               />
             </div>
-          ))}
-        </ImageTrail>
-      </div>
-      <h1 className="text-9xl z-10">ALBUMS</h1>
+          </ImageTrailItem>
+        ))}
+      </ImageTrail>
+      <h1 className="text-9xl z-10 absolute top-1/2 left-1/2 pointer-events-none -translate-x-1/2 -translate-y-1/2">
+        ALBUMS
+      </h1>
     </div>
   )
 }
