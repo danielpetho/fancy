@@ -1,13 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import {
-  AnimationOptions,
-  motion,
-  stagger,
-  useAnimate,
-} from "motion/react"
 import { debounce } from "lodash"
+import { AnimationOptions, motion, stagger, useAnimate } from "motion/react"
 
 interface TextProps {
   label: string
