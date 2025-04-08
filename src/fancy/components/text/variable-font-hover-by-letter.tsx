@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import {
-  DynamicAnimationOptions,
+  AnimationOptions,
   motion,
   stagger,
   useAnimate,
@@ -13,7 +13,7 @@ interface TextProps {
   label: string
   fromFontVariationSettings: string
   toFontVariationSettings: string
-  transition?: DynamicAnimationOptions
+  transition?: AnimationOptions
   staggerDuration?: number
   staggerFrom?: "first" | "last" | "center" | number
   className?: string
@@ -37,7 +37,7 @@ const VariableFontHoverByLetter = ({
   const [scope, animate] = useAnimate()
   const [isHovered, setIsHovered] = useState(false)
 
-  const mergeTransition = (baseTransition: DynamicAnimationOptions) => ({
+  const mergeTransition = (baseTransition: AnimationOptions) => ({
     ...baseTransition,
     delay: stagger(staggerDuration, {
       from: staggerFrom,
