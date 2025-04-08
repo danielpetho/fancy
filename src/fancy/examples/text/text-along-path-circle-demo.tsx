@@ -24,7 +24,7 @@ export default function Preview() {
           easingFunction={{
             calcMode: "spline",
             keyTimes: "0;1",
-            keySplines: "0.762 0.002 0.253 0.999"
+            keySplines: "0.762 0.002 0.253 0.999",
           }}
           viewBox="0 0 200 200"
           text="loading"

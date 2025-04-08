@@ -138,7 +138,11 @@ const VariableFontCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
         {...props}
       >
         {words.map((word, wordIndex) => (
-          <span key={wordIndex} className="inline-block whitespace-nowrap" aria-hidden>
+          <span
+            key={wordIndex}
+            className="inline-block whitespace-nowrap"
+            aria-hidden
+          >
             {word.split("").map((letter) => {
               const currentLetterIndex = letterIndex++
               return (

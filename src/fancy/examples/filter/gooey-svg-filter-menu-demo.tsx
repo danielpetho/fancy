@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 import { Home, Mail, Menu, Settings, User, X } from "lucide-react"
 
 import useDetectBrowser from "@/hooks/use-detect-browser"

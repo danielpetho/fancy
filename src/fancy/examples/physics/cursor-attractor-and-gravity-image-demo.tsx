@@ -1,7 +1,7 @@
+import useScreenSize from "@/hooks/use-screen-size"
 import Gravity, {
   MatterBody,
 } from "@/fancy/components/physics/cursor-attractor-and-gravity"
-import useScreenSize from "@/hooks/use-screen-size"
 
 export default function Preview() {
   const screenSize = useScreenSize()
@@ -49,7 +49,7 @@ export default function Preview() {
               y={`${Math.random() * 30}%`}
             >
               <img
-                src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? 'men' : 'women'}/${i}.jpg`}
+                src={`https://randomuser.me/api/portraits/${i % 2 === 0 ? "men" : "women"}/${i}.jpg`}
                 alt={`Avatar ${i}`}
                 className="rounded-full object-cover hover:cursor-pointer"
                 style={{

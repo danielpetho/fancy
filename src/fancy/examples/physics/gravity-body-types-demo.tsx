@@ -7,7 +7,6 @@ import {
   Cog,
   Cpu,
   Cuboid,
-  Database,
   Earth,
   Eye,
   Globe,

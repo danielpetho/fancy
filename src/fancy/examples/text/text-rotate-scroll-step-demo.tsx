@@ -1,11 +1,10 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { useInView  } from "motion/react"
+import { exampleImages } from "@/utils/demo-images"
+import { useInView } from "motion/react"
 
 import TextRotate, { TextRotateRef } from "@/fancy/components/text/text-rotate"
-
-import { exampleImages } from "@/utils/demo-images"
 
 function Item({
   index,

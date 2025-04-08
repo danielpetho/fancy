@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { AnimationOptions, motion, useAnimate } from "motion/react"
 import { debounce } from "lodash"
+import { AnimationOptions, motion, useAnimate } from "motion/react"
 
 interface TextProps {
   label: string
@@ -104,7 +104,11 @@ const RandomLetterSwapForward = ({
 
       {label.split("").map((letter: string, i: number) => {
         return (
-          <span className="whitespace-pre relative flex" key={i} aria-hidden={true}>
+          <span
+            className="whitespace-pre relative flex"
+            key={i}
+            aria-hidden={true}
+          >
             <motion.span
               className={`relative pb-2 letter-${i}`}
               style={{ top: 0 }}

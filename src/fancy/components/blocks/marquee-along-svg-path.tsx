@@ -1,9 +1,4 @@
-import React, {
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-} from "react"
+import React, { RefObject, useCallback, useEffect, useRef } from "react"
 import {
   motion,
   SpringOptions,
@@ -36,10 +31,10 @@ type PreserveAspectRatioAlign =
   | "xMaxYMax"
 
 interface CSSVariableInterpolation {
-    property: string;
-    from: number | string;
-    to: number | string;
-  }
+  property: string
+  from: number | string
+  to: number | string
+}
 
 type PreserveAspectRatioMeetOrSlice = "meet" | "slice"
 
@@ -87,11 +82,11 @@ interface MarqueeAlongSvgPathProps {
   grabCursor?: boolean
 
   // Z-index properties
-  enableRollingZIndex?: boolean;
-  zIndexBase?: number;
-  zIndexRange?: number;
+  enableRollingZIndex?: boolean
+  zIndexBase?: number
+  zIndexRange?: number
 
-  cssVariableInterpolation?: CSSVariableInterpolation[];
+  cssVariableInterpolation?: CSSVariableInterpolation[]
 }
 
 const MarqueeAlongSvgPath = ({
@@ -170,15 +165,15 @@ const MarqueeAlongSvgPath = ({
   const calculateZIndex = useCallback(
     (offsetDistance: number) => {
       if (!enableRollingZIndex) {
-        return undefined;
+        return undefined
       }
-      
+
       // Simple progress-based z-index
-      const normalizedDistance = offsetDistance / 100;
-      return Math.floor(zIndexBase + normalizedDistance * zIndexRange);
+      const normalizedDistance = offsetDistance / 100
+      return Math.floor(zIndexBase + normalizedDistance * zIndexRange)
     },
     [enableRollingZIndex, zIndexBase, zIndexRange]
-  );
+  )
 
   // Generate a random ID for the path if not provided
   const id = pathId || `marquee-path-${Math.random().toString(36).substring(7)}`
@@ -335,8 +330,7 @@ const MarqueeAlongSvgPath = ({
         height={height}
         viewBox={viewBox}
         preserveAspectRatio={preserveAspectRatio}
-        className="w-full h-full" 
-
+        className="w-full h-full"
       >
         <path
           id={id}
@@ -355,34 +349,32 @@ const MarqueeAlongSvgPath = ({
           return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
         })
 
-         // Create a motion value for the current offset distance
-         const currentOffsetDistance = useMotionValue(0);
-        
-         // Update z-index when offset distance changes
-         const zIndex = useTransform(
-           currentOffsetDistance,
-           (value) => calculateZIndex(value)
-         );
- 
-         // Update current offset distance value when animation runs
-         useEffect(() => {
-           const unsubscribe = itemOffset.on("change", (value: string) => {
-             // Parse percentage string to get numerical value
-             const match = value.match(/^([\d.]+)%$/);
-             if (match && match[1]) {
-               currentOffsetDistance.set(parseFloat(match[1]));
+        // Create a motion value for the current offset distance
+        const currentOffsetDistance = useMotionValue(0)
 
-             }
-           });
-           return unsubscribe;
-         }, [itemOffset, currentOffsetDistance]);
+        // Update z-index when offset distance changes
+        const zIndex = useTransform(currentOffsetDistance, (value) =>
+          calculateZIndex(value)
+        )
 
-         const cssVariables = Object.fromEntries(
+        // Update current offset distance value when animation runs
+        useEffect(() => {
+          const unsubscribe = itemOffset.on("change", (value: string) => {
+            // Parse percentage string to get numerical value
+            const match = value.match(/^([\d.]+)%$/)
+            if (match && match[1]) {
+              currentOffsetDistance.set(parseFloat(match[1]))
+            }
+          })
+          return unsubscribe
+        }, [itemOffset, currentOffsetDistance])
+
+        const cssVariables = Object.fromEntries(
           (cssVariableInterpolation || []).map(({ property, from, to }) => [
             property,
-            useTransform(currentOffsetDistance, [0, 100], [from, to])
+            useTransform(currentOffsetDistance, [0, 100], [from, to]),
           ])
-        );
+        )
 
         return (
           <motion.div
@@ -398,7 +390,7 @@ const MarqueeAlongSvgPath = ({
               offsetPath: `path('${path}')`,
               offsetDistance: itemOffset,
               zIndex: enableRollingZIndex ? zIndex : undefined,
-              ...cssVariables
+              ...cssVariables,
             }}
             aria-hidden={repeatIndex > 0}
             onMouseEnter={() => (isHovered.current = true)}

@@ -1,9 +1,15 @@
-import { createContext, RefObject, use, useContext, useEffect, useRef, useState } from "react"
+import {
+  createContext,
+  RefObject,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react"
 import {
   motion,
   MotionValue,
   useMotionValue,
-  useMotionValueEvent,
   useScroll,
   UseScrollOptions,
   useSpring,
@@ -104,7 +110,7 @@ export const ElementAlongPathItem = ({
     scrollTransformValues,
     direction,
     transition: parentTransition,
-    setHovered 
+    setHovered,
   } = useElementAlongPathContext()
 
   // Use item transition if provided, otherwise use parent transition
@@ -114,7 +120,11 @@ export const ElementAlongPathItem = ({
     direction === "normal" ? `${startOffset}%` : `${100 - startOffset}%`
   const animateOffset = direction === "normal" ? "100%" : "0%"
 
-  const scp = useTransform(scrollYProgress, [0, 1], [scrollTransformValues[0], scrollTransformValues[1]])
+  const scp = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [scrollTransformValues[0], scrollTransformValues[1]]
+  )
 
   return (
     <motion.div
@@ -168,16 +178,16 @@ const ElementAlongPath = ({
 
   // Create a time scale factor that changes based on hover state
   const timeScale = useMotionValue(1)
-  
+
   // Update time scale when hover state changes
   useEffect(() => {
     timeScale.set(isHovered ? 0.3 : 1) // Slow down to 30% speed when hovered
   }, [isHovered, timeScale])
-  
+
   // Create a spring-based time scale for smooth transitions
   const smoothTimeScale = useSpring(timeScale, {
     stiffness: 100,
-    damping: 30
+    damping: 30,
   })
 
   const t = useTime()
@@ -227,14 +237,17 @@ const ElementAlongPath = ({
           ...(animationType === "auto" && {
             transitionEnd: {
               // This ensures the transition respects the time scale
-              duration: transition.duration * (isHovered ? 3.33 : 1)
-            }
-          })
+              duration: transition.duration * (isHovered ? 3.33 : 1),
+            },
+          }),
         },
         setHovered: setIsHovered,
       }}
     >
-      <div ref={container} className={cn("relative pointer-events-none", className)}>
+      <div
+        ref={container}
+        className={cn("relative pointer-events-none", className)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox={viewBox}

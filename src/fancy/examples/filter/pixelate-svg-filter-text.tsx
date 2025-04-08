@@ -55,7 +55,9 @@ export default function PixelateSVGFilterDemo() {
         </div>
 
         <div className="w-full md:w-1/2">
-          <h3 className="text-sm sm:text-base font-medium mb-2">Selected Works</h3>
+          <h3 className="text-sm sm:text-base font-medium mb-2">
+            Selected Works
+          </h3>
           <p className="text-[10px] sm:text-xs text-muted-foreground">
             Dreamweaver #93 Dec 2023 Starlight #87 "digital dreams" The Quantum
             Mirror Press Holograph Vol.5 crystal edition 2020 Byte Flow Vol.12

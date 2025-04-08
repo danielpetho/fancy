@@ -1,13 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import {
-  AnimationOptions,
-  motion,
-  stagger,
-  useAnimate,
-} from "motion/react"
 import { debounce } from "lodash"
+import { AnimationOptions, motion, stagger, useAnimate } from "motion/react"
 
 interface TextProps {
   label: string
@@ -102,7 +97,11 @@ const LetterSwapPingPong = ({
 
       {label.split("").map((letter: string, i: number) => {
         return (
-          <span className="whitespace-pre relative flex" key={i} aria-hidden={true}>
+          <span
+            className="whitespace-pre relative flex"
+            key={i}
+            aria-hidden={true}
+          >
             <motion.span className={`relative letter`} style={{ top: 0 }}>
               {letter}
             </motion.span>

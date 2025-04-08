@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion } from "motion/react"
 
 import useDetectBrowser from "@/hooks/use-detect-browser"
 import useScreenSize from "@/hooks/use-screen-size"

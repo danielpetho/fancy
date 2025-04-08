@@ -1,7 +1,13 @@
 "use client"
 
 import React, { CSSProperties, forwardRef, useRef } from "react"
-import { motion, useAnimationFrame, useMotionValue, useTransform } from "motion/react"
+import {
+  motion,
+  useAnimationFrame,
+  useMotionValue,
+  useTransform,
+} from "motion/react"
+
 import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
 
 // Helper type that makes all properties of CSSProperties accept number | string
@@ -40,7 +46,7 @@ const TextCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
   ) => {
     const letterRefs = useRef<(HTMLSpanElement | null)[]>([])
     const mousePositionRef = useMousePositionRef(containerRef)
-    
+
     // Create a motion value for each letter's proximity
     const letterProximities = useRef(
       Array(label.replace(/\s/g, "").length)
@@ -105,16 +111,27 @@ const TextCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
         {...props}
       >
         {words.map((word, wordIndex) => (
-          <span key={wordIndex} className="inline-block whitespace-nowrap" aria-hidden={true}>
+          <span
+            key={wordIndex}
+            className="inline-block whitespace-nowrap"
+            aria-hidden={true}
+          >
             {word.split("").map((letter) => {
               const currentLetterIndex = letterIndex++
               const proximity = letterProximities.current[currentLetterIndex]
-              
+
               // Create transformed values for each style property
-              const transformedStyles = Object.entries(styles).reduce((acc, [key, value]) => {
-                acc[key] = useTransform(proximity, [0, 1], [value.from, value.to])
-                return acc
-              }, {} as Record<string, any>)
+              const transformedStyles = Object.entries(styles).reduce(
+                (acc, [key, value]) => {
+                  acc[key] = useTransform(
+                    proximity,
+                    [0, 1],
+                    [value.from, value.to]
+                  )
+                  return acc
+                },
+                {} as Record<string, any>
+              )
 
               return (
                 <motion.span
