@@ -35,8 +35,6 @@ npx shadcn@latest add "https://fancycomponents.dev/r/marquee-along-svg-path.json
 
 ## Usage
 
-The `MarqueeAlongSvgPath` component allows you to animate elements along an SVG path. Here's how to use it:
-
 1. Wrap your elements with the `MarqueeAlongSvgPath` component
 2. Provide an SVG path via the required `path` prop (the `d` attribute of an SVG path)
 3. Configure the SVG viewport with optional `viewBox` and `preserveAspectRatio` props for proper scaling
@@ -44,17 +42,24 @@ The `MarqueeAlongSvgPath` component allows you to animate elements along an SVG 
    - The `repeat` prop to control how many copies of your elements appear
    - The size of your elements (width/height)
 
+The component is really similar to the [Simple Marquee Component](https://fancy.component-driven.dev/docs/components/blocks/simple-marquee), and has the same features and props (and a bit more:)):
+
+- Changing velocity based on scroll velocity
+- Slow down on hover
+- Draggable elements
+- Custom easing
+
 ## Understanding the component
 
-Before you dive into this documentation, please refer and understand the [Marquee Along SVG Path](https://github.com/danielpetho/fancy/blob/main/src/fancy/components/blocks/marquee-along-svg-path.tsx) componnet, as this component works almost the same way.
+Before you dive into understanding this component, please read through the [Simple Marquee](https://fancy.component-driven.dev/docs/components/blocks/simple-marquee) component's documentation, as this one is almost identical.
 
-The main difference is that we move the children along an SVG path (instead of a "straight line" positioned with `flexbox` system). The magic that makes this possible is the `offsetPath` CSS property.
+The main difference is that we move the children along an SVG path (instead of a "straight line" positioned with `flexbox` system, as in the other component). **The magic that makes this possible is the `offsetPath` CSS property.**
 
 > The `offset-path` CSS property specifies a path for an element to follow and determines the element's positioning within the path's parent container or the SVG coordinate system. The path is a line, a curve, or a geometrical shape along which the element gets positioned or moves.
->
-as per the [offset-path documentation on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-path)
 
-We also use the `offsetDistance` property to actually move/offset the element to the correct position along the path in the `offset-path` CSS property.
+as per the [offset-path documentation on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-path).
+
+We also use the `offsetDistance` property to actually move/offset the element to the correct position along the path in the `offsetPath` CSS property.
 
 ```jsx
 style={{
@@ -64,82 +69,268 @@ style={{
 }}
 ```
 
-Each item's offset is calculated separately using the `useTransform` hook from `motion/react`:
+Each item's offset is calculated separately using an `useTransform` hook from `motion/react`, by converting the `baseOffset` to a percentage value:
+
+```jsx
+const itemOffset = useTransform(baseOffset, (v) => {
+  // evenly distribute items along the path (0-100%)
+  const position = (itemIndex * 100) / items.length
+  const wrappedValue = wrap(0, 100, v + position)
+  return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
+})
+```
+
+The items are evenly distributed along the path. The `wrap` function ensures that items surpassing `100%` are "wrapped back" to `0%`. The `baseOffset` value (the input value for the `useTransform` hook) is calculated by a bunch of different factors, such as:
+- a base velocity, which moves the items along the path at a constant speed
+- scroll velocity
+- slowing down on hover
+- direction
+- drag velocity
+
+Most of these factors are calculated inside an `useAnimationFrame` hook, which runs every frame. Most of these values are either motion values or refs to avoid unnecessary re-renders. Please refer to the Simple Marquee Component [documentation](https://github.com/danielpetho/fancy/blob/main/src/fancy/components/blocks/marquee-along-svg-path.tsx), there is a detailed explanation for each part.
 
 ### Z-Index Management
-When elements cross over the path, we automatically manage z-indices to create proper depth sorting:
+
+You can enable increasing z-index based on the progress along the path by setting `enableRollingZIndex` to `true`. This is pretty useful when a path is self-crossing, so elements further along the path appear above earlier ones.
+
+The callback function which calculates the current z-index is fairly simple. You can set the `zIndexBase` and `zIndexRange` props to control the base and range of the z-index values. The `zIndexBase` is the starting value, and the `zIndexRange` is the difference between the highest and lowest z-index values.
 
 ```jsx
-// Calculates z-index based on progress along path
-const calculateZIndex = (offsetDistance: number) => {
-  return Math.floor(zIndexBase + (offsetDistance/100) * zIndexRange)
-}
+// Function to calculate z-index based on offset distance
+const calculateZIndex = useCallback(
+  (offsetDistance: number) => {
+    if (!enableRollingZIndex) {
+      return undefined;
+    }
+    
+    // Simple progress-based z-index
+    const normalizedDistance = offsetDistance / 100;
+    return Math.floor(zIndexBase + normalizedDistance * zIndexRange);
+  },
+  [enableRollingZIndex, zIndexBase, zIndexRange]
+);
 
-// Applied through Motion's useTransform
-const zIndex = useTransform(currentOffsetDistance, calculateZIndex)
+// ...
+
+// Inside an element:
+const zIndex = useTransform(
+  currentOffsetDistance,
+  (value) => calculateZIndex(value)
+);
 ```
-
-This ensures elements further along the path appear above earlier ones, creating natural overlap.
-
-### Path Distribution
-Elements are evenly distributed along the path using:
-
-```jsx
-const getItemPosition = (itemIndex: number) => {
-  return (itemIndex * 100) / totalItems
-}
-```
-
-This creates a perfect loop where the first element seamlessly follows the last.
 
 ## CSS Variable Interpolation
-Map CSS properties to path progress using `cssVariableInterpolation`:
+
+It's also possible to map any CSS property to the path progress using the `cssVariableInterpolation` prop. It accepts an array of objects with `property` and `from` and `to` values. High level example:
 
 ```jsx
 <MarqueeAlongSvgPath
   path="M0,0 C0,0 100,0 100,100"
   cssVariableInterpolation={[
-    {
-      property: "--opacity",
-      from: 1,
-      to: 0
-    },
-    {
-      property: "--scale",
-      from: 1,
-      to: 1.5
-    }
+    { property: "opacity", from: 0, to: 1.5 },
+    { property: "scale", from: 0.1, to: 1 },
   ]}
 >
-  <div className="opacity-[var(--opacity)] scale-[var(--scale)]">
-    {/* Your content */}
-  </div>
+  {/* Your content */}
 </MarqueeAlongSvgPath>
 ```
 
-Variables are interpolated from 0% to 100% along the path.
-
-## Path Configuration Tips
-
-1. **ViewBox Matching**  
-   Set `viewBox` to match your path's coordinate system:
-   ```jsx
-   viewBox="0 0 500 200" // Matches path coordinates
-   ```
-
-2. **Aspect Ratio Control**  
-   Use `preserveAspectRatio` to handle different container sizes:
-   ```jsx
-   preserveAspectRatio="xMidYMid slice" // Crop to fit
-   ```
-
-3. **Gap Management**  
-   Adjust the `gap` prop to space elements along the path:
-   ```jsx
-   gap={10} // Adds 10% spacing between elements
-   ```
-
 <ComponentPreview name="marquee-along-svg-path-mapping-demo" />
 
-{/* <ComponentPreview name="marquee-along-svg-path-scroll-demo" /> */}
+## Notes
 
+Keep an eye on performace. The more complex and longer the SVG path, and more elements you have, the more performance issues you might encounter.
+
+## Resources
+
+- [Simple Marquee Component](https://fancy.component-driven.dev/docs/components/blocks/simple-marquee)
+- [offset-path by MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-path)
+- [CSS motion path by MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_motion_path)
+- [Motion along path by motion.dev](https://examples.motion.dev/react/motion-path)
+
+## Credits
+
+Click on the individual images in the 2nd demo to see the original artworks & authors.
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The elements to be scrolled along the path</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>path<span className="text-red-500">*</span></TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The SVG path string that defines the motion path</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>pathId</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Optional ID for the SVG path element</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>preserveAspectRatio</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"xMidYMid meet"`</TableCell>
+      <TableCell>SVG preserveAspectRatio attribute value</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showPath</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to show the SVG path</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>width</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"100%"`</TableCell>
+      <TableCell>Width of the SVG container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>height</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"100%"`</TableCell>
+      <TableCell>Height of the SVG container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>viewBox</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"0 0 100 100"`</TableCell>
+      <TableCell>SVG viewBox attribute value</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>baseVelocity</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`5`</TableCell>
+      <TableCell>Base velocity of the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>direction</TableCell>
+      <TableCell>`"normal" | "reverse"`</TableCell>
+      <TableCell>`"normal"`</TableCell>
+      <TableCell>Direction of the animation along the path</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>easing</TableCell>
+      <TableCell>`(value: number) => number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Custom easing function for the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>slowdownOnHover</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to slow down on hover</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>slowDownFactor</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.3`</TableCell>
+      <TableCell>Factor to slow down by when hovering</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>slowDownSpringConfig</TableCell>
+      <TableCell>`SpringOptions`</TableCell>
+      <TableCell>`{ damping: 50, stiffness: 400 }`</TableCell>
+      <TableCell>Spring configuration for hover slowdown</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>useScrollVelocity</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to use scroll velocity</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollAwareDirection</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to change direction based on scroll</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollSpringConfig</TableCell>
+      <TableCell>`SpringOptions`</TableCell>
+      <TableCell>`{ damping: 50, stiffness: 400 }`</TableCell>
+      <TableCell>Spring configuration for scroll velocity</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>scrollContainer</TableCell>
+      <TableCell>`RefObject<HTMLElement> | HTMLElement | null`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Custom scroll container reference</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>repeat</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`3`</TableCell>
+      <TableCell>Number of times to repeat children</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>draggable</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether elements can be dragged</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragSensitivity</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.2`</TableCell>
+      <TableCell>Sensitivity of drag movement</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragVelocityDecay</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.96`</TableCell>
+      <TableCell>Decay rate of drag velocity</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragAwareDirection</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to change direction based on drag</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>grabCursor</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Whether to show grab cursor when draggable</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>enableRollingZIndex</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to enable rolling z-index effect</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>zIndexBase</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`1`</TableCell>
+      <TableCell>Base z-index value</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>zIndexRange</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`10`</TableCell>
+      <TableCell>Range of z-index values</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>cssVariableInterpolation</TableCell>
+      <TableCell>`Array<{ property: string, from: number, to: number }>`</TableCell>
+      <TableCell>`[]`</TableCell>
+      <TableCell>CSS properties to interpolate along the path</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

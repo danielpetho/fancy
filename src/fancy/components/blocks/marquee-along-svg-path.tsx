@@ -166,15 +166,6 @@ const MarqueeAlongSvgPath = ({
     )
   }, [children, repeat])
 
-  // Calculate position of each item based on accumulated widths
-  const getItemPosition = useCallback(
-    (itemKey: string, itemIndex: number) => {
-      // Evenly distribute items along the path (0-100%)
-      return (itemIndex * 100) / items.length
-    },
-    [items.length]
-  )
-
   // Function to calculate z-index based on offset distance
   const calculateZIndex = useCallback(
     (offsetDistance: number) => {
@@ -359,7 +350,7 @@ const MarqueeAlongSvgPath = ({
       {items.map(({ child, repeatIndex, itemIndex, key }) => {
         // Create a unique offset transform for each item
         const itemOffset = useTransform(baseOffset, (v) => {
-          const position = getItemPosition(key, itemIndex)
+          const position = (itemIndex * 100) / items.length
           const wrappedValue = wrap(0, 100, v + position)
           return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
         })
