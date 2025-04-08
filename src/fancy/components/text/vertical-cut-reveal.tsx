@@ -1,5 +1,6 @@
 "use client"
 
+import { AnimationOptions, motion } from "motion/react"
 import {
   forwardRef,
   useCallback,
@@ -16,6 +17,7 @@ import { cn } from "@/lib/utils"
 interface TextProps {
   children: React.ReactNode
   reverse?: boolean
+  transition?: AnimationOptions
   transition?: AnimationOptions
   splitBy?: "words" | "characters" | "lines" | string
   staggerDuration?: number
