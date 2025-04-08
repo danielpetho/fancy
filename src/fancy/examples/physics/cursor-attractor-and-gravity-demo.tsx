@@ -1,4 +1,4 @@
-import { motion } from "framer-motion"
+import { motion } from "motion/react"
 
 import useScreenSize from "@/hooks/use-screen-size"
 import Gravity, {
