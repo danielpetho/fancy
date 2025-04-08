@@ -21,7 +21,12 @@ const CirclingElementsDemo: React.FC = () => {
             key={index}
             className="w-20 h-20 md:w-28 md:h-28 absolute -translate-x-1/2 -translate-y-1/2 cursor-pointer hover:scale-125 duration-200 ease-out"
           >
-            <Image src={image.url} fill alt="image" className="object-cover shadow-2xl " />
+            <Image
+              src={image.url}
+              fill
+              alt="image"
+              className="object-cover shadow-2xl "
+            />
           </div>
         ))}
       </CirclingElements>

@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useRef, useState } from "react"
+import { RefObject, useRef } from "react"
 import {
   motion,
   SpringOptions,
@@ -94,7 +94,7 @@ const SimpleMarquee = ({
     }
   )
 
-  // Determine if movement is horizontal or vertical. 
+  // Determine if movement is horizontal or vertical.
   const isHorizontal = direction === "left" || direction === "right"
 
   // Convert baseVelocity to the correct direction
@@ -258,7 +258,7 @@ const SimpleMarquee = ({
           key={i}
           className={cn(
             "shrink-0",
-            isHorizontal && "flex", 
+            isHorizontal && "flex",
             draggable && grabCursor && "cursor-grab"
           )}
           style={isHorizontal ? { x } : { y }}

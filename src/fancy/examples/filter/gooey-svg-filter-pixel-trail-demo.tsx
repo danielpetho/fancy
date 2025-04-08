@@ -1,5 +1,3 @@
-import dynamic from "next/dynamic"
-
 import useDetectBrowser from "@/hooks/use-detect-browser"
 import useScreenSize from "@/hooks/use-screen-size"
 import PixelTrail from "@/fancy/components/background/pixel-trail"

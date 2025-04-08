@@ -1,17 +1,23 @@
 import { RefObject, useEffect, useRef } from "react"
 import { useScroll, UseScrollOptions, useTransform } from "motion/react"
 
-type PreserveAspectRatioAlign = 
-  | 'none' 
-  | 'xMinYMin' | 'xMidYMin' | 'xMaxYMin' 
-  | 'xMinYMid' | 'xMidYMid' | 'xMaxYMid' 
-  | 'xMinYMax' | 'xMidYMax' | 'xMaxYMax';
+type PreserveAspectRatioAlign =
+  | "none"
+  | "xMinYMin"
+  | "xMidYMin"
+  | "xMaxYMin"
+  | "xMinYMid"
+  | "xMidYMid"
+  | "xMaxYMid"
+  | "xMinYMax"
+  | "xMidYMax"
+  | "xMaxYMax"
 
-type PreserveAspectRatioMeetOrSlice = 'meet' | 'slice';
+type PreserveAspectRatioMeetOrSlice = "meet" | "slice"
 
-type PreserveAspectRatio = 
-  | PreserveAspectRatioAlign 
-  | `${Exclude<PreserveAspectRatioAlign, 'none'>} ${PreserveAspectRatioMeetOrSlice}`;
+type PreserveAspectRatio =
+  | PreserveAspectRatioAlign
+  | `${Exclude<PreserveAspectRatioAlign, "none">} ${PreserveAspectRatioMeetOrSlice}`
 
 interface AnimatedPathTextProps {
   // Path properties
@@ -87,7 +93,8 @@ const AnimatedPathText = ({
   const textPathRefs = useRef<SVGTextPathElement[]>([])
 
   // naive id for the path. you should rather use yours :)
-  const id = pathId || `animated-path-${Math.random().toString(36).substring(7)}`
+  const id =
+    pathId || `animated-path-${Math.random().toString(36).substring(7)}`
 
   const { scrollYProgress } = useScroll({
     container: scrollContainer || container,
@@ -105,14 +112,13 @@ const AnimatedPathText = ({
         }
       })
     }
-    
+
     scrollYProgress.on("change", handleChange)
-    
+
     return () => {
       scrollYProgress.clearListeners()
     }
   }, [scrollYProgress, t])
-
 
   const animationProps =
     animationType === "auto"
@@ -144,10 +150,7 @@ const AnimatedPathText = ({
       />
 
       {/* First text element */}
-      <text
-        textAnchor={textAnchor}
-        fill="currentColor"
-      >
+      <text textAnchor={textAnchor} fill="currentColor">
         <textPath
           className={textClassName}
           href={`#${id}`}
@@ -165,10 +168,7 @@ const AnimatedPathText = ({
 
       {/* Second text element (offset to hide the jump) */}
       {animationType === "auto" && (
-        <text
-          textAnchor={textAnchor}
-          fill="currentColor"
-        >
+        <text textAnchor={textAnchor} fill="currentColor">
           <textPath
             className={textClassName}
             href={`#${id}`}

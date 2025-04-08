@@ -1,13 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { DynamicAnimationOptions, motion, useAnimate } from "motion/react"
 import { debounce } from "lodash"
+import { AnimationOptions, motion, useAnimate } from "motion/react"
 
 interface TextProps {
   label: string
   reverse?: boolean
-  transition?: DynamicAnimationOptions
+  transition?: AnimationOptions
   staggerDuration?: number
   className?: string
   onClick?: () => void
@@ -28,7 +28,7 @@ const RandomLetterSwapForward = ({
   const [scope, animate] = useAnimate()
   const [blocked, setBlocked] = useState(false)
 
-  const mergeTransition = (transition: DynamicAnimationOptions, i: number) => ({
+  const mergeTransition = (transition: AnimationOptions, i: number) => ({
     ...transition,
     delay: i * staggerDuration,
   })
@@ -104,7 +104,11 @@ const RandomLetterSwapForward = ({
 
       {label.split("").map((letter: string, i: number) => {
         return (
-          <span className="whitespace-pre relative flex" key={i} aria-hidden={true}>
+          <span
+            className="whitespace-pre relative flex"
+            key={i}
+            aria-hidden={true}
+          >
             <motion.span
               className={`relative pb-2 letter-${i}`}
               style={{ top: 0 }}

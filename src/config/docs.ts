@@ -120,7 +120,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Text Along Path",
         href: "/docs/components/text/text-along-path",
         items: [],
-        label: "New",
       }
     ],
   },
@@ -208,7 +207,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Circling Elements",
         href: "/docs/components/blocks/circling-elements",
         items: [],
-        label: "Updated",
       },
       {
         title: "Media Between Text",
@@ -241,6 +239,17 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
         label: "New",
       },
+      {
+        title: "Marquee Along SVG Path",
+        href: "/docs/components/blocks/marquee-along-svg-path",
+        items: [],
+        label: "New",
+      },
+      // {
+      //   title: "Element Along SVG Path",
+      //   href: "/docs/components/blocks/element-along-svg-path",
+      //   items: [],
+      // }
     ],
   },
 ]

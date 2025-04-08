@@ -1,17 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import {
-  DynamicAnimationOptions,
-  motion,
-  stagger,
-  useAnimate,
-} from "motion/react"
+import { AnimationOptions, motion, stagger, useAnimate } from "motion/react"
 
 interface TextProps {
   label: string
   reverse?: boolean
-  transition?: DynamicAnimationOptions
+  transition?: AnimationOptions
   staggerDuration?: number
   staggerFrom?: "first" | "last" | "center" | number
   className?: string
@@ -40,7 +35,7 @@ const LetterSwapForward = ({
     setBlocked(true)
 
     // Function to merge user transition with stagger and delay
-    const mergeTransition = (baseTransition: DynamicAnimationOptions) => ({
+    const mergeTransition = (baseTransition: AnimationOptions) => ({
       ...baseTransition,
       delay: stagger(staggerDuration, {
         from: staggerFrom,
@@ -96,7 +91,11 @@ const LetterSwapForward = ({
 
       {label.split("").map((letter: string, i: number) => {
         return (
-          <span className="whitespace-pre relative flex" key={i} aria-hidden={true}>
+          <span
+            className="whitespace-pre relative flex"
+            key={i}
+            aria-hidden={true}
+          >
             <motion.span className={`relative letter`} style={{ top: 0 }}>
               {letter}
             </motion.span>

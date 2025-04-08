@@ -18,7 +18,9 @@ Inspiration from [Bakken & Bæck](https://www.instagram.com/p/DBG5fLdiN4Q/?img_i
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/circling-elements.json"`}</CodeBlockWrapper>
+```bash
+npx shadcn@latest add "https://fancycomponents.dev/r/circling-elements.json"
+```
 
 </TabsContent>
 <TabsContent value="manual">
@@ -33,9 +35,9 @@ Inspiration from [Bakken & Bæck](https://www.instagram.com/p/DBG5fLdiN4Q/?img_i
   Add the following animation and keyframes to your `globals.css` file:
 </Step>
 
-<CodeBlockWrapper language="typescript">
-  {`
-  // ...
+```tsx
+{
+// ...
   @theme: {
     --animate-circling: circling;
     @keyframes circling {
@@ -44,12 +46,11 @@ Inspiration from [Bakken & Bæck](https://www.instagram.com/p/DBG5fLdiN4Q/?img_i
       }
       100% {
         transform: rotate(calc(360deg + (var(--offset) * 1deg))) translate(calc(var(--radius) * 1px), 0) rotate(calc(-360deg + (var(--offset) * -1deg)));
-      } 
+      }
     },
   },
 };
-`}
-</CodeBlockWrapper>
+```
 
 </Steps>
 

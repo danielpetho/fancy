@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion } from "motion/react"
+import React, { useEffect, useState } from "react"
+import { motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import SimpleMarquee from "@/fancy/components/blocks/simple-marquee"
@@ -159,8 +159,12 @@ export default function SimpleMarqueeDemo() {
         variants={variants}
       >
         <motion.div className={textContainerClasses} variants={textVariants}>
-          <h3 className="text-white text-sm sm:text-base md:text-lg font-medium z-30">{album.title}</h3>
-          <p className="text-neutral-300 text-xs sm:text-sm md:text-base z-30">{album.artist}</p>
+          <h3 className="text-white text-sm sm:text-base md:text-lg font-medium z-30">
+            {album.title}
+          </h3>
+          <p className="text-neutral-300 text-xs sm:text-sm md:text-base z-30">
+            {album.artist}
+          </p>
         </motion.div>
         <motion.img
           src={album.coverArt}
@@ -230,7 +234,7 @@ export default function SimpleMarqueeDemo() {
                 <MarqueeItem key={i} index={i} album={album} />
               ))}
             </SimpleMarquee>
-          </div>       
+          </div>
         </>
       )}
     </div>

@@ -6,7 +6,7 @@ import VerticalCutReveal from "@/fancy/components/text/vertical-cut-reveal"
 
 const imgs = [
   "https://cdn.cosmos.so/97fd931c-28cc-480f-91a8-cffb635cf832?format=jpeg",
-  "https://cdn.cosmos.so/305a25f2-cc53-4ff3-95a5-6a5ca1517ff8?format=jpeg", 
+  "https://cdn.cosmos.so/305a25f2-cc53-4ff3-95a5-6a5ca1517ff8?format=jpeg",
   "https://cdn.cosmos.so/2a024234-6713-41b2-a2f2-1d5e385ac490?format=jpeg",
   "https://cdn.cosmos.so/89cc65c1-b0bf-42f6-9afc-4db6678ae652?format=jpeg",
   "https://cdn.cosmos.so/211e0ca7-4126-4222-9de8-03aeb1e4688e?format=jpeg",
@@ -50,7 +50,9 @@ export default function SimpleMarqueeDemo() {
       ref={(node) => setContainer(node)}
     >
       <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-32 sm:top-1/4 text-white font-calendas">
-        <VerticalCutReveal splitBy="characters" staggerDuration={0.04}>New Arrivals</VerticalCutReveal>
+        <VerticalCutReveal splitBy="characters" staggerDuration={0.04}>
+          New Arrivals
+        </VerticalCutReveal>
       </h1>
       <div className="absolute h-full top-1/5 sm:top-2/4 w-full justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4 z-0">
         <SimpleMarquee

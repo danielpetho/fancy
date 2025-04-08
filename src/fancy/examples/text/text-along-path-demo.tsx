@@ -1,14 +1,16 @@
 import { useCallback, useState } from "react"
 import { AnimatePresence, motion } from "motion/react"
 
-import AnimatedPathText from "@/fancy/components/text/text-along-path"
 import { Button } from "@/components/ui/button"
+import AnimatedPathText from "@/fancy/components/text/text-along-path"
 
 export default function Preview() {
   // Rounded rectangle path
   const rectPath =
     "M 20,20 L 180,20 A 20,20 0 0,1 200,40 L 200,160 A 20,20 0 0,1 180,180 L 20,180 A 20,20 0 0,1 0,160 L 0,40 A 20,20 0 0,1 20,20"
-  const [buttonState, setButtonState] = useState<'idle' | 'loading' | 'success'>('idle')
+  const [buttonState, setButtonState] = useState<
+    "idle" | "loading" | "success"
+  >("idle")
   const [email, setEmail] = useState("")
 
   const buttonCopy = {

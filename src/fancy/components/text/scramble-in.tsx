@@ -8,8 +8,6 @@ import {
   useState,
 } from "react"
 
-import { cn } from "@/lib/utils"
-
 interface ScrambleInProps {
   text: string
   scrambleSpeed?: number

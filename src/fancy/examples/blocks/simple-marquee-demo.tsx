@@ -1,10 +1,10 @@
-import React, { useRef, useState } from "react"
+import React, { useState } from "react"
 
 import SimpleMarquee from "@/fancy/components/blocks/simple-marquee"
 
 const exampleImages = [
   "https://cdn.cosmos.so/4b771c5c-d1eb-4948-b839-255dbeb931ba?format=jpeg",
-  "https://cdn.cosmos.so/a8d82afd-2293-43ad-bac3-887683d85b44?format=jpeg", 
+  "https://cdn.cosmos.so/a8d82afd-2293-43ad-bac3-887683d85b44?format=jpeg",
   "https://cdn.cosmos.so/49206ba5-c174-4cd5-aee8-5b744842e6c2?format=jpeg",
   "https://cdn.cosmos.so/b29bd150-6477-420f-8efb-65ed99694421?format=jpeg",
   "https://cdn.cosmos.so/e1a0313e-7617-431d-b7f1-f1b169e6bcb4?format=jpeg",
@@ -21,20 +21,35 @@ const exampleImages = [
 ]
 
 const MarqueeItem = ({ children }: { children: React.ReactNode }) => (
-  <div className="mx-2 sm:mx-3 md:mx-4 hover:scale-105 cursor-pointer duration-300 ease-in-out">{children}</div>
+  <div className="mx-2 sm:mx-3 md:mx-4 hover:scale-105 cursor-pointer duration-300 ease-in-out">
+    {children}
+  </div>
 )
 
 export default function SimpleMarqueeDemo() {
-  const firstThird = exampleImages.slice(0, Math.floor(exampleImages.length / 3))
-  const secondThird = exampleImages.slice(Math.floor(exampleImages.length / 3), Math.floor(2 * exampleImages.length / 3))
-  const lastThird = exampleImages.slice(Math.floor(2 * exampleImages.length / 3))
+  const firstThird = exampleImages.slice(
+    0,
+    Math.floor(exampleImages.length / 3)
+  )
+  const secondThird = exampleImages.slice(
+    Math.floor(exampleImages.length / 3),
+    Math.floor((2 * exampleImages.length) / 3)
+  )
+  const lastThird = exampleImages.slice(
+    Math.floor((2 * exampleImages.length) / 3)
+  )
 
   const [container, setContainer] = useState<HTMLElement | null>(null)
 
   return (
-    <div className="flex w-full h-full relative justify-center items-center flex-col bg-black overflow-auto" ref={(node) => setContainer(node)}>
-      <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-1/3 sm:top-1/3 md:top-1/4 text-white font-calendas">Weekly Finds</h1>
-      <div className="absolute h-[170%] sm:h-[200%] top-0 w-full justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4" >
+    <div
+      className="flex w-full h-full relative justify-center items-center flex-col bg-black overflow-auto"
+      ref={(node) => setContainer(node)}
+    >
+      <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-1/3 sm:top-1/3 md:top-1/4 text-white font-calendas">
+        Weekly Finds
+      </h1>
+      <div className="absolute h-[170%] sm:h-[200%] top-0 w-full justify-center items-center flex flex-col space-y-2 sm:space-y-3 md:space-y-4">
         <SimpleMarquee
           className="w-full"
           baseVelocity={8}

@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { motion, useInView } from "motion/react"
 import {
   Activity,
   ArrowDownRight,
@@ -10,6 +9,7 @@ import {
   TrendingUp,
   Zap,
 } from "lucide-react"
+import { motion, useInView } from "motion/react"
 
 import NumberTicker, {
   NumberTickerRef,

@@ -1,8 +1,8 @@
 "use client"
 
-import TextRotate from "@/fancy/components/text/text-rotate"
-
 import { exampleImages } from "@/utils/demo-images"
+
+import TextRotate from "@/fancy/components/text/text-rotate"
 
 export default function Preview() {
   return (

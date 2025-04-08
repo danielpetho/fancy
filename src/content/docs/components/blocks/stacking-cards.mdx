@@ -16,7 +16,9 @@ author: Khoa Phan <https://www.pldkhoa.dev>
   </TabsList>
   <TabsContent value="cli">
 
-    <CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/stacking-cards.json"`}</CodeBlockWrapper>
+    ```bash
+    npx shadcn@latest add "https://fancycomponents.dev/r/stacking-cards.json"
+    ```
 
   </TabsContent>
 <TabsContent value="manual">
@@ -31,14 +33,13 @@ author: Khoa Phan <https://www.pldkhoa.dev>
 Wrap `StackingCards` around the content you want to animate and `StackingCardItem` around each card you want to animate.
 The structure looks like this:
 
-<CodeBlockWrapper language="typescript">
-  {`<StackingCards>
+```tsx
+<StackingCards>
   <StackingCardItem>
       {/* Your card go here */}
   </StackingCardItem>
 </StackingCards>
-`}
-</CodeBlockWrapper>
+```
 
 ## Understanding the component
 

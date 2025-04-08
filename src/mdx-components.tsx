@@ -134,7 +134,8 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       ...props
     }: React.HTMLAttributes<HTMLElement>) => (
       <blockquote
-        className={cn("mt-6 border-l-2 pl-6 italic", className)}
+        className={cn("mt-6 border-l-2 pl-6", className)}
+        style={{ fontVariationSettings: "'slnt' -10" }}
         {...props}
       />
     ),

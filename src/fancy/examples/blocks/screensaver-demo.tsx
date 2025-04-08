@@ -1,8 +1,7 @@
 import React from "react"
+import { exampleImages } from "@/utils/demo-images"
 
 import Screensaver from "@/fancy/components/blocks/screensaver"
-
-import { exampleImages } from "@/utils/demo-images"
 
 const CirclingElementsDemo: React.FC = () => {
   const containerRef = React.useRef<HTMLDivElement>(null)

@@ -57,7 +57,7 @@ const AnimatedGradient: React.FC<AnimatedGradientProps> = ({
           return (
             <svg
               key={index}
-              className={cn("absolute", 'animate-background-gradient')}
+              className={cn("absolute", "animate-background-gradient")}
               width={circleSize * randomInt(0.5, 1.5)}
               height={circleSize * randomInt(0.5, 1.5)}
               viewBox="0 0 100 100"

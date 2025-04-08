@@ -1,8 +1,7 @@
 import { useRef } from "react"
+import { exampleImages } from "@/utils/demo-images"
 
 import ImageTrail from "@/fancy/components/image/image-trail"
-
-import { exampleImages } from "@/utils/demo-images"
 
 const ImageTrailDemo = () => {
   const ref = useRef<HTMLDivElement>(null)
