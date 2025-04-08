@@ -42,7 +42,7 @@ npx shadcn@latest add "https://fancycomponents.dev/r/marquee-along-svg-path.json
    - The `repeat` prop to control how many copies of your elements appear
    - The size of your elements (width/height)
 
-The component is really similar to the [Simple Marquee Component](https://fancy.component-driven.dev/docs/components/blocks/simple-marquee), and has the same features and props (and a bit more:)):
+The component is really similar to the [Simple Marquee Component](https://fancycomponents.dev/docs/components/blocks/simple-marquee), and has the same features and props (and a bit more:)):
 
 - Changing velocity based on scroll velocity
 - Slow down on hover
@@ -51,7 +51,7 @@ The component is really similar to the [Simple Marquee Component](https://fancy.
 
 ## Understanding the component
 
-Before you dive into understanding this component, please read through the [Simple Marquee](https://fancy.component-driven.dev/docs/components/blocks/simple-marquee) component's documentation, as this one is almost identical.
+Before you dive into understanding this component, please read through the [Simple Marquee](https://fancycomponents.dev/docs/components/blocks/simple-marquee) component's documentation, as this one is almost identical.
 
 The main difference is that we move the children along an SVG path (instead of a "straight line" positioned with `flexbox` system, as in the other component). **The magic that makes this possible is the `offsetPath` CSS property.**
 
@@ -139,11 +139,11 @@ It's also possible to map any CSS property to the path progress using the `cssVa
 
 ## Notes
 
-Keep an eye on performace. The more complex and longer the SVG path, and more elements you have, the more performance issues you might encounter.
+The component's performance may be impacted by the complexity and length of the SVG path, as well as the number of elements being animated. Keep an eye on it and tweak these factors if you experience performance issues.
 
 ## Resources
 
-- [Simple Marquee Component](https://fancy.component-driven.dev/docs/components/blocks/simple-marquee)
+- [Simple Marquee Component](https://fancycomponents.dev/docs/components/blocks/simple-marquee)
 - [offset-path by MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-path)
 - [CSS motion path by MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_motion_path)
 - [Motion along path by motion.dev](https://examples.motion.dev/react/motion-path)
