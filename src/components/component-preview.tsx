@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { Repeat } from "lucide-react"
 import ReactSyntaxHighlighter, {
   Prism as SyntaxHighlighter,
 } from "react-syntax-highlighter"
@@ -14,12 +15,20 @@ import { registry } from "@/fancy/index"
 import { CopyButton } from "./copy-button"
 import { OpenInV0Button } from "./open-in-v0"
 import { RestartButton } from "./restart-button"
+import { Button } from "./ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
   extractClassname?: boolean
   extractedClassNames?: string
   align?: "center" | "start" | "end"
+  framerLink?: string
   description?: string
 }
 
@@ -27,6 +36,7 @@ export function ComponentPreview({
   name,
   children,
   className,
+  framerLink,
   extractClassname,
   extractedClassNames,
   align = "center",
@@ -154,9 +164,39 @@ export function ComponentPreview({
             >
               {showRestartButton && (
                 <div className="absolute right-4 top-4 z-50 flex gap-2 flex-row">
-                  <OpenInV0Button
-                    url={`https://fancycomponents.dev/r/${name}.json`}
-                  />
+                  {framerLink ? (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button variant="outline" size="sm" className="h-8 items-center flex justify-center">
+                          <Repeat className="mr-2 h-4 w-4" />
+                          Remix
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem>
+                          <OpenInV0Button
+                            variant="ghost"
+                            className="justify-start  text-left px-0 h-6 gap-1  flex w-full border-none"
+                            url={`https://fancycomponents.dev/r/${name}.json`}
+                          />
+                        </DropdownMenuItem>
+                        <DropdownMenuItem>
+                          <Button
+                            variant="ghost" 
+                            className="justify-start  text-left px-0 h-6 gap-1  flex w-full border-none"
+                            onClick={() => window.open(framerLink, "_blank")}
+                          >
+                            Remix in Framer
+                            <Icons.framer className="ml-2 h-3 w-3" />
+                          </Button>
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  ) : (
+                    <OpenInV0Button
+                      url={`https://fancycomponents.dev/r/${name}.json`}
+                    />
+                  )}
                   <RestartButton onRestart={handleRestart} />
                 </div>
               )}

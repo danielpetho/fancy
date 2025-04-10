@@ -15,7 +15,7 @@ const PixelTrailDemo: React.FC = () => {
       </div>
 
       <div className="justify-center items-center flex flex-col w-full h-full">
-        <h2 className="font-VT323 text-3xl sm:text-4xl md:text-6xl uppercase">
+        <h2 className="font-tiny5 text-3xl sm:text-4xl md:text-6xl uppercase">
           FANCYCOMPONENTS.DEV
         </h2>
         <p className="pt-0.5 sm:pt-2 text-xs sm:text-base md:text-xl">

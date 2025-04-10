@@ -31,7 +31,7 @@ const PixelTrailDemo: React.FC = () => {
       </ul>
       <div className="z-0 text-[#f1ff76] text-6xl mt-12 mx-6">
         <div className="flex flex-row items-center">
-          <h2 className="font-VT323 text-6xl md:text-9xl uppercase">100%</h2>
+          <h2 className="font-tiny5 text-6xl md:text-9xl uppercase">100%</h2>
           <h2 className="text-5xl md:text-8xl ml-4 md:ml-8">purity</h2>
         </div>
         <p className="mt-3 text-base md:text-3xl">
