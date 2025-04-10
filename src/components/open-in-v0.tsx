@@ -1,11 +1,19 @@
-import { Button } from "@/components/ui/button"
+import { Button, ButtonProps } from "@/components/ui/button"
 
-export function OpenInV0Button({ url }: { url: string }) {
+export function OpenInV0Button({
+  url,
+  variant = "outline",
+  className = "h-8 gap-1 rounded-[6px] dark:bg-background border px-3 text-xs"
+}: {
+  url: string
+  variant?: ButtonProps["variant"]
+  className?: string
+}) {
   return (
     <Button
       aria-label="Open in v0"
-      variant="outline"
-      className="h-8 gap-1 rounded-[6px] dark:bg-background border px-3 text-xs"
+      variant={variant}
+      className={className}
       asChild
     >
       <a

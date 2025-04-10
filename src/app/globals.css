@@ -9,6 +9,7 @@
   --font-overused-grotesk: Overused Grotesk, sans-serif;
   --font-cotham: Cotham Sans;
   --font-VT323: VT323;
+  --font-tiny5: Tiny5;
   --font-azeret-mono: Azeret Mono;
   --font-noto-sans-symbols: Noto Sans Symbols;
 
@@ -79,14 +80,28 @@
   }
   @keyframes circling {
     0% {
-      transform: rotate(calc(var(--circling-direction, 1) * (var(--circling-offset) * 1deg)))
+      transform: rotate(
+          calc(var(--circling-direction, 1) * (var(--circling-offset) * 1deg))
+        )
         translate(calc(var(--circling-radius) * 1px), 0)
-        rotate(calc(var(--circling-direction, 1) * (var(--circling-offset) * -1deg)));
+        rotate(
+          calc(var(--circling-direction, 1) * (var(--circling-offset) * -1deg))
+        );
     }
     100% {
-      transform: rotate(calc(var(--circling-direction, 1) * (360deg + (var(--circling-offset) * 1deg))))
+      transform: rotate(
+          calc(
+            var(--circling-direction, 1) *
+              (360deg + (var(--circling-offset) * 1deg))
+          )
+        )
         translate(calc(var(--circling-radius) * 1px), 0)
-        rotate(calc(var(--circling-direction, 1) * (-360deg + (var(--circling-offset) * -1deg))));
+        rotate(
+          calc(
+            var(--circling-direction, 1) *
+              (-360deg + (var(--circling-offset) * -1deg))
+          )
+        );
     }
   }
   @keyframes background-gradient {
@@ -149,7 +164,6 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentColor);
   }
-
 }
 
 @layer base {
@@ -271,6 +285,11 @@
     font-family: "VT323";
     src: url("../../public/fonts/VT323-Regular.ttf") format("truetype");
     font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Tiny5";
+    src: url("../../public/fonts/Tiny5-Regular.ttf") format("truetype");
   }
 
   @font-face {
