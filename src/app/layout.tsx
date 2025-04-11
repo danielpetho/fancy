@@ -67,6 +67,11 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* <script src="https://unpkg.com/react-scan/dist/auto.global.js"/> */}
+        <script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="dbbf9969-1099-440a-8dcd-84616691e48a"
+        ></script>
       </head>
       <body
         className={`font-overused-grotesk bg-background antialiased flex items-center justify-center w-full text-foreground`}
