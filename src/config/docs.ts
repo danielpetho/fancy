@@ -52,6 +52,12 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
       },
       {
+        title: "Text Rotate",
+        href: "/docs/components/text/text-3d-rotate",
+        items: [],
+        label: "New",
+      },
+      {
         title: "Variable Font Hover By Letter",
         href: "/docs/components/text/variable-font-hover-by-letter",
         items: [],
@@ -115,7 +121,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Scramble In",
         href: "/docs/components/text/scramble-in",
         items: [],
-        label: "Updated"
       },
       {
         title: "Text Along Path",
@@ -137,7 +142,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Pixel Trail",
         href: "/docs/components/background/pixel-trail",
         items: [],
-        label: "Updated"
       },
     ],
   },
@@ -149,7 +153,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Elastic Line",
         href: "/docs/components/physics/elastic-line",
         items: [],
-        label: "Updated"
       },
       {
         title: "Gravity",
@@ -160,7 +163,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Cursor Attractor & Gravity",
         href: "/docs/components/physics/cursor-attractor-and-gravity",
         items: [],
-        label: "Updated",
       },
     ],
   },
@@ -178,7 +180,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Parallax Floating",
         href: "/docs/components/image/parallax-floating",
         items: [],
-        label: "Updated"
       },
     ],
   },
@@ -212,7 +213,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Circling Elements",
         href: "/docs/components/blocks/circling-elements",
         items: [],
-        label: "Updated"
       },
       {
         title: "Media Between Text",
@@ -223,7 +223,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Screensaver",
         href: "/docs/components/blocks/screensaver",
         items: [],
-        label: "Updated"
       },
       {
         title: "Sticky Footer",
@@ -256,6 +255,7 @@ export const docsConfig: SidebarNavItem[] = [
       //   title: "Element Along SVG Path",
       //   href: "/docs/components/blocks/element-along-svg-path",
       //   items: [],
+      //   label: "New"
       // }
     ],
   },
