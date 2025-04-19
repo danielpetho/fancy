@@ -1,7 +1,11 @@
 "use client"
 
 import React, { ElementType, HTMLAttributes, useEffect } from "react"
-import { useAnimate } from "motion/react"
+import {
+  DOMKeyframesDefinition,
+  DynamicAnimationOptions,
+  useAnimate,
+} from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -9,6 +13,9 @@ interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
   threshold?: number
   as?: ElementType
   children: React.ReactNode
+  intensity?: number
+  keyframes?: DOMKeyframesDefinition
+  keyframesOptions?: DynamicAnimationOptions
 }
 
 interface ImageTrailItemProps extends HTMLAttributes<HTMLDivElement> {
@@ -30,6 +37,9 @@ const ImageTrail = ({
   as = "div",
   children,
   threshold = 100,
+  intensity = 0.3,
+  keyframes,
+  keyframesOptions,
   ...props
 }: ImageTrailProps) => {
   const [currentId, setCurrentId] = React.useState(0)
@@ -55,12 +65,12 @@ const ImageTrail = ({
     cachedMousePos.current.x = MathUtils.lerp(
       cachedMousePos.current.x || mousePos.x,
       mousePos.x,
-      0.1
+      intensity
     )
     cachedMousePos.current.y = MathUtils.lerp(
       cachedMousePos.current.y || mousePos.y,
       mousePos.y,
-      0.1
+      intensity
     )
     const distance = MathUtils.distance(
       mousePos.x,
@@ -83,15 +93,13 @@ const ImageTrail = ({
               allImages.current[currentId].offsetHeight / 2,
             mousePos.y - allImages.current?.[currentId].offsetHeight / 2,
           ],
-          opacity: [0, 1, 1, 0],
-          scale: [1, 1, 1.2],
           zIndex: globalzIndex.current,
+          ...keyframes,
         },
         {
           x: { duration: 1, type: "tween" },
           y: { duration: 1, type: "tween" },
-          opacity: { duration: 1.5, times: [0, 0.001, 0.9, 1] },
-          scale: { duration: 1.4, times: [0, 0.9, 1] },
+          ...keyframesOptions,
         }
       )
 
