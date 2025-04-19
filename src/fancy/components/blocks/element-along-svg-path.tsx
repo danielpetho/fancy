@@ -233,20 +233,13 @@ const ElementAlongPath = ({
         scrollTransformValues,
         transition: {
           ...transition,
-          // For auto animation, modify the transition duration based on hover state
-          ...(animationType === "auto" && {
-            transitionEnd: {
-              // This ensures the transition respects the time scale
-              duration: transition.duration * (isHovered ? 3.33 : 1),
-            },
-          }),
         },
         setHovered: setIsHovered,
       }}
     >
       <div
         ref={container}
-        className={cn("relative pointer-events-none", className)}
+        className={cn("relative", className)}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -254,12 +247,13 @@ const ElementAlongPath = ({
           width={width}
           height={height}
           preserveAspectRatio={preserveAspectRatio}
+          className="w-full h-full"
         >
           <motion.path
             id={id}
             d={path}
-            initial={{ pathLength: 0.001 }}
-            animate={{ pathLength: 1 }}
+            // initial={{ pathLength: 0.001 }}
+            // animate={{ pathLength: 1 }}
             stroke={showPath ? "currentColor" : "none"}
             fill="none"
             transition={transition}

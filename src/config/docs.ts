@@ -52,7 +52,7 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
       },
       {
-        title: "Text Rotate",
+        title: "Text 3D Rotate",
         href: "/docs/components/text/text-3d-rotate",
         items: [],
         label: "New",
