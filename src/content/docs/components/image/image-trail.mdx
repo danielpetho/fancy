@@ -2,12 +2,168 @@
 title: Image Trail
 description: A component that creates a trail effect on cursor/touch movement. Works also with videos, svgs, or any type of html elements.
 component: true
+author: "[Khoa Phan](https://www.pldkhoa.dev)"
 ---
 
 <ComponentPreview name="image-trail-demo" />
 
-This component is work in progress, and will be updated soon.
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/image-trail.json"`}</CodeBlockWrapper>
+
+</TabsContent>
+<TabsContent value="manual">
+
+<ComponentSource name="image-trail" />
+
+</TabsContent>
+</Tabs>
+
+## Introduction
+
+This component is a fun mouse interaction effect, The idea is to follow the mouse and show a trail of random images. It’s a kind of brutalist effect and there are various possibilities when it comes to showing and hiding the images.
 
 ## Source code
 
 <ComponentSource name="image-trail" />
+
+## Usage
+
+<CodeBlockWrapper language="typescript" className="mt-4">
+  {`<ImageTrail>
+  <ImageTrailItem>...</ImageTrailItem>
+  <ImageTrailItem>...</ImageTrailItem>
+  <ImageTrailItem>...</ImageTrailItem>
+</ImageTrail>`}
+</CodeBlockWrapper>
+
+## Understanding the component
+
+Under the hood, the effect is achieved by:
+
+1. Tracking mouse coordinates with linear interpolation (`lerp: (a: number, b: number, n: number) => (1 - n) * a + n * b`) for smooth movement. In other words, the mouse position is interpolated to create a smooth transition between the current and target positions.
+2. Triggering animations when mouse movement exceeds a configurable threshold calculated by `distance: (x1: number, y1: number, x2: number, y2: number) => Math.hypot(x2 - x1, y2 - y1)` (calculate the hypotenuse of a right triangle).
+3. All the child items are set into `position: absolute`, after that, we cycling through child items to create a continuous trail effect by managing z-index to ensure proper layering of animated elements.
+4. Adding customizable animations via keyframes and animation options to achieve the disired effect.
+
+That's it! :)
+
+## Props
+
+### Image Trail Wrapper
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        children<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be displayed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>threshold</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`100`</TableCell>
+      <TableCell>Determine the distance to start showing image</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`div`</TableCell>
+      <TableCell>HTML Tag</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>intensity</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.3`</TableCell>
+      <TableCell>
+        The intensity for the momentum movement after showing the element
+      </TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>keyframes</TableCell>
+      <TableCell>`DOMKeyframesDefinition`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Animation Keyframes</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>keyframesOptions</TableCell>
+      <TableCell>`DynamicAnimationOptions`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Options for the animation/keyframes</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>otherProps</TableCell>
+      <TableCell>`HTMLAttributes<HTMLDivElement>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Props inherit from HTML div element attributes. </TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Image Trail Item
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        children<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be displayed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`div`</TableCell>
+      <TableCell>HTML Tag</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>otherProps</TableCell>
+      <TableCell>`HTMLAttributes<HTMLDivElement>`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Props inherit from HTML div element attributes</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Other Demos
+
+This component is very flexible and can be used in various HTML elements, can be used with images, videos, svgs, or any type of HTML elements. Here are some examples:
+
+<ComponentPreview name="image-trail-various-elements-demo" />
+
+### Note
+
+Note:
+
+- The `ImageTrailItem` component assigns a default className of `.image-trail-item` to identify elements for animation within the `ImageTrail` component. Be cautious when applying custom `className` values with the same name (`.image-trail-item`) in your application, as this may cause conflicts or unintended behavior due to duplicate class selectors. To avoid issues, ensure custom classes are unique or use the `className` prop to extend styles without overriding the default `.image-trail-item` class.
+
+- When using the `ImageTrail` component, content is heavily animated. To prevent performance issues, avoid using overly large images or videos.
