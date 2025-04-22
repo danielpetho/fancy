@@ -51,12 +51,12 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/text-rotate",
         items: [],
       },
-      {
-        title: "Text 3D Rotate",
-        href: "/docs/components/text/text-3d-rotate",
-        items: [],
-        label: "New",
-      },
+      // {
+      //   title: "Text 3D Rotate",
+      //   href: "/docs/components/text/text-3d-rotate",
+      //   items: [],
+      //   label: "New",
+      // },
       {
         title: "Variable Font Hover By Letter",
         href: "/docs/components/text/variable-font-hover-by-letter",
@@ -218,6 +218,12 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Media Between Text",
         href: "/docs/components/blocks/media-between-text",
         items: [],
+      },
+      {
+        title: "CSS Box",
+        href: "/docs/components/blocks/css-box",
+        items: [],
+        label: "New",
       },
       {
         title: "Screensaver",
