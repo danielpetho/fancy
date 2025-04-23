@@ -62,7 +62,9 @@ export default function CSSBox2Demo() {
         {[...Array(12)].map((_, index) => (
           <CSSBox
             key={index}
-            ref={(el) => (boxRefs.current[index] = el)}
+            ref={(el) => {
+              if (el) boxRefs.current[index] = el
+            }}
             width={200}
             height={30}
             depth={200}

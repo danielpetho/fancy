@@ -3,6 +3,8 @@
 import {
   forwardRef,
   ReactNode,
+  Ref,
+  RefObject,
   useCallback,
   useEffect,
   useImperativeHandle,
@@ -47,9 +49,11 @@ export interface CSSBoxRef {
   showTop: () => void
   showBottom: () => void
   rotateTo: (x: number, y: number) => void
+  getCurrentRotation: () => { x: number; y: number }
+  rotateNext: () => void
 }
 
-interface CSSBoxProps {
+interface CSSBoxProps extends React.HTMLProps<HTMLDivElement> {
   width: number
   height: number
   depth: number
@@ -71,6 +75,7 @@ const CSSBox = forwardRef<CSSBoxRef, CSSBoxProps>(({
   damping = 30,
   faces = {},
   draggable = true,
+  ...props
 }, ref) => {
   const isDragging = useRef(false)
   const startPosition = useRef({ x: 0, y: 0 })
@@ -89,6 +94,9 @@ const CSSBox = forwardRef<CSSBoxRef, CSSBoxProps>(({
     damping,
     ...(isDragging.current ? { stiffness: stiffness / 2 } : {}),
   })
+
+  const currentRotation = useRef({ x: 0, y: 0 })
+
 
   useImperativeHandle(ref, () => ({
     showFront: () => {
@@ -119,6 +127,14 @@ const CSSBox = forwardRef<CSSBoxRef, CSSBoxProps>(({
       baseRotateX.set(x)
       baseRotateY.set(y)
     },
+
+    getCurrentRotation: () => currentRotation.current,
+    rotateNext: () => {
+      // Rotate 90 degrees each time
+      const nextY = (currentRotation.current.y + 90)
+      currentRotation.current.y = nextY
+      baseRotateY.set(nextY)
+    }
   }), [])
 
   const transform = useTransform(
@@ -159,6 +175,19 @@ const CSSBox = forwardRef<CSSBoxRef, CSSBoxProps>(({
     }
   }, [draggable, handleMouseMove, handleMouseUp])
 
+  useEffect(() => {
+    const unsubscribeX = baseRotateX.on('change', (v) => {
+      currentRotation.current.x = v
+    })
+    const unsubscribeY = baseRotateY.on('change', (v) => {
+      currentRotation.current.y = v
+    })
+    return () => {
+      unsubscribeX()
+      unsubscribeY()
+    }
+  }, [])
+
   return (
     <div
       className={cn(
@@ -172,6 +201,7 @@ const CSSBox = forwardRef<CSSBoxRef, CSSBoxProps>(({
         perspective: `${perspective}px`,
       }}
       onMouseDown={handleMouseDown}
+      {...props}
     >
       <motion.div
         className="relative w-full h-full [transform-style:preserve-3d]"
