@@ -23,7 +23,7 @@ interface FaceProps {
 const CubeFace = ({ transform, className, children, style }: FaceProps) => (
   <div
     className={cn(
-      "absolute [backface-visibility:hidden]",
+      "absolute",
       className
     )}
     style={{ transform, ...style }}
@@ -191,7 +191,7 @@ const CSSBox = forwardRef<CSSBoxRef, CSSBoxProps>(({
   return (
     <div
       className={cn(
-        "scene select-none",
+        "scene ",
         draggable && "cursor-move",
         className
       )}
