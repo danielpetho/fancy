@@ -35,19 +35,37 @@ export default function CSSBoxDemo() {
         front: (
           <TextFace
             texts={["YOU CAN", "JUST", "DO THINGS"]}
-            className="text-right justify-end items-end flex h-full border w-full p-2"
+            className="text-right justify-end items-end h-full w-full p-2 select-none"
+          />
+        ),
+        back: (
+          <TextFace
+            texts={["MAKE THINGS", "YOU WISH", "EXISTED"]} 
+            className="text-left justify-end h-full w-full p-2 select-none"
           />
         ),
         right: (
           <TextFace
             texts={["MAKE THINGS", "YOU WISH", "EXISTED"]}
-            className="text-left justify-end h-full border w-full p-2"
+            className="text-left justify-end h-full w-full p-2 select-none"
+          />
+        ),
+        left: (
+          <TextFace
+            texts={["BREAK", "THINGS", "MOVE", "FAST"]}
+            className="items-end w-full h-full p-2 select-none"
+          />
+        ),
+        top: (
+          <TextFace
+            texts={["YOU CAN", "JUST", "DO THINGS"]}
+            className="text-right justify-end items-end h-full w-full p-2 select-none" 
           />
         ),
         bottom: (
           <TextFace
             texts={["BREAK", "THINGS", "MOVE", "FAST"]}
-            className="items-end border w-full h-full p-2"
+            className="items-end w-full h-full p-2 select-none"
           />
         ),
       }}

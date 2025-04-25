@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react"
+
 import { cn } from "@/lib/utils"
 import CSSBox, { CSSBoxRef } from "@/fancy/components/blocks/css-box"
 
@@ -13,10 +14,7 @@ const BoxText = ({
 }) => (
   <div
     className={cn(
-      "w-full h-full uppercase text-white flex items-center justify-center p-0 text-3xl font-bold",
-    //   i % 2 === 0 
-    //     ? "bg-gradient-to-t from-rose-300 to-red-400"
-    //     : "bg-gradient-to-b from-rose-300 to-red-400",
+      "w-full h-full uppercase text-white flex items-center justify-center p-0 text-2xl md:text-3xl font-bold",
       className
     )}
   >
@@ -54,41 +52,48 @@ export default function CSSBoxHoverDemo() {
     const box = boxRefs.current[index]
     if (!box) return
 
-    const nextRotation = (currentRotations.current[index] + 90) % 360
+    const nextRotation = currentRotations.current[index] + 90
     currentRotations.current[index] = nextRotation
 
-    await box.rotateNext()
+    box.rotateTo(0, nextRotation)
 
     isRotating.current[index] = false
   }
 
   return (
     <div className="flex flex-col items-center justify-center w-full h-full bg-[#111]">
-        {boxes.map(({ text, size }, index) => (
-          <CSSBox
-            key={index}
-            ref={(el) => {
-              if (el) {
-                boxRefs.current[index] = el
-                isRotating.current[index] = false
-                currentRotations.current[index] = 0
-              }
-            }}
-            width={size}
-            height={35}
-            depth={size}
-            draggable={false}
-            
-            className="hover:z-10"
-            onMouseEnter={() => handleHover(index)}
-            faces={{
-              front: <BoxText i={index}>{text}</BoxText>,
-              back: <BoxText i={index} className="">{text}</BoxText>,
-              left: <BoxText i={index}>{text}</BoxText>,
-              right: <BoxText i={index} className="">{text}</BoxText>,
-            }}
-          />
-        ))}
+      {boxes.map(({ text, size }, index) => (
+        <CSSBox
+          key={index}
+          ref={(el) => {
+            if (el) {
+              boxRefs.current[index] = el
+              isRotating.current[index] = false
+              currentRotations.current[index] = 0
+            }
+          }}
+          width={size}
+          height={35}
+          depth={size}
+          draggable={false}
+          className="hover:z-10"
+          onMouseEnter={() => handleHover(index)}
+          faces={{
+            front: <BoxText i={index}>{text}</BoxText>,
+            back: (
+              <BoxText i={index} className="">
+                {text}
+              </BoxText>
+            ),
+            left: <BoxText i={index}>{text}</BoxText>,
+            right: (
+              <BoxText i={index} className="">
+                {text}
+              </BoxText>
+            ),
+          }}
+        />
+      ))}
     </div>
   )
 }
