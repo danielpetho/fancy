@@ -1,11 +1,294 @@
 ---
-title: Text 3D Rotate
-description: A text component that switches the rendered text from a list.
+title: 3D CSS Box
+description: A simple 3D box component with "CSS-only" 3D transforms.
 component: true
 ---
 
-<ComponentPreview name='css-box-demo' />
+<ComponentPreview name="css-box-demo" />
 
-<ComponentPreview name='css-box-hover-demo' />
+Artwork inspiration from [Ignite Amsterdam](https://www.instagram.com/p/CaDHtZKrk0F/)
 
-<ComponentPreview name='css-box-scroll-demo' />
+## Credits
+
+The component is derived from the Box chapter of David De Sandro's [extremely awesome Intro to CSS 3D transforms tutorial](https://3dtransforms.desandro.com/box). 
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add "https://fancycomponents.dev/r/3d-css-box.json"
+```
+
+</TabsContent>
+
+<TabsContent value="manual">
+
+<Steps>
+
+<Step>Copy &amp; paste the component source into your project:</Step>
+
+<ComponentSource name="css-box" />
+
+</Steps>
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+The component renders a fully-featured 3D cube. Pass `width`, `height`, `depth` and optionally six React nodes for the faces. You may also grab the cube with a ref for programmatic control. 
+
+High-level example:
+
+```tsx
+import { useRef } from "react"
+import CSSBox, { CSSBoxRef } from "@/components/blocks/css-box"
+
+export default function CubeExample() {
+  const cubeRef = useRef<CSSBoxRef>(null)
+
+  return (
+    <>
+      <CSSBox
+        ref={cubeRef}
+        width={220}
+        height={220}
+        depth={220}
+        perspective={800}
+        draggable
+        faces={{
+          front:  <img src="/images/front.png"  alt="Front"  />,
+          back:   <img src="/images/back.png"   alt="Back"   />,
+          left:   <img src="/images/left.png"   alt="Left"   />,
+          right:  <img src="/images/right.png"  alt="Right"  />,
+          top:    <img src="/images/top.png"    alt="Top"    />,
+          bottom: <img src="/images/bottom.png" alt="Bottom" />,
+        }}
+      />
+
+      <Button onClick={() => cubeRef.current?.showTop()}>
+        Show Top
+      </Button>
+    </>
+  )
+}
+```
+
+## Understanding the component
+
+Before you dive into it, I highly recommend reading [Intro to CSS 3D transforms](https://3dtransforms.desandro.com/) by David DeSandro. It's a really great resource for understanding the basics, and this component is essentially just a react & tailwind port of the Box chapter.
+
+### Face layout
+
+As you know, a box is a 3D object that has six faces. Each face is an absolutely-positioned `<div>` that lives in the same 3D context (`transform-style: preserve-3d`).  
+We pre-rotate every face so that their local **+Z** axis points outward and then translate it by half of the appropriate dimension:
+
+```tsx
+rotateY( 0deg) translateZ(depth / 2) → front
+rotateY(180deg) translateZ(depth / 2) → back
+rotateY( 90deg) translateZ(width / 2) → right
+rotateY(-90deg) translateZ(width / 2) → left
+rotateX( 90deg) translateZ(height/ 2) → top
+rotateX(-90deg) translateZ(height/ 2) → bottom
+```
+
+
+### Rotation mechanics
+
+1. Two motion values `baseRotateX` and `baseRotateY` hold the raw rotation in degrees.  
+2. They are piped through `useSpring` so they feel springy and configurable (`stiffness`, `damping`). See [Motion – useSpring](https://motion.dev/docs/react-use-spring) for more details.
+3. We combine them into a single CSS transform:
+
+```ts
+const transform = useTransform([springX, springY], ([x, y]) =>
+  `translateZ(-${depth / 2}px) rotateX(${x}deg) rotateY(${y}deg)`
+)
+```
+
+### Drag interaction
+
+The box can be rotated through mouse drags or touch input. 3D rotation can be a nasty thing, especially when dealing with [Gimbal Lock](https://base.movella.com/s/article/Understanding-Gimbal-Lock-and-how-to-prevent-it?language=en_US). While the almighty, super complex [quaternions](https://www.youtube.com/watch?v=zjMuIxRvygQ) could prevent this issue (Three.js provides great utilities for that), implementing them felt like overkill here - at that point, the entire box might as well be rendered in Three.js. 
+
+The current approach maps mouse/touch movement directly to rotation around the X and Y axes. The implementation is pretty intuitive, while the actual feel of it can be sometimes unintuitive. Apologies for my laziness here.
+
+When `draggable` is enabled, pointer movement gets translated into smooth rotational changes:
+
+```ts
+Δx → rotateY
+Δy → rotateX
+```
+
+We do this by subscribing to `mousemove` and `touchmove` events and projecting the movement to rotation deltas. During dragging the spring’s stiffness is temporarily halved to give a slightly “looser” feel. 
+
+```tsx
+baseRotateX.set(startRotation.current.x - deltaY / 2)
+baseRotateY.set(startRotation.current.y + deltaX / 2)
+```
+
+Modify that value to adjust the sensitivity of the drag.
+
+### Imperative API
+
+Via `ref` you can trigger the following methods:
+
+- `showFront | showBack | showLeft | showRight | showTop | showBottom`
+- `rotateTo(x: number, y: number)` – set exact angles
+- `getCurrentRotation()` – read the live values
+
+This can be handy for syncing cube state to a carousel or step-based walkthrough. For example, you can trigger a cube rotation with hover:
+
+<ComponentSource name="css-box-hover-demo" />
+
+Or, tie the rotation to a scroll progress:
+
+<ComponentSource name="css-box-scroll-demo" />
+
+## Notes
+
+As it was pointed out above, implementing a similar component in Three.js would have been a lot easier and would give you much more flexibility and overall control over the rotation. You are still welcomed to use this component if you'd like to skip installing Three.js for whatever reason :). 
+
+## Resources
+
+- [Intro to CSS 3D transforms](https://3dtransforms.desandro.com/) by David DeSandro
+- [Gimbal Lock](https://base.movella.com/s/article/Understanding-Gimbal-Lock-and-how-to-prevent-it?language=en_US) 
+- [Quaternions explained](https://www.youtube.com/watch?v=zjMuIxRvygQ) by 3Blue1Brown
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>width<span className="text-red-500">*</span></TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Width of the cube (in&nbsp;px)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>height<span className="text-red-500">*</span></TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Height of the cube (in&nbsp;px)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>depth<span className="text-red-500">*</span></TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Depth of the cube (in&nbsp;px)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>perspective</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`600`</TableCell>
+      <TableCell>Perspective distance applied to the outer wrapper</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>stiffness</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`100`</TableCell>
+      <TableCell>Spring stiffness for rotations</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>damping</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`30`</TableCell>
+      <TableCell>Spring damping factor</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional classes for the outer wrapper</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showBackface</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Reveal back-faces if you need double-sided content</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>faces</TableCell>
+      <TableCell>`{ front? back? left? right? top? bottom?: ReactNode }`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Individual React nodes for every face</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>draggable</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Enable/disable mouse &amp; touch rotation</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Ref Methods
+
+The component exposes several methods through a ref that allow programmatic control of the cube's rotation:
+
+<Table>
+  <TableHead>
+    <TableRow>
+      <TableCell>Method</TableCell>
+      <TableCell>Type</TableCell>
+      <TableCell>Description</TableCell>
+    </TableRow>
+  </TableHead>
+  <TableBody>
+    <TableRow>
+      <TableCell>showFront</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>Rotates the cube to show the front face (0°, 0°)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showBack</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>Rotates the cube to show the back face (0°, 180°)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showLeft</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>Rotates the cube to show the left face (0°, -90°)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showRight</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>Rotates the cube to show the right face (0°, 90°)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showTop</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>Rotates the cube to show the top face (-90°, 0°)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>showBottom</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>Rotates the cube to show the bottom face (90°, 0°)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>rotateTo</TableCell>
+      <TableCell>`(x: number, y: number) => void`</TableCell>
+      <TableCell>Rotates the cube to specific X and Y angles in degrees</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>getCurrentRotation</TableCell>
+      <TableCell>`() => { x: number, y: number }`</TableCell>
+      <TableCell>Returns current X and Y rotation angles in degrees</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
