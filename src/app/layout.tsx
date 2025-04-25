@@ -65,9 +65,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      {/* <head>
         <script src="https://unpkg.com/react-scan/dist/auto.global.js"/>
-      </head>
+      </head> */}
       <body
         className={`font-overused-grotesk bg-background antialiased flex items-center justify-center w-full text-foreground`}
       >
