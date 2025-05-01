@@ -170,12 +170,12 @@ export const docsConfig: SidebarNavItem[] = [
     title: "Image",
     href: "/docs/components/image",
     items: [
-      {
-        title: "Image Trail",
-        href: "/docs/components/image/image-trail",
-        items: [],
-        label: "Beta",
-      },
+      // {
+      //   title: "Image Trail",
+      //   href: "/docs/components/image/image-trail",
+      //   items: [],
+      //   label: "Beta",
+      // },
       {
         title: "Parallax Floating",
         href: "/docs/components/image/parallax-floating",
