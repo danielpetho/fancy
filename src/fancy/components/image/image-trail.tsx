@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ElementType, HTMLAttributes, useEffect } from "react"
+import React, { ElementType, HTMLAttributes, useEffect, useMemo } from "react"
 import {
   DOMKeyframesDefinition,
   DynamicAnimationOptions,
@@ -10,12 +10,30 @@ import {
 import { cn } from "@/lib/utils"
 
 interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
-  threshold?: number
-  as?: ElementType
   children: React.ReactNode
+  as?: ElementType
+  /**
+   * How much distance in pixels the mouse has to travel to trigger of an element to appear.
+   */
+  mouseDistanceThreshold?: number
+  /**
+   * The value will be clamped > 0 and <= 1.0. Defaults to 0.3.
+   */
   intensity?: number
   keyframes?: DOMKeyframesDefinition
   keyframesOptions?: DynamicAnimationOptions
+
+  trailElementAnimationKeyframes?: { x: DynamicAnimationOptions, y: DynamicAnimationOptions }
+
+  /**
+   * The number of times the children will be repeated. Defaults to 3.
+   */
+  repeatChildren?: number
+
+  /**
+   * Whether the new elements should be on top of the old ones. Defaults to true.
+   */
+  newElementsOnTop?: boolean
 }
 
 interface ImageTrailItemProps extends HTMLAttributes<HTMLDivElement> {
@@ -36,10 +54,16 @@ const ImageTrail = ({
   className,
   as = "div",
   children,
-  threshold = 100,
+  mouseDistanceThreshold = 100,
   intensity = 0.3,
   keyframes,
   keyframesOptions,
+  repeatChildren = 3,
+  trailElementAnimationKeyframes = { 
+    x: { duration: 1, type: "tween", ease: "easeOut" }, 
+    y: { duration: 1, type: "tween", ease: "easeOut" } 
+  },
+  newElementsOnTop = true,
   ...props
 }: ImageTrailProps) => {
   const [currentId, setCurrentId] = React.useState(0)
@@ -48,6 +72,11 @@ const ImageTrail = ({
   const [containerRef, animate] = useAnimate()
   const globalzIndex = React.useRef(0)
   const allImages = React.useRef<NodeListOf<HTMLElement>>()
+
+  const clampedIntensity = useMemo(
+    () => Math.max(0.0001, Math.min(1, intensity)),
+    [intensity]
+  )
 
   useEffect(() => {
     allImages.current = containerRef?.current?.querySelectorAll(
@@ -65,13 +94,15 @@ const ImageTrail = ({
     cachedMousePos.current.x = MathUtils.lerp(
       cachedMousePos.current.x || mousePos.x,
       mousePos.x,
-      intensity
+      clampedIntensity
     )
+    
     cachedMousePos.current.y = MathUtils.lerp(
       cachedMousePos.current.y || mousePos.y,
       mousePos.y,
-      intensity
+      clampedIntensity
     )
+
     const distance = MathUtils.distance(
       mousePos.x,
       mousePos.y,
@@ -79,7 +110,7 @@ const ImageTrail = ({
       lastMousePos.current.y
     )
 
-    if (distance > threshold && allImages?.current) {
+    if (distance > mouseDistanceThreshold && allImages?.current) {
       animate(
         allImages.current[currentId],
         {
@@ -97,8 +128,8 @@ const ImageTrail = ({
           ...keyframes,
         },
         {
-          x: { duration: 1, type: "tween" },
-          y: { duration: 1, type: "tween" },
+          ...trailElementAnimationKeyframes.x,
+          ...trailElementAnimationKeyframes.y,
           ...keyframesOptions,
         }
       )
@@ -106,6 +137,7 @@ const ImageTrail = ({
       setCurrentId(
         currentId === allImages.current.length - 1 ? 0 : currentId + 1
       )
+      allImages.current[currentId].style.display = "block"
       lastMousePos.current = { x: mousePos.x, y: mousePos.y }
       globalzIndex.current++
     }
@@ -120,7 +152,9 @@ const ImageTrail = ({
       ref={containerRef}
       {...props}
     >
-      {children}
+      {Array.from({ length: repeatChildren }).map((_, index) => (
+        <>{children}</>
+      ))}
     </ElementTag>
   )
 }
@@ -136,7 +170,7 @@ const ImageTrailItem = ({
     <ElementTag
       {...props}
       className={cn(
-        "absolute top-0 left-0 will-change-transform opacity-0",
+        "absolute top-0 left-0 will-change-transform hidden",
         className,
         "image-trail-item"
       )}

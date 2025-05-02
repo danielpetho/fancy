@@ -10,13 +10,14 @@ const ImageTrailDemo = () => {
   return (
     <div className="w-full h-full bg-white relative text-foreground dark:text-muted">
       <ImageTrail
-        mouseDistanceThreshold={100}
-        intensity={1.}
-        keyframes={{ opacity: [0, 1, 1, 0], scale: [1, 1, 2] }}
+        mouseDistanceThreshold={1}
+        intensity={1}
+        keyframes={{ scale: [1, 0] }}
         keyframesOptions={{
-          opacity: { duration: 2, times: [0, 0.001, 0.9, 1] },
-          scale: { duration: 2, times: [0, 0.8, 1] },
+          scale: { duration: 1, times: [0, 1] },
         }}
+        repeatChildren={10}
+        newElementsOnTop={false}
       >
         {exampleImages.map((image, index) => (
           <ImageTrailItem key={index}>
@@ -32,9 +33,6 @@ const ImageTrailDemo = () => {
           </ImageTrailItem>
         ))}
       </ImageTrail>
-      <h1 className="text-9xl z-10 absolute top-1/2 left-1/2 pointer-events-none -translate-x-1/2 -translate-y-1/2">
-        ALBUMS
-      </h1>
     </div>
   )
 }

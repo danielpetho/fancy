@@ -29,32 +29,110 @@ author: "[Khoa Phan](https://www.pldkhoa.dev)"
 
 ## Introduction
 
-This component is a fun mouse interaction effect, The idea is to follow the mouse and show a trail of random images. It’s a kind of brutalist effect and there are various possibilities when it comes to showing and hiding the images.
-
-## Source code
-
-<ComponentSource name="image-trail" />
+This component is a fun mouse interaction effect. The idea is to follow the mouse and show a trail of random images. It’s a kind of brutalist effect and there are various possibilities when it comes to showing and hiding the images.
 
 ## Usage
 
-<CodeBlockWrapper language="typescript" className="mt-4">
-  {`<ImageTrail>
+Wrap each image with the `ImageTrailItem` component and wrap everything with the `ImageTrail` as a parent component.
+
+```tsx
+<ImageTrail>
   <ImageTrailItem>...</ImageTrailItem>
   <ImageTrailItem>...</ImageTrailItem>
   <ImageTrailItem>...</ImageTrailItem>
-</ImageTrail>`}
-</CodeBlockWrapper>
+</ImageTrail>
+```
 
 ## Understanding the component
 
-Under the hood, the effect is achieved by:
+### 1. Position Calculation with Linear Interpolation
 
-1. Tracking mouse coordinates with linear interpolation (`lerp: (a: number, b: number, n: number) => (1 - n) * a + n * b`) for smooth movement. In other words, the mouse position is interpolated to create a smooth transition between the current and target positions.
-2. Triggering animations when mouse movement exceeds a configurable threshold calculated by `distance: (x1: number, y1: number, x2: number, y2: number) => Math.hypot(x2 - x1, y2 - y1)` (calculate the hypotenuse of a right triangle).
-3. All the child items are set into `position: absolute`, after that, we cycling through child items to create a continuous trail effect by managing z-index to ensure proper layering of animated elements.
-4. Adding customizable animations via keyframes and animation options to achieve the disired effect.
+A useful way to think about this component is that when we move our mouse, the trail items will "try" to follow it. Trying here means that we use linear interpolation to calculate the target position for each trail item:
+
+```tsx
+const lerp = (a: number, b: number, n: number) => (1 - n) * a + n * b
+
+//...
+
+cachedMousePos.current.x = MathUtils.lerp(
+  cachedMousePos.current.x || mousePos.x,
+  mousePos.x,
+  clampedIntensity
+)
+
+cachedMousePos.current.y = MathUtils.lerp(
+  cachedMousePos.current.y || mousePos.y,
+  mousePos.y,
+  clampedIntensity
+)
+```
+
+The `intensity` prop on the main component (0-1) controls how quickly this calculated position updates to match the mouse:
+
+- Lower values (e.g., 0.1) create a more delayed, smooth following effect.
+- Higher values (e.g., 0.8) make the trail more responsive but less smooth.
+- An intensity of 1 will means the trail items will be positioned exactly at the mouse position.
+
+<ComponentPreview name="image-trail-instant-demo" />
+
+In other words, with the intensity, you can create a "momentum-like" effect where trail items seem to lag behind the mouse
+
+### 2. Animation Triggering
+
+Animations are triggered when mouse movement exceeds the `mouseDistanceThreshold` (default: 100px).
+The distance is calculated using the Pythagorean theorem (`Math.hypot`)
+
+```tsx
+const distance = (x1: number, y1: number, x2: number, y2: number) =>
+  Math.hypot(x2 - x1, y2 - y1)
+```
+
+When triggered, the component:
+
+- All the trail item has diplsay hidden as default. Once the item is triggered by the mechanism above, it will habve a display block. Afteer that, it will be animated to the calculated position.
+- We will cycle through all the items to create a continuous trail effect. You can notice that when the last item is reached, it will start from the first one again. To avoid this, you can set the `repeatChildren` prop to a number greater than 1.
+  - Manages z-index to ensure proper layering, so all items are positioned above the previous one
+
+### 3. Visual Animation
+
+- The actual movement of elements is handled by the `animate` hook by Motion.
+- It actually consists two parts. We animate the `x` and `y` positions to follow the mouse, with all the lerping and intensity calculations mentioned above. You can also customize how the item should try to arrive to that cached mouse posiiton mentioned above.
+- The second part is what you can custyomize to achieve a desired result, how the element should appear, disappear, change its size, etc.
+- You can customize that animation behavior using:
+  - `keyframes` for defining the animation sequence
+  - `keyframesOptions` for fine-tuning animation timing and easing
+
+The reason for this component being performant is that when a trail item is animated out, it is not removed from the DOM, but when we cycle through the items, we just change the posiiton.
+
+so it's important that in the keyframes, you shoul define the initial state how you want to see your element, and also the last state you want to see in.
+in the keyframe options, you can define the corresponding timing and easing for each state.
+Example>
+
+```tsx
+keyframes={{ scale: [0, 1, 1, 0] }}
+keyframesOptions={{
+  scale: { duration: 1, times: [0, 0.1, 0.9, 1] },
+}}
+```
+
+This examople above starts each item with 0 scale, then when we at the 0.1 _ of the duration, we scale it up to 1, keep that state untul the 0.9 _ of the duration, and then scale it back to 0 at the end of the animation. Each value in times is a value between 0 and 1, representing the start and end of the animation.
+There must be the same number of times as there are keyframes. Defaults to an array of evenly-spread durations.
+
+You can read more about this in the [motion docs](https://motion.dev/docs/animate#times)
 
 That's it! :)
+
+## Examples
+
+The component is not constrained to used with images, you can wrap videos, svgs, or basically any HTML elements inside a `ImageTrailItem`.
+
+<ComponentPreview name="image-trail-various-elements-demo" />
+
+### Notes
+
+- The `ImageTrailItem` component assigns a default className of `.image-trail-item` to identify elements for animation within the `ImageTrail` component. Be cautious when applying custom `className` values with the same name (`.image-trail-item`) in your application, as this may cause conflicts or unintended behavior due to duplicate class selectors. To avoid issues, ensure custom classes are unique or use the `className` prop to extend styles without overriding the default `.image-trail-item` class.
+
+- When using the `ImageTrail` component, content is heavily animated. To prevent performance issues, avoid using overly large images or videos.
 
 ## Props
 
@@ -153,17 +231,3 @@ That's it! :)
     </TableRow>
   </TableBody>
 </Table>
-
-### Other Demos
-
-This component is very flexible and can be used in various HTML elements, can be used with images, videos, svgs, or any type of HTML elements. Here are some examples:
-
-<ComponentPreview name="image-trail-various-elements-demo" />
-
-### Note
-
-Note:
-
-- The `ImageTrailItem` component assigns a default className of `.image-trail-item` to identify elements for animation within the `ImageTrail` component. Be cautious when applying custom `className` values with the same name (`.image-trail-item`) in your application, as this may cause conflicts or unintended behavior due to duplicate class selectors. To avoid issues, ensure custom classes are unique or use the `className` prop to extend styles without overriding the default `.image-trail-item` class.
-
-- When using the `ImageTrail` component, content is heavily animated. To prevent performance issues, avoid using overly large images or videos.
