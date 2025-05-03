@@ -5,7 +5,6 @@ export default async function Home() {
   try {
     const allComps = await getAllComponents(true)
 
-
     return <LandingHero allComps={allComps} />
   } catch (error) {
     console.error("Error fetching components:", error)

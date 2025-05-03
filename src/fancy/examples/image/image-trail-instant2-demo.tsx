@@ -24,18 +24,19 @@ const ImageTrailDemo = () => {
   return (
     <div className="w-full h-full bg-white relative text-foreground dark:text-muted">
       <ImageTrail
-        mouseDistanceThreshold={100}
+        mouseDistanceThreshold={0}
         intensity={1}
-        keyframes={{ scale: [1, 1] }}
+        keyframes={{ scale: [1, 0], rotateZ: [0, 0] }}
         keyframesOptions={{
-          scale: { duration: 1, times: [1, 1] },
+          scale: { duration: 1.5, times: [0, 1] },
+          rotateZ: { duration: 1.5, times: [0, 1] },
         }}
-        repeatChildren={1}
+        repeatChildren={20}
         newElementsOnTop={true}
       >
         {images.map((url, index) => (
           <ImageTrailItem key={index}>
-            <div className="w-28 h-full relative overflow-hidden">
+            <div className="w-28 h-28 relative overflow-hidden rounded-xl">
               <img
                 src={url}
                 alt="image"
