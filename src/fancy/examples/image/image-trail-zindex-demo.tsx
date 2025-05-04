@@ -1,5 +1,4 @@
-import {
-  ImageTrail,
+import ImageTrail, {
   ImageTrailItem,
 } from "@/fancy/components/image/image-trail"
 
