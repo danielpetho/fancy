@@ -245,5 +245,4 @@ const ImageTrailItem = ({
   )
 }
 
-export default ImageTrail
-export { ImageTrailItem }
+export { ImageTrail, ImageTrailItem }
