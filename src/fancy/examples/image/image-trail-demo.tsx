@@ -1,8 +1,7 @@
 import Image from "next/image"
 import { exampleImages } from "@/utils/demo-images"
 
-import {
-  ImageTrail,
+import ImageTrail,{
   ImageTrailItem,
 } from "@/fancy/components/image/image-trail"
 

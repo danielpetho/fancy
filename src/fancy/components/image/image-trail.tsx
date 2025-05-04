@@ -224,7 +224,7 @@ const ImageTrail = ({
   )
 }
 
-const ImageTrailItem = ({
+export const ImageTrailItem = ({
   className,
   children,
   as = "div",
@@ -245,4 +245,4 @@ const ImageTrailItem = ({
   )
 }
 
-export { ImageTrail, ImageTrailItem }
+export default ImageTrail
