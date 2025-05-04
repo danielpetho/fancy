@@ -3,11 +3,8 @@
 "use client"
 
 import React, { ElementType, HTMLAttributes, useEffect, useMemo } from "react"
-import {
-  DOMKeyframesDefinition,
-  DynamicAnimationOptions,
-  useAnimate,
-} from "motion/react"
+import type { DOMKeyframesDefinition, AnimationOptions } from "motion"
+import { useAnimate } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -40,14 +37,14 @@ interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Options for the animation/keyframes. Example: { duration: 1, times: [0, 0.1, 0.9, 1] }
    */
-  keyframesOptions?: DynamicAnimationOptions
+  keyframesOptions?: AnimationOptions
 
   /**
    * Animation keyframes for the x and y positions after showing the element. Describes how the element should try to arrive at the mouse position.
    */
   trailElementAnimationKeyframes?: {
-    x?: DynamicAnimationOptions
-    y?: DynamicAnimationOptions
+    x?: AnimationOptions
+    y?: AnimationOptions
   }
 
   /**
