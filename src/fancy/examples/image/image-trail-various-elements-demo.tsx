@@ -17,7 +17,7 @@ const ImageTrailVariousElementsDemo = () => {
         }}
       >
         <ImageTrailItem>
-          <div className="w-28 aspect-square relative overflow-hidden bg-orange-500">
+          <div className="w-20 sm:w-28 aspect-square relative overflow-hidden bg-orange-500">
             <Image
               src={
                 "https://images.unsplash.com/photo-1727341554370-80e0fe9ad082?q=80&w=2276&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -29,7 +29,7 @@ const ImageTrailVariousElementsDemo = () => {
           </div>
         </ImageTrailItem>
         <ImageTrailItem>
-          <div className="w-20">
+          <div className="w-16 sm:w-20">
             <svg
               className="w-full h-full"
               viewBox="0 0 107 243"
@@ -44,7 +44,7 @@ const ImageTrailVariousElementsDemo = () => {
           </div>
         </ImageTrailItem>
         <ImageTrailItem>
-          <div className="w-28 relative overflow-hidden aspect-[9/16]">
+          <div className="w-20 sm:w-28 relative overflow-hidden aspect-[9/16]">
             <video
               src={
                 "https://cdn.cosmos.so/96ae0b34-289d-489d-94a1-c68925ddd3a9.mp4"
@@ -58,11 +58,14 @@ const ImageTrailVariousElementsDemo = () => {
           </div>
         </ImageTrailItem>
         <ImageTrailItem>
-          <div className="w-36 aspect-video text-center border bg-white border-black grid place-items-center">
+          <div className="w-28 sm:w-36 aspect-video text-center border bg-white border-black grid place-items-center text-sm sm:text-base">
             Hey, this is just a simple div
           </div>
         </ImageTrailItem>
       </ImageTrail>
+      <p className="text sm:text-lg absolute top-4 left-6 font-medium pointer-events-none z-100">
+        move your cursor
+      </p>
     </div>
   )
 }

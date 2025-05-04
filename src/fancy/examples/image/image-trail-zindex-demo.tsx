@@ -36,12 +36,15 @@ const ImageTrailDemo = () => {
       >
         {images.map((url, index) => (
           <ImageTrailItem key={index} className="transform-3d">
-            <div className="w-36 h-36 relative overflow-hidden rounded-xl">
+            <div className="sm:w-36 sm:h-36 w-30 h-30 relative overflow-hidden rounded-xl">
               <img src={url} alt="image" className="object-cover" />
             </div>
           </ImageTrailItem>
         ))}
       </ImageTrail>
+      <p className="text sm:text-lg absolute top-4 left-6 font-medium pointer-events-none z-100">
+        move your cursor
+      </p>
     </div>
   )
 }

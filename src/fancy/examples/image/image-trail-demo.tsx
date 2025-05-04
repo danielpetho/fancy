@@ -20,7 +20,7 @@ const ImageTrailDemo = () => {
       >
         {[...exampleImages, ...exampleImages].map((image, index) => (
           <ImageTrailItem key={index}>
-            <div className="w-28 h-24 relative overflow-hidden">
+            <div className="h-20 w-20 sm:w-28 sm:h-24 relative overflow-hidden">
               <Image
                 src={image.url}
                 alt="image"
@@ -32,7 +32,7 @@ const ImageTrailDemo = () => {
           </ImageTrailItem>
         ))}
       </ImageTrail>
-      <h1 className="text-9xl absolute top-1/2 left-1/2 pointer-events-none -translate-x-1/2 -translate-y-1/2 z-100">
+      <h1 className="text-5xl sm:text-9xl absolute top-1/2 left-1/2 pointer-events-none -translate-x-1/2 -translate-y-1/2 z-100">
         ALBUMS
       </h1>
     </div>
