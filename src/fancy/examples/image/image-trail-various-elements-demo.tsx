@@ -9,7 +9,7 @@ const ImageTrailVariousElementsDemo = () => {
   return (
     <div className="w-full h-full bg-white relative text-foreground dark:text-muted">
       <ImageTrail
-        mouseDistanceThreshold={60}
+        threshold={60}
         keyframes={{ opacity: [0, 1, 1, 0], scale: [1, 1, 0] }}
         keyframesOptions={{
           opacity: { duration: 1, times: [0, 0.001, 0.9, 1] },
