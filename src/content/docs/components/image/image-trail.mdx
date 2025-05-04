@@ -29,7 +29,7 @@ author: "[Khoa Phan](https://www.pldkhoa.dev)"
 
 ## Introduction
 
-This component is a fun mouse interaction effect. The idea is to follow the mouse and show a trail of random images. It’s a kind of brutalist effect and there are various possibilities when it comes to showing and hiding the images.
+This component is a fun mouse interaction effect. The idea is to follow the mouse and show a trail of random images. It's a kind of brutalist effect and there are various possibilities when it comes to showing and hiding the images.
 
 ## Usage
 
@@ -45,86 +45,106 @@ Wrap each image with the `ImageTrailItem` component and wrap everything with the
 
 ## Understanding the component
 
-### 1. Position Calculation with Linear Interpolation
+The `ImageTrail` component creates its effect by tracking the mouse (or touch) position and animating a series of child elements (`ImageTrailItem`) to follow that movement with a configurable delay and visual style.
 
-A useful way to think about this component is that when we move our mouse, the trail items will "try" to follow it. Trying here means that we use linear interpolation to calculate the target position for each trail item:
+### How the Trail Follows the Cursor
 
-```tsx
-const lerp = (a: number, b: number, n: number) => (1 - n) * a + n * b
+1.  **Tracking Position:** The component continuously monitors the mouse or touch position.
+2.  **Calculating Target Position (Linear Interpolation):** Instead of instantly moving trail items to the current cursor position, it calculates a "target" position using linear interpolation (`lerp`). This smooths out the movement.
 
-//...
+    ```tsx
+    const lerp = (a: number, b: number, n: number) => (1 - n) * a + n * b
 
-cachedMousePos.current.x = MathUtils.lerp(
-  cachedMousePos.current.x || mousePos.x,
-  mousePos.x,
-  clampedIntensity
-)
+    //...
 
-cachedMousePos.current.y = MathUtils.lerp(
-  cachedMousePos.current.y || mousePos.y,
-  mousePos.y,
-  clampedIntensity
-)
-```
+    cachedMousePos.current.x = MathUtils.lerp(
+      cachedMousePos.current.x || mousePos.x,
+      mousePos.x,
+      clampedIntensity
+    )
 
-The `intensity` prop on the main component (0-1) controls how quickly this calculated position updates to match the mouse:
+    cachedMousePos.current.y = MathUtils.lerp(
+      cachedMousePos.current.y || mousePos.y,
+      mousePos.y,
+      clampedIntensity
+    )
+    ```
 
-- Lower values (e.g., 0.1) create a more delayed, smooth following effect.
-- Higher values (e.g., 0.8) make the trail more responsive but less smooth.
-- An intensity of 1 will means the trail items will be positioned exactly at the mouse position.
+3.  **Controlling Responsiveness (`intensity`):** The `intensity` prop (a value between 0 and 1) controls how quickly the calculated target position updates to match the actual cursor position.
+    *   Lower values (e.g., 0.1) result in a smoother, more delayed "momentum" effect, where the trail items lag behind the cursor.
+    *   Higher values (e.g., 0.8) make the trail more responsive but less smooth.
+    *   An intensity of `1` positions the trail items exactly at the cursor's current position.
 
-<ComponentPreview name="image-trail-instant2-demo" />
+    <ComponentPreview name="image-trail-instant-demo" />
 
-In other words, with the intensity, you can create a "momentum-like" effect where trail items seem to lag behind the mouse
+4.  **Triggering Animation (`threshold`):** An animation cycle for the next trail item is only triggered when the cursor moves a certain distance. This distance is calculated using the Pythagorean theorem (`Math.hypot`):
 
-### 2. Animation Triggering
+    ```tsx
+    const distance = (x1: number, y1: number, x2: number, y2: number) =>
+      Math.hypot(x2 - x1, y2 - y1)
+    ```
 
-Animations are triggered when mouse movement exceeds the `mouseDistanceThreshold` (default: 100px).
-The distance is calculated using the Pythagorean theorem (`Math.hypot`)
+    The `threshold` prop (default: `100` pixels) defines this minimum distance. No new trail items are animated until the cursor has moved at least this far since the last item was triggered.
 
-```tsx
-const distance = (x1: number, y1: number, x2: number, y2: number) =>
-  Math.hypot(x2 - x1, y2 - y1)
-```
+### Animating the Trail Items
 
-When triggered, the component:
+When the movement threshold is met:
 
-- All the trail item has diplsay hidden as default. Once the item is triggered by the mechanism above, it will habve a display block. Afteer that, it will be animated to the calculated position.
-- We will cycle through all the items to create a continuous trail effect. You can notice that when the last item is reached, it will start from the first one again. To avoid this, you can set the `repeatChildren` prop to a number greater than 1.
-  - Manages z-index to ensure proper layering, so all items are positioned above the previous one
+1.  **Cycling Through Items:** The component activates the next available `ImageTrailItem` in the sequence. By default, it cycles through all children and repeats from the beginning. You can set the `repeatChildren` prop to a number greater than 1 to duplicate the children internally and avoid immediate repetition.
+2.  **Making Items Visible:** Trail items are initially hidden (`display: none`). When triggered, the next item is made visible (`display: block`) and starts its animation.
+3.  **Animating Position:** The core movement animation uses the `animate` function from `Motion`. Each triggered item animates its `x` and `y` coordinates towards the continuously updating `cachedMousePos` (calculated using `lerp` as described above).
 
-### 3. Visual Animation
+### Customizing the Visual Animation
 
-- The actual movement of elements is handled by the `animate` hook by Motion.
-- It actually consists two parts. We animate the `x` and `y` positions to follow the mouse, with all the lerping and intensity calculations mentioned above. You can also customize how the item should try to arrive to that cached mouse posiiton mentioned above.
-- The second part is what you can custyomize to achieve a desired result, how the element should appear, disappear, change its size, etc.
-- You can customize that animation behavior using:
-  - `keyframes` for defining the animation sequence
-  - `keyframesOptions` for fine-tuning animation timing and easing
+Beyond the position animation, you can control how each `ImageTrailItem` visually appears and disappears using the `keyframes` and `keyframesOptions` props passed to the main `ImageTrail` component.
 
-The reason for this component being performant is that when a trail item is animated out, it is not removed from the DOM, but when we cycle through the items, we just change the posiiton.
+*   **`keyframes`:** Define the states of the animation (e.g., scale, opacity). You should define the initial state (how the element appears) and the final state (how it disappears).
+*   **`keyframesOptions`:** Fine-tune the timing, duration, and easing for the properties defined in `keyframes`. The `times` array within options specifies the progress points (0 to 1) at which each keyframe state should be reached.
 
-so it's important that in the keyframes, you shoul define the initial state how you want to see your element, and also the last state you want to see in.
-in the keyframe options, you can define the corresponding timing and easing for each state.
-Example>
+**Example:**
 
 ```tsx
-keyframes={{ scale: [0, 1, 1, 0] }}
+keyframes={{ scale: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
 keyframesOptions={{
-  scale: { duration: 1, times: [0, 0.1, 0.9, 1] },
+  duration: 0.6, // Total duration for one item's animation
+  scale: { times: [0, 0.1, 0.7, 1] }, // Scale keyframe timings
+  opacity: { times: [0, 0.1, 0.7, 1] }, // Opacity keyframe timings
 }}
 ```
 
-This examople above starts each item with 0 scale, then when we at the 0.1 _ of the duration, we scale it up to 1, keep that state untul the 0.9 _ of the duration, and then scale it back to 0 at the end of the animation. Each value in times is a value between 0 and 1, representing the start and end of the animation.
-There must be the same number of times as there are keyframes. Defaults to an array of evenly-spread durations.
+In this example:
+*   The item starts invisible (`opacity: 0`, `scale: 0`).
+*   At 10% of the duration (`0.06s`), it quickly scales up and fades in (`opacity: 1`, `scale: 1`).
+*   It remains fully visible until 70% of the duration (`0.42s`).
+*   From 70% to 100% (`0.42s` to `0.6s`), it scales down and fades out back to the initial state (`opacity: 0`, `scale: 0`).
 
-You can read more about this in the [motion docs](https://motion.dev/docs/animate#times)
+There must be the same number of values in a `times` array as there are keyframes for that property. If `times` is omitted, the keyframes are spread evenly across the `duration`. You can read more about this in the [Motion `animate` function documentation](https://motion.dev/docs/animate#times).
+
+The component reuses DOM elements rather than creating new ones for each animation. It maintains a fixed set of `ImageTrailItem` elements that get recycled as needed. When an item needs to be triggered again, the component updates its position and restarts the animation without having to remove and remount elements in the DOM. For this recycling to work properly, make sure to define both initial and final states in the `keyframes` prop, as explained in the example above.
+
+### Z Index Stacking
+
+The component automatically manages the `z-index` of the trail items to control their stacking order. You can customize this behavior using two props:
+
+- `zIndexDirection`: Controls whether newer or older items should appear on top
+  - `"new-on-top"` (default): The most recently triggered item will have the highest z-index
+  - `"old-on-top"`: The oldest items stay on top, with new items appearing underneath
+
+- `baseZIndex`: Sets the starting z-index value (defaults to 0)
+
+When a new item is triggered, the component maintains proper stacking by:
+- For `"new-on-top"`: Setting the current item to the highest z-index and shifting all others down by 1
+- For `"old-on-top"`: Setting the current item to the lowest z-index (baseZIndex) and shifting all others up by 1
+
+Example with `zIndexDirection="old-on-top"`:
+
+<ComponentPreview name="image-trail-zindex-demo" />
 
 That's it! :)
 
 ## Examples
 
-The component is not constrained to used with images, you can wrap videos, svgs, or basically any HTML elements inside a `ImageTrailItem`.
+The component is not constrained to be used with images, you can wrap videos, svgs, or basically any HTML elements inside a `ImageTrailItem`.
 
 <ComponentPreview name="image-trail-various-elements-demo" />
 
@@ -160,7 +180,7 @@ The component is not constrained to used with images, you can wrap videos, svgs,
       <TableCell>threshold</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`100`</TableCell>
-      <TableCell>Determine the distance to start showing image</TableCell>
+      <TableCell>How much distance in pixels the mouse has to travel to trigger an element to appear</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>as</TableCell>
@@ -172,27 +192,49 @@ The component is not constrained to used with images, you can wrap videos, svgs,
       <TableCell>intensity</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`0.3`</TableCell>
-      <TableCell>
-        The intensity for the momentum movement after showing the element
-      </TableCell>
+      <TableCell>The intensity for the momentum movement after showing the element. The value will be clamped greater than 0 and less than or equal to 1.0</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>keyframes</TableCell>
       <TableCell>`DOMKeyframesDefinition`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Animation Keyframes</TableCell>
+      <TableCell>Animation Keyframes for defining the animation sequence. Example: `{ scale: [0, 1, 1, 0] }`</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>keyframesOptions</TableCell>
       <TableCell>`DynamicAnimationOptions`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Options for the animation/keyframes</TableCell>
+      <TableCell>Options for the animation/keyframes. Example: `{ duration: 1, times: [0, 0.1, 0.9, 1] }`</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>otherProps</TableCell>
-      <TableCell>`HTMLAttributes<HTMLDivElement>`</TableCell>
+      <TableCell>trailElementAnimationKeyframes</TableCell>
+      <TableCell>`{ x?: DynamicAnimationOptions, y?: DynamicAnimationOptions }`</TableCell>
+      <TableCell>`{ x: { duration: 1, type: "tween", ease: "easeOut" }, y: { duration: 1, type: "tween", ease: "easeOut" } }`</TableCell>
+      <TableCell>Animation keyframes for the x and y positions after showing the element. Describes how the element should try to arrive at the mouse position</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>repeatChildren</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`3`</TableCell>
+      <TableCell>The number of times the children will be repeated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>baseZIndex</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0`</TableCell>
+      <TableCell>The base zIndex for all elements</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>zIndexDirection</TableCell>
+      <TableCell>`"new-on-top" | "old-on-top"`</TableCell>
+      <TableCell>`"new-on-top"`</TableCell>
+      <TableCell>Controls stacking order behavior. "new-on-top": newer elements stack above older ones, "old-on-top": older elements stay visually on top</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Props inherit from HTML div element attributes. </TableCell>
+      <TableCell>Additional CSS class names</TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -224,10 +266,10 @@ The component is not constrained to used with images, you can wrap videos, svgs,
       <TableCell>HTML Tag</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>otherProps</TableCell>
-      <TableCell>`HTMLAttributes<HTMLDivElement>`</TableCell>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Props inherit from HTML div element attributes</TableCell>
+      <TableCell>Additional CSS class names</TableCell>
     </TableRow>
   </TableBody>
 </Table>

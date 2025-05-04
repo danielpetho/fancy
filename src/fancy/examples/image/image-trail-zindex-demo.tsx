@@ -1,5 +1,7 @@
-import Image from "next/image"
-import { exampleImages } from "@/utils/demo-images"
+import {
+  ImageTrail,
+  ImageTrailItem,
+} from "@/fancy/components/image/image-trail"
 
 const images = [
   "https://cdn.cosmos.so/7dc46d69-ad3b-4942-ab84-511ae786892e?format=jpeg",
@@ -12,36 +14,30 @@ const images = [
   "https://cdn.cosmos.so/5ff27be0-bed8-4779-b520-6896e68e7e4d?format=jpeg",
   "https://cdn.cosmos.so/9098d86e-b3f7-425f-be96-40df45c82342?format=jpeg",
   "https://cdn.cosmos.so/5c01be2f-57fe-4a1a-91ad-a37b9426e080?format=jpeg",
-  "https://cdn.cosmos.so/6a1d9c63-5b32-4a22-b03e-5dc63164ad8a?format=jpeg"
+  "https://cdn.cosmos.so/6a1d9c63-5b32-4a22-b03e-5dc63164ad8a?format=jpeg",
 ]
-
-import {
-  ImageTrail,
-  ImageTrailItem,
-} from "@/fancy/components/image/image-trail"
 
 const ImageTrailDemo = () => {
   return (
     <div className="w-full h-full bg-white relative text-foreground dark:text-muted">
       <ImageTrail
-        mouseDistanceThreshold={0}
+        threshold={1}
         intensity={1}
-        keyframes={{ scale: [1, 0], rotateZ: [0, 0] }}
+        className="perspective-400"
+        keyframes={{ scale: [1, 0], rotateX: [0, -90], rotateY: [0, -90], rotateZ: [0, 360] }}
         keyframesOptions={{
-          scale: { duration: 1.5, times: [0, 1] },
-          rotateZ: { duration: 1.5, times: [0, 1] },
+          scale: { duration: 1, type: "tween", ease: "easeOut" },
+          rotateZ: { duration: 3, type: "tween", ease: "easeOut" },
+          rotateY: { duration: 3, type: "tween", ease: "easeOut" },
+          rotateX: { duration: 3, type: "tween", ease: "easeOut" },
         }}
-        repeatChildren={20}
-        newElementsOnTop={true}
+        repeatChildren={10}
+        zIndexDirection="old-on-top"
       >
         {images.map((url, index) => (
-          <ImageTrailItem key={index}>
-            <div className="w-28 h-28 relative overflow-hidden rounded-xl">
-              <img
-                src={url}
-                alt="image"
-                className="object-cover"
-              />
+          <ImageTrailItem key={index} className="transform-3d">
+            <div className="w-36 h-36 relative overflow-hidden rounded-xl">
+              <img src={url} alt="image" className="object-cover" />
             </div>
           </ImageTrailItem>
         ))}

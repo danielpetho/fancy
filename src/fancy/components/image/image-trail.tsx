@@ -1,3 +1,5 @@
+// author: Khoa Phan <https://www.pldkhoa.dev>
+
 "use client"
 
 import React, { ElementType, HTMLAttributes, useEffect, useMemo } from "react"
@@ -10,20 +12,43 @@ import {
 import { cn } from "@/lib/utils"
 
 interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * The content to be displayed
+   */
   children: React.ReactNode
+
+  /**
+   * HTML Tag
+   */
   as?: ElementType
+
   /**
    * How much distance in pixels the mouse has to travel to trigger of an element to appear.
    */
-  mouseDistanceThreshold?: number
+  threshold?: number
+
   /**
-   * The value will be clamped > 0 and <= 1.0. Defaults to 0.3.
+   * The intensity for the momentum movement after showing the element. The value will be clamped > 0 and <= 1.0. Defaults to 0.3.
    */
   intensity?: number
+
+  /**
+   * Animation Keyframes for defining the animation sequence. Example: { scale: [0, 1, 1, 0] }
+   */
   keyframes?: DOMKeyframesDefinition
+
+  /**
+   * Options for the animation/keyframes. Example: { duration: 1, times: [0, 0.1, 0.9, 1] }
+   */
   keyframesOptions?: DynamicAnimationOptions
 
-  trailElementAnimationKeyframes?: { x: DynamicAnimationOptions, y: DynamicAnimationOptions }
+  /**
+   * Animation keyframes for the x and y positions after showing the element. Describes how the element should try to arrive at the mouse position.
+   */
+  trailElementAnimationKeyframes?: {
+    x?: DynamicAnimationOptions
+    y?: DynamicAnimationOptions
+  }
 
   /**
    * The number of times the children will be repeated. Defaults to 3.
@@ -31,17 +56,33 @@ interface ImageTrailProps extends HTMLAttributes<HTMLDivElement> {
   repeatChildren?: number
 
   /**
-   * Whether the new elements should be on top of the old ones. Defaults to true.
+   * The base zIndex for all elements. Defaults to 0.
    */
-  newElementsOnTop?: boolean
+  baseZIndex?: number
+
+  /**
+   * Controls stacking order behavior.
+   * - "new-on-top": newer elements stack above older ones (default)
+   * - "old-on-top": older elements stay visually on top
+   */
+  zIndexDirection?: "new-on-top" | "old-on-top"
 }
 
 interface ImageTrailItemProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * HTML Tag
+   */
   as?: ElementType
+
+  /**
+   * The content to be displayed
+   */
   children: React.ReactNode
 }
 
-// helper functions
+/**
+ * Helper functions
+ */
 const MathUtils = {
   // linear interpolation
   lerp: (a: number, b: number, n: number) => (1 - n) * a + n * b,
@@ -54,24 +95,25 @@ const ImageTrail = ({
   className,
   as = "div",
   children,
-  mouseDistanceThreshold = 100,
+  threshold = 100,
   intensity = 0.3,
   keyframes,
   keyframesOptions,
   repeatChildren = 3,
-  trailElementAnimationKeyframes = { 
-    x: { duration: 1, type: "tween", ease: "easeOut" }, 
-    y: { duration: 1, type: "tween", ease: "easeOut" } 
+  trailElementAnimationKeyframes = {
+    x: { duration: 1, type: "tween", ease: "easeOut" },
+    y: { duration: 1, type: "tween", ease: "easeOut" },
   },
-  newElementsOnTop = true,
+  baseZIndex = 0,
+  zIndexDirection = "new-on-top",
   ...props
 }: ImageTrailProps) => {
-  const [currentId, setCurrentId] = React.useState(0)
+  const allImages = React.useRef<NodeListOf<HTMLElement>>()
+  const currentId = React.useRef(0)
   const lastMousePos = React.useRef({ x: 0, y: 0 })
   const cachedMousePos = React.useRef({ x: 0, y: 0 })
   const [containerRef, animate] = useAnimate()
-  const globalzIndex = React.useRef(0)
-  const allImages = React.useRef<NodeListOf<HTMLElement>>()
+  const zIndices = React.useRef<number[]>([])
 
   const clampedIntensity = useMemo(
     () => Math.max(0.0001, Math.min(1, intensity)),
@@ -82,7 +124,12 @@ const ImageTrail = ({
     allImages.current = containerRef?.current?.querySelectorAll(
       ".image-trail-item"
     ) as NodeListOf<HTMLElement>
-  }, [containerRef])
+
+    zIndices.current = Array.from(
+      { length: allImages.current.length },
+      (_, index) => index
+    )
+  }, [containerRef, allImages])
 
   const handleMouseMove = (e: React.MouseEvent) => {
     const containerRect = containerRef?.current?.getBoundingClientRect()
@@ -96,7 +143,7 @@ const ImageTrail = ({
       mousePos.x,
       clampedIntensity
     )
-    
+
     cachedMousePos.current.y = MathUtils.lerp(
       cachedMousePos.current.y || mousePos.y,
       mousePos.y,
@@ -110,21 +157,47 @@ const ImageTrail = ({
       lastMousePos.current.y
     )
 
-    if (distance > mouseDistanceThreshold && allImages?.current) {
+    if (distance > threshold && allImages?.current) {
+      const N = allImages.current.length
+      const current = currentId.current
+
+      if (zIndexDirection === "new-on-top") {
+        // Shift others down, put current on top
+        for (let i = 0; i < N; i++) {
+          if (i !== current) {
+            zIndices.current[i] -= 1
+          }
+        }
+        zIndices.current[current] = N - 1
+      } else {
+        // Shift others up, put current at bottom
+        for (let i = 0; i < N; i++) {
+          if (i !== current) {
+            zIndices.current[i] += 1
+          }
+        }
+        zIndices.current[current] = 0
+      }
+
+      allImages.current[current].style.display = "block"
+      allImages.current.forEach((img, index) => {
+        img.style.zIndex = String(zIndices.current[index] + baseZIndex)
+      })
+
       animate(
-        allImages.current[currentId],
+        allImages.current[currentId.current],
         {
           x: [
             cachedMousePos.current.x -
-              allImages.current[currentId].offsetWidth / 2,
-            mousePos.x - allImages.current[currentId].offsetWidth / 2,
+              allImages.current[currentId.current].offsetWidth / 2,
+            mousePos.x - allImages.current[currentId.current].offsetWidth / 2,
           ],
           y: [
             cachedMousePos.current.y -
-              allImages.current[currentId].offsetHeight / 2,
-            mousePos.y - allImages.current?.[currentId].offsetHeight / 2,
+              allImages.current[currentId.current].offsetHeight / 2,
+            mousePos.y -
+              allImages.current?.[currentId.current].offsetHeight / 2,
           ],
-          zIndex: globalzIndex.current,
           ...keyframes,
         },
         {
@@ -133,13 +206,8 @@ const ImageTrail = ({
           ...keyframesOptions,
         }
       )
-
-      setCurrentId(
-        currentId === allImages.current.length - 1 ? 0 : currentId + 1
-      )
-      allImages.current[currentId].style.display = "block"
+      currentId.current = (current + 1) % N
       lastMousePos.current = { x: mousePos.x, y: mousePos.y }
-      globalzIndex.current++
     }
   }
 
@@ -152,7 +220,7 @@ const ImageTrail = ({
       ref={containerRef}
       {...props}
     >
-      {Array.from({ length: repeatChildren }).map((_, index) => (
+      {Array.from({ length: repeatChildren }).map(() => (
         <>{children}</>
       ))}
     </ElementTag>
