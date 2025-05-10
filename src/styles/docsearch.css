@@ -1,0 +1,110 @@
+/* Custom DocSearch styles */
+:root {
+  /* Primary colors and text */
+  --docsearch-primary-color: #5468ff; /* Default: #5468ff */
+  --docsearch-text-color: #1c1e21; /* Default: #1c1e21 */
+  --docsearch-muted-color: #969faf; /* Default: #969faf */
+  --docsearch-logo-color: #ff468f; /* Default: #5468ff */
+  --docsearch-highlight-color: var(--docsearch-primary-color); /* Default: var(--docsearch-primary-color) */
+  --docsearch-icon-color: var(--docsearch-muted-color); /* Default: var(--docsearch-muted-color) */
+
+  /* Spacing and sizing */
+  --docsearch-spacing: 12px; /* Default: 12px */
+  --docsearch-icon-stroke-width: 1.4; /* Default: 1.4 */
+  --docsearch-modal-width: 560px; /* Default: 560px */
+  --docsearch-modal-height: 600px; /* Default: 600px */
+  --docsearch-searchbox-height: 56px; /* Default: 56px */
+  --docsearch-hit-height: 56px; /* Default: 56px */
+  --docsearch-footer-height: 44px; /* Default: 44px */
+  --docsearch-vh: 1vh; /* Default: 1vh - Used for mobile height calculations */
+
+  /* Modal styling */
+  --docsearch-container-background: rgba(101, 108, 133, 0.8); /* Default: rgba(101, 108, 133, 0.8) */
+  --docsearch-modal-background: #f5f6f7; /* Default: #f5f6f7 */
+  --docsearch-modal-shadow: inset 1px 1px 0 0 hsla(0, 0%, 100%, 0.5), 0 3px 8px 0 #555a64; /* Default: inset 1px 1px 0 0 hsla(0, 0%, 100%, 0.5), 0 3px 8px 0 #555a64 */
+
+  /* Searchbox styling */
+  --docsearch-searchbox-background: #ebedf0; /* Default: #ebedf0 */
+  --docsearch-searchbox-focus-background: #fff; /* Default: #fff */
+  --docsearch-searchbox-shadow: inset 0 0 0 2px var(--docsearch-primary-color); /* Default: inset 0 0 0 2px var(--docsearch-primary-color) */
+
+  /* Hit (search result) styling */
+  --docsearch-hit-color: #444950; /* Default: #444950 */
+  --docsearch-hit-active-color: #fff; /* Default: #fff */
+  --docsearch-hit-background: #fff; /* Default: #fff */
+  --docsearch-hit-shadow: 0 1px 3px 0 #d4d9e1; /* Default: 0 1px 3px 0 #d4d9e1 */
+
+  /* Keyboard key styling */
+  --docsearch-key-gradient: linear-gradient(-225deg, #d5dbe4, #f8f8f8); /* Default: linear-gradient(-225deg, #d5dbe4, #f8f8f8) */
+  --docsearch-key-shadow: inset 0 -2px 0 0 #cdcde6, inset 0 0 1px 1px #fff, 0 1px 2px 1px rgba(30, 35, 90, 0.4); /* Default: inset 0 -2px 0 0 #cdcde6, inset 0 0 1px 1px #fff, 0 1px 2px 1px rgba(30, 35, 90, 0.4) */
+  --docsearch-key-pressed-shadow: inset 0 -2px 0 0 #cdcde6, inset 0 0 1px 1px #fff, 0 1px 1px 0 rgba(30, 35, 90, 0.4); /* Default: inset 0 -2px 0 0 #cdcde6, inset 0 0 1px 1px #fff, 0 1px 1px 0 rgba(30, 35, 90, 0.4) */
+
+  /* Footer styling */
+  --docsearch-footer-background: #fff; /* Default: #fff */
+  --docsearch-footer-shadow: 0 -1px 0 0 #e0e3e8, 0 -3px 6px 0 rgba(69, 98, 155, 0.12); /* Default: 0 -1px 0 0 #e0e3e8, 0 -3px 6px 0 rgba(69, 98, 155, 0.12) */
+
+  /* Button specific styling */
+  --docsearch-button-height: 36px; /* Default: 36px - Height of the search button */
+  --docsearch-button-border-radius: 10px; /* Default: 40px - Border radius of the search button */
+  --docsearch-button-margin: 0 0 0 16px; /* Default: 0 0 0 16px - Margin of the search button */
+  --docsearch-button-padding: 0 8px; /* Default: 0 8px - Padding of the search button */
+  --docsearch-button-key-width: 20px; /* Default: 20px - Width of keyboard shortcut keys */
+  --docsearch-button-key-height: 18px; /* Default: 18px - Height of keyboard shortcut keys */
+  --docsearch-button-key-border-radius: 3px; /* Default: 3px - Border radius of keyboard shortcut keys */
+}
+
+/* Button styling overrides */
+.DocSearch-Button {
+  border-radius: 10px !important; /* Override the default 40px */
+  height: 36px !important;
+  margin: 0 0 0 16px !important;
+  padding: 0 8px !important;
+  border: 1px solid #e0e0e0 !important;
+}
+
+.DocSearch-Button-Key {
+  width: 20px !important;
+  height: 18px !important;
+  border-radius: 3px !important;
+}
+
+/* Modal styling overrides */
+.DocSearch-Modal {
+  border-radius: 12px !important; /* Override the default 6px */
+}
+
+.DocSearch-Form {
+  border-radius: 8px !important; /* Override the default 4px */
+}
+
+.DocSearch-Hit {
+  border-radius: 8px !important; /* Override the default 4px */
+}
+
+/* Dark mode overrides */
+html[data-theme="dark"] {
+  --docsearch-text-color: #f5f6f7; /* Default: #f5f6f7 */
+  --docsearch-container-background: rgba(9, 10, 17, 0.8); /* Default: rgba(9, 10, 17, 0.8) */
+  --docsearch-modal-background: #15172a; /* Default: #15172a */
+  --docsearch-modal-shadow: inset 1px 1px 0 0 #2c2e40, 0 3px 8px 0 #000309; /* Default: inset 1px 1px 0 0 #2c2e40, 0 3px 8px 0 #000309 */
+  --docsearch-searchbox-background: #090a11; /* Default: #090a11 */
+  --docsearch-searchbox-focus-background: #000; /* Default: #000 */
+  --docsearch-hit-color: #bec3c9; /* Default: #bec3c9 */
+  --docsearch-hit-shadow: none; /* Default: none */
+  --docsearch-hit-background: #090a11; /* Default: #090a11 */
+  --docsearch-key-gradient: linear-gradient(-26.5deg, #565872, #31355b); /* Default: linear-gradient(-26.5deg, #565872, #31355b) */
+  --docsearch-key-shadow: inset 0 -2px 0 0 #282d55, inset 0 0 1px 1px #51577d, 0 2px 2px 0 rgba(3, 4, 9, 0.3); /* Default: inset 0 -2px 0 0 #282d55, inset 0 0 1px 1px #51577d, 0 2px 2px 0 rgba(3, 4, 9, 0.3) */
+  --docsearch-key-pressed-shadow: inset 0 -2px 0 0 #282d55, inset 0 0 1px 1px #51577d, 0 1px 1px 0 rgba(3, 4, 9, 0.3); /* Default: inset 0 -2px 0 0 #282d55, inset 0 0 1px 1px #51577d, 0 1px 1px 0 rgba(3, 4, 9, 0.3) */
+  --docsearch-footer-background: #1e2136; /* Default: #1e2136 */
+  --docsearch-footer-shadow: inset 0 1px 0 0 rgba(73, 76, 106, 0.5), 0 -4px 8px 0 rgba(0, 0, 0, 0.2); /* Default: inset 0 1px 0 0 rgba(73, 76, 106, 0.5), 0 -4px 8px 0 rgba(0, 0, 0, 0.2) */
+  --docsearch-logo-color: #fff; /* Default: #fff */
+  --docsearch-muted-color: #7f8497; /* Default: #7f8497 */
+}
+
+/* Mobile overrides */
+@media (max-width: 768px) {
+  :root {
+    --docsearch-spacing: 10px; /* Default: 10px - Reduced spacing for mobile */
+    --docsearch-footer-height: 40px; /* Default: 40px - Reduced footer height for mobile */
+  }
+} 

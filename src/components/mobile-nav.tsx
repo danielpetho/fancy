@@ -52,7 +52,7 @@ export function MobileNav() {
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0 m-4 rounded-2xl">
+      <SheetContent side="left" className="pr-0 m-4 rounded-2xl h-[calc(100vh-3rem)]">
         <MobileLink
           href="/"
           className="flex items-center"
@@ -63,7 +63,7 @@ export function MobileNav() {
             fancy components*
           </p>
         </MobileLink>
-        <ScrollArea className="my-8 h-[calc(100vh-8rem)] pb-10 pl-1">
+        <ScrollArea className="my-8 h-[calc(100vh-8rem)] pb-12 pl-1">
           <div className="flex flex-col space-y-2">
             {docsConfig.map((item, index) => (
               <div key={index} className="flex flex-col space-y-2 pt-6">
