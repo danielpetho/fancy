@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { DocSearch } from "@docsearch/react"
-import '@docsearch/css';
 import '@/styles/docsearch.css';
 
 import VariableFontHoverByLetter from "@/fancy/components/text/variable-font-hover-by-letter"
