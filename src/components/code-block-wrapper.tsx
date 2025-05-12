@@ -43,7 +43,11 @@ export function CodeBlockWrapper({
 
   if (lineCount < 20) {
     return (
-      <div className={cn("relative overflow-hidden", className)} {...props}>
+      <div
+        data-algolia-ignore
+        className={cn("relative overflow-hidden", className)}
+        {...props}
+      >
         <div
           className={cn(
             "absolute",
@@ -65,7 +69,11 @@ export function CodeBlockWrapper({
   }
 
   return (
-    <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
+    <Collapsible
+      open={isOpened}
+      onOpenChange={setIsOpened}
+      data-algolia-ignore
+    >
       <div className={cn("relative overflow-hidden", className)} {...props}>
         <CollapsibleContent
           forceMount

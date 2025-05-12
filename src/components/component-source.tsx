@@ -34,12 +34,16 @@ export function ComponentSource({
       try {
         const mod = await import(`../../public/r/${name}.json`)
         const json = mod.default
-        
+
         // Find the main component file that matches the name
         const mainFile = json.files.find(
-          (file: any) => file.path.split('/').pop().replace(/\.(tsx|ts)$/, '') === name
+          (file: any) =>
+            file.path
+              .split("/")
+              .pop()
+              .replace(/\.(tsx|ts)$/, "") === name
         )
-        
+
         if (mainFile) {
           setSourceCode(mainFile.content)
         } else {
@@ -66,7 +70,11 @@ export function ComponentSource({
   )
 
   return (
-    <Collapsible open={isOpened} onOpenChange={setIsOpened} className="">
+    <Collapsible
+      open={isOpened}
+      onOpenChange={setIsOpened}
+      data-algolia-ignore
+    >
       <div className={cn("relative w-full", className)} {...props}>
         <CollapsibleContent
           forceMount

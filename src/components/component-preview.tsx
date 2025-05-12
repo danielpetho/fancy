@@ -108,7 +108,10 @@ export function ComponentPreview({
 
     if (!Component) {
       return (
-        <p className="text text-muted-foreground justify-center items-center flex w-full h-full whitespace-pre">
+        <p
+          data-algolia-ignore
+          className="text text-muted-foreground justify-center items-center flex w-full h-full whitespace-pre"
+        >
           Component{" "}
           <code className="relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm whitespace-pre">
             {name}
@@ -123,6 +126,7 @@ export function ComponentPreview({
 
   return (
     <div
+      data-algolia-ignore
       className={cn(
         "group relative my-4 flex flex-col space-y-2 h-full w-full",
         className
@@ -167,7 +171,11 @@ export function ComponentPreview({
                   {framerLink ? (
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
-                        <Button variant="outline" size="sm" className="h-8 items-center flex justify-center">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-8 items-center flex justify-center"
+                        >
                           <Repeat className="mr-2 h-4 w-4" />
                           Remix
                         </Button>
@@ -182,7 +190,7 @@ export function ComponentPreview({
                         </DropdownMenuItem>
                         <DropdownMenuItem>
                           <Button
-                            variant="ghost" 
+                            variant="ghost"
                             className="justify-start  text-left px-0 h-6 gap-1  flex w-full border-none"
                             onClick={() => window.open(framerLink, "_blank")}
                           >

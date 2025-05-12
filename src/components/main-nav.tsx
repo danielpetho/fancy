@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { DocSearch } from "@docsearch/react"
-import '@/styles/docsearch.css';
+
+import "@/styles/docsearch.css"
 
 import VariableFontHoverByLetter from "@/fancy/components/text/variable-font-hover-by-letter"
 
@@ -35,11 +36,15 @@ export function MainNav() {
         </div>
       </div>
       <div className="flex-row gap-x-8 text-xl font-regular flex items-center">
-        <DocSearch
+        {/* <DocSearch
           appId="2X8YUQBTLC"
           indexName="fancycomponents"
           apiKey="6f798ebaa6226dd06e44bd898b32893f"
-        />
+          placeholder="Search docs"
+          disableUserPersonalization
+          maxResultsPerGroup={10}
+          initialQuery="fancy"
+        /> */}
         <a
           href="https://github.com/danielpetho/fancy"
           className="hidden md:block"

@@ -111,7 +111,7 @@ export default async function DocPage({ params }: DocPageProps) {
             <span className="font-serif">&#8594;</span>
             <div className="font-medium text-foreground">{doc.title}</div>
           </div>
-          <div className="space-y-2">
+          <div data-algolia-crawl="true" className="space-y-2">
             <h1
               className={cn(
                 "scroll-m-20 text-3xl text-pretty md:text-5xl font-calendas tracking-tight"
