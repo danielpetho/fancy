@@ -100,18 +100,30 @@ export default async function DocPage({ params }: DocPageProps) {
 
   const toc = doc.toc
 
+  const componentType =
+    params.slug?.[1]?.charAt(0).toUpperCase() +
+      params.slug?.[1]?.slice(1).toLowerCase() || "Getting Started"
+
   return (
     <main className="xl:grid xl:grid-cols-[minmax(0,1fr)_300px] justify-center w-full">
       <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 border-border border shadow-lg">
-        <div className="container max-w-full px-4 md:px-8">
+        <div data-algolia-crawl className="container max-w-full px-4 md:px-8">
           <div className="mb-2 pb-2 flex items-center space-x-1 text-base md:text-lg text-muted-foreground">
             <div className="overflow-hidden font-medium  whitespace-nowrap">
               Docs
             </div>
             <span className="font-serif">&#8594;</span>
+            <div
+              data-algolia-level-0
+              className="font-medium text-muted-foreground"
+            >
+              {componentType}
+            </div>
+            <span className="font-serif">&#8594;</span>
+
             <div className="font-medium text-foreground">{doc.title}</div>
           </div>
-          <div data-algolia-crawl="true" className="space-y-2">
+          <div className="space-y-2">
             <h1
               className={cn(
                 "scroll-m-20 text-3xl text-pretty md:text-5xl font-calendas tracking-tight"
@@ -179,7 +191,7 @@ export default async function DocPage({ params }: DocPageProps) {
           </div>
 
           <div className="pb-12 pt-8 overflow-x-hidden">{doc.body}</div>
-          <div>
+          <div data-algolia-ignore>
             <DocsPager doc={doc} />
           </div>
         </div>
