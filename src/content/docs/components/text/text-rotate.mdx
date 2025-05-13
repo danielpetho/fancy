@@ -16,7 +16,9 @@ component: true
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/text-rotate.json"`}</CodeBlockWrapper>
+```bash
+npx shadcn@latest add "https://fancycomponents.dev/r/text-rotate.json"
+```
 
 </TabsContent>  
 <TabsContent value="manual">
@@ -71,6 +73,12 @@ This can be handy for a lot of use cases, eg. a scroll-triggered animation.
 
 <ComponentPreview name="text-rotate-scroll-step-demo" />
 
+### Different animation per segment
+
+For the `animate`, `exit`, and `initial` props, you can either pass one single object, or an array of objects. This allows you to map different animations to each segment of the text. If there are more segments than animations, we will cycle through the animations.
+
+<ComponentPreview name="text-rotate-mapping-demo" />
+
 ## Notes
 
 If you're using `auto` mode, make sure that the `rotationInterval` prop is set to a value that's greater than the duration of initial/exit animations, otherwise we will switch to a new text before the animation is complete. 
@@ -97,21 +105,21 @@ If you're using `auto` mode, make sure that the `rotationInterval` prop is set t
     </TableRow>
     <TableRow>
       <TableCell>initial</TableCell>
-      <TableCell>`MotionProps["initial"]`</TableCell>
+      <TableCell>`MotionProps["initial"] | MotionProps["initial"][]`</TableCell>
       <TableCell>`{ y: "100%", opacity: 0 }`</TableCell>
-      <TableCell>Initial styles for the text</TableCell>
+      <TableCell>Initial animation state or array of states. If array is provided, states will be mapped to text segments cyclically.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>animate</TableCell>
-      <TableCell>`MotionProps["animate"]`</TableCell>
+      <TableCell>`MotionProps["animate"] | MotionProps["animate"][]`</TableCell>
       <TableCell>`{ y: 0, opacity: 1 }`</TableCell>
-      <TableCell>Target styles for the text</TableCell>
+      <TableCell>Animation state to animate to or array of states. If array is provided, states will be mapped to text segments cyclically.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>exit</TableCell>
-      <TableCell>`MotionProps["exit"]`</TableCell>
+      <TableCell>`MotionProps["exit"] | MotionProps["exit"][]`</TableCell>
       <TableCell>`{ y: "-120%", opacity: 0 }`</TableCell>
-      <TableCell>Styles for the text for animating out</TableCell>
+      <TableCell>Animation state when exiting or array of states. If array is provided, states will be mapped to text segments cyclically.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>animatePresenceMode</TableCell>

@@ -50,6 +50,7 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Text Rotate",
         href: "/docs/components/text/text-rotate",
         items: [],
+        label: "Updated"
       },
       // {
       //   title: "Text 3D Rotate",
@@ -223,7 +224,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "CSS Box",
         href: "/docs/components/blocks/css-box",
         items: [],
-        label: "New",
       },
       {
         title: "Screensaver",
@@ -254,7 +254,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Marquee Along SVG Path",
         href: "/docs/components/blocks/marquee-along-svg-path",
         items: [],
-        label: "Updated",
       },
       // {
       //   title: "Element Along SVG Path",
