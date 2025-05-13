@@ -51,7 +51,7 @@ export function CodeBlockWrapper({
         <div
           className={cn(
             "absolute",
-            lineCount === 1 ? "right-3 top-3" : "right-4 top-4"
+            lineCount < 4 ? "right-2.5 top-2.5" : "right-4 top-4"
           )}
         >
           <CopyButton value={codeString} src="code-block" />

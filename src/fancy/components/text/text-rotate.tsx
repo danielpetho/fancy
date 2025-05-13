@@ -19,34 +19,158 @@ import {
 import { cn } from "@/lib/utils"
 
 interface TextRotateProps {
+  /**
+   * Array of text strings to rotate through.
+   * Required prop with no default value.
+   */
   texts: string[]
+
+  /**
+   * Time in milliseconds between text rotations.
+   * @default 2000
+   */
   rotationInterval?: number
+
+  /**
+   * Initial animation state or array of states.
+   * @default { y: "100%", opacity: 0 }
+   */
   initial?: MotionProps["initial"] | MotionProps["initial"][]
+
+  /**
+   * Animation state to animate to or array of states.
+   * @default { y: 0, opacity: 1 }
+   */
   animate?: MotionProps["animate"] | MotionProps["animate"][]
+
+  /**
+   * Animation state when exiting or array of states.
+   * @default { y: "-120%", opacity: 0 }
+   */
   exit?: MotionProps["exit"] | MotionProps["exit"][]
+
+  /**
+   * AnimatePresence mode
+   * @default "wait"
+   */
   animatePresenceMode?: AnimatePresenceProps["mode"]
+
+  /**
+   * Whether to run initial animation on first render.
+   * @default false
+   */
   animatePresenceInitial?: boolean
+
+  /**
+   * Duration of stagger delay between elements in seconds.
+   * @default 0
+   */
   staggerDuration?: number
+
+  /**
+   * Direction to stagger animations from.
+   * @default "first"
+   */
   staggerFrom?: "first" | "last" | "center" | number | "random"
+
+  /**
+   * Animation transition configuration.
+   * @default { type: "spring", damping: 25, stiffness: 300 }
+   */
   transition?: Transition
-  loop?: boolean // Whether to start from the first text when the last one is reached
-  auto?: boolean // Whether to start the animation automatically
+
+  /**
+   * Whether to loop through texts continuously.
+   * @default true
+   */
+  loop?: boolean
+
+  /**
+   * Whether to auto-rotate texts.
+   * @default true
+   */
+  auto?: boolean
+
+  /**
+   * How to split the text for animation.
+   * @default "characters"
+   */
   splitBy?: "words" | "characters" | "lines" | string
+
+  /**
+   * Callback function triggered when rotating to next text.
+   * @default undefined
+   */
   onNext?: (index: number) => void
+
+  /**
+   * Class name for the main container element.
+   * @default undefined
+   */
   mainClassName?: string
+
+  /**
+   * Class name for the split level wrapper elements.
+   * @default undefined
+   */
   splitLevelClassName?: string
+
+  /**
+   * Class name for individual animated elements.
+   * @default undefined
+   */
   elementLevelClassName?: string
 }
 
+/**
+ * Interface for the ref object exposed by TextRotate component.
+ * Provides methods to control text rotation programmatically.
+ * This allows external components to trigger text changes
+ * without relying on the automatic rotation.
+ */
 export interface TextRotateRef {
+  /**
+   * Advance to next text in sequence.
+   * If at the end, will loop to beginning if loop prop is true.
+   */
   next: () => void
+
+  /**
+   * Go back to previous text in sequence.
+   * If at the start, will loop to end if loop prop is true.
+   */
   previous: () => void
+
+  /**
+   * Jump to specific text by index.
+   * Will clamp index between 0 and texts.length - 1.
+   */
   jumpTo: (index: number) => void
+
+  /**
+   * Reset back to first text.
+   * Equivalent to jumpTo(0).
+   */
   reset: () => void
 }
 
+/**
+ * Internal interface for representing words when splitting text by characters.
+ * Used to maintain proper word spacing and line breaks while allowing
+ * character-by-character animation. This prevents words from breaking
+ * across lines during animation.
+ */
 interface WordObject {
+  /**
+   * Array of individual characters in the word.
+   * Uses Intl.Segmenter when available for proper Unicode handling.
+   */
   characters: string[]
+
+  /**
+   * Whether this word needs a space after it.
+   * True for all words except the last one in a sequence.
+   */
   needsSpace: boolean
 }
 
@@ -176,8 +300,11 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
         const getProp = (
           prop:
             | MotionProps["initial"]
+            | MotionProps["initial"][]
             | MotionProps["animate"]
+            | MotionProps["animate"][]
             | MotionProps["exit"]
+            | MotionProps["exit"][]
         ) => {
           if (Array.isArray(prop)) {
             return prop[index % prop.length]
@@ -254,7 +381,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
                     const totalIndex = previousCharsCount + charIndex
                     const animationProps = getAnimationProps(totalIndex)
                     return (
-                      <span className="overflow-hidden">
+                      <span className={cn(elementLevelClassName)}>
                         <motion.span
                           {...animationProps}
                           key={charIndex}
@@ -268,7 +395,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
                               )
                             ),
                           }}
-                          className={cn("inline-block", elementLevelClassName)}
+                          className={"inline-block"}
                         >
                           {char}
                         </motion.span>
