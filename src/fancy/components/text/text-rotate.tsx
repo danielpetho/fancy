@@ -21,9 +21,9 @@ import { cn } from "@/lib/utils"
 interface TextRotateProps {
   texts: string[]
   rotationInterval?: number
-  initial?: MotionProps["initial"]
-  animate?: MotionProps["animate"]
-  exit?: MotionProps["exit"]
+  initial?: MotionProps["initial"] | MotionProps["initial"][]
+  animate?: MotionProps["animate"] | MotionProps["animate"][]
+  exit?: MotionProps["exit"] | MotionProps["exit"][]
   animatePresenceMode?: AnimatePresenceProps["mode"]
   animatePresenceInitial?: boolean
   staggerDuration?: number
@@ -171,6 +171,29 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
       }
     }, [currentTextIndex, handleIndexChange])
 
+    const getAnimationProps = useCallback(
+      (index: number) => {
+        const getProp = (
+          prop:
+            | MotionProps["initial"]
+            | MotionProps["animate"]
+            | MotionProps["exit"]
+        ) => {
+          if (Array.isArray(prop)) {
+            return prop[index % prop.length]
+          }
+          return prop
+        }
+
+        return {
+          initial: getProp(initial) as MotionProps["initial"],
+          animate: getProp(animate) as MotionProps["animate"],
+          exit: getProp(exit) as MotionProps["exit"],
+        }
+      },
+      [initial, animate, exit]
+    )
+
     // Expose all navigation functions via ref
     useImperativeHandle(
       ref,
@@ -227,27 +250,31 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
                   key={wordIndex}
                   className={cn("inline-flex", splitLevelClassName)}
                 >
-                  {wordObj.characters.map((char, charIndex) => (
-                    <motion.span
-                      initial={initial}
-                      animate={animate}
-                      exit={exit}
-                      key={charIndex}
-                      transition={{
-                        ...transition,
-                        delay: getStaggerDelay(
-                          previousCharsCount + charIndex,
-                          array.reduce(
-                            (sum, word) => sum + word.characters.length,
-                            0
-                          )
-                        ),
-                      }}
-                      className={cn("inline-block", elementLevelClassName)}
-                    >
-                      {char}
-                    </motion.span>
-                  ))}
+                  {wordObj.characters.map((char, charIndex) => {
+                    const totalIndex = previousCharsCount + charIndex
+                    const animationProps = getAnimationProps(totalIndex)
+                    return (
+                      <span className="overflow-hidden">
+                        <motion.span
+                          {...animationProps}
+                          key={charIndex}
+                          transition={{
+                            ...transition,
+                            delay: getStaggerDelay(
+                              previousCharsCount + charIndex,
+                              array.reduce(
+                                (sum, word) => sum + word.characters.length,
+                                0
+                              )
+                            ),
+                          }}
+                          className={cn("inline-block", elementLevelClassName)}
+                        >
+                          {char}
+                        </motion.span>
+                      </span>
+                    )
+                  })}
                   {wordObj.needsSpace && (
                     <span className="whitespace-pre"> </span>
                   )}
