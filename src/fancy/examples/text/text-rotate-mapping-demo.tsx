@@ -1,12 +1,10 @@
 "use client"
 
-import { LayoutGroup, motion } from "motion/react"
-
 import TextRotate from "@/fancy/components/text/text-rotate"
 
 export default function Preview() {
   return (
-    <div className="w-full h-full text-2xl sm:text-3xl md:text-5xl flex flex-col items-center justify-center font-cotham bg-background text font-normal overflow-hidden p-12 gap-12">
+    <div className="w-full h-full text-2xl sm:text-3xl md:text-5xl flex flex-col items-center justify-center font-cotham text font-normal overflow-hidden p-12 gap-12 bg-white text-black">
       <TextRotate
         texts={[
           "The problem isn't how to make the world more technological. It's about how to make the world more humane again.",
