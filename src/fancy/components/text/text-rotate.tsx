@@ -399,7 +399,10 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
                     const totalIndex = previousCharsCount + charIndex
                     const animationProps = getAnimationProps(totalIndex)
                     return (
-                      <span className={cn(elementLevelClassName)}>
+                      <span 
+                      key={totalIndex}
+                      className={cn(elementLevelClassName)}
+                      >
                         <motion.span
                           {...animationProps}
                           key={charIndex}
