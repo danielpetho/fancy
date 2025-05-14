@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  ElementType,
   forwardRef,
   useCallback,
   useEffect,
@@ -18,12 +19,27 @@ import {
 
 import { cn } from "@/lib/utils"
 
+// handy function to split text into characters with support for unicode and emojis
+const splitIntoCharacters = (text: string): string[] => {
+  if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+    const segmenter = new Intl.Segmenter("en", { granularity: "grapheme" })
+    return Array.from(segmenter.segment(text), ({ segment }) => segment)
+  }
+  // Fallback for browsers that don't support Intl.Segmenter
+  return Array.from(text)
+}
+
 interface TextRotateProps {
   /**
    * Array of text strings to rotate through.
    * Required prop with no default value.
    */
   texts: string[]
+
+  /**
+   * render as HTML Tag
+   */
+  as?: ElementType
 
   /**
    * Time in milliseconds between text rotations.
@@ -178,6 +194,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
   (
     {
       texts,
+      as = "p",
       transition = { type: "spring", damping: 25, stiffness: 300 },
       initial = { y: "100%", opacity: 0 },
       animate = { y: 0, opacity: 1 },
@@ -200,16 +217,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
   ) => {
     const [currentTextIndex, setCurrentTextIndex] = useState(0)
 
-    // handy function to split text into characters with support for unicode and emojis
-    const splitIntoCharacters = (text: string): string[] => {
-      if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
-        const segmenter = new Intl.Segmenter("en", { granularity: "grapheme" })
-        return Array.from(segmenter.segment(text), ({ segment }) => segment)
-      }
-      // Fallback for browsers that don't support Intl.Segmenter
-      return Array.from(text)
-    }
-
+    // Splitting the text into animation segments
     const elements = useMemo(() => {
       const currentText = texts[currentTextIndex]
       if (splitBy === "characters") {
@@ -226,6 +234,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
           : currentText.split(splitBy)
     }, [texts, currentTextIndex, splitBy])
 
+    // Helper function to calculate stagger delay for each text segment
     const getStaggerDelay = useCallback(
       (index: number, totalChars: number) => {
         const total = totalChars
@@ -253,6 +262,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
       [onNext]
     )
 
+    // Go to next text
     const next = useCallback(() => {
       const nextIndex =
         currentTextIndex === texts.length - 1
@@ -266,6 +276,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
       }
     }, [currentTextIndex, texts.length, loop, handleIndexChange])
 
+    // Go back to previous text
     const previous = useCallback(() => {
       const prevIndex =
         currentTextIndex === 0
@@ -279,6 +290,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
       }
     }, [currentTextIndex, texts.length, loop, handleIndexChange])
 
+    // Jump to specific text by index
     const jumpTo = useCallback(
       (index: number) => {
         const validIndex = Math.max(0, Math.min(index, texts.length - 1))
@@ -289,12 +301,14 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
       [texts.length, currentTextIndex, handleIndexChange]
     )
 
+    // Reset back to first text
     const reset = useCallback(() => {
       if (currentTextIndex !== 0) {
         handleIndexChange(0)
       }
     }, [currentTextIndex, handleIndexChange])
 
+    // Get animation props for each text segment. If array is provided, states will be mapped to text segments cyclically.
     const getAnimationProps = useCallback(
       (index: number) => {
         const getProp = (
@@ -333,18 +347,22 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
       [next, previous, jumpTo, reset]
     )
 
+    // Auto-rotate text
     useEffect(() => {
       if (!auto) return
       const intervalId = setInterval(next, rotationInterval)
       return () => clearInterval(intervalId)
     }, [next, rotationInterval, auto])
 
+    // Custom motion component to render the text as a custom HTML tag provided via prop
+    const MotionComponent = useMemo(() => motion.create(as ?? "p"), [as])
+
     return (
-      <motion.span
+      <MotionComponent
         className={cn("flex flex-wrap whitespace-pre-wrap", mainClassName)}
-        {...props}
-        layout
         transition={transition}
+        layout
+        {...props}
       >
         <span className="sr-only">{texts[currentTextIndex]}</span>
 
@@ -358,8 +376,8 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
               "flex flex-wrap",
               splitBy === "lines" && "flex-col w-full"
             )}
+            aria-hidden
             layout
-            aria-hidden="true"
           >
             {(splitBy === "characters"
               ? (elements as WordObject[])
@@ -410,7 +428,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
             })}
           </motion.span>
         </AnimatePresence>
-      </motion.span>
+      </MotionComponent>
     )
   }
 )
