@@ -352,7 +352,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
           mode={animatePresenceMode}
           initial={animatePresenceInitial}
         >
-          <motion.div
+          <motion.span
             key={currentTextIndex}
             className={cn(
               "flex flex-wrap",
@@ -408,7 +408,7 @@ const TextRotate = forwardRef<TextRotateRef, TextRotateProps>(
                 </span>
               )
             })}
-          </motion.div>
+          </motion.span>
         </AnimatePresence>
       </motion.span>
     )

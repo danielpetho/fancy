@@ -8,19 +8,25 @@ export default function Preview() {
       <TextRotate
         texts={[
           "The problem isn't how to make the world more technological. It's about how to make the world more humane again.",
-          "The problem isn't how to make the world more technological. It's about how to make the world more humane again.",
+          "When you use other people's software you live in somebody else's dream.",
         ]}
-        mainClassName="overflow-hidden md:leading-10 flex whitespace-pre text-lg sm:text-xl md:text-5xl max-w-xl text-center"
+        mainClassName=" md:leading-10 flex whitespace-pre text-lg sm:text-xl md:text-5xl max-w-xl text-center"
         staggerFrom={"random"}
         animatePresenceMode="wait"
         splitBy="characters"
-        initial={[{ x: "120%" }, { y: "120%" }, { x: "-120%" }, { y: "-120%" }]}
-        animate={[{ x: 0 }, { y: 0 }, { x: 0 }, { y: 0 }]}
-        exit={[{ x: "-120%" }, { y: "-120%" }, { x: "120%" }, { y: "120%" }]}
+        initial={[
+          { filter: "blur(20px)", opacity: 0 },
+        ]}
+        animate={[
+          { filter: "blur(0px)", opacity: 1 },
+        ]}
+        exit={[
+          { filter: "blur(20px)", opacity: 0 },
+        ]}
         loop
         staggerDuration={0.01}
-        splitLevelClassName="overflow-hidden"
-        elementLevelClassName="overflow-hidden md:py-[4px]"
+        splitLevelClassName=""
+        elementLevelClassName="md:py-[4px]"
         transition={{ ease: [0.909, 0.151, 0.153, 0.86], duration: 1 }}
         rotationInterval={4000}
       />
