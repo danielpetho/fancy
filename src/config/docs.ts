@@ -37,6 +37,12 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
       },
       {
+        title: "Letter 3D Swap",
+        href: "/docs/components/text/letter-3d-swap",
+        items: [],
+        label: "New",
+      },
+      {
         title: "Random Letter Swap Hover",
         href: "/docs/components/text/random-letter-swap",
         items: [],
@@ -52,12 +58,6 @@ export const docsConfig: SidebarNavItem[] = [
         items: [],
         label: "Updated"
       },
-      // {
-      //   title: "Text 3D Rotate",
-      //   href: "/docs/components/text/text-3d-rotate",
-      //   items: [],
-      //   label: "New",
-      // },
       {
         title: "Variable Font Hover By Letter",
         href: "/docs/components/text/variable-font-hover-by-letter",
