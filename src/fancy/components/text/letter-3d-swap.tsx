@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState, useCallback, useMemo } from "react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { motion, Transition, useAnimationControls } from "motion/react"
 
 import { cn } from "@/lib/utils"
@@ -98,28 +98,34 @@ const Letter3DSwap = ({
   rotateDirection = "right",
   ...props
 }: Letter3DSwapProps) => {
-  const [charDimensions, setCharDimensions] = useState<{[key: string]: {width: number, height: number}}>({})
+  const [charDimensions, setCharDimensions] = useState<{
+    [key: string]: { width: number; height: number }
+  }>({})
   const [isAnimating, setIsAnimating] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
-  const [originalTextDisplay, setOriginalTextDisplay] = useState<{ width: number, letterPositions: { left: number, width: number }[] }>({ width: 0, letterPositions: [] })
-  const measureRef = useRef<HTMLDivElement>(null)
-  const textDisplayRef = useRef<HTMLDivElement>(null)
-  const charRefs = useRef<Map<string, HTMLDivElement>>(new Map())
-  
+  const [originalTextDisplay, setOriginalTextDisplay] = useState<{
+    width: number
+    letterPositions: { left: number; width: number }[]
+  }>({ width: 0, letterPositions: [] })
+
   // Store animation controls in a ref so they persist across renders
-  const controlsMapRef = useRef<Map<number, ReturnType<typeof useAnimationControls>>>(new Map())
-  
+  const controlsMapRef = useRef<
+    Map<number, ReturnType<typeof useAnimationControls>>
+  >(new Map())
+
   // Pre-create a set of animation controls for maximum expected characters
   const MAX_CHARS = 100 // Maximum number of possible characters
-  const controlsArray = Array(MAX_CHARS).fill(0).map(() => useAnimationControls())
-  
+  const controlsArray = Array(MAX_CHARS)
+    .fill(0)
+    .map(() => useAnimationControls())
+
   // Initialize the controlsMapRef with the pre-created controls
   useEffect(() => {
     for (let i = 0; i < MAX_CHARS; i++) {
       controlsMapRef.current.set(i, controlsArray[i])
     }
   }, [controlsArray])
-  
+
   // Split text into characters
   const characters = useMemo(() => {
     return splitIntoCharacters(text)
@@ -129,77 +135,24 @@ const Letter3DSwap = ({
   const rotationTransform = useMemo(() => {
     switch (rotateDirection) {
       case "top":
-        return "rotateX(90deg)";
+        return "rotateX(90deg)"
       case "right":
-        return "rotateY(-90deg)";
+        return "rotateY(90deg)"
       case "bottom":
-        return "rotateX(-90deg)";
+        return "rotateX(-90deg)"
       case "left":
-        return "rotateY(90deg)";
+        return "rotateY(90deg)"
       default:
-        return "rotateY(-90deg)";
+        return "rotateY(-90deg)"
     }
-  }, [rotateDirection]);
-
-  // Measure original text display to maintain natural letter spacing
-  useEffect(() => {
-    if (!textDisplayRef.current) return
-    
-    const textElement = textDisplayRef.current
-    const textRect = textElement.getBoundingClientRect()
-    const letterElements = textElement.querySelectorAll('.measure-letter')
-    
-    const positions: { left: number, width: number }[] = []
-    
-    letterElements.forEach((letter) => {
-      const letterRect = letter.getBoundingClientRect()
-      positions.push({
-        left: letterRect.left - textRect.left,
-        width: letterRect.width
-      })
-    })
-    
-    setOriginalTextDisplay({
-      width: textRect.width,
-      letterPositions: positions
-    })
-  }, [text])
-
-  // Measure character dimensions
-  useEffect(() => {
-    if (!measureRef.current) return
-
-    // Get all unique characters from text
-    const allChars = new Set<string>(splitIntoCharacters(text))
-
-    // Measure each character
-    const measurements: {[key: string]: {width: number, height: number}} = {}
-    
-    allChars.forEach(char => {
-      const charRef = charRefs.current.get(char)
-      if (charRef) {
-        const rect = charRef.getBoundingClientRect()
-        measurements[char] = {
-          width: charWidth || Math.max(rect.width, 0),
-          height: charHeight || Math.max(rect.height, 80)
-        }
-      } else {
-        // Default fallback if measurement fails
-        measurements[char] = {
-          width: charWidth || 0,
-          height: charHeight || 0
-        }
-      }
-    })
-
-    setCharDimensions(measurements)
-  }, [text, paddingX, paddingY, charWidth, charHeight])
+  }, [rotateDirection])
 
   // Helper function to calculate stagger delay
   const getStaggerDelay = useCallback(
     (index: number, totalChars: number) => {
       if (staggerFrom === "first") return index * staggerDuration
-      if (staggerFrom === "last") return (totalChars - 1 - index) * staggerDuration
+      if (staggerFrom === "last")
+        return (totalChars - 1 - index) * staggerDuration
       if (staggerFrom === "center") {
         const center = Math.floor(totalChars / 2)
         return Math.abs(center - index) * staggerDuration
@@ -216,13 +169,13 @@ const Letter3DSwap = ({
   // Handle hover start - trigger the rotation
   const handleHoverStart = useCallback(async () => {
     if (isAnimating || isHovering) return
-    
+
     setIsHovering(true)
     setIsAnimating(true)
-    
+
     const totalChars = characters.length
     const promises: Promise<any>[] = []
-    
+
     // Animate rotation of each character box with staggered delay
     for (let i = 0; i < totalChars; i++) {
       const control = controlsMapRef.current.get(i)
@@ -231,16 +184,16 @@ const Letter3DSwap = ({
           transform: rotationTransform,
           transition: {
             ...transition,
-            delay: getStaggerDelay(i, totalChars)
-          }
+            delay: getStaggerDelay(i, totalChars),
+          },
         })
         promises.push(animationPromise)
       }
     }
-    
+
     // Wait for all animations to complete
     await Promise.all(promises)
-    
+
     // Reset all boxes
     for (let i = 0; i < totalChars; i++) {
       const control = controlsMapRef.current.get(i)
@@ -248,9 +201,16 @@ const Letter3DSwap = ({
         control.set({ transform: "rotateX(0deg) rotateY(0deg)" })
       }
     }
-    
+
     setIsAnimating(false)
-  }, [isAnimating, isHovering, characters, transition, getStaggerDelay, rotationTransform])
+  }, [
+    isAnimating,
+    isHovering,
+    characters,
+    transition,
+    getStaggerDelay,
+    rotationTransform,
+  ])
 
   // Handle hover end
   const handleHoverEnd = useCallback(() => {
@@ -258,149 +218,100 @@ const Letter3DSwap = ({
   }, [])
 
   // Get the transform for the second face based on rotation direction
-  const getSecondFaceTransform = useCallback((boxWidth: number, boxHeight: number) => {
+  const getSecondFaceTransform = useCallback(() => {
     switch (rotateDirection) {
       case "top":
-        return `rotateX(-90deg) translateZ(${boxHeight / 2}px)`;
+        return `rotateX(-90deg) translateZ(0.5lh)`
       case "right":
-        return `rotateY(90deg) translateZ(${boxWidth / 2}px)`;
+        return `rotateY(90deg) translateX(50%) rotateY(-90deg) translateX(-50%) rotateY(-90deg) translateX(50%)`
       case "bottom":
-        return `rotateX(90deg) translateZ(${boxHeight / 2}px)`;
+        return `rotateX(90deg) translateZ(0.5lh)`
       case "left":
-        return `rotateY(-90deg) translateZ(${boxWidth / 2}px)`;
+        return `rotateY(90deg) translateX(50%) rotateY(-90deg) translateX(50%) rotateY(-90deg) translateX(50%)`
       default:
-        return `rotateY(90deg) translateZ(${boxWidth / 2}px)`;
+        return `rotateY(90deg) translateZ(1ch)`
     }
-  }, [rotateDirection]);
+  }, [rotateDirection])
 
   // Render character box
-  const renderCharBox = useCallback((char: string, index: number) => {
-    const control = controlsMapRef.current.get(index)
-    
-    if (!control) return null
-    
-    // Get position information for natural spacing
-    const letterPosition = originalTextDisplay.letterPositions[index]
-    if (!letterPosition) return null
-    
-    // Use the letter position width directly from our text measurement
-    // This ensures each box has the exact natural width
-    const boxWidth = letterPosition.width
-    
-    // Get actual character dimensions for the 3D face
-    const charDimension = charDimensions[char] || { width: 0, height: 0 }
-    
-    // Calculate face dimensions with padding
-    const faceWidth = Math.max(boxWidth, charDimension.width) + paddingX * 2
-    const faceHeight = charDimension.height
-    
-    // Get the transform for the second face
-    const secondFaceTransform = getSecondFaceTransform(boxWidth, faceHeight);
-    
-    return (
-      <motion.span
-        className="inline-block relative [perspective:1000px]"
-        style={{ 
-          position: 'absolute',
-          left: letterPosition.left,
-          width: boxWidth,
-          //height: faceHeight,
-        }}
-      >
-        <motion.div
-          className="w-full h-full [transform-style:preserve-3d]"
+  const renderCharBox = useCallback(
+    (char: string, index: number) => {
+      const control = controlsMapRef.current.get(index)
+
+      // We need to explicitly handle spaces because the 3D transform effects
+      // can sometimes collapse whitespace, even with whitespace-pre.
+      // Using &nbsp; ensures the space is always rendered as a visible character
+      if (char === " ") {
+        return <span>&nbsp;</span>
+      }
+
+      //if (!control) return null
+
+      // Get the transform for the second face
+      const secondFaceTransform = getSecondFaceTransform()
+
+      return (
+        <motion.span
+          className="inline-flex [transform-style:preserve-3d] whitespace-pre"
           animate={control}
           initial={{ transform: "rotateX(0deg) rotateY(0deg)" }}
         >
           {/* Front face */}
           <div
             className={cn(
-              "absolute flex items-center justify-center backface-hidden",
+              "relative flex items-center justify-center backface-hidden h-[1lh]",
               frontFaceClassName
             )}
             style={{
-              transform: `translateZ(${rotateDirection === "top" || rotateDirection === "bottom" ? faceHeight / 2 : boxWidth / 2}px)`,
-              width: faceWidth,
-              height: faceHeight,
-              // Center the face on the rotation axis
-              left: `calc(50% - ${faceWidth / 2}px)`,
-              top: `calc(50% - ${faceHeight / 2}px)`,
+              transform: `${rotateDirection === "top" || rotateDirection === "bottom" ? "translateZ(0.5lh)" : rotateDirection === "left" ? "rotateY(90deg) translateX(50%) rotateY(-90deg)" : "rotateY(-90deg) translateX(50%) rotateY(90deg)"}`,
             }}
           >
             {char}
           </div>
-          
+
           {/* Second face - positioned based on rotation direction */}
           <div
             className={cn(
-              "absolute flex items-center justify-center backface-hidden",
+              "absolute flex items-center justify-center backface-hidden h-[1lh] w-full top-0 left-0",
               secondFaceClassName
             )}
             style={{
               transform: secondFaceTransform,
-              width: faceWidth,
-              height: faceHeight,
-              // Center the face on the rotation axis
-              left: `calc(50% - ${faceWidth / 2}px)`,
-              top: `calc(50% - ${faceHeight / 2}px)`,
             }}
           >
             {char}
           </div>
-        </motion.div>
-      </motion.span>
-    )
-  }, [charDimensions, frontFaceClassName, secondFaceClassName, paddingX, paddingY, originalTextDisplay, getSecondFaceTransform, rotateDirection])
+        </motion.span>
+      )
+    },
+    [
+      charDimensions,
+      frontFaceClassName,
+      secondFaceClassName,
+      paddingX,
+      paddingY,
+      originalTextDisplay,
+      getSecondFaceTransform,
+      rotateDirection,
+    ]
+  )
 
   return (
     <>
-      {/* Hidden div for measuring natural letter positions */}
-      <div 
-        ref={textDisplayRef} 
-        className={cn("absolute whitespace-pre opacity-0 pointer-events-none", mainClassName)}
-        aria-hidden="true"
-      >
-        {characters.map((char, i) => (
-          <span key={i} className="measure-letter inline-block">{char}</span>
-        ))}
-      </div>
-      
-      {/* Hidden div for character measurements */}
-      <div className="absolute opacity-0 pointer-events-none" ref={measureRef} aria-hidden="true">
-        {Array.from(new Set(characters)).map((char) => (
-          <span 
-            key={char}
-            ref={el => {
-              if (el) charRefs.current.set(char, el as HTMLDivElement)
-            }}
-          >
-            {char}
-          </span>
-        ))}
-      </div>
-      
       {/* Visible component */}
-      <div 
+      <div
         className={cn(
-          "inline-flex flex-wrap relative", 
+          "inline-flex relative cursor-pointer whitespace-pre-wrap",
           mainClassName
-        )} 
-        style={{ 
-          width: originalTextDisplay.width, 
-          height: 'auto',
-          cursor: 'pointer',
-          position: 'relative'
-        }}
+        )}
         onMouseEnter={handleHoverStart}
         onMouseLeave={handleHoverEnd}
         {...props}
       >
         <span className="sr-only">{text}</span>
-        
+
         {characters.map((char, index) => (
-          <span key={index}>
-            {renderCharBox(char, index)}
-          </span>
+          <span key={index} className="whitespace-pre">{renderCharBox(char, index)}</span>
         ))}
       </div>
     </>

@@ -20,7 +20,7 @@ export default function Preview() {
           mainClassName="text-7xl bg-white lowercase"
           frontFaceClassName={`bg-white ${debug ? 'border' : ''} text-black`}
           secondFaceClassName={`bg-white ${debug ? 'border' : ''} text-black`}
-          rotateDirection="top"
+          rotateDirection="left"
           paddingX={0}
           paddingY={0}
           staggerDuration={0.03}
