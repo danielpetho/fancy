@@ -37,18 +37,6 @@ interface Letter3DSwapProps {
   secondFaceClassName?: string
 
   /**
-   * X Padding to add around the text content for the box (in pixels)
-   * @default 10
-   */
-  paddingX?: number
-
-  /**
-   * Y Padding to add around the text content for the box (in pixels)
-   * @default 10
-   */
-  paddingY?: number
-
-  /**
    * Duration of stagger delay between elements in seconds.
    * @default 0.05
    */
@@ -88,8 +76,6 @@ const Letter3DSwap = ({
   mainClassName,
   frontFaceClassName,
   secondFaceClassName,
-  paddingX = 0,
-  paddingY = 10,
   staggerDuration = 0.05,
   staggerFrom = "first",
   transition = { type: "spring", damping: 30, stiffness: 300 },
@@ -98,15 +84,8 @@ const Letter3DSwap = ({
   rotateDirection = "right",
   ...props
 }: Letter3DSwapProps) => {
-  const [charDimensions, setCharDimensions] = useState<{
-    [key: string]: { width: number; height: number }
-  }>({})
   const [isAnimating, setIsAnimating] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
-  const [originalTextDisplay, setOriginalTextDisplay] = useState<{
-    width: number
-    letterPositions: { left: number; width: number }[]
-  }>({ width: 0, letterPositions: [] })
 
   // Store animation controls in a ref so they persist across renders
   const controlsMapRef = useRef<
@@ -285,12 +264,8 @@ const Letter3DSwap = ({
       )
     },
     [
-      charDimensions,
       frontFaceClassName,
       secondFaceClassName,
-      paddingX,
-      paddingY,
-      originalTextDisplay,
       getSecondFaceTransform,
       rotateDirection,
     ]
@@ -301,7 +276,7 @@ const Letter3DSwap = ({
       {/* Visible component */}
       <div
         className={cn(
-          "inline-flex relative cursor-pointer whitespace-pre-wrap",
+          "inline-flex relative cursor-pointer",
           mainClassName
         )}
         onMouseEnter={handleHoverStart}

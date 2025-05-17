@@ -21,8 +21,6 @@ export default function Preview() {
           frontFaceClassName={`bg-white ${debug ? 'border' : ''} text-black`}
           secondFaceClassName={`bg-white ${debug ? 'border' : ''} text-black`}
           rotateDirection="left"
-          paddingX={0}
-          paddingY={0}
           staggerDuration={0.03}
           staggerFrom="first"
           transition={{ type: "spring", damping: 25, stiffness: debug ? 50 : 160 }}
