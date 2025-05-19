@@ -5,13 +5,12 @@ import Letter3DSwap from "@/fancy/components/text/letter-3d-swap"
 
 export default function Preview() {
   const [debug, setDebug] = useState(false)
-
   const sharedProps = {
     mainClassName: "text-4xl bg-white lowercase text-primary-blue",
     frontFaceClassName: `bg-white ${debug ? 'border' : ''}`,
     secondFaceClassName: `bg-white ${debug ? 'border' : ''}`,
     staggerDuration: 0.02,
-    transition: { type: "spring", damping: 25, stiffness: debug ? 50 : 160 }
+    transition: { type: "spring" as const, damping: 25, stiffness: debug ? 50 : 160 }
   }
 
   return (
@@ -25,32 +24,36 @@ export default function Preview() {
 
       <div className="flex flex-col items-center gap-8 max-w-2xl font-cotham gap-y-18">
         <Letter3DSwap 
-          text="Rotate Left, Stagger First"
           rotateDirection="left"
           staggerFrom="first"
           {...sharedProps}
-        />
+        >
+          Rotate Left, Stagger First
+        </Letter3DSwap>
 
         <Letter3DSwap 
-          text="Rotate Right, Stagger Last"
           rotateDirection="right"
           staggerFrom="last"
           {...sharedProps}
-        />
+        >
+          Rotate Right, Stagger Last
+        </Letter3DSwap>
 
         <Letter3DSwap 
-          text="Rotate Top, Stagger Center"
           rotateDirection="top"
           staggerFrom="center"
           {...sharedProps}
-        />
+        >
+          Rotate Top, Stagger Center
+        </Letter3DSwap>
 
         <Letter3DSwap 
-          text="Rotate Bottom, Stagger Random"
           rotateDirection="bottom"
           staggerFrom="random"
           {...sharedProps}
-        />
+        >
+          Rotate Bottom, Stagger Random
+        </Letter3DSwap>
       </div>
     </div>
   )

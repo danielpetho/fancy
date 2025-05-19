@@ -1,7 +1,8 @@
 "use client"
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react"
-import { motion, Transition, useAnimationControls } from "motion/react"
+import React, { ElementType, useCallback, useMemo, useState } from "react"
+import { useAnimate,ValueAnimationTransition, AnimationOptions } from "motion/react"
+
 import { cn } from "@/lib/utils"
 
 // handy function to split text into characters with support for unicode and emojis
@@ -14,12 +15,48 @@ const splitIntoCharacters = (text: string): string[] => {
   return Array.from(text)
 }
 
+// handy function  to extract text from children
+const extractTextFromChildren = (children: React.ReactNode): string => {
+  if (typeof children === "string") return children
+
+  if (React.isValidElement(children)) {
+    const childText = children.props.children
+    if (typeof childText === "string") return childText
+    if (React.isValidElement(childText)) {
+      return extractTextFromChildren(childText)
+    }
+  }
+
+  throw new Error(
+    "Letter3DSwap: Children must be a string or a React element containing a string. " +
+      "Complex nested structures are not supported."
+  )
+}
+
+/**
+ * Internal helper interface for representing a word in the text with its characters and spacing information
+ */
+interface WordObject {
+  /**
+   * Array of individual characters in the word
+   */
+  characters: string[]
+  /**
+   * Whether this word needs a space after it
+   */
+  needsSpace: boolean
+}
+
 interface Letter3DSwapProps {
   /**
-   * Text to display and animate
+   * The content to be displayed and animated
    */
-  text: string
+  children: React.ReactNode
 
+  /**
+   * HTML Tag to render the component as
+   */
+  as?: ElementType
   /**
    * Class name for the main container element.
    */
@@ -51,17 +88,7 @@ interface Letter3DSwapProps {
    * Animation transition configuration.
    * @default { type: "spring", damping: 25, stiffness: 300 }
    */
-  transition?: Transition
-
-  /**
-   * Fixed width for each character box (optional)
-   */
-  charWidth?: number
-
-  /**
-   * Fixed height for each character box (optional)
-   */
-  charHeight?: number
+  transition?: ValueAnimationTransition | AnimationOptions
 
   /**
    * Direction of rotation
@@ -70,62 +97,24 @@ interface Letter3DSwapProps {
   rotateDirection?: "top" | "right" | "bottom" | "left"
 }
 
-/**
- * Internal interface for representing words when splitting text by characters.
- * Used to maintain proper word spacing and line breaks while allowing
- * character-by-character animation. This prevents words from breaking
- * across lines during animation.
- */
-interface WordObject {
-  /**
-   * Array of individual characters in the word.
-   * Uses Intl.Segmenter when available for proper Unicode handling.
-   */
-  characters: string[]
-
-  /**
-   * Whether this word needs a space after it.
-   * True for all words except the last one in a sequence.
-   */
-  needsSpace: boolean
-}
-
 const Letter3DSwap = ({
-  text,
+  children,
+  as = "p",
   mainClassName,
   frontFaceClassName,
   secondFaceClassName,
   staggerDuration = 0.05,
   staggerFrom = "first",
   transition = { type: "spring", damping: 30, stiffness: 300 },
-  charWidth,
-  charHeight,
   rotateDirection = "right",
   ...props
 }: Letter3DSwapProps) => {
   const [isAnimating, setIsAnimating] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
-
-  // Store animation controls in a ref so they persist across renders
-  const controlsMapRef = useRef<
-    Map<number, ReturnType<typeof useAnimationControls>>
-  >(new Map())
-
-  // Pre-create a set of animation controls for maximum expected characters
-  const MAX_CHARS = 100 // Maximum number of possible characters
-  const controlsArray = Array(MAX_CHARS)
-    .fill(0)
-    .map(() => useAnimationControls())
-
-  // Initialize the controlsMapRef with the pre-created controls
-  useEffect(() => {
-    for (let i = 0; i < MAX_CHARS; i++) {
-      controlsMapRef.current.set(i, controlsArray[i])
-    }
-  }, [controlsArray])
+  const [scope, animate] = useAnimate()
 
   // Determine rotation transform based on direction
-  const rotationTransform = useMemo(() => {
+  const rotationTransform = (() => {
     switch (rotateDirection) {
       case "top":
         return "rotateX(90deg)"
@@ -138,12 +127,22 @@ const Letter3DSwap = ({
       default:
         return "rotateY(-90deg)"
     }
-  }, [rotateDirection])
+  })()
+
+  // Convert children to string for processing with error handling
+  const text = useMemo(() => {
+    try {
+      return extractTextFromChildren(children)
+    } catch (error) {
+      console.error(error)
+      return ""
+    }
+  }, [children])
 
   // Splitting the text into animation segments
   const characters = useMemo(() => {
     const t = text.split(" ")
-    const result = t.map((word, i) => ({
+    const result = t.map((word: string, i: number) => ({
       characters: splitIntoCharacters(word),
       needsSpace: i !== t.length - 1,
     }))
@@ -176,34 +175,32 @@ const Letter3DSwap = ({
     setIsHovering(true)
     setIsAnimating(true)
 
-    const totalChars = characters.length
-    const promises: Promise<any>[] = []
+    const totalChars = characters.reduce(
+      (sum: number, word: WordObject) => sum + word.characters.length,
+      0
+    )
 
-    // Animate rotation of each character box with staggered delay
-    for (let i = 0; i < totalChars; i++) {
-      const control = controlsMapRef.current.get(i)
-      if (control) {
-        const animationPromise = control.start({
-          transform: rotationTransform,
-          transition: {
-            ...transition,
-            delay: getStaggerDelay(i, totalChars),
-          },
-        })
-        promises.push(animationPromise)
+    // Create delays array based on staggerFrom
+    const delays = Array.from({ length: totalChars }, (_, i) => {
+      return getStaggerDelay(i, totalChars)
+    })
+
+    // Animate each character with its specific delay
+    await animate(
+      ".char-box",
+      { transform: rotationTransform },
+      {
+        ...transition,
+        delay: (i: number) => delays[i],
       }
-    }
-
-    // Wait for all animations to complete
-    await Promise.all(promises)
+    )
 
     // Reset all boxes
-    for (let i = 0; i < totalChars; i++) {
-      const control = controlsMapRef.current.get(i)
-      if (control) {
-        control.set({ transform: "rotateX(0deg) rotateY(0deg)" })
-      }
-    }
+    await animate(
+      ".char-box",
+      { transform: "rotateX(0deg) rotateY(0deg)" },
+      { duration: 0 }
+    )
 
     setIsAnimating(false)
   }, [
@@ -213,6 +210,7 @@ const Letter3DSwap = ({
     transition,
     getStaggerDelay,
     rotationTransform,
+    animate,
   ])
 
   // Handle hover end
@@ -220,36 +218,36 @@ const Letter3DSwap = ({
     setIsHovering(false)
   }, [])
 
-
+  const ElementTag = as ?? "p"
 
   return (
-    <>
-      {/* Visible component */}
-      <div
-        className={cn("inline-flex relative cursor-pointer whitespace-pre-wrap", mainClassName)}
-        onMouseEnter={handleHoverStart}
-        onMouseLeave={handleHoverEnd}
-        {...props}
-      >
-        <span className="sr-only">{text}</span>
+    <ElementTag
+      className={cn("flex flex-wrap relative", mainClassName)}
+      onMouseEnter={handleHoverStart}
+      onMouseLeave={handleHoverEnd}
+      ref={scope}
+      {...props}
+    >
+      <span className="sr-only">{text}</span>
 
-        {characters.map((wordObj, wordIndex, array) => {
+      {characters.map(
+        (wordObj: WordObject, wordIndex: number, array: WordObject[]) => {
           const previousCharsCount = array
             .slice(0, wordIndex)
-            .reduce((sum, word) => sum + word.characters.length, 0)
+            .reduce(
+              (sum: number, word: WordObject) => sum + word.characters.length,
+              0
+            )
 
           return (
             <span key={wordIndex} className="inline-flex">
-              {wordObj.characters.map((char, charIndex) => {
+              {wordObj.characters.map((char: string, charIndex: number) => {
                 const totalIndex = previousCharsCount + charIndex
-                const control = controlsMapRef.current.get(totalIndex)
-                if (!control) return null
-                
+
                 return (
                   <CharBox
                     key={totalIndex}
                     char={char}
-                    control={control}
                     frontFaceClassName={frontFaceClassName}
                     secondFaceClassName={secondFaceClassName}
                     rotateDirection={rotateDirection}
@@ -259,15 +257,14 @@ const Letter3DSwap = ({
               {wordObj.needsSpace && <span className="whitespace-pre"> </span>}
             </span>
           )
-        })}
-      </div>
-    </>
+        }
+      )}
+    </ElementTag>
   )
 }
 
 interface CharBoxProps {
   char: string
-  control: ReturnType<typeof useAnimationControls>
   frontFaceClassName?: string
   secondFaceClassName?: string
   rotateDirection: "top" | "right" | "bottom" | "left"
@@ -275,7 +272,6 @@ interface CharBoxProps {
 
 const CharBox = ({
   char,
-  control,
   frontFaceClassName,
   secondFaceClassName,
   rotateDirection,
@@ -299,28 +295,27 @@ const CharBox = ({
   const secondFaceTransform = getSecondFaceTransform()
 
   return (
-    <motion.span
-      className="inline-box [transform-style:preserve-3d]"
-      animate={control}
-      initial={{ transform: "rotateX(0deg) rotateY(0deg)" }}
-    >
+    <span className="char-box inline-box [transform-style:preserve-3d]">
       {/* Front face */}
       <div
-        className={cn(
-          "relative flex items-center justify-center backface-hidden h-[1lh]",
-          frontFaceClassName
-        )}
+        className={cn("relative backface-hidden h-[1lh]", frontFaceClassName)}
         style={{
-          transform: `${rotateDirection === "top" || rotateDirection === "bottom" ? "translateZ(0.5lh)" : rotateDirection === "left" ? "rotateY(90deg) translateX(50%) rotateY(-90deg)" : "rotateY(-90deg) translateX(50%) rotateY(90deg)"}`,
+          transform: `${
+            rotateDirection === "top" || rotateDirection === "bottom"
+              ? "translateZ(0.5lh)"
+              : rotateDirection === "left"
+                ? "rotateY(90deg) translateX(50%) rotateY(-90deg)"
+                : "rotateY(-90deg) translateX(50%) rotateY(90deg)"
+          }`,
         }}
       >
         {char}
       </div>
 
       {/* Second face - positioned based on rotation direction */}
-      <div
+      <span
         className={cn(
-          "absolute flex items-center justify-center backface-hidden h-[1lh] w-full top-0 left-0",
+          "absolute backface-hidden h-[1lh] top-0 left-0",
           secondFaceClassName
         )}
         style={{
@@ -328,11 +323,10 @@ const CharBox = ({
         }}
       >
         {char}
-      </div>
-    </motion.span>
+      </span>
+    </span>
   )
 }
-
 
 Letter3DSwap.displayName = "Letter3DSwap"
 

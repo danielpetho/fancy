@@ -6,4 +6,87 @@ component: true
 
 <ComponentPreview name='letter-3d-swap-demo' />
 
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add "https://fancycomponents.dev/r/letter-3d-swap.json"
+```
+
+</TabsContent>
+<TabsContent value="manual">
+
+<ComponentSource name="letter-3d-swap" />
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+Just wrap your text with the component and set the `rotateDirection` prop to the direction you want the text to rotate, the rest will be taken care by the component.
+
+## Understanding the component
+
+### Splitting the text into characters
+
+First, we split the text into `WorldObject` objects, each containing an array of characters and a boolean indicating whether there should be a space after the character. We use a handy function for this, we should respect emojis too.
+```tsx
+// handy function to split text into characters with support for unicode and emojis
+const splitIntoCharacters = (text: string): string[] => {
+  if (typeof Intl !== "undefined" && "Segmenter" in Intl) {
+    const segmenter = new Intl.Segmenter("en", { granularity: "grapheme" })
+    return Array.from(segmenter.segment(text), ({ segment }) => segment)
+  }
+  // Fallback for browsers that don't support Intl.Segmenter
+  return Array.from(text)
+}
+```
+
+This method also helps us to ensure that words stay together and properly spaced when the text wraps across multiple lines. Without this approach, simply splitting by characters would break words at line boundaries.
+
+```tsx
+// Splitting the text into animation segments
+const characters = useMemo(() => {
+    const t = text.split(" ")
+    const result = t.map((word: string, i: number) => ({
+      characters: splitIntoCharacters(word),
+      needsSpace: i !== t.length - 1,
+    }))
+    return result
+}, [text])
+```
+
+### 3D Transforms
+
+When rendering each character, we create two instances of it - a front face and a second face. The second face is absolutely positioned relative to the first one and uses 3D CSS transforms to create the illusion that it's on a different face of a 3D box. Which face it appears on depends on the `rotateDirection` prop:
+
+- `"top"` - Character appears to flip upward from the top face
+- `"right"` - Character appears to flip from the right side 
+- `"bottom"` - Character appears to flip downward from the bottom face
+- `"left"` - Character appears to flip from the left side
+
+For the top and bottom rotations, we first rotate the second face on the X axis:
+   - For top: `rotateX(-90deg)` to flip upward
+   - For bottom: `rotateX(90deg)` to flip downward
+
+Then offset it by half the height of the first face using the `lh` CSS unit (which represents one line height). We translate by `0.5lh` on the Z axis to position it exactly at the edge of our virtual 3D box.
+
+For left/right rotations, we use a more complex transform chain to properly position the face on the correct side, since—as far as I know—there is no way to correctly know each different character's width (unless it's a monospace font). But luckily, we can use precentage values when translating on the X or Y axis. 
+
+First, we rotate the face around y axis by 90 degrees, translate it on the X axis by half the width of the first face, and then rotate it back by 90 degrees. Then, we translate it by half the width again, and rotate it by 90 degrees again. This way, the second face will be positioned on the correct side of the first face.
+
+## Examples
+
+### Stagger
+
 <ComponentPreview name='letter-3d-swap-stagger-demo' />
+
+<ComponentPreview name='letter-3d-swap-multiline-demo' />
+
