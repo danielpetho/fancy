@@ -10,8 +10,6 @@ export default function Preview() {
     mainClassName: "text-4xl bg-white lowercase text-primary-blue",
     frontFaceClassName: `bg-white ${debug ? 'border' : ''}`,
     secondFaceClassName: `bg-white ${debug ? 'border' : ''}`,
-    paddingX: 0,
-    paddingY: 0,
     staggerDuration: 0.02,
     transition: { type: "spring", damping: 25, stiffness: debug ? 50 : 160 }
   }
