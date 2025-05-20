@@ -6,23 +6,23 @@ import Letter3DSwap from "@/fancy/components/text/letter-3d-swap"
 export default function Preview() {
   const [debug, setDebug] = useState(false)
   const sharedProps = {
-    mainClassName: "text-4xl bg-white lowercase text-primary-blue",
-    frontFaceClassName: `bg-white ${debug ? 'border' : ''}`,
-    secondFaceClassName: `bg-white ${debug ? 'border' : ''}`,
+    mainClassName: "text-lg sm:text-3xl md:text-4xl bg-background lowercase text-foreground",
+    frontFaceClassName: `bg-background ${debug ? 'border' : ''}`,
+    secondFaceClassName: `bg-background ${debug ? 'border' : ''}`,
     staggerDuration: 0.02,
     transition: { type: "spring" as const, damping: 25, stiffness: debug ? 50 : 160 }
   }
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center p-8 bg-white gap-8">
+    <div className="relative w-full h-full flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 bg-background gap-4 sm:gap-6 md:gap-8">
       <button
-        className="absolute top-4 left-4 px-2 py-1 bg-white text-black rounded-md border text-[8px] cursor-pointer hover:bg-muted"
+        className="absolute top-4 left-4 px-2 py-1 bg-background text-foreground rounded-md border text-[8px] cursor-pointer hover:bg-muted"
         onClick={() => setDebug(!debug)}
       >
         Debug: {debug ? "On" : "Off"}
       </button>
 
-      <div className="flex flex-col items-center gap-8 max-w-2xl font-cotham gap-y-18">
+      <div className="flex flex-col items-center gap-4 sm:gap-6 md:gap-8 max-w-xs sm:max-w-xl md:max-w-2xl font-cotham">
         <Letter3DSwap 
           rotateDirection="left"
           staggerFrom="first"
