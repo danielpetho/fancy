@@ -187,7 +187,7 @@ const Letter3DSwap = ({
 
     // Animate each character with its specific delay
     await animate(
-      ".char-box",
+      ".letter-3d-swap-char-box-item",
       { transform: rotationTransform },
       {
         ...transition,
@@ -197,7 +197,7 @@ const Letter3DSwap = ({
 
     // Reset all boxes
     await animate(
-      ".char-box",
+      ".letter-3d-swap-char-box-item",
       { transform: "rotateX(0deg) rotateY(0deg)" },
       { duration: 0 }
     )
@@ -295,7 +295,7 @@ const CharBox = ({
   const secondFaceTransform = getSecondFaceTransform()
 
   return (
-    <span className="char-box inline-box [transform-style:preserve-3d]">
+    <span className="letter-3d-swap-char-box-item inline-box [transform-style:preserve-3d]">
       {/* Front face */}
       <div
         className={cn("relative backface-hidden h-[1lh]", frontFaceClassName)}

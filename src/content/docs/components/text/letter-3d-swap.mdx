@@ -76,17 +76,140 @@ For the top and bottom rotations, we first rotate the second face on the X axis:
    - For top: `rotateX(-90deg)` to flip upward
    - For bottom: `rotateX(90deg)` to flip downward
 
-Then offset it by half the height of the first face using the `lh` CSS unit (which represents one line height). We translate by `0.5lh` on the Z axis to position it exactly at the edge of our virtual 3D box.
+Then offset it by half the height of the first face using the `lh` CSS unit (which represents one line height). This `0.5lh` offset will position it exactly at the edge of our virtual 3D box.
 
-For left/right rotations, we use a more complex transform chain to properly position the face on the correct side, since—as far as I know—there is no way to correctly know each different character's width (unless it's a monospace font). But luckily, we can use precentage values when translating on the X or Y axis. 
+For left/right rotations, we use a bit more complex series of transforms to place the face on the side. This is needed because character widths are different in most fonts (except monospace fonts where all characters are the same width). We can still use percentage-based translations, at least on the X and Y axes (not on Z though). For the left rotation, this is what we use:
 
-First, we rotate the face around y axis by 90 degrees, translate it on the X axis by half the width of the first face, and then rotate it back by 90 degrees. Then, we translate it by half the width again, and rotate it by 90 degrees again. This way, the second face will be positioned on the correct side of the first face.
+```tsx
+"rotateY(90deg) translateX(50%) rotateY(-90deg) translateX(50%) rotateY(-90deg) translateX(50%)"
+```
 
-## Examples
+Instead of an explanation, check out this demo which does the transform step by step:
+
+<ComponentPreview name='letter-3d-swap-explanation-demo' />
+
+Of course, you can achieve the same result by applying (other) transforms in a different order, but this sequence works well for our needs.
+
+### Animation
+
+Now that we have our virtual 3D box, the only thing left is to rotate each charater box. For this, we use the `useAnimate` hook from [motion](https://motion.dev/docs/use-animate). This gives us a scope and an `animate` function to control the animation. We add `.,letter-3d-swap-char-box-item` class name to each char box, so we can select and animate them with the `animate` function. All the animation is completed, we just reset the transform to the original state.
+
+```tsx
+// Animate each character with its specific delay
+await animate(
+  ".letter-3d-swap-char-box-item",
+  { transform: rotationTransform },
+  {
+    ...transition,
+    delay: (i: number) => delays[i],
+  }
+
+// Reset all boxes
+await animate(
+  ".letter-3d-swap-char-box-item",
+  { transform: "rotateX(0deg) rotateY(0deg)" },
+  { duration: 0 }
+)
+```
+
+The transform is just a 90/-90 degree rotation either on the X or Y axis, depending on the `rotateDirection` prop.
 
 ### Stagger
 
+The delay is calculated based on the `staggerFrom` prop, which can be set to `first`, `last`, `center`, `random` or a number. If it's a number, it's used as the index of the character to stagger from. For example, if `staggerFrom` is set to `2`, the second character will be staggered from the third one. We have a handy function to calculate the correct delay for each character:
+
+```tsx
+// Helper function to calculate stagger delay for each text segment
+const getStaggerDelay = useCallback(
+  (index: number, totalChars: number) => {
+    const total = totalChars
+    if (staggerFrom === "first") return index * staggerDuration
+    if (staggerFrom === "last") return (total - 1 - index) * staggerDuration
+    if (staggerFrom === "center") {
+      const center = Math.floor(total / 2)
+      return Math.abs(center - index) * staggerDuration
+    }
+    if (staggerFrom === "random") {
+      const randomIndex = Math.floor(Math.random() * total)
+      return Math.abs(randomIndex - index) * staggerDuration
+    }
+    return Math.abs(staggerFrom - index) * staggerDuration
+  },
+  [staggerFrom, staggerDuration]
+)
+```
+
+Check out the demo to see the possible values for `staggerFrom`.
+
 <ComponentPreview name='letter-3d-swap-stagger-demo' />
 
-<ComponentPreview name='letter-3d-swap-multiline-demo' />
+## Props
 
+### Letter3DSwapProps
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The content to be displayed and animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`p`</TableCell>
+      <TableCell>HTML Tag to render the component as</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>mainClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Class name for the main container element</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>frontFaceClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Class name for the front face element</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>secondFaceClassName</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Class name for the secondary face element</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>staggerDuration</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.05`</TableCell>
+      <TableCell>Duration of stagger delay between elements in seconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>staggerFrom</TableCell>
+      <TableCell>`"first" | "last" | "center" | "random" | number`</TableCell>
+      <TableCell>`"first"`</TableCell>
+      <TableCell>Direction to stagger animations from</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>transition</TableCell>
+      <TableCell>`ValueAnimationTransition | AnimationOptions`</TableCell>
+      <TableCell>`{ type: "spring", damping: 25, stiffness: 300 }`</TableCell>
+      <TableCell>Animation transition configuration</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>rotateDirection</TableCell>
+      <TableCell>`"top" | "right" | "bottom" | "left"`</TableCell>
+      <TableCell>`"right"`</TableCell>
+      <TableCell>Direction of rotation</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
