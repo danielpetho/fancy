@@ -36,7 +36,7 @@ Just wrap your text with the component and set the `rotateDirection` prop to the
 
 ### Splitting the text into characters
 
-First, we split the text into `WorldObject` objects, each containing an array of characters and a boolean indicating whether there should be a space after the character. We use a handy function for this, we should respect emojis too.
+First, we split the text into `WorldObject` objects, each containing an array of characters and a boolean indicating whether there should be a space after the character. We use a handy function for this, which should respect emojis too.
 ```tsx
 // handy function to split text into characters with support for unicode and emojis
 const splitIntoCharacters = (text: string): string[] => {
@@ -65,7 +65,7 @@ const characters = useMemo(() => {
 
 ### 3D Transforms
 
-When rendering each character, we create two instances of it - a front face and a second face. The second face is absolutely positioned relative to the first one and uses 3D CSS transforms to create the illusion that it's on a different face of a 3D box. Which face it appears on depends on the `rotateDirection` prop:
+When rendering each character, we create two instances of it - a front face and a second face. The second face is positioned relative to the first one and uses 3D CSS transforms to create the illusion that it's on a different face of a 3D box. The face it appears on depends on the `rotateDirection` prop:
 
 - `"top"` - Character appears to flip upward from the top face
 - `"right"` - Character appears to flip from the right side 
@@ -112,11 +112,11 @@ The demo below shows this transform sequence step by step:
 
 The initial forward translation of our box (using `0.5lh` for `top`/`bottom` rotations, or the transform chain for `left`/`right` rotations) serves an important purpose. It ensures the rotation axis passes through the center of our virtual 3D box, rather than along its front face. This creates a more natural flipping motion, as the character rotates around its center point rather than pivoting from its front edge. Without this translation, the box rotation would appear to swing outward in an unnatural arc rather than flipping in place.
 
-Of course, you can achieve the same result by applying (other) transforms in a different order, and even playing with the transform origins. I apologise if it seems overcomplicated, this is how it made sense to me :).
+Of course, you can achieve the same result by applying (other) transforms in a different order, and even playing with the transform origins. I apologise if this seems overcomplicated, this is how it made sense to me :).
 
 ### Animation
 
-Now that we have our virtual 3D box, the only thing left is to rotate each charater box. For this, we use the `useAnimate` hook from [motion](https://motion.dev/docs/use-animate). This gives us a scope and an `animate` function to control the animation. We add `.,letter-3d-swap-char-box-item` class name to each char box, so we can select and animate them with the `animate` function. All the animation is completed, we just reset the transform to the original state.
+Now that we have our virtual 3D box, the only thing left is to rotate each character box. For this, we use the `useAnimate` hook from [motion](https://motion.dev/docs/use-animate). This gives us a scope and an `animate` function to control the animation. We add `.letter-3d-swap-char-box-item` class name to each char box, so we can select and animate them with the `animate` function. After the animation is completed, we reset the transform to the original state.
 
 ```tsx
 // Animate each character with its specific delay
