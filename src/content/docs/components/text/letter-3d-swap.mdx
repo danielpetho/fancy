@@ -72,23 +72,28 @@ When rendering each character, we create two instances of it - a front face and 
 - `"bottom"` - Character appears to flip downward from the bottom face
 - `"left"` - Character appears to flip from the left side
 
-For the top and bottom rotations, we first rotate the second face on the X axis:
-   - For top: `rotateX(-90deg)` to flip upward
-   - For bottom: `rotateX(90deg)` to flip downward
 
-Then offset it by half the height of the first face using the `lh` CSS unit (which represents one line height). This `0.5lh` offset will position it exactly at the edge of our virtual 3D box.
+#### Top and bottom rotations
 
-For left/right rotations, we use a bit more complex series of transforms to place the face on the side. This is needed because character widths are different in most fonts (except monospace fonts where all characters are the same width). We can still use percentage-based translations, at least on the X and Y axes (not on Z though). For the left rotation, this is what we use:
+For top and bottom rotations, we create a 3D box effect through a series of transforms:
 
-```tsx
-"rotateY(90deg) translateX(50%) rotateY(-90deg) translateX(50%) rotateY(-90deg) translateX(50%)"
-```
+1. The front face is brought forward by translating it `0.5lh` on the Z axis (`lh` represents one line height)
+2. For the second face, we:
+   - Rotate it 90° (or -90°) on the X axis
+   - Then translate it `0.5lh` forward in its local coordinate system to align with the edge of our virtual box
+3. Finally, we translate the container back by `-0.5lh` to account for the initial translation of the front face
 
-Instead of an explanation, check out this demo which does the transform step by step:
+This creates the illusion of characters flipping between two faces of a 3D cube. The interactive demo below shows how these transforms work together:
 
-<ComponentPreview name='letter-3d-swap-explanation-demo' />
+<ExplanationDemo name='letter-3d-swap-explanation-top-demo' />
 
-Of course, you can achieve the same result by applying (other) transforms in a different order, but this sequence works well for our needs.
+#### Left and right rotations
+
+For left/right rotations, we use a bit more complex series of transforms to construct a correctly sized box. For this, we cannot bring the first face by `0.5lh` since the other side of the box shouldn't be that size, rather it should be equal of the width of the character. Now, we cannot know the exact width of the character in advance, as each individual character can have a different width (except monospace fonts where all characters are the same width). We can still use percentage-based translations, at least on the X and Y axes (not on Z though). So, to bring the first face by the correct transform, first, we have to rotate it 90° (or -90°) on the Y axis, translate it by hald width (translateX(50%)), then rotate it back by 90° (or -90°) on the Y axis. Then we do the transform for the second face. Check out the demo for the chain:
+
+<ExplanationDemo name='letter-3d-swap-explanation-left-demo' />
+
+Of course, you can achieve the same result by applying (other) transforms in a different order, and I apologise if it seems overcomplicated. This is how it made sense to me :).
 
 ### Animation
 

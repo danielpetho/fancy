@@ -15,7 +15,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodeBlockWrapper } from "@/components/code-block-wrapper"
 import { ComponentPreview } from "@/components/component-preview"
 import { ComponentSource } from "@/components/component-source"
-import { CopyButton, CopyNpmCommandButton } from "@/components/copy-button"
+import { ExplanationDemo } from "@/components/explanation-demo"
+
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -257,6 +258,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     },
     ComponentPreview,
     ComponentSource,
+    ExplanationDemo,
     CodeBlockWrapper: ({ ...props }) => (
       <CodeBlockWrapper className="rounded-md border mt-4" {...props} />
     ),

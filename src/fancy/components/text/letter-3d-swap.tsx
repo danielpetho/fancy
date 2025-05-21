@@ -295,7 +295,7 @@ const CharBox = ({
   const secondFaceTransform = getSecondFaceTransform()
 
   return (
-    <span className="letter-3d-swap-char-box-item inline-box [transform-style:preserve-3d]">
+    <span className="letter-3d-swap-char-box-item inline-box transform-3d" style={{transform: "translateZ(-0.5lh)"}}>
       {/* Front face */}
       <div
         className={cn("relative backface-hidden h-[1lh]", frontFaceClassName)}
