@@ -264,7 +264,7 @@ export default function Preview() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2, delay: 0, ease: "easeOut" }}
-                className="font-overusedGrotesk text-lg w-full text-end"
+                className="font-overusedGrotesk text-muted-foreground  w-full text-end"
               >
                 {getDisplayTransform()[0]}
               </motion.span>
@@ -278,7 +278,7 @@ export default function Preview() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2, delay: 0, ease: "easeOut" }}
-                className="pl-8 font-mono text-muted-foreground pt-1 w-full "
+                className="pl-8 font-mono w-full text-muted-foreground  "
               >
                 {getDisplayTransform()[1]}
               </motion.span>

@@ -89,11 +89,30 @@ This creates the illusion of characters flipping between two faces of a 3D cube.
 
 #### Left and right rotations
 
-For left/right rotations, we use a bit more complex series of transforms to construct a correctly sized box. For this, we cannot bring the first face by `0.5lh` since the other side of the box shouldn't be that size, rather it should be equal of the width of the character. Now, we cannot know the exact width of the character in advance, as each individual character can have a different width (except monospace fonts where all characters are the same width). We can still use percentage-based translations, at least on the X and Y axes (not on Z though). So, to bring the first face by the correct transform, first, we have to rotate it 90° (or -90°) on the Y axis, translate it by hald width (translateX(50%)), then rotate it back by 90° (or -90°) on the Y axis. Then we do the transform for the second face. Check out the demo for the chain:
+For left/right rotations, we need to handle the box dimensions more carefully. Unlike top/bottom rotations where we can use line height (`lh`) as a fixed measurement, the width of each character varies. The side faces of our 3D box need to match the actual character width.
+
+To achieve this, we use percentage-based translations on the X and Y axes, since these can automatically adapt to each character's width. The transform sequence works like this:
+
+1. First face:
+   - Rotate 90° on Y axis to face sideways
+   - Translate 50% of character width to align with edge
+   - Rotate -90° on Y axis to face forward again
+   
+2. Second face:
+   - Apply the same transforms as the first face
+   - Add additional transforms to position it correctly on the side
+
+3. Lastly, we push back both faces to account for the initial translation
+
+The demo below shows this transform sequence step by step:
 
 <ExplanationDemo name='letter-3d-swap-explanation-left-demo' />
 
-Of course, you can achieve the same result by applying (other) transforms in a different order, and I apologise if it seems overcomplicated. This is how it made sense to me :).
+#### Why the initial translation?
+
+The initial forward translation of our box (using `0.5lh` for `top`/`bottom` rotations, or the transform chain for `left`/`right` rotations) serves an important purpose. It ensures the rotation axis passes through the center of our virtual 3D box, rather than along its front face. This creates a more natural flipping motion, as the character rotates around its center point rather than pivoting from its front edge. Without this translation, the box rotation would appear to swing outward in an unnatural arc rather than flipping in place.
+
+Of course, you can achieve the same result by applying (other) transforms in a different order, and even playing with the transform origins. I apologise if it seems overcomplicated, this is how it made sense to me :).
 
 ### Animation
 
@@ -147,6 +166,10 @@ const getStaggerDelay = useCallback(
 Check out the demo to see the possible values for `staggerFrom`.
 
 <ComponentPreview name='letter-3d-swap-stagger-demo' />
+
+## Resources
+
+- [Intro to CSS 3D transforms](https://3dtransforms.desandro.com/) by David DeSandro
 
 ## Props
 
