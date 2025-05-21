@@ -1,3 +1,10 @@
+/*
+ * If you're reading this file, you're probably looking for the explanation demo.
+ * Keep in my mind this demo contains some extra transforms that are only needed
+ * for making the animation prettier, and not necessary for the actual functionality.
+ * There is a lot of messy code here, so I advise you not to try learn from it.
+ * Please refer to the actual documentation for more details.
+ */
 "use client"
 
 import { useEffect, useState } from "react"
@@ -12,7 +19,12 @@ export const AxisHelper = ({ axisLength }: AxisHelperProps) => {
   const arrowSize = 12
 
   return (
-    <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none transform-3d z-50">
+    <div
+      className="pointer-events-none transform-3d"
+      style={{
+        transform: "translateY(-100px) translateZ(-100px) translateX(-100px)",
+      }}
+    >
       {/* X axis (red, right) */}
       <svg
         width={axisLength + arrowSize}
@@ -109,7 +121,7 @@ export const AxisHelper = ({ axisLength }: AxisHelperProps) => {
 }
 export default function Preview() {
   const [step, setStep] = useState(0)
-  const totalSteps = 5
+  const totalSteps = 8
 
   useEffect(() => {
     const interval = setInterval(
@@ -131,15 +143,21 @@ export default function Preview() {
   const getSecondFaceTransform = () => {
     switch (step) {
       case 0:
-        return `rotateX(0deg)`
+        return `rotateY(0deg)`
       case 1:
-        return `rotateX(0deg)`
+        return `rotateY(90deg)`
       case 2:
-        return "rotateX(90deg)"
+        return `rotateY(90deg) translateX(-50%)`
       case 3:
-        return "rotateX(90deg) translateZ(0.5lh)"
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg)"
       case 4:
-        return "rotateX(90deg) translateZ(0.5lh)"
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateX(50%)"
+      case 5:
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateX(50%) rotateY(-90deg)"
+      case 6:
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateX(50%) rotateY(-90deg) translateX(-50%)"
+      case 7:
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateX(50%) rotateY(-90deg) translateX(-50%)"
       default:
         return "rotateX(0deg)"
     }
@@ -148,17 +166,23 @@ export default function Preview() {
   const getFirstFaceTransform = () => {
     switch (step) {
       case 0:
-        return "translateZ(0lh)"
+        return `rotateY(0deg) translateZ(0.001lh)`
       case 1:
-        return "translateZ(0.5lh)"
+        return `rotateY(90deg) translateZ(0.001lh)`
       case 2:
-        return "translateZ(0.5lh)"
+        return `rotateY(90deg) translateX(-50%) translateZ(0.01lh)`
       case 3:
-        return "translateZ(0.5lh)"
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateZ(0.001lh)"
       case 4:
-        return "translateZ(0.5lh)"
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateZ(0.001lh)"
+      case 5:
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateZ(0.001lh)"
+      case 6:
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateZ(0.001lh)"
+      case 7:
+        return "rotateY(90deg) translateX(-50%) rotateY(-90deg) translateZ(0.001lh)"
       default:
-        return "translateZ(0lh)"
+        return "rotateY(0deg) translateZ(0.001lh)"
     }
   }
 
@@ -173,7 +197,13 @@ export default function Preview() {
       case 3:
         return "translateZ(0)"
       case 4:
-        return "translateZ(-0.5lh)"
+        return "translateZ(0)"
+      case 5:
+        return "translateZ(0)"
+      case 6:
+        return "translateZ(0lh)"
+      case 7:
+        return "rotateY(90deg) translateX(50%) rotateY(-90deg)"
       default:
         return "translateZ(0)"
     }
@@ -184,13 +214,28 @@ export default function Preview() {
       case 0:
         return [" ", " "]
       case 1:
-        return ["1st face:", "translateZ(0.5lh)"]
+        return ["both faces:", "rotateY(90deg)"]
       case 2:
-        return ["2nd face:", "rotateX(90deg)"]
+        return ["both faces:", "rotateY(90deg) translateX(50%)"]
       case 3:
-        return ["2nd face:", "rotateX(90deg) translateZ(0.5lh)"]
+        return ["both faces:", "rotateY(90deg) translateX(50%) rotateY(-90deg)"]
       case 4:
-        return ["container:", "translateZ(-0.5lh)"]
+        return [
+          "2nd face:",
+          "rotateY(90deg) translateX(50%) rotateY(-90deg) translateX(-50%)",
+        ]
+      case 5:
+        return [
+          "2nd face:",
+          "rotateY(90deg) translateX(50%) rotateY(-90deg) translateX(-50%) rotateY(-90deg)",
+        ]
+      case 6:
+        return [
+          "2nd face:",
+          "rotateY(90deg) translateX(50%) rotateY(-90deg) translateX(-50%) rotateY(-90deg) translateX(50%)",
+        ]
+      case 7:
+        return ["container:", "rotateY(90deg) translateX(50%) rotateY(-90deg)"]
       default:
         return [" ", " "]
     }
@@ -204,7 +249,7 @@ export default function Preview() {
           style={{ transform: "rotateX(-25deg) rotateY(-45deg)" }}
         >
           {/* Axes helper */}
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform-3d">
+          <div className="absolute top-[150%] left-1/2 -translate-x-1/2 -translate-y-1/2 transform-3d">
             <AxisHelper axisLength={200} />
           </div>
 
@@ -243,37 +288,35 @@ export default function Preview() {
         </motion.div>
 
         {/* Transform display */}
-        <div
-          className="absolute bottom-1/6 flex items-center h-[1lh] w-full px-16 sm:px-0 sm:w-64"
-        >
-            <div className="flex w-1/3  min-w-12 min-h-[1lh]">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={getDisplayTransform()[0]}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2, delay: 0,  ease: "easeOut" }}
-                  className="font-overusedGrotesk text-lg w-full text-end"
-                >
-                  {getDisplayTransform()[0]}
-                </motion.span>
-              </AnimatePresence>
-            </div>
-            <div className="flex w-2/3 min-w-12 min-h-[1lh]">
-              <AnimatePresence mode="wait">
-                <motion.span
-                  key={getDisplayTransform()[1]}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2, delay: 0, ease: "easeOut" }}
-                  className="pl-8 font-mono text-muted-foreground pt-1 w-full "
-                >
-                  {getDisplayTransform()[1]}
-                </motion.span>
-              </AnimatePresence>
-            </div>
+        <div className="absolute bottom-1/6 flex items-center h-[1lh] w-full px-16 sm:px-0 sm:w-64">
+          <div className="flex w-1/3  min-w-12 min-h-[1lh]">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span
+                key={getDisplayTransform()[0]}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2, delay: 0, ease: "easeOut" }}
+                className="font-overusedGrotesk text-lg w-full text-end"
+              >
+                {getDisplayTransform()[0]}
+              </motion.span>
+            </AnimatePresence>
+          </div>
+          <div className="flex w-2/3 min-w-12 min-h-[1lh]">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={getDisplayTransform()[1]}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2, delay: 0, ease: "easeOut" }}
+                className="pl-8 font-mono text-xs text-muted-foreground pt-1 w-full "
+              >
+                {getDisplayTransform()[1]}
+              </motion.span>
+            </AnimatePresence>
+          </div>
         </div>
       </div>
     </div>

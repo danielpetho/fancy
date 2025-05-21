@@ -1,7 +1,11 @@
 "use client"
 
 import React, { ElementType, useCallback, useMemo, useState } from "react"
-import { useAnimate,ValueAnimationTransition, AnimationOptions } from "motion/react"
+import {
+  AnimationOptions,
+  useAnimate,
+  ValueAnimationTransition,
+} from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -295,7 +299,15 @@ const CharBox = ({
   const secondFaceTransform = getSecondFaceTransform()
 
   return (
-    <span className="letter-3d-swap-char-box-item inline-box transform-3d" style={{transform: "translateZ(-0.5lh)"}}>
+    <span
+      className="letter-3d-swap-char-box-item inline-box transform-3d"
+      style={{
+        transform:
+          rotateDirection === "top" || rotateDirection === "bottom"
+            ? "translateZ(-0.5lh)"
+            : "rotateY(90deg) translateX(50%) rotateY(-90deg)",
+      }}
+    >
       {/* Front face */}
       <div
         className={cn("relative backface-hidden h-[1lh]", frontFaceClassName)}
