@@ -128,7 +128,7 @@ export function ComponentPreview({
     <div
       data-algolia-ignore
       className={cn(
-        "group relative my-4 flex flex-col space-y-2 h-full w-full",
+        "group relative my-4 flex flex-col space-y-2 h-full w-full ",
         className
       )}
       {...props}
@@ -154,7 +154,7 @@ export function ComponentPreview({
           value="preview"
           className="border border-black-500 flex rounded-lg"
         >
-          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative max-h-[620px]">
+          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative max-h-[530px]">
             {/* <div className="absolute top-4 right-4 rounded-full border">
 
             </div> */}
