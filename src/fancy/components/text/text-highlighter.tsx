@@ -75,10 +75,11 @@ export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterPro
       children,
       as = "span",
       triggerType = "inView",
-      transition = { type: "spring", duration: 1., delay: 0.3, bounce: 0 },
+      transition = { type: "spring", duration: 1., delay: 0.4, bounce: 0 },
       useInViewOptions = {
         once: false,
         initial: false,
+        amount: 0.5
       },
       className,
       highlightColor = 'hsl(25, 90%, 80%)',
