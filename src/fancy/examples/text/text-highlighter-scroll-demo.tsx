@@ -1,78 +1,159 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react"
-import { motion, useInView } from "framer-motion"
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+} from "react"
+import { motion, useInView } from "motion/react"
 
-import { TextHighlighter } from "@/fancy/components/text/text-highlighter"
+import {
+  TextHighlighter,
+  TextHighlighterRef,
+} from "@/fancy/components/text/text-highlighter"
 
 const HIGHLIGHT_COLOR = "hsl(80, 100%, 50%)"
+
+const HighlighterContext = createContext<{
+  registerRef: (ref: TextHighlighterRef | null) => void
+  scrollDirection: "ltr" | "rtl" | "ttb" | "btt"
+}>({
+  registerRef: () => {},
+  scrollDirection: "ltr",
+})
+
+function ContextAwareTextHighlighter({
+  children,
+  ...props
+}: React.ComponentProps<typeof TextHighlighter>) {
+  const { registerRef } = useContext(HighlighterContext)
+
+  return (
+    <TextHighlighter {...props} triggerType="ref" ref={registerRef}>
+      {children}
+    </TextHighlighter>
+  )
+}
+
+function useHighlighterAnimation(
+  isInView: boolean,
+  scrollDirection: "ltr" | "rtl" | "ttb" | "btt",
+  delay: number = 0
+) {
+  const highlighterRefs = useRef<TextHighlighterRef[]>([])
+  const animationTimeouts = useRef<NodeJS.Timeout[]>([])
+  const [isAnimating, setIsAnimating] = useState(false)
+
+  const registerRef = useCallback((highlighterRef: TextHighlighterRef | null) => {
+    if (highlighterRef && !highlighterRefs.current.includes(highlighterRef)) {
+      highlighterRefs.current.push(highlighterRef)
+    }
+  }, [])
+
+  const clearTimeouts = useCallback(() => {
+    animationTimeouts.current.forEach(clearTimeout)
+    animationTimeouts.current = []
+  }, [])
+
+  const resetHighlighters = useCallback(() => {
+    clearTimeouts()
+    highlighterRefs.current.forEach((ref) => ref?.reset())
+    setIsAnimating(false)
+  }, [clearTimeouts])
+
+  const animateHighlighters = useCallback(() => {
+    if (isAnimating) return
+    
+    setIsAnimating(true)
+    clearTimeouts()
+    
+    highlighterRefs.current.forEach((ref, index) => {
+      if (ref) {
+        const timeout = setTimeout(() => {
+          ref.animate(scrollDirection)
+        }, index * 50)
+        animationTimeouts.current.push(timeout)
+      }
+    })
+  }, [isAnimating, scrollDirection, clearTimeouts])
+
+
+  useEffect(() => {
+    if (isInView && !isAnimating) {
+      const triggerTimeout = setTimeout(animateHighlighters, delay + 100)
+      return () => clearTimeout(triggerTimeout)
+    } else if (!isInView) {
+      resetHighlighters()
+    }
+  }, [isInView, isAnimating, animateHighlighters, resetHighlighters, delay])
+
+  useEffect(() => {
+    return () => {
+      clearTimeouts()
+    }
+  }, [clearTimeouts])
+
+  return { registerRef, resetHighlighters }
+}
 
 function AnimatedSection({
   children,
   delay = 0,
+  scrollDirection = "ltr",
 }: {
   children: React.ReactNode
   delay?: number
+  scrollDirection?: "ltr" | "rtl" | "ttb" | "btt"
 }) {
   const ref = useRef(null)
-  const isInView = useInView(ref, { 
+  const isInView = useInView(ref, {
     once: false,
-    margin: "-10%",
-    amount: 0.3
+    margin: "-20%",
+    amount: 0.5,
   })
-  const [_, setHighlightedWords] = useState<number[]>([])
 
-  useEffect(() => {
-    if (isInView) {
-      const timer = setTimeout(() => {
-        const wordCount = React.Children.count(children)
-        const numToHighlight = Math.floor(Math.random() * 3) + 2
-        const indices = Array.from({ length: numToHighlight }, () => 
-          Math.floor(Math.random() * wordCount)
-        )
-        setHighlightedWords(indices)
-      }, 800 + delay)
-
-      return () => clearTimeout(timer)
-    }
-  }, [isInView, children, delay])
+  const { registerRef } = useHighlighterAnimation(isInView, scrollDirection, delay)
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{
-        opacity: 0,
-        //y: 30,
-        filter: "blur(8px)",
-      }}
-      animate={
-        isInView
-          ? {
-              opacity: 1,
-              //y: 0,
-              filter: "blur(0px)",
-            }
-          : {
-              opacity: 0.3,
-              //y: isInView === false ? -20 : 30,
-              filter: "blur(6px)",
-            }
-      }
-      transition={{
-        duration: 0.8,
-        delay: isInView ? delay : 0,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
-      className="space-y-4"
-    >
-      {children}
-    </motion.div>
+    <HighlighterContext.Provider value={{ registerRef, scrollDirection }}>
+      <motion.div
+        ref={ref}
+        initial={{
+          opacity: 0,
+          filter: "blur(8px)",
+        }}
+        animate={
+          isInView
+            ? {
+                opacity: 1,
+                filter: "blur(0px)",
+              }
+            : {
+                opacity: 0.3,
+                filter: "blur(6px)",
+              }
+        }
+        transition={{
+          duration: 0.8,
+          delay: isInView ? delay : 0,
+          ease: [0.25, 0.1, 0.25, 1],
+        }}
+        className="space-y-4"
+      >
+        {children}
+      </motion.div>
+    </HighlighterContext.Provider>
   )
 }
 
 export default function TextHighlighterDemo() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [currentSection, setCurrentSection] = useState(1)
+  const [scrollDirection, setScrollDirection] = useState<"ltr" | "rtl">("ltr")
+  const [lastScrollLeft, setLastScrollLeft] = useState(0)
 
   useEffect(() => {
     const container = containerRef.current
@@ -83,46 +164,69 @@ export default function TextHighlighterDemo() {
       const containerWidth = container.clientWidth
       const sectionIndex = Math.round(scrollLeft / containerWidth) + 1
       setCurrentSection(Math.min(5, Math.max(1, sectionIndex)))
+
+      // Determine scroll direction
+      const newDirection =
+        scrollLeft > lastScrollLeft
+          ? "ltr"
+          : scrollLeft < lastScrollLeft
+            ? "rtl"
+            : scrollDirection
+      if (newDirection !== scrollDirection) {
+        setScrollDirection(newDirection)
+      }
+      setLastScrollLeft(scrollLeft)
     }
 
-    container.addEventListener('scroll', handleScroll)
-    return () => container.removeEventListener('scroll', handleScroll)
-  }, [])
+    container.addEventListener("scroll", handleScroll)
+    return () => container.removeEventListener("scroll", handleScroll)
+  }, [lastScrollLeft, scrollDirection])
 
   return (
     <div className="h-full w-full bg-[#fff] relative p-0">
       {/* Sticky section counter */}
       <div className="absolute bottom-20 left-1/2 z-20 text-base -translate-x-1/2 rounded-full border border-foreground/80 px-3 pb-0.5 flex items-center justify-center w-10 tabular-nums">
-        <div
-          key={currentSection}
-          className="font-overusedGrotesk"
-        >
-          {currentSection.toString().padStart(2, '0')}
+        <div key={currentSection} className="font-overusedGrotesk">
+          {currentSection.toString().padStart(2, "0")}
         </div>
       </div>
 
-      <div 
+      <div
         ref={containerRef}
-        className="h-full w-full z-10 bg-[#fff] overflow-y-scroll snap-x snap-mandatory flex mb-6"
+        className="h-full w-full z-10 bg-[#fff] overflow-x-scroll overflow-y-hidden snap-x snap-mandatory flex mb-6"
       >
-        
         <section className="min-w-full h-full snap-start flex items-center justify-center shrink-0">
           <div className="max-w-lg mx-auto px-6">
-            <AnimatedSection delay={0.2}>
+            <AnimatedSection delay={0.2} scrollDirection={scrollDirection}>
               <p className="text-lg leading-relaxed font-overusedGrotesk">
                 <span>Our </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>object detection systems</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  object detection systems
+                </ContextAwareTextHighlighter>
                 <span> identify and locate items in real-time. From </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>facial recognition</TextHighlighter>
-                <span> to product identification, we deliver precision at scale.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  facial recognition
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  to product identification, we deliver precision at scale.
+                </span>
               </p>
 
               <p className="text-lg leading-relaxed font-overusedGrotesk">
                 <span>Whether it's </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>traffic monitoring</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  traffic monitoring
+                </ContextAwareTextHighlighter>
                 <span> for smart cities or </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>inventory management</TextHighlighter>
-                <span> for retail, our AI distinguishes between people, vehicles, and objects with unmatched accuracy.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  inventory management
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  for retail, our AI distinguishes between people, vehicles, and
+                  objects with unmatched accuracy.
+                </span>
               </p>
             </AnimatedSection>
           </div>
@@ -130,21 +234,37 @@ export default function TextHighlighterDemo() {
 
         <section className="min-w-full h-full snap-start flex items-center justify-center shrink-0">
           <div className="max-w-lg mx-auto px-6">
-            <AnimatedSection delay={0.3}>
+            <AnimatedSection delay={0.3} scrollDirection={scrollDirection}>
               <p className="text-lg leading-relaxed font-overusedGrotesk">
                 <span>Advanced </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>video analytics</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  video analytics
+                </ContextAwareTextHighlighter>
                 <span> track movement across frames. Our </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>object tracking algorithms</TextHighlighter>
-                <span> power autonomous vehicles and security systems worldwide.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  object tracking algorithms
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  power autonomous vehicles and security systems worldwide.
+                </span>
               </p>
 
               <p className="text-lg leading-relaxed font-overusedGrotesk">
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>Scene understanding</TextHighlighter>
-                <span> capabilities analyze spatial relationships and context. From </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>sports performance analysis</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  Scene understanding
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  capabilities analyze spatial relationships and context. From{" "}
+                </span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  sports performance analysis
+                </ContextAwareTextHighlighter>
                 <span> to </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>surveillance systems</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  surveillance systems
+                </ContextAwareTextHighlighter>
                 <span>, we make sense of complex visual data.</span>
               </p>
             </AnimatedSection>
@@ -153,21 +273,36 @@ export default function TextHighlighterDemo() {
 
         <section className="min-w-full h-full snap-start flex items-center justify-center shrink-0">
           <div className="max-w-lg mx-auto px-6">
-            <AnimatedSection delay={0.4}>
+            <AnimatedSection delay={0.4} scrollDirection={scrollDirection}>
               <p className="text-lg leading-relaxed font-overusedGrotesk">
                 <span>Our </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>OCR technology</TextHighlighter>
-                <span> converts printed and handwritten text to digital format instantly. </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>Document automation</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  OCR technology
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  converts printed and handwritten text to digital format
+                  instantly.{" "}
+                </span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  Document automation
+                </ContextAwareTextHighlighter>
                 <span> streamlines workflows across industries.</span>
               </p>
 
               <p className="text-lg leading-relaxed font-overusedGrotesk">
                 <span>From </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>invoice processing</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  invoice processing
+                </ContextAwareTextHighlighter>
                 <span> to </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>accessibility solutions</TextHighlighter>
-                <span>, our text recognition supports multiple languages and formats with exceptional accuracy.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  accessibility solutions
+                </ContextAwareTextHighlighter>
+                <span>
+                  , our text recognition supports multiple languages and formats
+                  with exceptional accuracy.
+                </span>
               </p>
             </AnimatedSection>
           </div>
@@ -175,20 +310,35 @@ export default function TextHighlighterDemo() {
 
         <section className="min-w-full h-full snap-start flex items-center justify-center shrink-0">
           <div className="max-w-lg mx-auto px-6">
-            <AnimatedSection delay={0.5}>
+            <AnimatedSection delay={0.5} scrollDirection={scrollDirection}>
               <p className="text-lg leading-relaxed font-overusedGrotesk">
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>3D depth perception</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  3D depth perception
+                </ContextAwareTextHighlighter>
                 <span> enables precise spatial understanding. Our </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>stereo vision systems</TextHighlighter>
-                <span> power robotic automation and quality control processes.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  stereo vision systems
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  power robotic automation and quality control processes.
+                </span>
               </p>
 
               <p className="text-lg leading-relaxed font-overusedGrotesk">
                 <span>Advanced </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>augmented reality</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  augmented reality
+                </ContextAwareTextHighlighter>
                 <span> and </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>virtual reality applications</TextHighlighter>
-                <span> rely on our depth analysis for immersive, interactive experiences.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  virtual reality applications
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  rely on our depth analysis for immersive, interactive
+                  experiences.
+                </span>
               </p>
             </AnimatedSection>
           </div>
@@ -196,25 +346,48 @@ export default function TextHighlighterDemo() {
 
         <section className="min-w-full h-full snap-start flex items-center justify-center shrink-0">
           <div className="max-w-lg mx-auto px-6">
-            <AnimatedSection delay={0.6}>
+            <AnimatedSection delay={0.6} scrollDirection={scrollDirection}>
               <p className="text-lg leading-relaxed font-overusedGrotesk">
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>Image segmentation</TextHighlighter>
-                <span> separates objects with pixel-perfect precision. Our </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>enhancement algorithms</TextHighlighter>
-                <span> restore clarity and remove noise from any visual content.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  Image segmentation
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  separates objects with pixel-perfect precision. Our{" "}
+                </span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  enhancement algorithms
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  restore clarity and remove noise from any visual content.
+                </span>
               </p>
 
               <p className="text-lg leading-relaxed font-overusedGrotesk">
                 <span>Generate </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>synthetic training data</TextHighlighter>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  synthetic training data
+                </ContextAwareTextHighlighter>
                 <span> and create </span>
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>high-resolution imagery</TextHighlighter>
-                <span> for machine learning models and creative applications.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  high-resolution imagery
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  for machine learning models and creative applications.
+                </span>
               </p>
 
               <p className="text-lg leading-relaxed font-overusedGrotesk">
-                <TextHighlighter highlightColor={HIGHLIGHT_COLOR}>Transform your industry</TextHighlighter>
-                <span> with computer vision that sees, understands, and acts on visual information like never before.</span>
+                <ContextAwareTextHighlighter highlightColor={HIGHLIGHT_COLOR}>
+                  Transform your industry
+                </ContextAwareTextHighlighter>
+                <span>
+                  {" "}
+                  with computer vision that sees, understands, and acts on
+                  visual information like never before.
+                </span>
               </p>
             </AnimatedSection>
           </div>

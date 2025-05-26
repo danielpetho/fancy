@@ -7,9 +7,11 @@ import {
   useRef,
   useState,
 } from "react"
-import { motion, useInView, UseInViewOptions, Variants } from "motion/react"
+import { motion, Transition, useInView, UseInViewOptions } from "motion/react"
 
 import { cn } from "@/lib/utils"
+
+type HighlightDirection = "ltr" | "rtl" | "ttb" | "btt"
 
 type TextHighlighterProps = {
   /**
@@ -33,12 +35,7 @@ type TextHighlighterProps = {
    * Animation transition configuration
    * @default { duration: 0.4, type: "spring", bounce: 0 }
    */
-  transition?: {
-    duration?: number
-    type?: string
-    bounce?: number
-    [key: string]: any
-  }
+  transition?: Transition
 
   /**
    * Options for useInView hook when triggerType is "inView"
@@ -55,13 +52,20 @@ type TextHighlighterProps = {
    * @default 'hsl(60, 90%, 50%)' (yellow)
    */
   highlightColor?: string
+
+  /**
+   * Direction of the highlight animation
+   * @default "ltr" (left to right)
+   */
+  direction?: HighlightDirection
 }
 
 export type TextHighlighterRef = {
   /**
    * Trigger the highlight animation
+   * @param direction - Optional direction override for this animation
    */
-  animate: () => void
+  animate: (direction?: HighlightDirection) => void
 
   /**
    * Reset the highlight animation
@@ -83,12 +87,14 @@ export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterPro
       },
       className,
       highlightColor = 'hsl(25, 90%, 80%)',
+      direction = "ltr",
     },
     ref
   ) => {
     const componentRef = useRef<HTMLDivElement>(null)
     const [isAnimating, setIsAnimating] = useState(false)
     const [isHovered, setIsHovered] = useState(false)
+    const [currentDirection, setCurrentDirection] = useState<HighlightDirection>(direction)
 
     const isInView =
       triggerType === "inView"
@@ -96,7 +102,12 @@ export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterPro
         : false
 
     useImperativeHandle(ref, () => ({
-      animate: () => setIsAnimating(true),
+      animate: (animationDirection?: HighlightDirection) => {
+        if (animationDirection) {
+          setCurrentDirection(animationDirection)
+        }
+        setIsAnimating(true)
+      },
       reset: () => setIsAnimating(false),
     }))
 
@@ -111,11 +122,48 @@ export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterPro
 
     const ElementTag = as || "span"
 
+    // Get background size based on direction
+    const getBackgroundSize = (animated: boolean) => {
+      switch (currentDirection) {
+        case "ltr":
+          return animated ? '100% 100%' : '0% 100%'
+        case "rtl":
+          return animated ? '100% 100%' : '0% 100%'
+        case "ttb":
+          return animated ? '100% 100%' : '100% 0%'
+        case "btt":
+          return animated ? '100% 100%' : '100% 0%'
+        default:
+          return animated ? '100% 100%' : '0% 100%'
+      }
+    }
+
+    // Get background position based on direction
+    const getBackgroundPosition = () => {
+      switch (currentDirection) {
+        case "ltr":
+          return '0% 0%'
+        case "rtl":
+          return '100% 0%'
+        case "ttb":
+          return '0% 0%'
+        case "btt":
+          return '0% 100%'
+        default:
+          return '0% 0%'
+      }
+    }
+
+    const animatedSize = getBackgroundSize(shouldAnimate)
+    const initialSize = getBackgroundSize(false)
+    const backgroundPosition = getBackgroundPosition()
+
     // Highlight style
     const highlightStyle = {
       backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,
       backgroundRepeat: 'no-repeat',
-      backgroundSize: shouldAnimate ? '100% 100%' : '0% 100%',
+      backgroundPosition: backgroundPosition,
+      backgroundSize: animatedSize,
       boxDecorationBreak: 'clone',
       WebkitBoxDecorationBreak: 'clone',
       borderRadius: '0.3em',
@@ -130,8 +178,12 @@ export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterPro
       >
         <motion.span
           style={highlightStyle}
-          animate={{ backgroundSize: shouldAnimate ? '100% 100%' : '0% 100%' }}
-          initial={{ backgroundSize: '0% 100%' }}
+          animate={{
+            backgroundSize: animatedSize
+          }}
+          initial={{
+            backgroundSize: initialSize
+          }}
           transition={transition}
           className="inline z-0 px-1"
         >
