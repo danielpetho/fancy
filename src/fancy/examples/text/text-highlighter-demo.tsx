@@ -28,7 +28,7 @@ export default function TextHighlighterDemo() {
 
   return (
     <div className="h-full w-full bg-[#fefefe] relative p-0">
-      <div className="absolute bottom-0 w-full left-0 h-64 bg-gradient-to-t from-[#fefefe] from-10% via-50% via-[#fefefe]/50 to-transparent z-[1] pointer-events-auto" />
+      <div className="absolute bottom-0 w-full left-0 h-64 bg-gradient-to-t from-[#fefefe] from-10% via-50% via-[#fefefe]/50 to-transparent pointer-events-none isolate" />
 
       <div
         className="h-full w-full z-10 bg-[#fefefe] overflow-scroll"
