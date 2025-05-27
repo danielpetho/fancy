@@ -27,14 +27,14 @@ export default function TextHighlighterDemo() {
   }, [])
 
   return (
-    <div className="h-full w-full bg-[#fffefa] relative p-0">
-      <div className="absolute bottom-0 w-full left-0 h-64 bg-gradient-to-t from-[#fffefa] from-10% via-50% via-[#fffefa]/50 to-transparent z-[1] pointer-events-auto" />
+    <div className="h-full w-full bg-[#fefefe] relative p-0">
+      <div className="absolute bottom-0 w-full left-0 h-64 bg-gradient-to-t from-[#fefefe] from-10% via-50% via-[#fefefe]/50 to-transparent z-[1] pointer-events-auto" />
 
       <div
-        className="h-full w-full z-10 bg-[#fffefa] overflow-scroll"
+        className="h-full w-full z-10 bg-[#fefefe] overflow-scroll"
         ref={containerRef}
       >
-        <div className="max-w-md mx-auto px-4 mt-40 pb-64 p-0">
+        <div className="max-w-md mx-auto px-4 mt-40 pb-64 p-0  text-black">
           <h1 className="text-4xl font-medium mb-20 font-calendas tracking-tight">
             Typeface alphabets
           </h1>
@@ -45,13 +45,13 @@ export default function TextHighlighterDemo() {
                 The present-day designer has a host of printing types at his
                 disposal.{" "}
               </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 Since Gutenberg first invented movable type in 1436-55
               </TextHighlighter>{" "}
               <span className="">
                 hundreds of different types have been designed and cast in lead.{" "}
               </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 The most recent technical developments
               </TextHighlighter>{" "}
               <span className="">
@@ -61,13 +61,13 @@ export default function TextHighlighterDemo() {
             </p>
 
             <p>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 The choice is up to the designer
               </TextHighlighter>{" "}
               <span className="">
                 It is left to his feeling for form to use{" "}
               </span>
-              <TextHighlighter>good or poor typefaces</TextHighlighter>{" "}
+              <TextHighlighter className="rounded-[0.3em] px-px">good or poor typefaces</TextHighlighter>{" "}
               <span className="">
                 for his design work. In view of the limited space available, we
                 shall refer here to only a few of the outstanding designs of the
@@ -81,7 +81,7 @@ export default function TextHighlighterDemo() {
                 Knowledge of the quality of a typeface is of the greatest
                 importance for the{" "}
               </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 functional, aesthetic and psychological effect
               </TextHighlighter>{" "}
               <span className="">
@@ -90,7 +90,7 @@ export default function TextHighlighterDemo() {
                 spacing of lines conducive to easy reading, does much to enhance
                 the impression created.{" "}
               </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 Today the field is dominated mainly by computer and
                 photo-typesetting
               </TextHighlighter>{" "}
@@ -103,9 +103,9 @@ export default function TextHighlighterDemo() {
             </p>
 
             <p>
-              <TextHighlighter>By studying the classic designs</TextHighlighter>{" "}
+              <TextHighlighter className="rounded-[0.3em] px-px">By studying the classic designs</TextHighlighter>{" "}
               <span className="">of </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 Garamond, Casion, Bodoni, Walbaum
               </TextHighlighter>{" "}
               <span className="">
@@ -117,7 +117,7 @@ export default function TextHighlighterDemo() {
 
             <p>
               <span className="">The lead type designs of </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 Berthold, Helvetica, Folio, Univers
               </TextHighlighter>{" "}
               <span className="">
@@ -128,7 +128,7 @@ export default function TextHighlighterDemo() {
             </p>
 
             <p>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 The creators of these type designs
               </TextHighlighter>{" "}
               <span className="">
@@ -137,7 +137,7 @@ export default function TextHighlighterDemo() {
                 innumerable type designers have sought to create new type
                 alphabets but very few of these have gained acceptance.{" "}
               </span>
-              <TextHighlighter>An alphabet of Garamond</TextHighlighter>{" "}
+              <TextHighlighter className="rounded-[0.3em] px-px">An alphabet of Garamond</TextHighlighter>{" "}
               <span className="">
                 for example, is an artistic achievement of the first order. Each
                 letter has its own unmistakable face, whether lower or upper
@@ -151,7 +151,7 @@ export default function TextHighlighterDemo() {
                 Every designer who is concerned with typography should take the
                 trouble when creating graphic designs to{" "}
               </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 sketch words and sentences by hand
               </TextHighlighter>{" "}
               <span className="">
@@ -164,7 +164,7 @@ export default function TextHighlighterDemo() {
             </p>
 
             <p>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 How the forms of letters can create simultaneously both tension
                 and nobility
               </TextHighlighter>{" "}
@@ -176,7 +176,7 @@ export default function TextHighlighterDemo() {
             </p>
 
             <p>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 The Renaissance created midline typography
               </TextHighlighter>{" "}
               <span className="">
@@ -189,13 +189,13 @@ export default function TextHighlighterDemo() {
                 The new typography differs from the old in that it is the first
                 to try to{" "}
               </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 develop the outward appearance from the function of the text
               </TextHighlighter>
             </p>
 
             <p>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 The new typography uses the background
               </TextHighlighter>{" "}
               <span className="">
@@ -206,7 +206,7 @@ export default function TextHighlighterDemo() {
 
             <p>
               <span className="">Earlier typography (midline typography) </span>
-              <TextHighlighter>
+              <TextHighlighter className="rounded-[0.3em] px-px">
                 played an active role against a dead, passive background.
               </TextHighlighter>
             </p>

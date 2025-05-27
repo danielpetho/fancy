@@ -48,7 +48,7 @@ type TextHighlighterProps = {
   className?: string
 
   /**
-   * Highlight color (CSS color string)
+   * Highlight color (CSS color string). Also can be a function that returns a color string, eg:
    * @default 'hsl(60, 90%, 50%)' (yellow)
    */
   highlightColor?: string
@@ -58,7 +58,7 @@ type TextHighlighterProps = {
    * @default "ltr" (left to right)
    */
   direction?: HighlightDirection
-}
+} & React.HTMLAttributes<HTMLElement>
 
 export type TextHighlighterRef = {
   /**
@@ -73,28 +73,33 @@ export type TextHighlighterRef = {
   reset: () => void
 }
 
-export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterProps>(
+export const TextHighlighter = forwardRef<
+  TextHighlighterRef,
+  TextHighlighterProps
+>(
   (
     {
       children,
       as = "span",
       triggerType = "inView",
-      transition = { type: "spring", duration: 1., delay: 0.4, bounce: 0 },
+      transition = { type: "spring", duration: 1, delay: 0.4, bounce: 0 },
       useInViewOptions = {
-        once: false,
+        once: true,
         initial: false,
-        amount: 0.5
+        amount: 0.5,
       },
       className,
-      highlightColor = 'hsl(25, 90%, 80%)',
+      highlightColor = "hsl(25, 90%, 80%)",
       direction = "ltr",
+      ...props
     },
     ref
   ) => {
     const componentRef = useRef<HTMLDivElement>(null)
     const [isAnimating, setIsAnimating] = useState(false)
     const [isHovered, setIsHovered] = useState(false)
-    const [currentDirection, setCurrentDirection] = useState<HighlightDirection>(direction)
+    const [currentDirection, setCurrentDirection] =
+      useState<HighlightDirection>(direction)
 
     const isInView =
       triggerType === "inView"
@@ -126,15 +131,15 @@ export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterPro
     const getBackgroundSize = (animated: boolean) => {
       switch (currentDirection) {
         case "ltr":
-          return animated ? '100% 100%' : '0% 100%'
+          return animated ? "100% 100%" : "0% 100%"
         case "rtl":
-          return animated ? '100% 100%' : '0% 100%'
+          return animated ? "100% 100%" : "0% 100%"
         case "ttb":
-          return animated ? '100% 100%' : '100% 0%'
+          return animated ? "100% 100%" : "100% 0%"
         case "btt":
-          return animated ? '100% 100%' : '100% 0%'
+          return animated ? "100% 100%" : "100% 0%"
         default:
-          return animated ? '100% 100%' : '0% 100%'
+          return animated ? "100% 100%" : "0% 100%"
       }
     }
 
@@ -142,15 +147,15 @@ export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterPro
     const getBackgroundPosition = () => {
       switch (currentDirection) {
         case "ltr":
-          return '0% 0%'
+          return "0% 0%"
         case "rtl":
-          return '100% 0%'
+          return "100% 0%"
         case "ttb":
-          return '0% 0%'
+          return "0% 0%"
         case "btt":
-          return '0% 100%'
+          return "0% 100%"
         default:
-          return '0% 0%'
+          return "0% 0%"
       }
     }
 
@@ -161,31 +166,30 @@ export const TextHighlighter = forwardRef<TextHighlighterRef, TextHighlighterPro
     // Highlight style
     const highlightStyle = {
       backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,
-      backgroundRepeat: 'no-repeat',
+      backgroundRepeat: "no-repeat",
       backgroundPosition: backgroundPosition,
       backgroundSize: animatedSize,
-      boxDecorationBreak: 'clone',
-      WebkitBoxDecorationBreak: 'clone',
-      borderRadius: '0.3em',
+      boxDecorationBreak: "clone",
+      WebkitBoxDecorationBreak: "clone",
     } as React.CSSProperties
 
     return (
       <ElementTag
         ref={componentRef}
-        className={cn("", className)}
         onMouseEnter={() => triggerType === "hover" && setIsHovered(true)}
         onMouseLeave={() => triggerType === "hover" && setIsHovered(false)}
+        {...props}
       >
         <motion.span
+          className={cn("inline", className)}
           style={highlightStyle}
           animate={{
-            backgroundSize: animatedSize
+            backgroundSize: animatedSize,
           }}
           initial={{
-            backgroundSize: initialSize
+            backgroundSize: initialSize,
           }}
           transition={transition}
-          className="inline z-0 px-1"
         >
           {children}
         </motion.span>
