@@ -35,8 +35,6 @@ Just wrap your text content with the component and set the highlight color with 
 <TextHighlighter highlightColor="hsl(25, 90%, 80%)">Howdy!</TextHighlighter>
 ```
 
-By default, it will highlight when the text comes into view.
-
 ## Understanding the component
 
 The magic behind this component lies in animating the text's background. Instead of using a solid background color (CSS prop: `background-color`), we use `background-image` with a linear gradient. This allows us to animate the entire background of the text by changing the `background-size` property; something that wouldn't be possible with the simple `background-color` property. We also use a linear gradient because we can't set a solid color directly as a background image (as far as I know).
@@ -55,6 +53,7 @@ const highlightStyle = {
 We also use `box-decoration-break: clone` to make sure each individual line is properly highlighted when dealing with multi-line text. Check out [this demo](https://developer.mozilla.org/en-US/docs/Web/CSS/box-decoration-break) why this is important.
 
 The direction of the highlight reveal is controlled by the `direction` prop. Depending on the value, we set the `background-position` and `background-size` accordingly. There is two function which returns the appropriate values:
+
 ```tsx
 // Get background size based on direction
 const getBackgroundSize = (animated: boolean) => {
