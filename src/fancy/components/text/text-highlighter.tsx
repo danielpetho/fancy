@@ -3,7 +3,9 @@
 import {
   ElementType,
   forwardRef,
+  useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -49,7 +51,7 @@ type TextHighlighterProps = {
 
   /**
    * Highlight color (CSS color string). Also can be a function that returns a color string, eg:
-   * @default 'hsl(60, 90%, 50%)' (yellow)
+   * @default 'hsl(60, 90%, 68%)' (yellow)
    */
   highlightColor?: string
 
@@ -82,7 +84,7 @@ export const TextHighlighter = forwardRef<
       children,
       as = "span",
       triggerType = "inView",
-      transition = { type: "spring", duration: 1, delay: 0.4, bounce: 0 },
+      transition = { type: "spring", duration: 1, delay: 0, bounce: 0 },
       useInViewOptions = {
         once: true,
         initial: false,
@@ -100,6 +102,11 @@ export const TextHighlighter = forwardRef<
     const [isHovered, setIsHovered] = useState(false)
     const [currentDirection, setCurrentDirection] =
       useState<HighlightDirection>(direction)
+
+    // this allows us to change the direction whenever the direction prop changes
+    useEffect(() => {
+      setCurrentDirection(direction)
+    }, [direction])
 
     const isInView =
       triggerType === "inView"
@@ -159,11 +166,10 @@ export const TextHighlighter = forwardRef<
       }
     }
 
-    const animatedSize = getBackgroundSize(shouldAnimate)
-    const initialSize = getBackgroundSize(false)
-    const backgroundPosition = getBackgroundPosition()
+    const animatedSize = useMemo(() => getBackgroundSize(shouldAnimate), [shouldAnimate, currentDirection])
+    const initialSize = useMemo(() => getBackgroundSize(false), [currentDirection])
+    const backgroundPosition = useMemo(() => getBackgroundPosition(), [currentDirection])
 
-    // Highlight style
     const highlightStyle = {
       backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,
       backgroundRepeat: "no-repeat",

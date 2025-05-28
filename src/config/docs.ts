@@ -56,7 +56,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Text Rotate",
         href: "/docs/components/text/text-rotate",
         items: [],
-        label: "Updated"
       },
       {
         title: "Variable Font Hover By Letter",
@@ -181,7 +180,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Image Trail",
         href: "/docs/components/image/image-trail",
         items: [],
-        label: "New",
       },
       {
         title: "Parallax Floating",

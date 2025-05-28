@@ -7,18 +7,22 @@ import { TextHighlighter } from "@/fancy/components/text/text-highlighter"
 
 const HIGHLIGHT_COLOR = "hsl(80, 100%, 50%)"
 
-const SECTION_CLASSES = "min-w-full h-full snap-start flex items-center justify-center shrink-0"
-const CONTAINER_CLASSES = "max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-4 sm:px-6"
-const PARAGRAPH_CLASSES = "text-sm sm:text-base md:text-lg leading-relaxed font-overusedGrotesk mb-3 sm:mb-4 last:mb-0"
+const DEMO_USE_IN_VIEW_OPTIONS = { once: false, initial: false, amount: 0.1 }
+const DEMO_TRANSITION = { type: "spring", duration: 1, delay: 0.4, bounce: 0 }
 
-function AnimatedSection({
+const SECTION_CLASSES =
+  "min-w-full h-full snap-start flex items-center justify-center shrink-0"
+const CONTAINER_CLASSES =
+  "max-w-[240px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto px-4 sm:px-6"
+const PARAGRAPH_CLASSES =
+  "text-sm sm:text-base md:text-lg leading-relaxed font-overusedGrotesk mb-3 sm:mb-4 last:mb-0"
+
+function Section({
   children,
   delay = 0,
-  scrollDirection = "ltr",
 }: {
   children: React.ReactNode
   delay?: number
-  scrollDirection?: "ltr" | "rtl" | "ttb" | "btt"
 }) {
   const ref = useRef(null)
   const isInView = useInView(ref, {
@@ -28,92 +32,47 @@ function AnimatedSection({
   })
 
   return (
-    <motion.div
-      ref={ref}
-      initial={{
-        opacity: 0,
-        filter: "blur(8px)",
-      }}
-      animate={
-        isInView
-          ? {
-              opacity: 1,
-              filter: "blur(0px)",
-            }
-          : {
-              opacity: 0.3,
-              filter: "blur(6px)",
-            }
-      }
-      transition={{
-        duration: 0.8,
-        delay: isInView ? delay : 0,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
-      className="space-y-4"
-    >
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          return React.cloneElement(child, { scrollDirection } as any)
-        }
-        return child
-      })}
-    </motion.div>
-  )
-}
-
-function Paragraph({ 
-  children, 
-  scrollDirection 
-}: { 
-  children: React.ReactNode
-  scrollDirection?: "ltr" | "rtl" | "ttb" | "btt"
-}) {
-  return (
-    <p className={PARAGRAPH_CLASSES}>
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child) && child.type === TextHighlighter) {
-          return React.cloneElement(child, { 
-            direction: scrollDirection,
-            triggerType: "inView",
-            useInViewOptions: { amount: 0.3, initial: false, once: false }
-          } as any)
-        }
-        return child
-      })}
-    </p>
-  )
-}
-
-function Section({ 
-  children, 
-  delay, 
-  scrollDirection 
-}: { 
-  children: React.ReactNode
-  delay: number
-  scrollDirection: "ltr" | "rtl" | "ttb" | "btt" 
-}) {
-  return (
     <section className={SECTION_CLASSES}>
       <div className={CONTAINER_CLASSES}>
-        <AnimatedSection delay={delay} scrollDirection={scrollDirection}>
+        <motion.div
+          ref={ref}
+          initial={{
+            opacity: 0,
+            filter: "blur(8px)",
+          }}
+          animate={
+            isInView
+              ? { opacity: 1, filter: "blur(0px)" }
+              : { opacity: 0.3, filter: "blur(6px)" }
+          }
+          transition={{
+            duration: 0.8,
+            delay: isInView ? delay : 0,
+            ease: [0.25, 0.1, 0.25, 1],
+          }}
+          className="space-y-4"
+        >
           {children}
-        </AnimatedSection>
+        </motion.div>
       </div>
     </section>
   )
+}
+
+function Paragraph({ children }: { children: React.ReactNode }) {
+  return <p className={PARAGRAPH_CLASSES}>{children}</p>
 }
 
 export default function TextHighlighterDemo() {
   const containerRef = useRef<HTMLDivElement>(null)
   const [currentSection, setCurrentSection] = useState(1)
   const [scrollDirection, setScrollDirection] = useState<"ltr" | "rtl">("ltr")
-  const [lastScrollLeft, setLastScrollLeft] = useState(0)
 
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
+
+    let prevScrollLeft = container.scrollLeft
 
     const handleScroll = () => {
       const scrollLeft = container.scrollLeft
@@ -121,22 +80,16 @@ export default function TextHighlighterDemo() {
       const sectionIndex = Math.round(scrollLeft / containerWidth) + 1
       setCurrentSection(Math.min(5, Math.max(1, sectionIndex)))
 
-      // Determine scroll direction
-      const newDirection =
-        scrollLeft > lastScrollLeft
-          ? "ltr"
-          : scrollLeft < lastScrollLeft
-            ? "rtl"
-            : scrollDirection
-      if (newDirection !== scrollDirection) {
-        setScrollDirection(newDirection)
+      const scrollDiff = scrollLeft - prevScrollLeft
+      if (Math.abs(scrollDiff) > 5) {
+        setScrollDirection(scrollDiff > 0 ? "ltr" : "rtl")
       }
-      setLastScrollLeft(scrollLeft)
+      prevScrollLeft = scrollLeft
     }
 
     container.addEventListener("scroll", handleScroll)
     return () => container.removeEventListener("scroll", handleScroll)
-  }, [lastScrollLeft, scrollDirection])
+  }, [])
 
   return (
     <div className="h-full w-full bg-[#fff] text-black relative p-0">
@@ -150,14 +103,24 @@ export default function TextHighlighterDemo() {
         ref={containerRef}
         className="h-full w-full z-10 bg-[#fff] overflow-x-scroll overflow-y-hidden snap-x snap-mandatory flex mb-4 sm:mb-6"
       >
-        <Section delay={0.2} scrollDirection={scrollDirection}>
-          <Paragraph scrollDirection={scrollDirection}>
+        <Section>
+          <Paragraph>
             <span>Our </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               object detection systems
             </TextHighlighter>
             <span> identify and locate items in real-time. From </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               facial recognition
             </TextHighlighter>
             <span>
@@ -166,13 +129,23 @@ export default function TextHighlighterDemo() {
             </span>
           </Paragraph>
 
-          <Paragraph scrollDirection={scrollDirection}>
+          <Paragraph>
             <span>Whether it's </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               traffic monitoring
             </TextHighlighter>
             <span> for smart cities or </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               inventory management
             </TextHighlighter>
             <span>
@@ -183,14 +156,24 @@ export default function TextHighlighterDemo() {
           </Paragraph>
         </Section>
 
-        <Section delay={0.3} scrollDirection={scrollDirection}>
-          <Paragraph scrollDirection={scrollDirection}>
+        <Section>
+          <Paragraph>
             <span>Advanced </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               video analytics
             </TextHighlighter>
             <span> track movement across frames. Our </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               object tracking algorithms
             </TextHighlighter>
             <span>
@@ -199,49 +182,83 @@ export default function TextHighlighterDemo() {
             </span>
           </Paragraph>
 
-          <Paragraph scrollDirection={scrollDirection}>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+          <Paragraph>
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               Scene understanding
             </TextHighlighter>
             <span>
               {" "}
-              capabilities analyze spatial relationships and context. From{" "}
+              capabilities analyze spatial relationships and context. From{` `}
             </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               sports performance analysis
             </TextHighlighter>
             <span> to </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               surveillance systems
             </TextHighlighter>
             <span>, we make sense of complex visual data.</span>
           </Paragraph>
         </Section>
 
-        <Section delay={0.4} scrollDirection={scrollDirection}>
-          <Paragraph scrollDirection={scrollDirection}>
+        <Section>
+          <Paragraph>
             <span>Our </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               OCR technology
             </TextHighlighter>
             <span>
               {" "}
-              converts printed and handwritten text to digital format
-              instantly.{" "}
+              converts printed and handwritten text to digital format instantly.{" "}
             </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               Document automation
             </TextHighlighter>
             <span> streamlines workflows across industries.</span>
           </Paragraph>
 
-          <Paragraph scrollDirection={scrollDirection}>
+          <Paragraph>
             <span>From </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               invoice processing
             </TextHighlighter>
             <span> to </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               accessibility solutions
             </TextHighlighter>
             <span>
@@ -251,13 +268,23 @@ export default function TextHighlighterDemo() {
           </Paragraph>
         </Section>
 
-        <Section delay={0.5} scrollDirection={scrollDirection}>
-          <Paragraph scrollDirection={scrollDirection}>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+        <Section>
+          <Paragraph>
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               3D depth perception
             </TextHighlighter>
             <span> enables precise spatial understanding. Our </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               stereo vision systems
             </TextHighlighter>
             <span>
@@ -266,33 +293,52 @@ export default function TextHighlighterDemo() {
             </span>
           </Paragraph>
 
-          <Paragraph scrollDirection={scrollDirection}>
+          <Paragraph>
             <span>Advanced </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               augmented reality
             </TextHighlighter>
             <span> and </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               virtual reality applications
             </TextHighlighter>
             <span>
               {" "}
-              rely on our depth analysis for immersive, interactive
-              experiences.
+              rely on our depth analysis for immersive, interactive experiences.
             </span>
           </Paragraph>
         </Section>
 
-        <Section delay={0.6} scrollDirection={scrollDirection}>
-          <Paragraph scrollDirection={scrollDirection}>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+        <Section>
+          <Paragraph>
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               Image segmentation
             </TextHighlighter>
             <span>
               {" "}
-              separates objects with pixel-perfect precision. Our{" "}
+              separates objects with pixel-perfect precision. Our{` `}
             </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               enhancement algorithms
             </TextHighlighter>
             <span>
@@ -301,29 +347,41 @@ export default function TextHighlighterDemo() {
             </span>
           </Paragraph>
 
-          <Paragraph scrollDirection={scrollDirection}>
+          <Paragraph>
             <span>Generate </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               synthetic training data
             </TextHighlighter>
             <span> and create </span>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               high-resolution imagery
             </TextHighlighter>
-            <span>
-              {" "}
-              for machine learning models and creative applications.
-            </span>
+            <span> for machine learning models and creative applications.</span>
           </Paragraph>
 
-          <Paragraph scrollDirection={scrollDirection}>
-            <TextHighlighter highlightColor={HIGHLIGHT_COLOR} className="rounded-[0.3em] px-1">
+          <Paragraph>
+            <TextHighlighter
+              highlightColor={HIGHLIGHT_COLOR}
+              direction={scrollDirection}
+              useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
+              transition={DEMO_TRANSITION}
+            >
               Transform your industry
             </TextHighlighter>
             <span>
               {" "}
-              with computer vision that sees, understands, and acts on
-              visual information like never before.
+              with computer vision that sees, understands, and acts on visual
+              information like never before.
             </span>
           </Paragraph>
         </Section>
