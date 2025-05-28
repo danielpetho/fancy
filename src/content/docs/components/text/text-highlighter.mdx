@@ -1,0 +1,232 @@
+---
+title: Text Highlighter
+description: An animated text highlighting component with multiple trigger modes and directional animations.
+component: true
+---
+
+<ComponentPreview name="text-highlighter-demo"/>
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+```bash
+npx shadcn@latest add "https://fancycomponents.dev/r/text-highlighter.json"
+```
+
+</TabsContent>  
+<TabsContent value="manual">
+
+<ComponentSource name="text-highlighter" />
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+Just wrap your text content with the component and set the highlight color with the `highlightColor` prop.
+```tsx
+<TextHighlighter highlightColor="hsl(25, 90%, 80%)">Howdy!</TextHighlighter>
+```
+
+By default, it will highlight when the text comes into view.
+
+## Understanding the component
+
+The magic behind this component lies in animating the text's background. Instead of using a solid background color (CSS prop: `background-color`), we use `background-image` with a linear gradient. This allows us to animate the entire background of the text by changing the `background-size` property; something that wouldn't be possible with the simple `background-color` property. We also use a linear gradient because we can't set a solid color directly as a background image (as far as I know).
+
+```tsx
+const highlightStyle = {
+  backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: backgroundPosition,
+  backgroundSize: animatedSize,
+  boxDecorationBreak: "clone",
+  WebkitBoxDecorationBreak: "clone",
+} as React.CSSProperties
+```
+
+We also use `box-decoration-break: clone` to make sure each individual line is properly highlighted when dealing with multi-line text. Check out [this demo](https://developer.mozilla.org/en-US/docs/Web/CSS/box-decoration-break) why this is important.
+
+The direction of the highlight reveal is controlled by the `direction` prop. Depending on the value, we set the `background-position` and `background-size` accordingly. There is two function which returns the appropriate values:
+```tsx
+// Get background size based on direction
+const getBackgroundSize = (animated: boolean) => {
+  switch (currentDirection) {
+    case "ltr":
+      return animated ? "100% 100%" : "0% 100%"
+    case "rtl":
+      return animated ? "100% 100%" : "0% 100%"
+    case "ttb":
+      return animated ? "100% 100%" : "100% 0%"
+    case "btt":
+      return animated ? "100% 100%" : "100% 0%"
+    default:
+      return animated ? "100% 100%" : "0% 100%"
+  }
+}
+
+// Get background position based on direction
+const getBackgroundPosition = () => {
+  switch (currentDirection) {
+    case "ltr":
+      return "0% 0%"
+    case "rtl":
+      return "100% 0%"
+    case "ttb":
+      return "0% 0%"
+    case "btt":
+      return "0% 100%"
+    default:
+      return "0% 0%"
+  }
+}
+```
+
+Then, we just use motion to animate the `background-size` property based on the `shouldAnimate` state:
+
+```tsx
+<motion.span
+  className={cn("inline", className)}
+  style={highlightStyle}
+  animate={{
+    backgroundSize: animatedSize,
+  }}
+  initial={{
+    backgroundSize: initialSize,
+  }}
+  transition={transition}
+>
+  {children}
+</motion.span>
+```
+
+You can customize the transition by passing a `Transition` object to the `transition` prop. The default value is spring type animation `{ type: "spring", duration: 1, delay: 0., bounce: 0 }`.
+
+By default, the animation will be triggered once the component is mounted. Another interesting trigger option is `inView`, which will trigger the animation when the component enters the viewport (demonstrated in the demo above). You can customize that behaviour by setting the `useInViewOptions` prop. For more information, check out the [useInView](https://www.react-spring.io/docs/hooks/use-in-view) documentation.
+
+### Different directions
+
+You can control the highlight animation direction via the `direction` prop. The available options are:
+
+- `"ltr"` - Left to right animation
+- `"rtl"` - Right to left animation  
+- `"ttb"` - Top to bottom animation
+- `"btt"` - Bottom to top animation
+
+The following demo shows how to dynamically change the reveal direction based on the user's scroll direction. Scroll left and right to see the animations trigger.
+
+<ComponentPreview name="text-highlighter-scroll-demo"/>
+
+### Hover
+
+You can also trigger the highlight animation via hover, if you set the `triggerType` prop to `"hover"`:
+
+<ComponentPreview name="text-highlighter-hover-demo"/>
+
+### Control via ref
+
+You can also trigger the animation via an exposed ref. This is useful if you want to trigger the animation programmatically:
+
+<ComponentPreview name="text-highlighter-ref-demo"/>
+
+## Notes
+
+- While the component only support a single-colored highlight directly, you can change it to an image, a fancy gradient, or anything that a `background-image` can handle. Just change the appropriate line:
+```ts
+backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,   // change this to make it fancier
+```
+
+- As many users have pointed out, excessive animations can be distracting and impact readability, especially when highlighting large blocks of text. Consider using animations sparingly and adjusting the transition duration and delay to create a more subtle effect. You may also want to use the `useInViewOptions` prop to control when animations trigger, for example by increasing the `amount` threshold or setting `once: true` to only animate elements once.
+
+## Props
+
+### TextHighlighterProps
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>The text content to be highlighted</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`"span"`</TableCell>
+      <TableCell>HTML element to render as</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>triggerType</TableCell>
+      <TableCell>`"auto" | "hover" | "ref" | "inView"`</TableCell>
+      <TableCell>`"inView"`</TableCell>
+      <TableCell>How to trigger the animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>transition</TableCell>
+      <TableCell>`Transition`</TableCell>
+      <TableCell>`{ type: "spring", duration: 1, delay: 0, bounce: 0 }`</TableCell>
+      <TableCell>Animation transition configuration</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>useInViewOptions</TableCell>
+      <TableCell>`UseInViewOptions`</TableCell>
+      <TableCell>`{ once: true, initial: false, amount: 0.5 }`</TableCell>
+      <TableCell>Options for useInView hook when triggerType is "inView"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Class name for the container element</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>highlightColor</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>`"hsl(25, 90%, 80%)"`</TableCell>
+      <TableCell>Highlight color (CSS color string)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>direction</TableCell>
+      <TableCell>`"ltr" | "rtl" | "ttb" | "btt"`</TableCell>
+      <TableCell>`"ltr"`</TableCell>
+      <TableCell>Direction of the highlight animation</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### TextHighlighterRef
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Method</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>animate(direction?: HighlightDirection)</TableCell>
+      <TableCell>Trigger the highlight animation with optional direction override</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>reset()</TableCell>
+      <TableCell>Reset the highlight animation to its initial state</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
