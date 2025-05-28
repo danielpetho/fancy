@@ -11,6 +11,7 @@ export default function TextHighlighterDemo() {
   const transition = { type: "spring", duration: 1, delay: 0.4, bounce: 0 }
   const highlightClass = "rounded-[0.3em] px-px"
   const highlightColor = "#F2AD91"
+  const inViewOptions = { once: true, initial: true, amount: 0.1 }
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -51,6 +52,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 Since Gutenberg first invented movable type in 1436-55
               </TextHighlighter>{" "}
@@ -59,6 +61,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 The most recent technical developments
               </TextHighlighter>{" "}
@@ -71,6 +74,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 The choice is up to the designer
               </TextHighlighter>{" "}
@@ -79,6 +83,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 good or poor typefaces
               </TextHighlighter>{" "}
@@ -95,6 +100,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 functional, aesthetic and psychological effect
               </TextHighlighter>{" "}
@@ -106,6 +112,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 Today the field is dominated mainly by computer and
                 photo-typesetting
@@ -121,6 +128,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 By studying the classic designs
               </TextHighlighter>{" "}
@@ -129,6 +137,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 Garamond, Casion, Bodoni, Walbaum
               </TextHighlighter>{" "}
@@ -143,6 +152,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 Berthold, Helvetica, Folio, Univers
               </TextHighlighter>{" "}
@@ -156,6 +166,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 The creators of these type designs
               </TextHighlighter>{" "}
@@ -167,6 +178,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 An alphabet of Garamond
               </TextHighlighter>{" "}
@@ -183,6 +195,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 sketch words and sentences by hand
               </TextHighlighter>{" "}
@@ -198,6 +211,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 How the forms of letters can create simultaneously both tension
                 and nobility
@@ -211,6 +225,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 The Renaissance created midline typography
               </TextHighlighter>{" "}
@@ -224,6 +239,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 develop the outward appearance from the function of the text
               </TextHighlighter>
@@ -234,6 +250,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 The new typography uses the background
               </TextHighlighter>{" "}
@@ -246,6 +263,7 @@ export default function TextHighlighterDemo() {
                 className={highlightClass}
                 transition={transition}
                 highlightColor={highlightColor}
+                useInViewOptions={inViewOptions}
               >
                 played an active role against a dead, passive background.
               </TextHighlighter>

@@ -31,7 +31,7 @@ type TextHighlighterProps = {
    * How to trigger the animation
    * @default "inView"
    */
-  triggerType?: "hover" | "ref" | "inView"
+  triggerType?: "hover" | "ref" | "inView" | "auto"
 
   /**
    * Animation transition configuration
@@ -88,7 +88,7 @@ export const TextHighlighter = forwardRef<
       useInViewOptions = {
         once: true,
         initial: false,
-        amount: 0.5,
+        amount: 0.1,
       },
       className,
       highlightColor = "hsl(25, 90%, 80%)",
@@ -130,7 +130,9 @@ export const TextHighlighter = forwardRef<
           ? isInView
           : triggerType === "ref"
             ? isAnimating
-            : false
+            : triggerType === "auto"
+              ? true
+              : false
 
     const ElementTag = as || "span"
 

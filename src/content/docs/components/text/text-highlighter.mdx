@@ -109,9 +109,9 @@ Then, we just use motion to animate the `background-size` property based on the 
 
 You can customize the transition by passing a `Transition` object to the `transition` prop. The default value is spring type animation `{ type: "spring", duration: 1, delay: 0., bounce: 0 }`.
 
-By default, the animation will be triggered once the component is in the viewport. You can customize that behaviour by setting the `useInViewOptions` prop. For more information, check out the [useInView](https://www.react-spring.io/docs/hooks/use-in-view) documentation.
+By default, the animation will be triggered once the component is mounted. Another interesting trigger option is `inView`, which will trigger the animation when the component enters the viewport (demonstrated in the demo above). You can customize that behaviour by setting the `useInViewOptions` prop. For more information, check out the [useInView](https://www.react-spring.io/docs/hooks/use-in-view) documentation.
 
-## Different directions
+### Different directions
 
 You can control the highlight animation direction via the `direction` prop. The available options are:
 
@@ -124,13 +124,13 @@ The following demo shows how to dynamically change the reveal direction based on
 
 <ComponentPreview name="text-highlighter-scroll-demo"/>
 
-## Hover
+### Hover
 
 You can also trigger the highlight animation via hover, if you set the `triggerType` prop to `"hover"`:
 
 <ComponentPreview name="text-highlighter-hover-demo"/>
 
-## Control via ref
+### Control via ref
 
 You can also trigger the animation via an exposed ref. This is useful if you want to trigger the animation programmatically:
 
@@ -173,7 +173,7 @@ backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,   // c
     </TableRow>
     <TableRow>
       <TableCell>triggerType</TableCell>
-      <TableCell>`"hover" | "ref" | "inView"`</TableCell>
+      <TableCell>`"auto" | "hover" | "ref" | "inView"`</TableCell>
       <TableCell>`"inView"`</TableCell>
       <TableCell>How to trigger the animation</TableCell>
     </TableRow>
