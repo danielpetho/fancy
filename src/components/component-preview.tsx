@@ -2,17 +2,13 @@
 
 import * as React from "react"
 import { Repeat } from "lucide-react"
-import ReactSyntaxHighlighter, {
-  Prism as SyntaxHighlighter,
-} from "react-syntax-highlighter"
-import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
 import { absoluteUrl, cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Icons } from "@/components/icons"
 import { registry } from "@/fancy/index"
 
-import { CopyButton } from "./copy-button"
+import { CodeSnippet } from "./code-snippet"
 import { OpenInV0Button } from "./open-in-v0"
 import { RestartButton } from "./restart-button"
 import { Button } from "./ui/button"
@@ -22,7 +18,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
-import { CodeSnippet } from "./code-snippet"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -73,17 +68,6 @@ export function ComponentPreview({
     loadSourceCode()
   }, [name])
 
-  const syntaxHighlighterStyle = React.useMemo(
-    () => ({
-      borderRadius: "var(--radius) var(--radius)",
-      overflow: "auto",
-      padding: "1rem",
-      fontSize: "0.9rem",
-      width: "100%",
-      height: "100%",
-    }),
-    []
-  )
   const handleRestart = React.useCallback(() => {
     setPreviewKey((prev) => prev + 1)
   }, [])
@@ -129,7 +113,7 @@ export function ComponentPreview({
     <div
       data-algolia-ignore
       className={cn(
-        "group relative my-4 flex flex-col space-y-2 h-full w-full ",
+        "group relative flex flex-col h-full w-full ",
         className
       )}
       {...props}
@@ -214,13 +198,11 @@ export function ComponentPreview({
           </div>
         </TabsContent>
         <TabsContent value="code">
-          {/* <div className="flex flex-col h-[520px] relative"> */}
-            <CodeSnippet
-              title={name + ".tsx"}
-              code={sourceCode}
-              language="typescript"
-            />
-          {/* </div> */}
+          <CodeSnippet
+            title={name + ".tsx"}
+            code={sourceCode}
+            language="typescript"
+          />
         </TabsContent>
       </Tabs>
     </div>

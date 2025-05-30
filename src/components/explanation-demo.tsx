@@ -52,13 +52,13 @@ export function ExplanationDemo({
     <div
       data-algolia-ignore
       className={cn(
-        "group relative my-4 flex flex-col space-y-2 h-full w-full",
+        "group relative my-8 flex flex-col h-full w-full",
         className
       )}
       {...props}
     >
-      <div className="border border-black-500 flex rounded-lg">
-        <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative max-h-[620px]">
+      <div className="border border-border flex rounded-2xl">
+        <div className="w-full flex items-center justify-center rounded-2xl min-h-[530px] overflow-hidden relative max-h-[620px]">
           <React.Suspense
             fallback={
               <div className="flex items-center justify-center w-full h-full text-sm text-muted-foreground">

@@ -13,6 +13,7 @@
   --font-azeret-mono: Azeret Mono;
   --font-fira-mono: Fira Mono, monospace;
   --font-noto-sans-symbols: Noto Sans Symbols;
+  --font-satoshi: Satoshi, sans-serif;
 
   --font-sans: var(--font-overused-grotesk);
   --font-mono: var(--font-fira-mono);
@@ -296,65 +297,77 @@
   @font-face {
     font-family: "Overused Grotesk";
     src:
-      url("../../public/fonts/OverusedGrotesk-VF.woff2")
+      url("../../public/fonts/overused-grotesk.woff2")
         format("woff2 supports variations"),
-      url("../../public/fonts/OverusedGrotesk-VF.woff2")
+      url("../../public/fonts/overused-grotesk.woff2")
         format("woff2-variations");
     font-weight: 300 900;
   }
 
   @font-face {
     font-family: "Cotham Sans";
-    src: url("../../public/fonts/CothamSans.otf") format("otf");
+    src: url("../../public/fonts/cotham-sans.otf") format("otf");
     font-weight: 400;
   }
 
   @font-face {
     font-family: "Calendas Plus";
-    src: url("../../public/fonts/calendas_plus-webfont.woff") format("woff");
+    src: url("../../public/fonts/calendas-plus.woff") format("woff");
     font-weight: 400;
   }
 
   @font-face {
     font-family: "VT323";
-    src: url("../../public/fonts/VT323-Regular.ttf") format("truetype");
+    src: url("../../public/fonts/vt323.ttf") format("truetype");
     font-weight: 400;
   }
 
   @font-face {
     font-family: "Tiny5";
-    src: url("../../public/fonts/Tiny5-Regular.ttf") format("truetype");
+    src: url("../../public/fonts/tiny5.ttf") format("truetype");
   }
 
   @font-face {
     font-family: "Azeret Mono";
-    src: url("../../public/fonts/AzeretMono-Variable.woff2")
+    src: url("../../public/fonts/azeret-mono.woff2")
       format("woff2-variations");
     font-weight: 100 900;
   }
 
   @font-face {
     font-family: "Noto Sans Symbols";
-    src: url("../../public/fonts/NotoSansSymbols-VariableFont_wght.ttf")
+    src: url("../../public/fonts/noto-sans.ttf")
       format("truetype-variations");
     font-weight: 100 900;
   }
 
   @font-face {
     font-family: "Fira Mono";
-    src: url("../../public/fonts/firamono-regular.ttf") format("truetype");
+    src: url("../../public/fonts/fira-mono-regular.ttf") format("truetype");
     font-weight: 400;
   }
 
   @font-face {
     font-family: "Fira Mono";
-    src: url("../../public/fonts/firamono-medium.ttf") format("truetype");
+    src: url("../../public/fonts/fira-mono-medium.ttf") format("truetype");
     font-weight: 500;
   }
 
   @font-face {
     font-family: "Fira Mono";
-    src: url("../../public/fonts/firamono-bold.ttf") format("truetype");
+    src: url("../../public/fonts/fira-mono-bold.ttf") format("truetype");
     font-weight: 700;
+  }
+
+  @font-face {
+    font-family: "Satoshi";
+    src: url("../../public/fonts/satoshi.woff2") format("woff2-variations");
+    font-weight: 300 900;
+  }
+
+  @font-face {
+    font-family: "Satoshi Italic";
+    src: url("../../public/fonts/satoshi-italic.woff2") format("woff2-variations");
+    font-weight: 400;
   }
 }
