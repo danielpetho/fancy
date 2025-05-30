@@ -59,17 +59,6 @@ export function ComponentSource({
     loadSourceCode()
   }, [name])
 
-  const syntaxHighlighterStyle = React.useMemo(
-    () => ({
-      borderRadius: "var(--radius) var(--radius)",
-      padding: "1rem",
-      fontSize: "0.9rem",
-      width: "100%",
-      maxWidth: "100%",
-    }),
-    []
-  )
-
   return (
     <Collapsible
       open={isOpened}
@@ -84,16 +73,7 @@ export function ComponentSource({
             !isOpened && "max-h-40"
           )}
         >
-          {isOpened && (
-            <div className="absolute right-4 top-4">
-              <CopyButton
-                value={sourceCode}
-                src={name}
-                event={"copy_npm_command"}
-              />
-            </div>
-          )}
-          <CodeSnippet title={name + ".tsx"} code={sourceCode} language="typescript"/>
+          <CodeSnippet title={name + ".tsx"} code={sourceCode} language="tsx"/>
         </CollapsibleContent>
         <div
           className={cn(

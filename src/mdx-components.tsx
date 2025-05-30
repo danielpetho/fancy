@@ -40,18 +40,18 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <>
         <h2
           id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-          className={cn("text-4xl font-medium pt-10", className)}
+          className={cn("text-4xl font-medium pt-12 pb-0 mb-3 mt-0", className)}
           {...props}
         >
           {children}
         </h2>
-        <hr />
+        <hr className="pb-3"/>
       </>
     ),
     h3: ({ className, children, ...props }: React.ComponentProps<"h3">) => (
       <h3
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn("text-2xl font-medium pt-6", className)}
+        className={cn("text-2xl font-medium pb-6 my-0", className)}
         {...props}
       >
         {children}
@@ -60,7 +60,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     h4: ({ className, children, ...props }: React.ComponentProps<"h4">) => (
       <h4
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn("text-xl font-medium", className)}
+        className={cn("text-xl font-medium pb-6 my-0", className)}
         {...props}
       >
         {children}
@@ -111,7 +111,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     ),
     li: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <li
-        className={cn("marker:text-base text-lg", className)}
+        className={cn("marker:text-base text-lg first:mt-2 last:pb-4", className)}
         {...props}
       />
     ),

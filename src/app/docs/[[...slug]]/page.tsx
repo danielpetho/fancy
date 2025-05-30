@@ -105,7 +105,7 @@ export default async function DocPage({ params }: DocPageProps) {
       params.slug?.[1]?.slice(1).toLowerCase() || "Getting Started"
 
   return (
-    <main className="xl:grid xl:grid-cols-[minmax(0,1fr)_300px] justify-center w-full">
+    <main className="xl:grid xl:grid-cols-[minmax(0,1fr)_340px] justify-center w-full">
       <div className="rounded-2xl bg-background py-6 lg:gap-10 lg:py-6 border-border border">
         <div data-algolia-crawl className="px-4 md:px-8 flex flex-col">
           <div className="mb-2 pb-2 flex items-center space-x-1 text-base md:text-lg text-muted-foreground">

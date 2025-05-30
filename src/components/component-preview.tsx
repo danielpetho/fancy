@@ -201,7 +201,7 @@ export function ComponentPreview({
           <CodeSnippet
             title={name + ".tsx"}
             code={sourceCode}
-            language="typescript"
+            language="tsx"
           />
         </TabsContent>
       </Tabs>
