@@ -16,7 +16,10 @@ import { CodeBlockWrapper } from "@/components/code-block-wrapper"
 import { ComponentPreview } from "@/components/component-preview"
 import { ComponentSource } from "@/components/component-source"
 import { ExplanationDemo } from "@/components/explanation-demo"
-
+import { InstallTabs } from "@/components/install-tabs"
+import { ExternalLinkIcon } from "lucide-react"
+import { CodeSnippet } from "@/components/code-snippet"
+import { Children } from "react"
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -24,7 +27,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <h1
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
         className={cn(
-          "scroll-m-24 text-5xl  font-calendas tracking-tight py-2",
+          "text-[44px] font-calendas tracking-tighter text-pretty leading-tight pb-12",
           className
         )}
         {...props}
@@ -33,27 +36,21 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       </h1>
     ),
     h2: ({ className, children, ...props }: React.ComponentProps<"h2">) => (
-      <div className="flex flex-col gap-y-4 mt-4 ">
+      <>
         <h2
           id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-          className={cn(
-            "scroll-m-20 text-4xl tracking-tight pt-6 pb-0",
-            className
-          )}
+          className={cn("text-4xl font-medium pt-6 pb-0 mb-2", className)}
           {...props}
         >
           {children}
         </h2>
-        <hr className="" />
-      </div>
+        <hr className="mt-0 border-border" />
+      </>
     ),
     h3: ({ className, children, ...props }: React.ComponentProps<"h3">) => (
       <h3
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn(
-          "scroll-m-24 text-3xl  tracking-tight pt-10 pb-2",
-          className
-        )}
+        className={cn("text-2xl font-medium pt-6", className)}
         {...props}
       >
         {children}
@@ -62,80 +59,68 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     h4: ({ className, children, ...props }: React.ComponentProps<"h4">) => (
       <h4
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn(
-          "scroll-m-20 text-2xl tracking-tight pt-10 pb-2",
-          className
-        )}
+        className={cn("text-xl font-medium pt-6", className)}
         {...props}
       >
         {children}
       </h4>
     ),
-    h5: ({
+    a: ({
       className,
       children,
       ...props
-    }: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <h5
-        id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn(
-          "scroll-m-20 text-xl  tracking-tight pt-10 pb-4",
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </h5>
-    ),
-    h6: ({
-      className,
-      children,
-      ...props
-    }: React.HTMLAttributes<HTMLHeadingElement>) => (
-      <h6
-        id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn(
-          "scroll-m-20 text-xl tracking-tight pt-10 pb-4",
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </h6>
-    ),
-    a: ({ className, ...props }: React.HTMLAttributes<HTMLAnchorElement>) => (
+    }: React.HTMLAttributes<HTMLAnchorElement>) => (
       <a
-        className={cn(" underline underline-offset-4", className)}
+        className={cn(
+          "font-medium text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500 duration-300 ease-out transition inline-flex items-center leading-0",
+          className
+        )}
         {...props}
-      />
+      >
+        {children}
+        <ExternalLinkIcon
+          className="ml-1 pt-px mt-px"
+          size={13}
+          strokeWidth={2.5}
+        />
+      </a>
     ),
     p: ({
       className,
       ...props
     }: React.HTMLAttributes<HTMLParagraphElement>) => (
-      <p
-        className={cn("leading-7 not-first:mt-3 text-lg", className)}
+      <p className={cn("text-lg text-pretty", className)} {...props} />
+    ),
+    ul: ({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
+      <ul
+        className={cn("list-disc text-base ml-6 list-outside space-y-3", className)}
         {...props}
       />
     ),
-    ul: ({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
-      <ul className={cn("my-6 ml-6 list-disc text-lg", className)} {...props} />
+    math: ({ children }) => (
+      <BlockMath>{children}</BlockMath>
+    ),
+    inlineMath: ({ children }) => (
+      <InlineMath>{children}</InlineMath>
     ),
     ol: ({ className, ...props }: React.HTMLAttributes<HTMLOListElement>) => (
       <ol
-        className={cn("my-6 ml-6 list-decimal text-lg", className)}
+        className={cn(
+          "list-outside list-decimal mb-[1em] mt-[1em] ml-6 space-y-3",
+          className
+        )}
         {...props}
       />
     ),
     li: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
-      <li className={cn("mt-2", className)} {...props} />
+      <li className={cn("marker:text-sm text-lg first:mt-3", className)} {...props} />
     ),
     blockquote: ({
       className,
       ...props
     }: React.HTMLAttributes<HTMLElement>) => (
       <blockquote
-        className={cn("mt-6 border-l-2 pl-6", className)}
+        className={cn("mt-2 border-l-1 pl-0 px-6", className)}
         style={{ fontVariationSettings: "'slnt' -10" }}
         {...props}
       />
@@ -145,11 +130,20 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       alt,
       ...props
     }: React.ImgHTMLAttributes<HTMLImageElement>) => (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img className={cn("rounded-md", className)} alt={alt} {...props} />
+      //@ts-expect-error img src expects a Blob or string
+      <ImageComponent src={props.src as string} alt={alt as string} caption={true} className={className} {...props} />
     ),
     hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
-      <hr className="my-1 md:my-1" {...props} />
+      <hr className="" {...props} />
+    ),
+    code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
+      <code
+        className={cn(
+          "font-fira-mono text-[13px] px-1.5 py-0.5 border border-border rounded-md leading-6 bg-muted ",
+          className
+        )}
+        {...props}
+      />
     ),
     table: ({
       className,
@@ -233,28 +227,38 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
         />
       )
     },
-    code: ({ children, className, ...props }: React.ComponentProps<"code">) => {
-      const isInlineCode = !className?.includes("language-")
+    InstallTabs,
+    CodeSnippet: ({
+      className,
+      title,
+      children,
+      ...props
+    }: React.HTMLAttributes<HTMLElement> & {
+      title?: string;
+    }) => {
+      // Extract code content and language from children
+      const preElement = Children.toArray(children)[0] as React.ReactElement;
 
-      if (isInlineCode) {
-        return (
-          <code
-            className={cn(
-              "font-azeret-mono text-xs p-1 bg-zinc-100 dark:bg-zinc-800",
-              className
-            )}
-            {...props}
-          >
-            {children}
-          </code>
-        )
-      }
+      //@ts-ignore
+      const codeElement = preElement?.props?.children as React.ReactElement<{
+        className?: string;
+        children?: string;
+      }>;
+
+      if (!codeElement) return null;
+
+      const code = codeElement.props.children || "";
+      const language =
+        codeElement.props.className?.replace("language-", "") || "typescript";
 
       return (
-        <CodeBlockWrapper className="my-0 py-0">
-          {children}
-        </CodeBlockWrapper>
-      )
+        <CodeSnippet
+          title={title}
+          code={code}
+          language={language}
+          {...props}
+        />
+      );
     },
     ComponentPreview,
     ComponentSource,
@@ -331,7 +335,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.ComponentProps<typeof TabsList>) => (
       <TabsList
         className={cn(
-          "w-full justify-start rounded-none border-b bg-transparent p-0",
+          "w-full justify-start rounded-none bg-transparent p-0",
           className
         )}
         {...props}
@@ -343,7 +347,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.ComponentProps<typeof TabsTrigger>) => (
       <TabsTrigger
         className={cn(
-          "relative h-9 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none",
+          "relative text-lg h-9 rounded-none bg-transparent px-2 pb-3 pt-2 font-normal text-muted-foreground shadow-none transition-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none",
           className
         )}
         {...props}

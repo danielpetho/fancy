@@ -11,7 +11,11 @@
   --font-VT323: VT323;
   --font-tiny5: Tiny5;
   --font-azeret-mono: Azeret Mono;
+  --font-fira-mono: Fira Mono, monospace;
   --font-noto-sans-symbols: Noto Sans Symbols;
+
+  --font-sans: var(--font-overused-grotesk);
+  --font-mono: var(--font-fira-mono);
 
   --color-lavender: #ecbfff;
   --color-reddish: #ff4a48;
@@ -42,10 +46,26 @@
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
+  --color-blue: var(--color-blue-700);
+  --color-blue-50: var(--blue-50);
+  --color-blue-100: var(--blue-100);
+  --color-blue-200: var(--blue-200);
+  --color-blue-300: var(--blue-300);
+  --color-blue-400: var(--blue-400);
+  --color-blue-500: var(--blue-500);
+  --color-blue-600: var(--blue-600);
+  --color-blue-700: var(--blue-700);
+  --color-blue-800: var(--blue-800);
+  --color-blue-900: var(--blue-900);
+  --color-blue-950: var(--blue-950);
+
+  --color-editor-background: var(--editor-bg);
+  --color-editor-border: var(--editor-border);
+
   --color-primary-red: var(--red);
   --color-primary-orange: var(--orange);
   --color-primary-pink: var(--pink);
-  --color-primary-blue: var(--blue);
+  --color-primary-blue: var(--blue-700);
 
   --color-teal: var(--teal);
   --color-teal-foreground: var(--teal-foreground);
@@ -202,11 +222,25 @@
     --red: #ff5941;
     --orange: #f97316;
     --pink: #e794da;
-    --blue: #0015ff;
     --teal: #1f464d;
     --teal-foreground: #3bb6ab;
     --yellow: #eab308;
     --yellow-foreground: #ffd726;
+
+    --editor-bg: #151515;
+    --editor-border: #252525;
+  
+    --blue-50: #e8f3ff;
+    --blue-100: #d5e8ff;
+    --blue-200: #b3d2ff;
+    --blue-300: #85b2ff;
+    --blue-400: #5684ff;
+    --blue-500: #2f56ff;
+    --blue-600: #0c22ff;
+    --blue-700: #0015ff;
+    --blue-800: #0619cd;
+    --blue-900: #10229f;
+    --blue-950: #0a125c;
   }
 
   .dark {
@@ -304,5 +338,23 @@
     src: url("../../public/fonts/NotoSansSymbols-VariableFont_wght.ttf")
       format("truetype-variations");
     font-weight: 100 900;
+  }
+
+  @font-face {
+    font-family: "Fira Mono";
+    src: url("../../public/fonts/firamono-regular.ttf") format("truetype");
+    font-weight: 400;
+  }
+
+  @font-face {
+    font-family: "Fira Mono";
+    src: url("../../public/fonts/firamono-medium.ttf") format("truetype");
+    font-weight: 500;
+  }
+
+  @font-face {
+    font-family: "Fira Mono";
+    src: url("../../public/fonts/firamono-bold.ttf") format("truetype");
+    font-weight: 700;
   }
 }

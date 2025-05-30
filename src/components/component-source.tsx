@@ -13,6 +13,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "./ui/collapsible"
+import { CodeSnippet } from "./code-snippet"
 
 interface ComponentSourceProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -92,14 +93,7 @@ export function ComponentSource({
               />
             </div>
           )}
-          <ReactSyntaxHighlighter
-            language="tsx"
-            style={hybrid}
-            customStyle={syntaxHighlighterStyle}
-            wrapLongLines={true}
-          >
-            {sourceCode}
-          </ReactSyntaxHighlighter>
+          <CodeSnippet title={name + ".tsx"} code={sourceCode} language="typescript"/>
         </CollapsibleContent>
         <div
           className={cn(

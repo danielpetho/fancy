@@ -18,9 +18,7 @@ Inspiration from [Bakken & Bæck](https://www.instagram.com/p/DBG5fLdiN4Q/?img_i
 </TabsList>
 <TabsContent value="cli">
 
-```bash
-npx shadcn@latest add "https://fancycomponents.dev/r/circling-elements.json"
-```
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/circling-elements.json&quot;" npx />
 
 </TabsContent>
 <TabsContent value="manual">
@@ -35,9 +33,10 @@ npx shadcn@latest add "https://fancycomponents.dev/r/circling-elements.json"
   Add the following animation and keyframes to your `globals.css` file:
 </Step>
 
-```tsx
+<CodeSnippet title="globals.css">
+```css
 {
-// ...
+/* ... */
   @theme: {
     --animate-circling: circling;
     @keyframes circling {
@@ -51,6 +50,7 @@ npx shadcn@latest add "https://fancycomponents.dev/r/circling-elements.json"
   },
 };
 ```
+</CodeSnippet>
 
 </Steps>
 

@@ -106,7 +106,7 @@ export default async function DocPage({ params }: DocPageProps) {
 
   return (
     <main className="xl:grid xl:grid-cols-[minmax(0,1fr)_300px] justify-center w-full">
-      <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 border-border border shadow-lg">
+      <div className="rounded-2xl bg-background py-6 lg:gap-10 lg:py-6 border-border border shadow-lg">
         <div data-algolia-crawl className="container max-w-full px-4 md:px-8">
           <div className="mb-2 pb-2 flex items-center space-x-1 text-base md:text-lg text-muted-foreground">
             <div className="overflow-hidden font-medium  whitespace-nowrap">
@@ -190,7 +190,7 @@ export default async function DocPage({ params }: DocPageProps) {
               )}
           </div>
 
-          <div className="pb-12 pt-8 overflow-x-hidden">{doc.body}</div>
+          <div className="pb-12 pt-8 overflow-x-hidden space-y-5">{doc.body}</div>
           <div data-algolia-ignore>
             <DocsPager doc={doc} />
           </div>
@@ -198,7 +198,7 @@ export default async function DocPage({ params }: DocPageProps) {
       </div>
       {doc.toc && (
         <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-6rem)] pl-4">
-          <div className="bg-background rounded-xl shadow-lg border">
+          <div className="bg-background rounded-2xl shadow-lg border">
             <ScrollArea className="pb-10 p-6">
               <DashboardTableOfContents toc={toc} />
             </ScrollArea>

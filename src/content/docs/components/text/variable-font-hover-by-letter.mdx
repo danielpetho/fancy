@@ -16,7 +16,7 @@ component: true
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/variable-font-hover-by-letter.json"`}</CodeBlockWrapper>
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/variable-font-hover-by-letter.json&quot;" npx />
 
 </TabsContent>
 <TabsContent value="manual">
@@ -25,7 +25,7 @@ component: true
 
 <Step>Install the following dependencies:</Step>
 
-<CodeBlockWrapper language="bash">{`npm install lodash`}</CodeBlockWrapper>
+<InstallTabs command="lodash" />
 
 lodash is used for debouncing here — so the animation doesn't break on rapid hover changes.
 
@@ -59,9 +59,11 @@ In this component, the `fromFontVariationSettings` and `toFontVariationSettings`
 
 An example prop therefore would be:
 
-<CodeBlockWrapper language="javascript" className="mt-4">
-  {`fromFontVariationSettings="'wght' 100, 'slnt' 0"`}
-</CodeBlockWrapper>
+<CodeSnippet>
+```jsx
+`fromFontVariationSettings="'wght' 100, 'slnt' 0"`
+```
+</CodeSnippet>
 
 **Always check the font's documentation to see what are the available axes and their ranges.**
 

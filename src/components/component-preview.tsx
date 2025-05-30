@@ -22,6 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
+import { CodeSnippet } from "./code-snippet"
 
 interface ComponentPreviewProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
@@ -152,9 +153,9 @@ export function ComponentPreview({
         </div>
         <TabsContent
           value="preview"
-          className="border border-black-500 flex rounded-lg"
+          className="border border-black-500 flex rounded-2xl"
         >
-          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative max-h-[530px]">
+          <div className="w-full flex items-center justify-center rounded-2xl min-h-[530px] overflow-hidden relative max-h-[530px]">
             {/* <div className="absolute top-4 right-4 rounded-full border">
 
             </div> */}
@@ -213,27 +214,13 @@ export function ComponentPreview({
           </div>
         </TabsContent>
         <TabsContent value="code">
-          <div className="flex flex-col h-[520px] space-y-4 ">
-            <div className="w-full h-full [&_pre]:my-0 [&_pre]:overflow-auto relative rounded-lg">
-              <div className="absolute right-4 top-4">
-                <CopyButton
-                  value={sourceCode}
-                  src={name}
-                  event={"copy_npm_command"}
-                />
-              </div>
-              <div className="inset-0 absolute">
-                <ReactSyntaxHighlighter
-                  language="typescript"
-                  style={hybrid}
-                  customStyle={syntaxHighlighterStyle}
-                  wrapLongLines={true}
-                >
-                  {sourceCode}
-                </ReactSyntaxHighlighter>
-              </div>
-            </div>
-          </div>
+          {/* <div className="flex flex-col h-[520px] relative"> */}
+            <CodeSnippet
+              title={name + ".tsx"}
+              code={sourceCode}
+              language="typescript"
+            />
+          {/* </div> */}
         </TabsContent>
       </Tabs>
     </div>
