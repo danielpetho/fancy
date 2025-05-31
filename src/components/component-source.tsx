@@ -6,29 +6,21 @@ import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
 import { cn } from "@/lib/utils"
 
+import { CodeSnippet } from "./code-snippet"
 import { CopyButton } from "./copy-button"
 import { Button } from "./ui/button"
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "./ui/collapsible"
-import { CodeSnippet } from "./code-snippet"
 
 interface ComponentSourceProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
-  expandButtonTitle?: string
 }
 
 export function ComponentSource({
   name,
-  expandButtonTitle = "Expand",
   children,
   className,
   ...props
 }: ComponentSourceProps) {
   const [sourceCode, setSourceCode] = React.useState("")
-  const [isOpened, setIsOpened] = React.useState(false)
 
   React.useEffect(() => {
     async function loadSourceCode() {
@@ -59,40 +51,5 @@ export function ComponentSource({
     loadSourceCode()
   }, [name])
 
-  return (
-    <Collapsible
-      open={isOpened}
-      onOpenChange={setIsOpened}
-      data-algolia-ignore
-    >
-      <div className={cn("relative w-full", className)} {...props}>
-        <CollapsibleContent
-          forceMount
-          className={cn(
-            "overflow-auto rounded-lg max-h-[640px]",
-            !isOpened && "max-h-40"
-          )}
-        >
-          <CodeSnippet title={name + ".tsx"} code={sourceCode} language="tsx"/>
-        </CollapsibleContent>
-        <div
-          className={cn(
-            "absolute flex items-center justify-center bg-linear-to-b p-2 rounded-lg",
-            isOpened
-              ? "inset-x-0 bottom-0"
-              : "inset-0 from-black/30 to-black/60"
-          )}
-        >
-          <CollapsibleTrigger asChild>
-            <Button
-              variant="secondary"
-              className="h-8 text-xs bg-white text-black hover:bg-accent"
-            >
-              {isOpened ? "Collapse" : expandButtonTitle}
-            </Button>
-          </CollapsibleTrigger>
-        </div>
-      </div>
-    </Collapsible>
-  )
+  return <CodeSnippet title={name + ".tsx"} code={sourceCode} language="tsx" />
 }

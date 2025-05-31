@@ -20,8 +20,8 @@ import { InstallTabs } from "@/components/install-tabs"
 
 import "katex/dist/katex.min.css"
 
+import Link from "next/link"
 import { BlockMath, InlineMath } from "react-katex"
-import Link, { LinkProps } from "next/link"
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -41,18 +41,18 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <>
         <h2
           id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-          className={cn("text-4xl font-medium pt-12 pb-0 mb-3 mt-0", className)}
+          className={cn("text-4xl font-medium mb-0 py-0 mt-14 tracking-tight", className)}
           {...props}
         >
           {children}
         </h2>
-        <hr className="pb-3"/>
+        <hr className="mt-2.5" />
       </>
     ),
     h3: ({ className, children, ...props }: React.ComponentProps<"h3">) => (
       <h3
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn("text-2xl font-medium pb-6 my-0", className)}
+        className={cn("text-2xl font-medium py-0 mt-12 [h2+hr+&]:mt-0 tracking-tight", className)}
         {...props}
       >
         {children}
@@ -61,7 +61,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     h4: ({ className, children, ...props }: React.ComponentProps<"h4">) => (
       <h4
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn("text-xl font-medium pb-6 my-0", className)}
+        className={cn("text-xl font-medium py-0 mt-10 [h3+&]:mt-0 tracking-tight", className)}
         {...props}
       >
         {children}
@@ -106,18 +106,19 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.HTMLAttributes<HTMLParagraphElement>) => (
       <p className={cn("text-lg text-pretty", className)} {...props} />
     ),
-    strong: ({
-      className,
-      ...props
-    }: React.HTMLAttributes<HTMLElement>) => (
+    strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <strong className={cn("font-semibold", className)} {...props} />
+    ),
+    em: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
+      <em
+        className={cn(className)}
+        style={{ fontVariationSettings: "'slnt' -10" }}
+        {...props}
+      />
     ),
     ul: ({ className, ...props }: React.HTMLAttributes<HTMLUListElement>) => (
       <ul
-        className={cn(
-          "list-disc ml-6 list-outside space-y-3",
-          className
-        )}
+        className={cn("list-disc ml-3 list-outside space-y-3", className)}
         {...props}
       />
     ),
@@ -129,7 +130,10 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     ),
     li: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <li
-        className={cn("marker:text-base text-lg first:mt-2 last:pb-4", className)}
+        className={cn(
+          "marker:text-sm [&>ul]:marker:text-[10px] [&>ol]:marker:text-base text-lg first:mt-2 last:pb-4",
+          className
+        )}
         {...props}
       />
     ),
@@ -204,13 +208,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     ExplanationDemo,
     Table: ({ className, ...props }: React.ComponentProps<typeof Table>) => (
       <div className="rounded-2xl overflow-hidden border border-border mt-4">
-        <Table
-          className={cn(
-            "h-full w-full text-xs",
-            className
-          )}
-          {...props}
-        />
+        <Table className={cn("h-full w-full text-xs", className)} {...props} />
       </div>
     ),
     TableHeader: ({
@@ -279,7 +277,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.ComponentProps<typeof TabsList>) => (
       <TabsList
         className={cn(
-          "w-full justify-start rounded-none bg-transparent p-0 space-x-2",
+          "w-full justify-start rounded-none bg-transparent p-0 space-x-3 px-3",
           className
         )}
         {...props}
@@ -291,7 +289,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.ComponentProps<typeof TabsTrigger>) => (
       <TabsTrigger
         className={cn(
-          "relative text-base h-9 rounded-none bg-transparent px-0 pb-3 pt-2 font-medium text-muted-foreground shadow-none transition-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none",
+          "relative text-base h-9 rounded-none bg-transparent px-0 pb-2 pt-2 font-medium text-muted-foreground shadow-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none hover:font-semibold hover:text-foreground duration-300 ease-out transition",
           className
         )}
         {...props}
@@ -301,12 +299,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.ComponentProps<typeof TabsContent>) => (
-      <TabsContent
-        className={cn(
-          className
-        )}
-        {...props}
-      />
+      <TabsContent className={cn(className)} {...props} />
     ),
     ...components,
   }
