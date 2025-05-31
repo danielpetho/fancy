@@ -144,9 +144,11 @@ You can also trigger the animation via an exposed ref. This is useful if you wan
 ## Notes
 
 - While the component only support a single-colored highlight directly, you can change it to an image, a fancy gradient, or anything that a `background-image` can handle. Just change the appropriate line:
+<CodeSnippet title="Fancier highlight color">
 ```ts
 backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,   // change this to make it fancier
 ```
+</CodeSnippet>
 
 - As many users have pointed out, excessive animations can be distracting and impact readability, especially when highlighting large blocks of text. Consider using animations sparingly and adjusting the transition duration and delay to create a more subtle effect. You may also want to use the `useInViewOptions` prop to control when animations trigger, for example by increasing the `amount` threshold or setting `once: true` to only animate elements once.
 
