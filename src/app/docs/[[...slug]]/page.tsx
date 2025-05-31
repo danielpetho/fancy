@@ -127,8 +127,8 @@ export default async function DocPage({ params }: DocPageProps) {
             <DocAuthor author={doc.author} />
           </div>
 
-          <div className="pb-12 pt-8 space-y-6">{doc.body}</div>
-          <div data-algolia-ignore>
+          <div className="mb-12 pt-8 space-y-6">{doc.body}</div>
+          <div data-algolia-ignore className="">
             <DocsPager doc={doc} />
           </div>
         </div>

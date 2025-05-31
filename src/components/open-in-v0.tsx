@@ -3,7 +3,7 @@ import { Button, ButtonProps } from "@/components/ui/button"
 export function OpenInV0Button({
   url,
   variant = "outline",
-  className = "h-8 gap-1 rounded-[6px] dark:bg-background border px-3 text-xs"
+  className = "h-8 gap-1 dark:bg-background border px-3 text-xs"
 }: {
   url: string
   variant?: ButtonProps["variant"]

@@ -9,7 +9,7 @@ export function Footer() {
             built with ♥ by{" "}
             <a
               href="https://twitter.com/nonzeroexitcode"
-              className="cursor-pointer no-underline text-blue hover:text-blue-400 dark:hover:text-blue-500 dark:text-blue-400 duration-300 transition-colors ease-out inline-flex items-center font-medium"
+              className="cursor-pointer no-underline text-blue hover:text-blue-400 dark:hover:text-blue-300 dark:text-blue-400 duration-300 transition-colors ease-out inline-flex items-center font-medium"
             >
               nonzeroexitcode
               <ExternalLinkIcon

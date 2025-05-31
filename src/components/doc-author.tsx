@@ -21,7 +21,7 @@ export function DocAuthor({ author }: DocAuthorProps) {
                   {i > 0 && " "}
                   <a
                     href={match[2]}
-                    className="no-underline text-blue hover:text-blue-400 dark:hover:text-blue-500 dark:text-blue-400 duration-300 transition-colors ease-out inline-flex items-center font-medium"
+                    className="no-underline text-blue hover:text-blue-400 dark:hover:text-blue-500 dark:text-blue-300 duration-300 transition-colors ease-out inline-flex items-center font-medium"
                   >
                     {match[1].trim()}
                     <ExternalLinkIcon
@@ -49,7 +49,7 @@ export function DocAuthor({ author }: DocAuthorProps) {
                     {i > 0 && " "}
                     <a
                       href={match[2]}
-                      className="no-underline text-blue hover:text-blue-400 dark:hover:text-blue-500 dark:text-blue-400 duration-300 transition-colors ease-out inline-flex items-center font-medium"
+                      className="no-underline text-blue hover:text-blue-400 dark:hover:text-blue-300 dark:text-blue-400 duration-300 transition-colors ease-out inline-flex items-center font-medium"
                     >
                       {match[1].trim()}
                       <ExternalLinkIcon

@@ -9,7 +9,7 @@ const MotionIcon = motion(RotateCw)
 
 export function RestartButton({ onRestart }: { onRestart: () => void }) {
   return (
-    <motion.div whileHover="hover">
+    <motion.div whileHover="hover" whileTap={{ scale: 0.95 }}>
       <Button
         variant="outline"
         size="icon"

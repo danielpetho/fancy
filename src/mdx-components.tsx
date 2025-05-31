@@ -74,7 +74,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.HTMLAttributes<HTMLAnchorElement>) => (
       <a
         className={cn(
-          "font-medium text-base md:text-lg  text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500 duration-300 ease-out transition inline-flex items-center leading-0",
+          "font-medium text-base md:text-lg  text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 duration-300 ease-out transition inline-flex items-center leading-0",
           className
         )}
         {...props}
@@ -92,7 +92,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <Link
         href={href}
         className={cn(
-          "font-medium text-base md:text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500 duration-300 ease-out transition inline-flex items-center leading-0",
+          "font-medium text-base md:text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 duration-300 ease-out transition inline-flex items-center leading-0",
           className
         )}
         {...props}
