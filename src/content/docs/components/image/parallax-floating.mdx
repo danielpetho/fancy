@@ -40,8 +40,9 @@ component: true
 
 There are two components exported from the source file: `Floating` and `FloatingElement`. The first one is a wrapper component that takes care of the animation, mouse position tracking and other logic. The second one is a component that you **must** use to wrap any elements you want to float.
 
-<CodeBlockWrapper language="typescript" className="mt-4">
-  {`<Floating>
+<CodeSnippet title="Floating Example">
+```tsx
+<Floating>
   <FloatingElement depth={0.5}>
     <div className="absolute top-1/2 left-1/4 bg-red-500" />
   </FloatingElement>
@@ -51,8 +52,9 @@ There are two components exported from the source file: `Floating` and `Floating
   <FloatingElement depth={2}>
     <div className="absolute top-1/2 left-3/4 bg-blue-500" />
   </FloatingElement>
-</Floating>`}
-</CodeBlockWrapper>
+</Floating>
+```
+</CodeSnippet>
 
 The advantage of this setup is that you can style and position your elements however you want using Tailwind classes or custom CSS directly on the `FloatingElement` component, while the `Floating` wrapper component handles all the complex animation logic. Simply wrap your positioned elements with `FloatingElement`, set their `depth` value, and the floating effect will be applied while maintaining your original styling and positioning.
 

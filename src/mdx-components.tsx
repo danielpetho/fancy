@@ -21,6 +21,7 @@ import { InstallTabs } from "@/components/install-tabs"
 import "katex/dist/katex.min.css"
 
 import { BlockMath, InlineMath } from "react-katex"
+import Link, { LinkProps } from "next/link"
 
 export function mdxComponents(components?: MDXComponents): MDXComponents {
   return {
@@ -81,6 +82,23 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
         {children}
         <ExternalLinkIcon className="ml-1 mt-1" size={13} strokeWidth={2.5} />
       </a>
+    ),
+    Link: ({
+      className,
+      href,
+      children,
+      ...props
+    }: React.ComponentProps<typeof Link>) => (
+      <Link
+        href={href}
+        className={cn(
+          "font-medium text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500 duration-300 ease-out transition inline-flex items-center leading-0",
+          className
+        )}
+        {...props}
+      >
+        {children}
+      </Link>
     ),
     p: ({
       className,

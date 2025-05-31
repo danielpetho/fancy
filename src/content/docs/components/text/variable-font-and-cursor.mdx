@@ -46,13 +46,14 @@ It's important to note that the container used for tracking mouse position is no
 
 The `fontVariationMapping` prop allows you to define how cursor position maps to font variation settings. It has the following structure:
 
-<CodeBlockWrapper language="typescript" className="pt-4">
-  {`interface FontVariationMapping {
-    x: { name: string; min: number; max: number };
-    y: { name: string; min: number; max: number };
+<CodeSnippet title="Font variation mapping settings">
+```tsx
+interface FontVariationMapping {
+  x: { name: string; min: number; max: number };
+  y: { name: string; min: number; max: number };
 }
-`}
-</CodeBlockWrapper>
+```
+</CodeSnippet>
 
 - `x`: Defines the font variation axis controlled by horizontal cursor movement.
 - `y`: Defines the font variation axis controlled by vertical cursor movement.

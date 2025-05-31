@@ -29,14 +29,17 @@ component: true
 ## Usage
 
 Just wrap your text content with the component and set the highlight color with the `highlightColor` prop.
+<CodeSnippet title="Usage example">
 ```tsx
 <TextHighlighter highlightColor="hsl(25, 90%, 80%)">Howdy!</TextHighlighter>
 ```
+</CodeSnippet>
 
 ## Understanding the component
 
 The magic behind this component lies in animating the text's background. Instead of using a solid background color (CSS prop: `background-color`), we use `background-image` with a linear gradient. This allows us to animate the entire background of the text by changing the `background-size` property; something that wouldn't be possible with the simple `background-color` property. We also use a linear gradient because we can't set a solid color directly as a background image (as far as I know).
 
+<CodeSnippet title="Highlighter style">
 ```tsx
 const highlightStyle = {
   backgroundImage: `linear-gradient(${highlightColor}, ${highlightColor})`,
@@ -47,11 +50,13 @@ const highlightStyle = {
   WebkitBoxDecorationBreak: "clone",
 } as React.CSSProperties
 ```
+</CodeSnippet>
 
 We also use `box-decoration-break: clone` to make sure each individual line is properly highlighted when dealing with multi-line text. Check out [this demo](https://developer.mozilla.org/en-US/docs/Web/CSS/box-decoration-break) why this is important.
 
 The direction of the highlight reveal is controlled by the `direction` prop. Depending on the value, we set the `background-position` and `background-size` accordingly. There is two function which returns the appropriate values:
 
+<CodeSnippet title="Get animation values by direction">
 ```tsx
 // Get background size based on direction
 const getBackgroundSize = (animated: boolean) => {
@@ -85,9 +90,11 @@ const getBackgroundPosition = () => {
   }
 }
 ```
+</CodeSnippet>
 
 Then, we just use motion to animate the `background-size` property based on the `shouldAnimate` state:
 
+<CodeSnippet title="Animation">
 ```tsx
 <motion.span
   className={cn("inline", className)}
@@ -103,6 +110,7 @@ Then, we just use motion to animate the `background-size` property based on the 
   {children}
 </motion.span>
 ```
+</CodeSnippet>
 
 You can customize the transition by passing a `Transition` object to the `transition` prop. The default value is spring type animation `{ type: "spring", duration: 1, delay: 0., bounce: 0 }`.
 

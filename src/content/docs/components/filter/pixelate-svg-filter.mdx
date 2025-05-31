@@ -36,12 +36,14 @@ component: true
 
 Add the `PixelateSvgFilter` component to your project, pass an `id` prop to the component (optional), then use the same `id` prop in the `filter` CSS property of the container you want to apply the filter to. High-level example:
 
-<CodeBlockWrapper language="typescript" className="mt-4">
-  {`<PixelateSvgFilter id="pixelate-filter" />
+<CodeSnippet title="Pixelate SVG Filter Example">
+```tsx
+<PixelateSvgFilter id="pixelate-filter" />
 <div style={{ filter: "url(#pixelate-filter)" }}>
  filter will be applied here
-</div>`}
-</CodeBlockWrapper>
+</div>
+```
+</CodeSnippet>
 
 ## Understanding the component
 

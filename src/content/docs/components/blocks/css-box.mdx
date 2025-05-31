@@ -44,8 +44,9 @@ The component is derived from the Box chapter of David De Sandro's [extremely aw
 
 The component renders a fully-featured 3D cube. Pass `width`, `height`, `depth` and optionally six React nodes for the faces. You may also grab the cube with a ref for programmatic control. 
 
-High-level example:
 
+
+<CodeSnippet title="High-level cube example">
 ```tsx
 import { useRef } from "react"
 import CSSBox, { CSSBoxRef } from "@/components/blocks/css-box"
@@ -79,6 +80,7 @@ export default function CubeExample() {
   )
 }
 ```
+</CodeSnippet>
 
 ## Understanding the component
 
@@ -89,6 +91,7 @@ Before you dive into it, I highly recommend reading [Intro to CSS 3D transforms]
 As you know, a box is a 3D object that has six faces. Each face is an absolutely-positioned `<div>` that lives in the same 3D context (`transform-style: preserve-3d`).  
 We pre-rotate every face so that their local **+Z** axis points outward and then translate it by half of the appropriate dimension:
 
+<CodeSnippet title="Face layout">
 ```tsx
 rotateY( 0deg) translateZ(depth / 2) → front
 rotateY(180deg) translateZ(depth / 2) → back
@@ -97,7 +100,7 @@ rotateY(-90deg) translateZ(width / 2) → left
 rotateX( 90deg) translateZ(height/ 2) → top
 rotateX(-90deg) translateZ(height/ 2) → bottom
 ```
-
+</CodeSnippet>
 
 ### Rotation mechanics
 
@@ -105,11 +108,13 @@ rotateX(-90deg) translateZ(height/ 2) → bottom
 2. They are piped through `useSpring` so they feel springy and configurable (`stiffness`, `damping`). See [Motion – useSpring](https://motion.dev/docs/react-use-spring) for more details.
 3. We combine them into a single CSS transform:
 
+<CodeSnippet title="Rotation mechanics">
 ```ts
 const transform = useTransform([springX, springY], ([x, y]) =>
   `translateZ(-${depth / 2}px) rotateX(${x}deg) rotateY(${y}deg)`
 )
 ```
+</CodeSnippet>
 
 ### Drag interaction
 
@@ -119,17 +124,21 @@ The current approach maps mouse/touch movement directly to rotation around the X
 
 When `draggable` is enabled, pointer movement gets translated into smooth rotational changes:
 
+<CodeSnippet title="Mouse movement to rotation">
 ```ts
 Δx → rotateY
 Δy → rotateX
 ```
+</CodeSnippet>
 
 We do this by subscribing to `mousemove` and `touchmove` events and projecting the movement to rotation deltas. During dragging the spring’s stiffness is temporarily halved to give a slightly “looser” feel. 
 
+<CodeSnippet title="Drag interaction">
 ```tsx
 baseRotateX.set(startRotation.current.x - deltaY / 2)
 baseRotateY.set(startRotation.current.y + deltaX / 2)
 ```
+</CodeSnippet>
 
 Modify that value to adjust the sensitivity of the drag.
 

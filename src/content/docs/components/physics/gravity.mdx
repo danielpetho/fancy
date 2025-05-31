@@ -29,10 +29,7 @@ Setting up Matter.js for creating physics-based animations can be a bit tricky a
 
 We use the `matter-js` library to create the physics simulation. The `poly-decomp` package is used to decompose bodies into a set of vertices, which is required for the `svg` body type. The `svg-path-commander` package is used to parse SVG paths and convert them into a set of vertices (since the built-in feature for this in `matter-js` is outdated).
 
-<CodeBlockWrapper
-  className="mt-2"
-  language="bash"
->{`npm install matter-js @types/matter-js poly-decomp svg-path-commander`}</CodeBlockWrapper>
+<InstallTabs command="matter-js @types/matter-js poly-decomp svg-path-commander" />
 
 <Step>Then, create two utility functions for the component.</Step>
 
@@ -57,16 +54,18 @@ The other is for calculating the position of an element based on its container, 
 
 First, you need to wrap your scene / content with the `Gravity` component. Set the gravity direction vector in the `gravity` prop (default is `{x: 0, y: 1}`). Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). High-level example:
 
-<CodeBlockWrapper language="typescript" className="mt-2">
-  {`<Gravity>
+<CodeSnippet title="Gravity usage example">
+```tsx
+<Gravity>
   <MatterBody x="50%" y="50%">
     <div>Hello world!</div>
   </MatterBody>
   <MatterBody x="10%" y="10%">
     <div>fancy!</div>
   </MatterBody>
-</Gravity>`}
-</CodeBlockWrapper>
+</Gravity>
+```
+</CodeSnippet>
 
 ## Understanding the component
 
@@ -97,12 +96,13 @@ The `MatterBody` component transforms regular HTML elements into physics-enabled
 
 - **Positioning**: Set initial positions with `x` and `y` props
 
-<CodeBlockWrapper language="typescript" className="mt-2">
-  {`<MatterBody x="50%" y="100px">
-    <div>I'm physics-enabled!</div>
-  </MatterBody>
-  `}
-</CodeBlockWrapper>
+<CodeSnippet title="Matter Body ">
+```
+<MatterBody x="50%" y="100px">
+  <div>I'm physics-enabled!</div>
+</MatterBody>
+```
+</CodeSnippet>
 
 - **Body Types**: Choose between different physics shapes:
 
@@ -112,21 +112,22 @@ The `MatterBody` component transforms regular HTML elements into physics-enabled
 
 - **Physics Properties**: Customize how elements behave with `matterBodyOptions`. The most commonly used options are:
 
-<CodeBlockWrapper language="typescript" className="mt-2">
-  {`<MatterBody 
-    matterBodyOptions={{ 
-      friction: 0.5,     // How slippery it is
-      restitution: 0.7,  // How bouncy it is
-      density: 0.001,    // How heavy it is
-      isStatic: false,   // If true, the element won't move but can be collided with
-      force: { x: 0, y: 0 } // Initial force applied to the body
-      ... // More options
-    }}
-  >
-    <div>I'm bouncy!</div>
-  </MatterBody>
-  `}
-</CodeBlockWrapper>
+<CodeSnippet title="Matter Body options">
+```tsx
+<MatterBody 
+  matterBodyOptions={{ 
+    friction: 0.5,     // How slippery it is
+    restitution: 0.7,  // How bouncy it is
+    density: 0.001,    // How heavy it is
+    isStatic: false,   // If true, the element won't move but can be collided with
+    force: { x: 0, y: 0 } // Initial force applied to the body
+    // ... 
+  }}
+>
+  <div>I'm bouncy!</div>
+</MatterBody>
+```
+</CodeSnippet>
 
 For a complete list of options, check out the [Matter.js Body documentation](https://brm.io/matter-js/docs/classes/Body.html#properties). You can fine-tune everything from angular velocity to mass to create exactly the physics behavior you want.
 

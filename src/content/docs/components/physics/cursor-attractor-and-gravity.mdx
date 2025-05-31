@@ -50,16 +50,18 @@ The other is for calculating the position of an element based on its container, 
 
 First, you need to wrap your scene / content with the `Gravity` component. Set the attraction point coordinates in the `attractorPoint` prop. This point will either attract or repel all the bodies inside the container. Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). Lastly, set the strength and radius of the cursor attractor, which will also attract or repell all bodies. High-level example:
 
-<CodeBlockWrapper language="typescript" className="mt-2">
-  {`<Gravity attractorPoint={{ x: "50%", y: "50%" }} attractorStrength={0.0006} cursorStrength={-0.005} cursorFieldRadius={200}>
+<CodeSnippet title="Gravity usage example">
+```tsx
+<Gravity attractorPoint={{ x: "50%", y: "50%" }} attractorStrength={0.0006} cursorStrength={-0.005} cursorFieldRadius={200}>
   <MatterBody x="50%" y="50%">
     <div>Hello world!</div>
   </MatterBody>
   <MatterBody x="10%" y="10%">
     <div>fancy!</div>
   </MatterBody>
-</Gravity>`}
-</CodeBlockWrapper>
+</Gravity>
+```
+</CodeSnippet>
 
 ## Understanding the component
 
