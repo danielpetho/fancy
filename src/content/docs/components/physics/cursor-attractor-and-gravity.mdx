@@ -21,15 +21,11 @@ component: true
 </TabsContent>
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>Install the following dependencies:</Step>
+Install the following dependencies:
 
 <InstallTabs command="matter-js @types/matter-js poly-decomp" />
 
-<Step>Then, create two utility functions for the component.</Step>
-
-One is for parsing SVG paths into a set of vertices:
+Then, create an utility function for parsing SVG paths into a set of vertices:
 
 <ComponentSource name="svg-path-to-vertices" />
 
@@ -37,18 +33,18 @@ The other is for calculating the position of an element based on its container, 
 
 <ComponentSource name="calculate-position" />
 
-<Step>Then, create the component:</Step>
+And another one for calculating the position of an element based on its container, and a posiiton value:
 
 <ComponentSource name="cursor-attractor-and-gravity" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>
 
 ## Usage
 
-First, you need to wrap your scene / content with the `Gravity` component. Set the attraction point coordinates in the `attractorPoint` prop. This point will either attract or repel all the bodies inside the container. Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). Lastly, set the strength and radius of the cursor attractor, which will also attract or repell all bodies. High-level example:
+First, you need to wrap your scene / content with the `Gravity` component. Set the attraction point coordinates in the `attractorPoint` prop. This point will either attract or repel all the bodies inside the container. Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. 
+
+You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). Lastly, set the strength and radius of the cursor attractor, which will also attract or repell all bodies. High-level example:
 
 <CodeSnippet title="Gravity usage example">
 ```tsx

@@ -11,8 +11,8 @@ component: true
 <Tabs defaultValue="cli">
 
 <TabsList>
-  <TabsTrigger value="cli">CLI</TabsTrigger>
-  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli" aria-label="CLI">CLI</TabsTrigger>
+  <TabsTrigger value="manual" aria-label="Manual">Manual</TabsTrigger>
 </TabsList>
 <TabsContent value="cli">
 
@@ -21,17 +21,13 @@ component: true
 </TabsContent>
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>Create this hook to query the cursor position's ref:</Step>
+Create this hook to query the cursor position's ref:
 
 <ComponentSource name="use-mouse-position-ref" />
 
-<Step>Copy and paste the following code into your project:</Step>
+Then, copy and paste the following code into your project:
 
 <ComponentSource name="variable-font-and-cursor" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>

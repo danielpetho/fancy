@@ -40,7 +40,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Letter 3D Swap",
         href: "/docs/components/text/letter-3d-swap",
         items: [],
-        label: "New",
       },
       {
         title: "Random Letter Swap Hover",

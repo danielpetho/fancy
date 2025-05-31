@@ -1,9 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import { DocSearch } from "@docsearch/react"
+import { motion } from "motion/react"
 
 import "@/styles/docsearch.css"
-
-import VariableFontHoverByLetter from "@/fancy/components/text/variable-font-hover-by-letter"
 
 import ThemeSwitcher from "./theme-switcher"
 
@@ -18,20 +19,30 @@ export function MainNav() {
         </Link>
         <div className="flex-row gap-x-8 text-lg  font-regular items-end hidden md:flex">
           <Link href="/docs/introduction">
-            <VariableFontHoverByLetter
-              label="Docs"
-              fromFontVariationSettings="'wght' 400, 'slnt' 0"
-              toFontVariationSettings="'wght' 500, 'slnt' -10"
-              transition={{ duration: 0.2 }}
-            />
+            <motion.span
+              whileHover={{
+                fontVariationSettings: "'wght' 600",
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
+              style={{
+                fontVariationSettings: "'wght' 400"
+              }}
+            >
+              Docs
+            </motion.span>
           </Link>
           <Link href="/components">
-            <VariableFontHoverByLetter
-              label="Components"
-              fromFontVariationSettings="'wght' 400, 'slnt' 0"
-              toFontVariationSettings="'wght' 500, 'slnt' -10"
-              transition={{ duration: 0.2 }}
-            />
+            <motion.span
+              whileHover={{
+                fontVariationSettings: "'wght' 600",
+                transition: { duration: 0.3, ease: "easeOut" }
+              }}
+              style={{
+                fontVariationSettings: "'wght' 400"
+              }}
+            >
+              Components
+            </motion.span>
           </Link>
         </div>
       </div>
@@ -49,12 +60,17 @@ export function MainNav() {
           href="https://github.com/danielpetho/fancy"
           className="hidden md:block"
         >
-          <VariableFontHoverByLetter
-            label="Github"
-            fromFontVariationSettings="'wght' 400, 'slnt' 0"
-            toFontVariationSettings="'wght' 500, 'slnt' -10"
-            transition={{ duration: 0.2 }}
-          />
+          <motion.span
+            whileHover={{
+              fontVariationSettings: "'wght' 600",
+              transition: { duration: 0.3, ease: "easeOut" }
+            }}
+            style={{
+              fontVariationSettings: "'wght' 400"
+            }}
+          >
+            Github
+          </motion.span>
         </a>
         <ThemeSwitcher />
       </div>

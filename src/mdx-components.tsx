@@ -41,7 +41,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <>
         <h2
           id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-          className={cn("text-4xl font-medium mb-0 py-0 mt-14 tracking-tight", className)}
+          className={cn("text-3xl md:text-4xl font-medium mb-0 py-0 mt-14 tracking-tight", className)}
           {...props}
         >
           {children}
@@ -52,7 +52,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     h3: ({ className, children, ...props }: React.ComponentProps<"h3">) => (
       <h3
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn("text-2xl font-medium py-0 mt-12 [h2+hr+&]:mt-0 tracking-tight", className)}
+        className={cn("text-xl md:text-2xl font-medium py-0 mt-12 [h2+hr+&]:mt-0 tracking-tight", className)}
         {...props}
       >
         {children}
@@ -61,7 +61,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     h4: ({ className, children, ...props }: React.ComponentProps<"h4">) => (
       <h4
         id={children?.toString().toLowerCase().replace(/\s+/g, "-")}
-        className={cn("text-xl font-medium py-0 mt-10 [h3+&]:mt-0 tracking-tight", className)}
+        className={cn("text-lg md:text-xl font-medium py-0 mt-10 [h3+&]:mt-0 tracking-tight", className)}
         {...props}
       >
         {children}
@@ -74,7 +74,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.HTMLAttributes<HTMLAnchorElement>) => (
       <a
         className={cn(
-          "font-medium text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500 duration-300 ease-out transition inline-flex items-center leading-0",
+          "font-medium text-base md:text-lg  text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500 duration-300 ease-out transition inline-flex items-center leading-0",
           className
         )}
         {...props}
@@ -92,7 +92,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <Link
         href={href}
         className={cn(
-          "font-medium text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500 duration-300 ease-out transition inline-flex items-center leading-0",
+          "font-medium text-base md:text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-500 duration-300 ease-out transition inline-flex items-center leading-0",
           className
         )}
         {...props}
@@ -104,7 +104,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.HTMLAttributes<HTMLParagraphElement>) => (
-      <p className={cn("text-lg text-pretty", className)} {...props} />
+      <p className={cn("text-base md:text-lg text-pretty", className)} {...props} />
     ),
     strong: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <strong className={cn("font-semibold", className)} {...props} />
@@ -131,7 +131,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     li: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <li
         className={cn(
-          "marker:text-sm [&>ul]:marker:text-[10px] [&>ol]:marker:text-base text-lg first:mt-2 last:pb-4",
+          "marker:text-sm [&>ul]:marker:text-[10px] [&>ol]:marker:text-base text-base md:text-lg first:mt-2 last:pb-4",
           className
         )}
         {...props}
@@ -169,7 +169,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
       <code
         className={cn(
-          "font-fira-mono text-sm px-1 py-0.5 border border-border rounded-md leading-6 bg-muted whitespace-pre",
+          "font-fira-mono text-xs md:text-sm px-0.5 py-px md:px-1 md:py-0.5 border border-border rounded-md leading-6 bg-muted whitespace-pre",
           className
         )}
         {...props}
@@ -207,7 +207,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     ComponentSource,
     ExplanationDemo,
     Table: ({ className, ...props }: React.ComponentProps<typeof Table>) => (
-      <div className="rounded-2xl overflow-hidden border border-border mt-4">
+      <div className="rounded-2xl overflow-hidden border border-border w-full">
         <Table className={cn("h-full w-full text-xs", className)} {...props} />
       </div>
     ),
@@ -228,7 +228,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       ...props
     }: React.ComponentProps<typeof TableBody>) => (
       <TableBody
-        className={cn("font-mono text-xs whitespace-pre", className)}
+        className={cn("font-mono text-xs", className)}
         {...props}
       />
     ),
@@ -236,7 +236,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.ComponentProps<typeof TableRow>) => (
-      <TableRow className={cn(className)} {...props} />
+      <TableRow className={cn("", className)} {...props} />
     ),
     TableCell: ({
       className,
@@ -252,21 +252,6 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       ...props
     }: React.ComponentProps<typeof TableHead>) => (
       <TableHead className={cn(className)} {...props} />
-    ),
-    Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
-      <h3
-        className={cn(
-          "mt-8 mb-4 scroll-m-20 text-lg font-normal tracking-tight",
-          className
-        )}
-        {...props}
-      />
-    ),
-    Steps: ({ ...props }) => (
-      <div
-        className="[&>h3]:step steps mb-12 [counter-reset:step]"
-        {...props}
-      />
     ),
     Tabs: ({ className, ...props }: React.ComponentProps<typeof Tabs>) => (
       <Tabs className={cn("relative w-full", className)} {...props} />
@@ -299,7 +284,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.ComponentProps<typeof TabsContent>) => (
-      <TabsContent className={cn(className)} {...props} />
+      <TabsContent className={cn("space-y-5",className)} {...props} />
     ),
     ...components,
   }

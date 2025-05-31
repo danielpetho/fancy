@@ -80,6 +80,7 @@ export const InstallTabs: React.FC<InstallTabsProps> = ({
                 key={pm.id}
                 value={pm.id}
                 className="text hover:text-white duration-300 ease-out transition px-2 py-1 h-auto data-[state=active]:bg-editor-background data-[state=active]:text-white text-muted-foreground cursor-pointer"
+                aria-label={pm.label}
               >
                 {pm.label}
               </TabsTrigger>

@@ -108,7 +108,7 @@ export default async function DocPage({ params }: DocPageProps) {
     <main className="xl:grid xl:grid-cols-[minmax(0,1fr)_340px] justify-center w-full">
       <div className="rounded-2xl bg-background py-6 lg:gap-10 lg:py-6 border-border border">
         <div data-algolia-crawl className="px-4 md:px-8 flex flex-col">
-          <div className="mb-2 pb-2 flex items-center space-x-1 text-base md:text-lg text-muted-foreground">
+          <div className="pb-6 flex items-center space-x-1 text-[13px] md:text-lg text-muted-foreground">
             <div className="font-medium  whitespace-nowrap">
               Docs
             </div>
@@ -123,7 +123,7 @@ export default async function DocPage({ params }: DocPageProps) {
 
             <div className="font-medium text-foreground">{doc.title}</div>
           </div>
-          <div className="space-y-2">
+          <div className="">
             <h1
               className={cn(
                 "scroll-m-20 text-3xl text-pretty md:text-5xl font-calendas tracking-tight"
@@ -132,7 +132,7 @@ export default async function DocPage({ params }: DocPageProps) {
               {doc.title}
             </h1>
             {!!doc.description && doc.description !== "null" && (
-              <p className="text-lg text-muted-foreground">
+              <p className="text-sm md:text-lg text-muted-foreground pt-2 md:pt-4">
                 <Balancer>{doc.description}</Balancer>
               </p>
             )}

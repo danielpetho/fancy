@@ -23,36 +23,32 @@ Setting up Matter.js for creating physics-based animations can be a bit tricky a
 </TabsContent>
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>First, install the following dependencies.</Step>{" "}
-
-We use the `matter-js` library to create the physics simulation. The `poly-decomp` package is used to decompose bodies into a set of vertices, which is required for the `svg` body type. The `svg-path-commander` package is used to parse SVG paths and convert them into a set of vertices (since the built-in feature for this in `matter-js` is outdated).
+First, install the following dependencies:
 
 <InstallTabs command="matter-js @types/matter-js poly-decomp svg-path-commander" />
 
-<Step>Then, create two utility functions for the component.</Step>
+We use the `matter-js` library to create the physics simulation. The `poly-decomp` package is used to decompose bodies into a set of vertices, which is required for the `svg` body type. The `svg-path-commander` package is used to parse SVG paths and convert them into a set of vertices (since the built-in feature for this in `matter-js` is outdated).
 
-One is for parsing SVG paths into a set of vertices:
+Then, create an utility function for parsing SVG paths into a set of vertices:
 
 <ComponentSource name="svg-path-to-vertices" />
 
-The other is for calculating the position of an element based on its container, and a posiiton value
+And another one for calculating the position of an element based on its container, and a posiiton value:
 
 <ComponentSource name="calculate-position" />
 
-<Step>Then, create the component:</Step>
+Then, copy the component source code:
 
 <ComponentSource name="gravity" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>
 
 ## Usage
 
-First, you need to wrap your scene / content with the `Gravity` component. Set the gravity direction vector in the `gravity` prop (default is `{x: 0, y: 1}`). Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). High-level example:
+First, you need to wrap your scene / content with the `Gravity` component. Set the gravity direction vector in the `gravity` prop (default is `{x: 0, y: 1}`). Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. 
+
+You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). High-level example:
 
 <CodeSnippet title="Gravity usage example">
 ```tsx

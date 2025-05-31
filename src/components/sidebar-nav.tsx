@@ -56,7 +56,7 @@ function NavItem({ item, index, pathname }: NavItemProps) {
       >
         {item.title}
         {item.label && (
-          <span className="ml-1 rounded-md bg-primary-blue px-1.5 py-0.5 text-[11px] leading-none text-white">
+          <span className="ml-1 rounded-md bg-blue dark:bg-blue-500 px-1.5 py-0.5 text-[11px] leading-none text-white">
             {item.label}
           </span>
         )}
