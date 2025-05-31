@@ -49,7 +49,7 @@ The component is really similar to the [Simple Marquee Component](https://fancyc
 
 ## Understanding the component
 
-Before you dive into understanding this component, please read through the [Simple Marquee](https://fancycomponents.dev/docs/components/blocks/simple-marquee) component's documentation, as this one is almost identical.
+Before you dive into understanding this component, please read through the <Link href="/docs/components/blocks/simple-marquee">Simple Marquee</Link> component's documentation, as this one is almost identical.
 
 The main difference is that we move the children along an SVG path (instead of a "straight line" positioned with `flexbox` system, as in the other component). **The magic that makes this possible is the `offsetPath` CSS property.**
 
@@ -89,7 +89,7 @@ The items are evenly distributed along the path. The `wrap` function ensures tha
 - direction
 - drag velocity
 
-Most of these factors are calculated inside an `useAnimationFrame` hook, which runs every frame. Most of these values are either motion values or refs to avoid unnecessary re-renders. Please refer to the Simple Marquee Component [documentation](https://github.com/danielpetho/fancy/blob/main/src/fancy/components/blocks/marquee-along-svg-path.tsx), there is a detailed explanation for each part.
+Most of these factors are calculated inside an `useAnimationFrame` hook, which runs every frame. Most of these values are either motion values or refs to avoid unnecessary re-renders. Please refer to the <Link href="/docs/components/blocks/simple-marquee">Simple Marquee Component documentation</Link>, there is a detailed explanation for each part.
 
 ### Z-Index Management
 
@@ -149,7 +149,7 @@ The component's performance may be impacted by the complexity and length of the 
 
 ## Resources
 
-- [Simple Marquee Component](https://fancycomponents.dev/docs/components/blocks/simple-marquee)
+- <Link href="/docs/components/blocks/simple-marquee">Simple Marquee Component</Link>
 - [offset-path by MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-path)
 - [CSS motion path by MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_motion_path)
 - [Motion along path by motion.dev](https://examples.motion.dev/react/motion-path)

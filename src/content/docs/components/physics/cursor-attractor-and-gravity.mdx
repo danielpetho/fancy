@@ -65,11 +65,11 @@ First, you need to wrap your scene / content with the `Gravity` component. Set t
 
 ## Understanding the component
 
-Please refer to the [Gravity](/docs/components/physics/gravity) documentation, since the component is almost identical. The only difference is that in this component that we don't use a directional gravitational force.Instead, we use attractor force(s), either from a defined static point (optional), and/or from the cursor position, that attract or repel all bodies inside the container. This is achieved by calculating the distance between the attractor point(s) and each body, and applying a force in the opposite direction of the body's velocity. The force is proportional to the distance and inversely proportional to the mass of the body.
+Please refer to the <Link href="/docs/components/physics/gravity">Gravity</Link> documentation, since the component is almost identical. The only difference is that in this component that we don't use a directional gravitational force.Instead, we use attractor force(s), either from a defined static point (optional), and/or from the cursor position, that attract or repel all bodies inside the container. This is achieved by calculating the distance between the attractor point(s) and each body, and applying a force in the opposite direction of the body's velocity. The force is proportional to the distance and inversely proportional to the mass of the body.
 
 ## Examples
 
-## Repel
+### Repel
 
 By setting one of the attractor points' strength to a negative value, you can create a repelling effect. The following demo showcases a negative force from the cursor by applying a negative value to the `cursorStrength` prop.
 
