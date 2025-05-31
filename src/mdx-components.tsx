@@ -80,7 +80,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
         {...props}
       >
         {children}
-        <ExternalLinkIcon className="ml-1 mt-1" size={13} strokeWidth={2.5} />
+        <ExternalLinkIcon className="ml-1 mt-0.5" size={14} strokeWidth={2.5} />
       </a>
     ),
     Link: ({
@@ -217,7 +217,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.ComponentProps<typeof TableHeader>) => (
       <TableHeader
         className={cn(
-          "bg-muted text-sm font-normal text-foreground",
+          "bg-muted dark:bg-background text-sm font-normal text-foreground",
           className
         )}
         {...props}
@@ -236,14 +236,14 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       className,
       ...props
     }: React.ComponentProps<typeof TableRow>) => (
-      <TableRow className={cn("", className)} {...props} />
+      <TableRow className={cn("hover:bg-transparent", className)} {...props} />
     ),
     TableCell: ({
       className,
       ...props
     }: React.ComponentProps<typeof TableCell>) => (
       <TableCell
-        className={cn("font-mono text-xs **:text-xs", className)}
+        className={cn("font-mono text-xs [&_*]:!text-xs [&_code]:!text-xs [&_code]:whitespace-pre-wrap [&_code]:box-decoration-clone", className)}
         {...props}
       />
     ),

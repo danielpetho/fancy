@@ -126,7 +126,7 @@ In this example:
 *   It remains fully visible until 70% of the duration (`0.42s`).
 *   From 70% to 100% (`0.42s` to `0.6s`), it scales down and fades out back to the initial state (`opacity: 0`, `scale: 0`).
 
-There must be the same number of values in a `times` array as there are keyframes for that property. If `times` is omitted, the keyframes are spread evenly across the `duration`. You can read more about this in the [Motion `animate` function documentation](https://motion.dev/docs/animate#times).
+There must be the same number of values in a `times` array as there are keyframes for that property. If `times` is omitted, the keyframes are spread evenly across the `duration`. You can read more about this in the [Motion docs](https://motion.dev/docs/animate#times).
 
 The component reuses DOM elements rather than creating new ones for each animation. It maintains a fixed set of `ImageTrailItem` elements that get recycled as needed. When an item needs to be triggered again, the component updates its position and restarts the animation without having to remove and remount elements in the DOM. For this recycling to work properly, make sure to define both initial and final states in the `keyframes` prop, as explained in the example above.
 

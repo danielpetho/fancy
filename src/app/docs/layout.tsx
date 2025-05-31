@@ -20,7 +20,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="p-4">{children}</div>
         </div>
-        {/* <div className="absolute bottom-0 h-36" /> */}
       </div>
       <Footer />
     </div>
