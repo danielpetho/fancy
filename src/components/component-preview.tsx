@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Repeat } from "lucide-react"
-import { motion } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"

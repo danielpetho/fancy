@@ -1,14 +1,8 @@
 "use client"
 
 import * as React from "react"
-import ReactSyntaxHighlighter from "react-syntax-highlighter"
-import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
-
-import { cn } from "@/lib/utils"
 
 import { CodeSnippet } from "./code-snippet"
-import { CopyButton } from "./copy-button"
-import { Button } from "./ui/button"
 
 interface ComponentSourceProps extends React.HTMLAttributes<HTMLDivElement> {
   name: string
