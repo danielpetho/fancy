@@ -84,7 +84,6 @@ export default function RootLayout({
         >
           <main className="h-full w-full max-w-(--breakpoint-2xl) flex flex-col items-center justify-center">
             {children}
-            <Analytics />
           </main>
         </ThemeProvider>
       </body>

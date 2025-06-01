@@ -63,7 +63,11 @@ export const InstallTabs: React.FC<InstallTabsProps> = ({
 
   const handleCopy = async () => {
     const fullCommand = getFullCommand(activeTab);
-    await navigator.clipboard.writeText(fullCommand);
+    try {
+      await navigator.clipboard.writeText(fullCommand);
+    } catch (err) {
+      console.warn('Copy failed:', err);
+    }
   };
 
   return (

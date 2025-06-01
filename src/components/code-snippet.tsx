@@ -19,7 +19,11 @@ export const CodeSnippet: React.FC<CodeSnippetProps> = ({
   const lines = code.trim().split('\n');
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(code);
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch (err) {
+      console.warn('Copy failed:', err);
+    }
   };
 
   return (

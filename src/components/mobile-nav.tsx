@@ -18,7 +18,7 @@ export function MobileNav() {
       <SheetTrigger asChild>
         <Button
           variant="ghost"
-          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 lg:hidden"
+          className="mr-2 px-0 text-base hover:bg-transparent focus-visible:bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 lg:hidden group"
         >
           <svg
             strokeWidth="1.5"
@@ -29,10 +29,11 @@ export function MobileNav() {
           >
             <path
               d="M3 5H11"
-              stroke="currentColor"
+              stroke="currentColor" 
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="group-hover:[stroke-width:3] transition-all duration-300 ease-out"
             ></path>
             <path
               d="M3 12H16"
@@ -40,6 +41,7 @@ export function MobileNav() {
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="group-hover:[stroke-width:3] transition-all duration-300 delay-100 ease-out"
             ></path>
             <path
               d="M3 19H21"
@@ -47,12 +49,13 @@ export function MobileNav() {
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
+              className="group-hover:[stroke-width:3] transition-all duration-300 delay-200 ease-out"
             ></path>
           </svg>
           <span className="sr-only">Toggle Menu</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="left" className="pr-0 m-4 rounded-2xl h-[calc(100vh-3rem)]">
+      <SheetContent side="left" className="pr-0 m-4 rounded-2xl h-[calc(100vh-3rem)] w-4/5">
         <MobileLink
           href="/"
           className="flex items-center"
@@ -63,7 +66,7 @@ export function MobileNav() {
             fancy components*
           </p>
         </MobileLink>
-        <ScrollArea className="my-8 h-[calc(100vh-8rem)] pb-12 pl-1">
+        <ScrollArea className="my-8 h-[calc(100vh-8rem)] pb-24 pl-1">
           <div className="flex flex-col space-y-2">
             {docsConfig.map((item, index) => (
               <div key={index} className="flex flex-col space-y-2 pt-6">
