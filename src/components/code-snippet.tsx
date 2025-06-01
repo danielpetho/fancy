@@ -1,7 +1,7 @@
 "use client"
 
 import React from 'react';
-import { CopyButton } from './copy-button2';
+import { CopyButton } from './copy-button';
 import { Highlight, PrismTheme } from 'prism-react-renderer';
 import theme from '@/styles/prism-theme.json';
 

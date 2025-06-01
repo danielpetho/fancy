@@ -1,80 +1,82 @@
 "use client"
 
-import React, { useState } from 'react';
-import { CopyButton } from './copy-button2';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Highlight, PrismTheme } from 'prism-react-renderer';
-import theme from '@/styles/prism-theme.json';
+import React, { useState } from "react"
+import { Highlight, PrismTheme } from "prism-react-renderer"
+
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import theme from "@/styles/prism-theme.json"
+
+import { CopyButton } from "./copy-button"
 
 interface InstallTabsProps {
-  command: string;
-  npx?: boolean;
+  command: string
+  npx?: boolean
 }
 
-type PackageManager = 'pnpm' | 'npm' | 'yarn' | 'bun';
+type PackageManager = "pnpm" | "npm" | "yarn" | "bun"
 
 const packageManagers: Array<{ id: PackageManager; label: string }> = [
-  { id: 'pnpm', label: 'pnpm' },
-  { id: 'npm', label: 'npm' },
-  { id: 'yarn', label: 'yarn' },
-  { id: 'bun', label: 'bun' },
-];
+  { id: "pnpm", label: "pnpm" },
+  { id: "npm", label: "npm" },
+  { id: "yarn", label: "yarn" },
+  { id: "bun", label: "bun" },
+]
 
 export const InstallTabs: React.FC<InstallTabsProps> = ({
   command,
   npx = false,
 }) => {
-  const [activeTab, setActiveTab] = useState<PackageManager>('pnpm');
+  const [activeTab, setActiveTab] = useState<PackageManager>("pnpm")
 
   const getCommandPrefix = (pm: PackageManager): string => {
     if (npx) {
       switch (pm) {
-        case 'pnpm':
-          return 'pnpm dlx';
-        case 'npm':
-          return 'npx';
-        case 'yarn':
-          return 'npx';
-        case 'bun':
-          return 'bunx --bun';
+        case "pnpm":
+          return "pnpm dlx"
+        case "npm":
+          return "npx"
+        case "yarn":
+          return "npx"
+        case "bun":
+          return "bunx --bun"
         default:
-          return 'npx';
+          return "npx"
       }
     } else {
       switch (pm) {
-        case 'pnpm':
-          return 'pnpm add';
-        case 'npm':
-          return 'npm install';
-        case 'yarn':
-          return 'yarn add';
-        case 'bun':
-          return 'bun add';
+        case "pnpm":
+          return "pnpm add"
+        case "npm":
+          return "npm install"
+        case "yarn":
+          return "yarn add"
+        case "bun":
+          return "bun add"
         default:
-          return 'npm install';
+          return "npm install"
       }
     }
-  };
+  }
 
   const getFullCommand = (pm: PackageManager): string => {
-    const prefix = getCommandPrefix(pm);
-    return `${prefix} ${command}`;
-  };
+    const prefix = getCommandPrefix(pm)
+    return `${prefix} ${command}`
+  }
 
   const handleCopy = async () => {
-    const fullCommand = getFullCommand(activeTab);
+    const fullCommand = getFullCommand(activeTab)
     try {
-      await navigator.clipboard.writeText(fullCommand);
+      await navigator.clipboard.writeText(fullCommand)
     } catch (err) {
-      console.warn('Copy failed:', err);
+      console.warn("Copy failed:", err)
     }
-  };
+  }
 
   return (
     <div className="border border-editor-border rounded-2xl overflow-hidden">
       <div className="flex items-center justify-between pl-4 pr-3 py-2 border-b border-editor-border bg-editor-background h-11">
-        <Tabs 
-          value={activeTab} 
+        <Tabs
+          value={activeTab}
           onValueChange={(value) => setActiveTab(value as PackageManager)}
           className="flex-1"
         >
@@ -100,9 +102,16 @@ export const InstallTabs: React.FC<InstallTabsProps> = ({
           language="js"
         >
           {({ className, style, tokens, getLineProps, getTokenProps }) => (
-            <pre className={`${className} text-[13px] overflow-x-auto font-mono font-medium`} style={style}>
+            <pre
+              className={`${className} text-[13px] overflow-x-auto font-mono font-medium`}
+              style={style}
+            >
               {tokens.map((line, i) => (
-                <div key={i} {...getLineProps({ line })} className="flex items-center hover:bg-editor-border py-px px-4">
+                <div
+                  key={i}
+                  {...getLineProps({ line })}
+                  className="flex items-center hover:bg-editor-border py-px px-4"
+                >
                   <span className="mr-4 select-none text-muted-foreground text-right text-[10px] items-center flex">
                     1
                   </span>
@@ -118,5 +127,5 @@ export const InstallTabs: React.FC<InstallTabsProps> = ({
         </Highlight>
       </div>
     </div>
-  );
-};
+  )
+}

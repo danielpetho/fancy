@@ -1,152 +1,242 @@
 "use client"
 
-import * as React from "react"
-import { DropdownMenuTriggerProps } from "@radix-ui/react-dropdown-menu"
-import { CheckIcon, ClipboardIcon } from "lucide-react"
+import React, { useState, useRef } from 'react';
+import { Copy } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { motion, Variants } from 'motion/react';
 
-import { NpmCommands } from "@/types/types"
-import { Event, trackEvent } from "@/lib/events"
-import { cn } from "@/lib/utils"
-import { Button, ButtonProps } from "@/components/ui/button"
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu"
-
-interface CopyButtonProps extends ButtonProps {
-  value: string
-  src?: string
-  event?: Event["name"]
+interface CopyButtonProps {
+  onCopy: () => Promise<void> | void;
 }
 
-export async function copyToClipboardWithMeta(value: string, event?: Event) {
-  navigator.clipboard.writeText(value)
-  if (event) {
-    trackEvent(event)
+const copyIconVariants: Variants = {
+  idle: { 
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.2, ease: "easeOut" }
+  },
+  copying: { 
+    opacity: 0,
+    scale: 0.8,
+    transition: { duration: 0.2, ease: "easeOut" }
+  },
+  copied: { 
+    opacity: 0,
+    scale: 0.8,
+    transition: { duration: 0.2, ease: "easeOut" }
   }
-}
+};
 
-export function CopyButton({
-  value,
-  className,
-  src,
-  variant = "ghost",
-  event,
-  ...props
-}: CopyButtonProps) {
-  const [hasCopied, setHasCopied] = React.useState(false)
+const checkIconVariants: Variants = {
+  idle: {
+    opacity: 0,
+    scale: 0.8,
+    transition: { duration: 0.2, ease: "easeOut" }
+  },
+  copying: {
+    opacity: 0,
+    scale: 0.8,
+    transition: { duration: 0.2, ease: "easeOut" }
+  },
+  copied: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.2, ease: "easeOut" }
+  }
+};
 
-  React.useEffect(() => {
+const checkPathVariants: Variants = {
+  idle: { 
+    pathLength: 0,
+    opacity: 0,
+    transition: { duration: 0.2, ease: "easeOut" }
+  },
+  copying: { 
+    pathLength: 0,
+    opacity: 1,
+    transition: { duration: 0.2, ease: "easeOut" }
+  },
+  copied: { 
+    pathLength: 1,
+    opacity: 1,
+    transition: { duration: 0.3, ease: "easeOut" }
+  }
+};
+
+const MotionButton = motion.create(Button);
+
+export const CopyButton: React.FC<CopyButtonProps> = ({ onCopy }) => {
+  const [status, setStatus] = useState<"idle" | "copying" | "copied">("idle");
+  const [backgroundState, setBackgroundState] = useState<"hidden" | "entering" | "centered" | "leaving">("hidden");
+  const [entryDirection, setEntryDirection] = useState({ x: 0, y: 0 });
+  const [leaveDirection, setLeaveDirection] = useState({ x: 0, y: 0 });
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleCopy = async () => {
+    if (status !== "idle") return;
+    
+    setStatus("copying");
+    await onCopy();
+    
     setTimeout(() => {
-      setHasCopied(false)
-    }, 2000)
-  }, [hasCopied])
+      setStatus("copied");
+    }, 100);
+    
+    setTimeout(() => {
+      setStatus("idle");
+    }, 2000);
+  };
+
+  const calculateDirection = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!buttonRef.current) return { x: 0, y: 0 };
+    
+    const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    // Calculate cursor position relative to button center
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+    
+    // Determine direction
+    const deltaX = mouseX - centerX;
+    const deltaY = mouseY - centerY;
+    
+    // Convert to offset for animation position
+    const offsetX = deltaX;
+    const offsetY = deltaY;
+    
+    return { x: offsetX, y: offsetY };
+  };
+
+  const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const direction = calculateDirection(e);
+    setEntryDirection(direction);
+    
+    // phase 1: instantly spawn at cursor position
+    setBackgroundState("entering");
+    
+    // phase 2: animate to center after a brief moment
+    setTimeout(() => {
+      setBackgroundState("centered");
+    }, 10);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const direction = calculateDirection(e);
+    setLeaveDirection(direction);
+    
+    // phase 3: animate to leave direction
+    setBackgroundState("leaving");
+    
+    // reset to hidden after animation completes
+    setTimeout(() => {
+      setBackgroundState("hidden");
+    }, 150);
+  };
+
+  const getBackgroundAnimation = () => {
+    switch (backgroundState) {
+      case "hidden":
+        return {
+          opacity: 0,
+          x: entryDirection.x,
+          y: entryDirection.y,
+          scale: 0.6,
+          transition: { duration: 0 }
+        };
+      case "entering":
+        return {
+          opacity: 0,
+          x: entryDirection.x,
+          y: entryDirection.y,
+          scale: 0.6,
+          transition: { duration: 0 }
+        };
+      case "centered":
+        return {
+          opacity: 1,
+          x: 0,
+          y: 0,
+          scale: 1,
+          transition: { duration: 0.15, ease: "easeOut" }
+        };
+      case "leaving":
+        return {
+          opacity: 0,
+          x: leaveDirection.x,
+          y: leaveDirection.y,
+          scale: 1,
+          transition: { duration: 0.15, ease: "easeOut" }
+        };
+      default:
+        return {
+          opacity: 0,
+          x: 0,
+          y: 0,
+          scale: 0.6,
+          transition: { duration: 0 }
+        };
+    }
+  };
 
   return (
-    <Button
-      size="icon"
-      variant={variant}
-      className={cn(
-        "relative z-10 h-8 w-8 bg-zinc-50 text-zinc-800 hover:bg-zinc-200 hover:text-zinc-800 [&_svg]:size-3",
-        className
-      )}
-      onClick={() => {
-        copyToClipboardWithMeta(
-          value,
-          event
-            ? {
-                name: event,
-                properties: {
-                  code: value,
-                },
-              }
-            : undefined
-        )
-        setHasCopied(true)
-      }}
-      {...props}
-    >
-      <span className="sr-only">Copy</span>
-      {hasCopied ? <CheckIcon /> : <ClipboardIcon />}
-    </Button>
-  )
-}
-
-interface CopyNpmCommandButtonProps extends DropdownMenuTriggerProps {
-  commands: Required<NpmCommands>
-}
-
-export function CopyNpmCommandButton({
-  commands,
-  className,
-  ...props
-}: CopyNpmCommandButtonProps) {
-  const [hasCopied, setHasCopied] = React.useState(false)
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setHasCopied(false)
-    }, 2000)
-  }, [hasCopied])
-
-  const copyCommand = React.useCallback(
-    (value: string, pm: "npm" | "pnpm" | "yarn" | "bun") => {
-      copyToClipboardWithMeta(value, {
-        name: "copy_npm_command",
-        properties: {
-          command: value,
-          pm,
-        },
-      })
-      setHasCopied(true)
-    },
-    []
-  )
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          size="icon"
-          variant="ghost"
-          className={cn(
-            "relative z-10 h-6 w-6 text-zinc-50 hover:bg-zinc-700 hover:text-zinc-50",
-            className
-          )}
-        >
-          {hasCopied ? (
-            <CheckIcon className="h-3 w-3" />
-          ) : (
-            <ClipboardIcon className="h-3 w-3" />
-          )}
-          <span className="sr-only">Copy</span>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem
-          onClick={() => copyCommand(commands.__npmCommand__, "npm")}
-        >
-          npm
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => copyCommand(commands.__yarnCommand__, "yarn")}
-        >
-          yarn
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => copyCommand(commands.__pnpmCommand__, "pnpm")}
-        >
-          pnpm
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          onClick={() => copyCommand(commands.__bunCommand__, "bun")}
-        >
-          bun
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  )
-}
+    <div className="relative">
+      {/* animated Background */}
+      <motion.div
+        className="absolute inset-0 bg-editor-border rounded-md"
+        animate={getBackgroundAnimation()}
+      />
+      
+      <MotionButton
+        ref={buttonRef}
+        onClick={handleCopy}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        variant="ghost"
+        size="icon"
+        className="relative text-muted-foreground cursor-pointer w-8 h-8 hover:text-white hover:scale-105 duration-300 transition ease-out hover:bg-transparent bg-none"
+        aria-label="Copy code"
+        whileTap={{ scale: 0.9 }}
+        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+        // disabled={status !== "idle"}
+      >
+        <div className="relative w-4 h-4">
+          {/* Copy Icon */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            animate={status}
+            variants={copyIconVariants}
+          >
+            <Copy className="w-4 h-4" />
+          </motion.div>
+          
+          {/* Check Icon */}
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center"
+            animate={status}
+            variants={checkIconVariants}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width={16}
+              height={16}
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <motion.path
+                d="M4 12 9 17L20 6"
+                animate={status}
+                variants={checkPathVariants}
+              />
+            </svg>
+          </motion.div>
+        </div>
+      </MotionButton>
+    </div>
+  );
+};

@@ -22,10 +22,10 @@ export function MainNav() {
             <motion.span
               whileHover={{
                 fontVariationSettings: "'wght' 600",
-                transition: { duration: 0.3, ease: "easeOut" }
+                transition: { duration: 0.3, ease: "easeOut" },
               }}
               style={{
-                fontVariationSettings: "'wght' 400"
+                fontVariationSettings: "'wght' 400",
               }}
             >
               Docs
@@ -35,10 +35,10 @@ export function MainNav() {
             <motion.span
               whileHover={{
                 fontVariationSettings: "'wght' 600",
-                transition: { duration: 0.3, ease: "easeOut" }
+                transition: { duration: 0.3, ease: "easeOut" },
               }}
               style={{
-                fontVariationSettings: "'wght' 400"
+                fontVariationSettings: "'wght' 400",
               }}
             >
               Components
@@ -63,10 +63,10 @@ export function MainNav() {
           <motion.span
             whileHover={{
               fontVariationSettings: "'wght' 600",
-              transition: { duration: 0.3, ease: "easeOut" }
+              transition: { duration: 0.3, ease: "easeOut" },
             }}
             style={{
-              fontVariationSettings: "'wght' 400"
+              fontVariationSettings: "'wght' 400",
             }}
           >
             Github
