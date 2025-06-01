@@ -16,18 +16,12 @@ component: true
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/variable-font-hover-by-random-letter.json"`}</CodeBlockWrapper>
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/variable-font-hover-by-random-letter.json&quot;" npx />
 
 </TabsContent>  
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>Copy and paste the following code into your project:</Step>
-
 <ComponentSource name="variable-font-hover-by-random-letter" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>
@@ -53,9 +47,11 @@ In this component, the `fromFontVariationSettings` and `toFontVariationSettings`
 
 An example prop therefore would be:
 
-<CodeBlockWrapper language="javascript" className="mt-4">
-  {`fromFontVariationSettings="'wght' 100, 'slnt' 0"`}
-</CodeBlockWrapper>
+<CodeSnippet title="Font variation example prop">
+```jsx
+  fromFontVariationSettings="'wght' 100, 'slnt' 0"
+```
+</CodeSnippet>
 
 **Always check the font's documentation to see what are the available axes and their ranges.**
 

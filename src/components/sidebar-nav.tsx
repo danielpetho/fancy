@@ -17,7 +17,7 @@ export function DocsSidebarNav({ items }: DocsSidebarNavProps) {
   return items.length ? (
     <div className="w-full h-full py-6">
       {items.map((item, index) => (
-        <div key={index} className="mb-3 pb-3 border-black px-6">
+        <div key={index} className="mb-4 pb-3 border-black px-6">
           <h4 className="text-2xl font-medium mb-2">
             {item.title}{" "}
             <span className="align-super text-sm">
@@ -42,21 +42,42 @@ interface NavItemProps {
 }
 
 function NavItem({ item, index, pathname }: NavItemProps) {
+  const isActive = pathname === item.href
+
   return (
-    <motion.p whileHover={{ x: 5 }} key={index}>
+    <motion.p key={index}>
       <Link
         href={item.href ?? "#"}
-        className={cn(
-          "text text-muted-foreground",
-          pathname === item.href && "text-foreground font-medium",
-          item.disabled && "opacity-60 cursor-not-allowed"
-        )}
+        className="inline-block"
         target={item.external ? "_blank" : ""}
         rel={item.external ? "noreferrer" : ""}
       >
-        {item.title}
+        <motion.span
+          initial={{ 
+            fontVariationSettings: isActive ? "'wght' 500" : "'wght' 400", 
+            color: isActive ? "var(--foreground)" : "hsl(var(--muted-foreground))" 
+          }}
+          whileHover={{ 
+            fontVariationSettings: "'wght' 500", 
+            color: "var(--foreground)", 
+            transition: { duration: 0.3, ease: "easeOut" }
+          }}
+          animate={{
+            fontVariationSettings: isActive ? "'wght' 500" : "'wght' 400",
+            color: isActive ? "var(--foreground)" : "hsl(var(--muted-foreground))",
+            transition: { duration: 0.3, ease: "easeOut" }
+          }}
+          className={cn(
+            "inline-block no-underline duration-300 transition-colors ease-out",
+            isActive && "text-foreground",
+            !isActive && "text-muted-foreground",
+            item.disabled && "opacity-60 cursor-not-allowed"
+          )}
+        >
+          {item.title}
+        </motion.span>
         {item.label && (
-          <span className="ml-1 rounded-md bg-primary-blue px-1.5 py-0.5 text-[11px] leading-none text-white">
+          <span className="ml-1 rounded-md bg-blue dark:bg-blue-500 px-1.5 py-0.5 text-[11px] leading-none text-white">
             {item.label}
           </span>
         )}

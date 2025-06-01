@@ -16,9 +16,7 @@ component: true
 </TabsList>
 <TabsContent value="cli">
 
-```bash
-npx shadcn@latest add "https://fancycomponents.dev/r/letter-3d-swap.json"
-```
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/letter-3d-swap.json&quot;" npx />
 
 </TabsContent>
 <TabsContent value="manual">
@@ -37,6 +35,7 @@ Just wrap your text with the component and set the `rotateDirection` prop to the
 ### Splitting the text into characters
 
 First, we split the text into `WorldObject` objects, each containing an array of characters and a boolean indicating whether there should be a space after the character. We use a handy function for this, which should respect emojis too.
+<CodeSnippet title="Splitting the text into characters">
 ```tsx
 // handy function to split text into characters with support for unicode and emojis
 const splitIntoCharacters = (text: string): string[] => {
@@ -48,9 +47,11 @@ const splitIntoCharacters = (text: string): string[] => {
   return Array.from(text)
 }
 ```
+</CodeSnippet>
 
 This method also helps us to ensure that words stay together and properly spaced when the text wraps across multiple lines. Without this approach, simply splitting by characters would break words at line boundaries.
 
+<CodeSnippet title="Splitting the text into animation segments">
 ```tsx
 // Splitting the text into animation segments
 const characters = useMemo(() => {
@@ -62,6 +63,7 @@ const characters = useMemo(() => {
     return result
 }, [text])
 ```
+</CodeSnippet>
 
 ### 3D Transforms
 
@@ -118,6 +120,7 @@ Of course, you can achieve the same result by applying (other) transforms in a d
 
 Now that we have our virtual 3D box, the only thing left is to rotate each character box. For this, we use the `useAnimate` hook from [motion](https://motion.dev/docs/use-animate). This gives us a scope and an `animate` function to control the animation. We add `.letter-3d-swap-char-box-item` class name to each char box, so we can select and animate them with the `animate` function. After the animation is completed, we reset the transform to the original state.
 
+<CodeSnippet title="Animation">
 ```tsx
 // Animate each character with its specific delay
 await animate(
@@ -135,6 +138,7 @@ await animate(
   { duration: 0 }
 )
 ```
+</CodeSnippet>
 
 The transform is just a 90/-90 degree rotation either on the X or Y axis, depending on the `rotateDirection` prop.
 
@@ -142,6 +146,7 @@ The transform is just a 90/-90 degree rotation either on the X or Y axis, depend
 
 The delay is calculated based on the `staggerFrom` prop, which can be set to `first`, `last`, `center`, `random` or a number. If it's a number, it's used as the index of the character to stagger from. For example, if `staggerFrom` is set to `2`, the second character will be staggered from the third one. We have a handy function to calculate the correct delay for each character:
 
+<CodeSnippet title="Stagger delay calculation">
 ```tsx
 // Helper function to calculate stagger delay for each text segment
 const getStaggerDelay = useCallback(
@@ -162,6 +167,7 @@ const getStaggerDelay = useCallback(
   [staggerFrom, staggerDuration]
 )
 ```
+</CodeSnippet>
 
 Check out the demo to see the possible values for `staggerFrom`.
 

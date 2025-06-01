@@ -17,24 +17,20 @@ toc: true
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/animated-gradient-with-svg.json"`}</CodeBlockWrapper>
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/animated-gradient-with-svg.json&quot;" npx />
 
 </TabsContent>
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>Add this hook for querying the dimensions of an element:</Step>
+Add this hook for querying the dimensions of an element:
 
 <ComponentSource name="use-dimensions" />
 
-<Step>
-  Update your `globals.css` file to include the animation keyframes:
-</Step>
+Update your `globals.css` file to include the animation keyframes:
 
-<CodeBlockWrapper language="typescript">
-  {`
-  // ...
+<CodeSnippet title="globals.css">
+```css
+  /* ... */
   @theme: {
     --animate-background-gradient: background-gradient;
     @keyframes: background-gradient {
@@ -57,14 +53,12 @@ toc: true
     }
   },
 };
-`}
-</CodeBlockWrapper>
+```
+</CodeSnippet>
 
-<Step>Then, copy and paste the following code into your project:</Step>
+Then, copy and paste the following code into your project:
 
 <ComponentSource name="animated-gradient-with-svg" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>
@@ -81,24 +75,23 @@ Animated gradients can be achieved with many different techniques (shaders, CSS 
    - And so on for positions 3 and 4
 4. These variables are set to random values between -0.5 and 0.5.
 
-<CodeBlockWrapper language="typescript" className="mt-4">
-  {`...
+<CodeSnippet title="Movement variables">
+```tsx
 style={
-    {
-      ...
-      "--tx-1": (Math.random() - 0.5),
-      "--ty-1": (Math.random() - 0.5),
-      "--tx-2": (Math.random() - 0.5),
-      "--ty-2": (Math.random() - 0.5),
-      "--tx-3": (Math.random() - 0.5),
-      "--ty-3": (Math.random() - 0.5),
-      "--tx-4": (Math.random() - 0.5),
-      "--ty-4": (Math.random() - 0.5),
-    } as React.CSSProperties
-  }
-...
-`}
-</CodeBlockWrapper>
+  {
+    //...
+    "--tx-1": (Math.random() - 0.5),
+    "--ty-1": (Math.random() - 0.5),
+    "--tx-2": (Math.random() - 0.5),
+    "--ty-2": (Math.random() - 0.5),
+    "--tx-3": (Math.random() - 0.5),
+    "--ty-3": (Math.random() - 0.5),
+    "--tx-4": (Math.random() - 0.5),
+    "--ty-4": (Math.random() - 0.5),
+  } as React.CSSProperties
+}
+```
+</CodeSnippet>
 
 5. The `background-gradient` animation keyframes are used to animate the circles between these positions
 6. Lastly, we blur the container element which holds the circles, to create a smooth effect.

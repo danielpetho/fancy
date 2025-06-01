@@ -2,17 +2,13 @@
 
 import * as React from "react"
 import { Repeat } from "lucide-react"
-import ReactSyntaxHighlighter, {
-  Prism as SyntaxHighlighter,
-} from "react-syntax-highlighter"
-import { hybrid } from "react-syntax-highlighter/dist/esm/styles/hljs"
 
-import { absoluteUrl, cn } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Icons } from "@/components/icons"
 import { registry } from "@/fancy/index"
 
-import { CopyButton } from "./copy-button"
+import { CodeSnippet } from "./code-snippet"
 import { OpenInV0Button } from "./open-in-v0"
 import { RestartButton } from "./restart-button"
 import { Button } from "./ui/button"
@@ -72,17 +68,6 @@ export function ComponentPreview({
     loadSourceCode()
   }, [name])
 
-  const syntaxHighlighterStyle = React.useMemo(
-    () => ({
-      borderRadius: "var(--radius) var(--radius)",
-      overflow: "auto",
-      padding: "1rem",
-      fontSize: "0.9rem",
-      width: "100%",
-      height: "100%",
-    }),
-    []
-  )
   const handleRestart = React.useCallback(() => {
     setPreviewKey((prev) => prev + 1)
   }, [])
@@ -128,23 +113,23 @@ export function ComponentPreview({
     <div
       data-algolia-ignore
       className={cn(
-        "group relative my-4 flex flex-col space-y-2 h-full w-full ",
+        "group relative flex flex-col h-full w-full ",
         className
       )}
       {...props}
     >
       <Tabs defaultValue="preview" className="relative mr-auto w-full">
         <div className="flex items-center justify-between">
-          <TabsList className="w-full justify-start rounded-none p-0 h-14 bg-transparent">
+          <TabsList className="w-full justify-start rounded-none p-0 h-9 bg-transparent space-x-3 px-3">
             <TabsTrigger
               value="preview"
-              className="relative h-14 text-xl rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+              className="relative text-base rounded-none border-b-transparent bg-transparent px-0 font-semibold text-muted-foreground shadow-none transition-colors duration-300 ease-out hover:text-foreground data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
             >
               Demo
             </TabsTrigger>
             <TabsTrigger
               value="code"
-              className="relative text-xl h-14 rounded-none border-b-2 border-b-transparent bg-transparent px-4 pb-3 pt-2 font-semibold text-muted-foreground shadow-none transition-none data-[state=active]:border-b-primary data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+              className="relative text-base rounded-none border-b-transparent bg-transparent px-0 font-semibold text-muted-foreground shadow-none transition-colors duration-300 ease-out hover:text-foreground data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
             >
               Code
             </TabsTrigger>
@@ -152,9 +137,9 @@ export function ComponentPreview({
         </div>
         <TabsContent
           value="preview"
-          className="border border-black-500 flex rounded-lg"
+          className="border border-black-500 flex rounded-2xl"
         >
-          <div className="w-full flex items-center justify-center rounded-lg min-h-[540px] overflow-hidden relative max-h-[530px]">
+          <div className="w-full flex items-center justify-center rounded-2xl min-h-[530px] overflow-hidden relative max-h-[530px]">
             {/* <div className="absolute top-4 right-4 rounded-full border">
 
             </div> */}
@@ -213,27 +198,11 @@ export function ComponentPreview({
           </div>
         </TabsContent>
         <TabsContent value="code">
-          <div className="flex flex-col h-[520px] space-y-4 ">
-            <div className="w-full h-full [&_pre]:my-0 [&_pre]:overflow-auto relative rounded-lg">
-              <div className="absolute right-4 top-4">
-                <CopyButton
-                  value={sourceCode}
-                  src={name}
-                  event={"copy_npm_command"}
-                />
-              </div>
-              <div className="inset-0 absolute">
-                <ReactSyntaxHighlighter
-                  language="typescript"
-                  style={hybrid}
-                  customStyle={syntaxHighlighterStyle}
-                  wrapLongLines={true}
-                >
-                  {sourceCode}
-                </ReactSyntaxHighlighter>
-              </div>
-            </div>
-          </div>
+          <CodeSnippet
+            title={name + ".tsx"}
+            code={sourceCode}
+            language="tsx"
+          />
         </TabsContent>
       </Tabs>
     </div>

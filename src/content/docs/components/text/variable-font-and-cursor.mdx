@@ -11,27 +11,23 @@ component: true
 <Tabs defaultValue="cli">
 
 <TabsList>
-  <TabsTrigger value="cli">CLI</TabsTrigger>
-  <TabsTrigger value="manual">Manual</TabsTrigger>
+  <TabsTrigger value="cli" aria-label="CLI">CLI</TabsTrigger>
+  <TabsTrigger value="manual" aria-label="Manual">Manual</TabsTrigger>
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/variable-font-and-cursor.json"`}</CodeBlockWrapper>
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/variable-font-and-cursor.json&quot;" npx />
 
 </TabsContent>
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>Create this hook to query the cursor position's ref:</Step>
+Create this hook to query the cursor position's ref:
 
 <ComponentSource name="use-mouse-position-ref" />
 
-<Step>Copy and paste the following code into your project:</Step>
+Then, copy and paste the following code into your project:
 
 <ComponentSource name="variable-font-and-cursor" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>
@@ -46,13 +42,14 @@ It's important to note that the container used for tracking mouse position is no
 
 The `fontVariationMapping` prop allows you to define how cursor position maps to font variation settings. It has the following structure:
 
-<CodeBlockWrapper language="typescript" className="pt-4">
-  {`interface FontVariationMapping {
-    x: { name: string; min: number; max: number };
-    y: { name: string; min: number; max: number };
+<CodeSnippet title="Font variation mapping settings">
+```tsx
+interface FontVariationMapping {
+  x: { name: string; min: number; max: number };
+  y: { name: string; min: number; max: number };
 }
-`}
-</CodeBlockWrapper>
+```
+</CodeSnippet>
 
 - `x`: Defines the font variation axis controlled by horizontal cursor movement.
 - `y`: Defines the font variation axis controlled by vertical cursor movement.
@@ -64,7 +61,7 @@ The component interpolates between `min` and `max` based on the cursor position 
 
 ### Understanding Variable Fonts
 
-For more information about variable fonts and how they work, please refer to the [Variable Font Hover By Letter](/docs/components/text/variable-font-hover-by-letter#understanding-variable-fonts) documentation.
+For more information about variable fonts and how they work, please refer to the <Link href="/docs/components/text/variable-font-hover-by-letter#understanding-variable-fonts">Variable Font Hover By Letter</Link> documentation.
 
 ## Props
 

@@ -6,6 +6,7 @@ import * as React from "react"
 import { TableOfContents } from "@/lib/toc"
 import { cn } from "@/lib/utils"
 import { useMounted } from "@/hooks/use-mounted"
+import { motion } from "motion/react"
 
 interface TocProps {
   toc: TableOfContents
@@ -81,11 +82,11 @@ interface TreeProps {
 
 function Tree({ tree, level = 1, activeItem }: TreeProps) {
   return tree?.items?.length && level < 3 ? (
-    <ul className={cn("m-0 list-none", { "pl-4": level !== 1 })}>
+    <ul className={cn("m-0 list-none", { "pl-3": level !== 1 })}>
       {tree.items.map((item, index) => {
         return (
           <li key={index} className={cn("mt-0 pt-1")}>
-            <a
+            <motion.a
               href={item.url}
               onClick={(e) => {
                 e.preventDefault()
@@ -93,15 +94,22 @@ function Tree({ tree, level = 1, activeItem }: TreeProps) {
                   behavior: "smooth",
                 })
               }}
+              initial={{ fontVariationSettings: "'wght' 400", color: item.url === `#${activeItem}` ? "var(--foreground)" : "hsl(var(--muted-foreground))"  }}
+              whileHover={{ fontVariationSettings: "'wght' 500", color: "var(--foreground)", transition: {duration: 0.3, ease: "easeOut"}}}
+              animate={{
+                fontVariationSettings: item.url === `#${activeItem}` ? "'wght' 500" : "'wght' 400",
+                color: item.url === `#${activeItem}` ? "var(--foreground)" : "hsl(var(--muted-foreground))",
+                transition: {duration: 0.3, ease: "easeOut"}
+              }}
               className={cn(
-                "inline-block no-underline transition-colors hover:text-foreground",
+                "inline-block no-underline duration-300 transition-colors ease-out",
                 item.url === `#${activeItem}`
-                  ? "font-medium text-foreground"
+                  ? "text-foreground"
                   : "text-muted-foreground"
               )}
             >
               {item.title}
-            </a>
+            </motion.a>
             {item.items?.length ? (
               <Tree tree={item} level={level + 1} activeItem={activeItem} />
             ) : null}

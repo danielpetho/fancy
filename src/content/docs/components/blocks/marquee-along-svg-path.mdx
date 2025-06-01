@@ -15,20 +15,12 @@ description: A component that scrolls html elements along an SVG path.
 </TabsList>
 <TabsContent value="cli">
 
-```bash
-npx shadcn@latest add "https://fancycomponents.dev/r/marquee-along-svg-path.json"
-```
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/marquee-along-svg-path.json&quot;" npx />
 
 </TabsContent>
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>Copy and paste the following code into your project:</Step>
-
 <ComponentSource name="marquee-along-svg-path" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>
@@ -51,7 +43,7 @@ The component is really similar to the [Simple Marquee Component](https://fancyc
 
 ## Understanding the component
 
-Before you dive into understanding this component, please read through the [Simple Marquee](https://fancycomponents.dev/docs/components/blocks/simple-marquee) component's documentation, as this one is almost identical.
+Before you dive into understanding this component, please read through the <Link href="/docs/components/blocks/simple-marquee">Simple Marquee</Link> component's documentation, as this one is almost identical.
 
 The main difference is that we move the children along an SVG path (instead of a "straight line" positioned with `flexbox` system, as in the other component). **The magic that makes this possible is the `offsetPath` CSS property.**
 
@@ -61,6 +53,7 @@ as per the [offset-path documentation on MDN](https://developer.mozilla.org/en-U
 
 We also use the `offsetDistance` property to actually move/offset the element to the correct position along the path in the `offsetPath` CSS property.
 
+<CodeSnippet title="Offset path example">
 ```jsx
 style={{
   ...
@@ -68,9 +61,11 @@ style={{
   offsetDistance: itemOffset,
 }}
 ```
+</CodeSnippet>
 
 Each item's offset is calculated separately using an `useTransform` hook from `motion/react`, by converting the `baseOffset` to a percentage value:
 
+<CodeSnippet title="Item offset calculation">
 ```jsx
 const itemOffset = useTransform(baseOffset, (v) => {
   // evenly distribute items along the path (0-100%)
@@ -79,6 +74,7 @@ const itemOffset = useTransform(baseOffset, (v) => {
   return `${easing ? easing(wrappedValue / 100) * 100 : wrappedValue}%`
 })
 ```
+</CodeSnippet>
 
 The items are evenly distributed along the path. The `wrap` function ensures that items surpassing `100%` are "wrapped back" to `0%`. The `baseOffset` value (the input value for the `useTransform` hook) is calculated by a bunch of different factors, such as:
 - a base velocity, which moves the items along the path at a constant speed
@@ -87,7 +83,7 @@ The items are evenly distributed along the path. The `wrap` function ensures tha
 - direction
 - drag velocity
 
-Most of these factors are calculated inside an `useAnimationFrame` hook, which runs every frame. Most of these values are either motion values or refs to avoid unnecessary re-renders. Please refer to the Simple Marquee Component [documentation](https://github.com/danielpetho/fancy/blob/main/src/fancy/components/blocks/marquee-along-svg-path.tsx), there is a detailed explanation for each part.
+Most of these factors are calculated inside an `useAnimationFrame` hook, which runs every frame. Most of these values are either motion values or refs to avoid unnecessary re-renders. Please refer to the <Link href="/docs/components/blocks/simple-marquee">Simple Marquee Component documentation</Link>, there is a detailed explanation for each part.
 
 ### Z-Index Management
 
@@ -95,6 +91,7 @@ You can enable increasing z-index based on the progress along the path by settin
 
 The callback function which calculates the current z-index is fairly simple. You can set the `zIndexBase` and `zIndexRange` props to control the base and range of the z-index values. The `zIndexBase` is the starting value, and the `zIndexRange` is the difference between the highest and lowest z-index values.
 
+<CodeSnippet title="Z-Index calculation">
 ```jsx
 // Function to calculate z-index based on offset distance
 const calculateZIndex = useCallback(
@@ -118,11 +115,13 @@ const zIndex = useTransform(
   (value) => calculateZIndex(value)
 );
 ```
+</CodeSnippet>
 
 ## CSS Variable Interpolation
 
 It's also possible to map any CSS property to the path progress using the `cssVariableInterpolation` prop. It accepts an array of objects with `property` and `from` and `to` values. High level example:
 
+<CodeSnippet title="CSS variable interpolation example">
 ```jsx
 <MarqueeAlongSvgPath
   path="M0,0 C0,0 100,0 100,100"
@@ -134,6 +133,7 @@ It's also possible to map any CSS property to the path progress using the `cssVa
   {/* Your content */}
 </MarqueeAlongSvgPath>
 ```
+</CodeSnippet>
 
 <ComponentPreview name="marquee-along-svg-path-mapping-demo" />
 
@@ -143,7 +143,7 @@ The component's performance may be impacted by the complexity and length of the 
 
 ## Resources
 
-- [Simple Marquee Component](https://fancycomponents.dev/docs/components/blocks/simple-marquee)
+- <Link href="/docs/components/blocks/simple-marquee">Simple Marquee Component</Link>
 - [offset-path by MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/offset-path)
 - [CSS motion path by MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_motion_path)
 - [Motion along path by motion.dev](https://examples.motion.dev/react/motion-path)

@@ -16,20 +16,16 @@ component: true
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/cursor-attractor-and-gravity.json"`}</CodeBlockWrapper>
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/cursor-attractor-and-gravity.json&quot;" npx />
 
 </TabsContent>
 <TabsContent value="manual">
 
-<Steps>
+Install the following dependencies:
 
-<Step>Install the following dependencies:</Step>
+<InstallTabs command="matter-js @types/matter-js poly-decomp" />
 
-<CodeBlockWrapper language="bash">{`npm install matter-js @types/matter-js poly-decomp`}</CodeBlockWrapper>
-
-<Step>Then, create two utility functions for the component.</Step>
-
-One is for parsing SVG paths into a set of vertices:
+Then, create an utility function for parsing SVG paths into a set of vertices:
 
 <ComponentSource name="svg-path-to-vertices" />
 
@@ -37,37 +33,39 @@ The other is for calculating the position of an element based on its container, 
 
 <ComponentSource name="calculate-position" />
 
-<Step>Then, create the component:</Step>
+And another one for calculating the position of an element based on its container, and a posiiton value:
 
 <ComponentSource name="cursor-attractor-and-gravity" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>
 
 ## Usage
 
-First, you need to wrap your scene / content with the `Gravity` component. Set the attraction point coordinates in the `attractorPoint` prop. This point will either attract or repel all the bodies inside the container. Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). Lastly, set the strength and radius of the cursor attractor, which will also attract or repell all bodies. High-level example:
+First, you need to wrap your scene / content with the `Gravity` component. Set the attraction point coordinates in the `attractorPoint` prop. This point will either attract or repel all the bodies inside the container. Then, in order to transform your regular HTML elements into Matter bodies, you need to wrap them with the `MatterBody` component. 
 
-<CodeBlockWrapper language="typescript" className="mt-2">
-  {`<Gravity attractorPoint={{ x: "50%", y: "50%" }} attractorStrength={0.0006} cursorStrength={-0.005} cursorFieldRadius={200}>
+You need to set each bodies `x` and `y` position, either as a percentage of your container size, or as a number. You do not need to set the width and height manually, everything else is taken care of by component :). Lastly, set the strength and radius of the cursor attractor, which will also attract or repell all bodies. High-level example:
+
+<CodeSnippet title="Gravity usage example">
+```tsx
+<Gravity attractorPoint={{ x: "50%", y: "50%" }} attractorStrength={0.0006} cursorStrength={-0.005} cursorFieldRadius={200}>
   <MatterBody x="50%" y="50%">
     <div>Hello world!</div>
   </MatterBody>
   <MatterBody x="10%" y="10%">
     <div>fancy!</div>
   </MatterBody>
-</Gravity>`}
-</CodeBlockWrapper>
+</Gravity>
+```
+</CodeSnippet>
 
 ## Understanding the component
 
-Please refer to the [Gravity](/docs/components/physics/gravity) documentation, since the component is almost identical. The only difference is that in this component that we don't use a directional gravitational force.Instead, we use attractor force(s), either from a defined static point (optional), and/or from the cursor position, that attract or repel all bodies inside the container. This is achieved by calculating the distance between the attractor point(s) and each body, and applying a force in the opposite direction of the body's velocity. The force is proportional to the distance and inversely proportional to the mass of the body.
+Please refer to the <Link href="/docs/components/physics/gravity">Gravity</Link> documentation, since the component is almost identical. The only difference is that in this component that we don't use a directional gravitational force.Instead, we use attractor force(s), either from a defined static point (optional), and/or from the cursor position, that attract or repel all bodies inside the container. This is achieved by calculating the distance between the attractor point(s) and each body, and applying a force in the opposite direction of the body's velocity. The force is proportional to the distance and inversely proportional to the mass of the body.
 
 ## Examples
 
-## Repel
+### Repel
 
 By setting one of the attractor points' strength to a negative value, you can create a repelling effect. The following demo showcases a negative force from the cursor by applying a negative value to the `cursorStrength` prop.
 

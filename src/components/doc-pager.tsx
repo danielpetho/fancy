@@ -1,4 +1,7 @@
+"use client"
+
 import Link from "next/link"
+import { motion } from "motion/react"
 
 import { NavItem, NavItemWithChildren } from "@/types/nav"
 import { Doc } from "@/types/types"
@@ -16,24 +19,62 @@ export function DocsPager({ doc }: DocsPagerProps) {
   }
 
   return (
-    <div className="flex flex-row items-center justify-between text">
+    <div
+      className={`flex flex-row items-center ${pager.prev && pager.next ? "justify-between" : pager.next ? "justify-end" : "justify-start"} text`}
+    >
       {pager?.prev?.href && (
-        <Link
-          href={pager.prev.href}
-          className="items-center flex flex-row justify-center bg-zinc-200/50 rounded-lg pl-2 pr-6 py-2 shadow-sm "
+        <motion.div 
+          whileHover="hover"
+          whileTap={{ scale: 0.97 }}
         >
-          <p className="font-serif sm:mr-2 h-7 w-7 rotate-180 ">&#8594;</p>
-          <span className="truncate hidden sm:block">{pager.prev.title}</span>
-        </Link>
+          <Link
+            href={pager.prev.href}
+            className="items-center flex flex-row justify-center bg-muted rounded-xl pl-2 pr-6 py-2 hover:bg-muted/60 duration-300 ease-out transition"
+          >
+            <motion.p 
+              className="font-serif sm:mr-2 h-7 w-7 rotate-180"
+              variants={{
+                hover: {
+                  x: 5,
+                  transition: {
+                    duration: 0.3,
+                    ease: "easeOut"
+                  }
+                }
+              }}
+            >
+              &#8594;
+            </motion.p>
+            <span className="truncate hidden sm:block">{pager.prev.title}</span>
+          </Link>
+        </motion.div>
       )}
       {pager?.next?.href && (
-        <Link
-          href={pager.next.href}
-          className=" flex flex-row  items-center justify-center bg-zinc-200/50 rounded-lg pr-2 pl-6 py-2 shadow-sm"
+        <motion.div 
+          whileHover="hover"
+          whileTap={{ scale: 0.97 }}
         >
-          <span className="truncate hidden sm:block">{pager.next.title}</span>
-          <span className="font-serif h-7 w-7 sm:ml-2">&#8594;</span>
-        </Link>
+          <Link
+            href={pager.next.href}
+            className="flex flex-row hover:bg-muted/60 duration-300 ease-out transition items-center justify-center rounded-xl pr-2 pl-6 py-2 bg-muted"
+          >
+            <span className="truncate hidden sm:block">{pager.next.title}</span>
+            <motion.span 
+              className="font-serif h-7 w-7 sm:ml-2"
+              variants={{
+                hover: {
+                  x: 5,
+                  transition: {
+                    duration: 0.3,
+                    ease: "easeOut"
+                  }
+                }
+              }}
+            >
+              &#8594;
+            </motion.span>
+          </Link>
+        </motion.div>
       )}
     </div>
   )

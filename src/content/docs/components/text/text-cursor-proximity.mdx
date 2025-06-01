@@ -16,25 +16,21 @@ component: true
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/text-cursor-proximity.json"`}</CodeBlockWrapper>
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/text-cursor-proximity.json&quot;" npx />
 
 </TabsContent>
 
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>Create a hook for querying the cursor/mouse position.</Step>
-
-This hook actually returns a ref to the position (instead of a state), so we can avoid re-renders when the cursor moves.
+Create a hook for querying the cursor/mouse position.
 
 <ComponentSource name="use-mouse-position-ref" />
 
-<Step>Copy and paste the following code into your project:</Step>
+This hook actually returns a ref to the position (instead of a state), so we can avoid re-renders when the cursor moves.
+
+Then, copy and paste the following code into your project:
 
 <ComponentSource name="text-cursor-proximity" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>

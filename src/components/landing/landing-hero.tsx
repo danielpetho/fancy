@@ -46,7 +46,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
                   "pop ✨",
                   "rock 🤘",
                 ]}
-                mainClassName="overflow-hidden pr-3 text-primary-blue py-0 pb-2 md:pb-4 rounded-xl"
+                mainClassName="overflow-hidden pr-3 text-blue dark:text-blue-500 py-0 pb-2 md:pb-4 rounded-xl"
                 staggerDuration={0.03}
                 staggerFrom="last"
                 rotationInterval={3000}
@@ -64,18 +64,10 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
           with a growing library of ready-to-use react components &
           microinteractions. free & open source.
         </motion.p>
-        {/* <motion.p
-          className="text-2xl text-center font-overused-grotesk pt-4"
-          animate={{ opacity: 1, y: 0 }}
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.2, ease: "easeOut", delay: 0.1 }}
-        >
-          Free & Open Source.
-        </motion.p> */}
 
         <div className="flex flex-row justify-center space-x-4 items-center mt-10 sm:mt-16 md:mt-20 lg:mt-20 text-xs">
           <motion.button
-            className=" sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-background bg-foreground px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas "
+            className="w-28 sm:w-32 md:w-36 lg:w-40 sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-background bg-foreground px-3 py-1.5 sm:px-4 sm:py-2 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-xl z-20 shadow-2xl whitespace-nowrap cursor-pointer"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{
@@ -86,6 +78,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
                 duration: 0.2,
               },
             }}
+            whileTap={{ scale: 0.95 }}
             whileHover={{
               scale: 1.05,
               transition: { type: "spring", damping: 30, stiffness: 400 },
@@ -96,7 +89,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
             </Link>
           </motion.button>
           <motion.button
-            className=" sm:text-base md:text-lg lg:text-xl font-semibold tracking-tight text-white bg-primary-blue px-4 py-2 sm:px-5 sm:py-2.5 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-full z-20 shadow-2xl font-calendas"
+            className="w-28 sm:w-32 md:w-36 lg:w-40 sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-white bg-blue dark:bg-blue-500 px-3 py-1.5 sm:px-4 sm:py-2 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-xl z-20 shadow-2xl whitespace-nowrap cursor-pointer" 
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{
@@ -107,6 +100,7 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
                 duration: 0.2,
               },
             }}
+            whileTap={{ scale: 0.95 }}
             whileHover={{
               scale: 1.05,
               transition: { type: "spring", damping: 30, stiffness: 400 },

@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { DocsPager } from "@/components/doc-pager"
 import { DashboardTableOfContents } from "@/components/toc"
+import { DocBreadcrumb } from "@/components/doc-breadcrumb"
+import { DocAuthor } from "@/components/doc-author"
 
 export const runtime = "nodejs"
 export const dynamic = "force-static"
@@ -105,25 +107,11 @@ export default async function DocPage({ params }: DocPageProps) {
       params.slug?.[1]?.slice(1).toLowerCase() || "Getting Started"
 
   return (
-    <main className="xl:grid xl:grid-cols-[minmax(0,1fr)_300px] justify-center w-full">
-      <div className="rounded-xl bg-background py-6 lg:gap-10 lg:py-6 border-border border shadow-lg">
-        <div data-algolia-crawl className="container max-w-full px-4 md:px-8">
-          <div className="mb-2 pb-2 flex items-center space-x-1 text-base md:text-lg text-muted-foreground">
-            <div className="overflow-hidden font-medium  whitespace-nowrap">
-              Docs
-            </div>
-            <span className="font-serif">&#8594;</span>
-            <div
-              data-algolia-level-0
-              className="font-medium text-muted-foreground"
-            >
-              {componentType}
-            </div>
-            <span className="font-serif">&#8594;</span>
-
-            <div className="font-medium text-foreground">{doc.title}</div>
-          </div>
-          <div className="space-y-2">
+    <main className="xl:grid xl:grid-cols-[minmax(0,1fr)_340px] justify-center w-full">
+      <div className="rounded-2xl bg-background py-6 lg:gap-10 lg:py-6 border-border border">
+        <div data-algolia-crawl className="px-4 md:px-8 flex flex-col">
+          <DocBreadcrumb componentType={componentType} title={doc.title} />
+          <div className="">
             <h1
               className={cn(
                 "scroll-m-20 text-3xl text-pretty md:text-5xl font-calendas tracking-tight"
@@ -132,73 +120,22 @@ export default async function DocPage({ params }: DocPageProps) {
               {doc.title}
             </h1>
             {!!doc.description && doc.description !== "null" && (
-              <p className="text-lg text-muted-foreground">
+              <p className="text-sm md:text-lg text-muted-foreground pt-2 md:pt-4">
                 <Balancer>{doc.description}</Balancer>
               </p>
             )}
-            {doc.author &&
-              doc.author.length > 0 &&
-              doc.author !== "undefined" && (
-                <>
-                  <p className="pl-2 pt-1 text font-medium text-foreground flex flex-row gap-x-3">
-                    by{" "}
-                    {doc.author.match(/\[([^\]]+)\]\(([^)]+)\)/g)
-                      ? doc.author.split(",").map((author, i) => {
-                          const match = author.match(/\[([^\]]+)\]\(([^)]+)\)/)
-                          if (match) {
-                            return (
-                              <span key={i}>
-                                {i > 0 && " "}
-                                <a href={match[2]} className="underline">
-                                  {match[1]}
-                                </a>
-                              </span>
-                            )
-                          }
-                          return (
-                            <span key={i}>
-                              {i > 0 && " "}
-                              {author.trim()}
-                            </span>
-                          )
-                        })
-                      : doc.author.match(/(.*?)\s*<(https?:\/\/[^>]+)>/g)
-                        ? doc.author.split(",").map((author, i) => {
-                            const match = author.match(
-                              /(.*?)\s*<(https?:\/\/[^>]+)>/
-                            )
-                            if (match) {
-                              return (
-                                <span key={i}>
-                                  {i > 0 && " "}
-                                  <a href={match[2]} className="underline">
-                                    {match[1].trim()}
-                                  </a>
-                                </span>
-                              )
-                            }
-                            return (
-                              <span key={i}>
-                                {i > 0 && " "}
-                                {author.trim()}
-                              </span>
-                            )
-                          })
-                        : doc.author}
-                  </p>
-                </>
-              )}
+            <DocAuthor author={doc.author} />
           </div>
 
-          <div className="pb-12 pt-8 overflow-x-hidden">{doc.body}</div>
-          <div data-algolia-ignore>
+          <div className="mb-12 pt-8 space-y-6">{doc.body}</div>
+          <div data-algolia-ignore className="">
             <DocsPager doc={doc} />
           </div>
         </div>
       </div>
       {doc.toc && (
-        <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-6rem)] pl-4">
-          <div className="bg-background rounded-xl shadow-lg border">
+        <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-8rem)] pl-4">
+          <div className="bg-background rounded-2xl border">
             <ScrollArea className="pb-10 p-6">
               <DashboardTableOfContents toc={toc} />
             </ScrollArea>

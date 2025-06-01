@@ -17,7 +17,7 @@ author: "[Khoa Phan](https://www.pldkhoa.dev)"
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/image-trail.json"`}</CodeBlockWrapper>
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/image-trail.json&quot;" npx />
 
 </TabsContent>
 <TabsContent value="manual">
@@ -35,6 +35,7 @@ This component is a fun mouse interaction effect. The idea is to follow the mous
 
 Wrap each image with the `ImageTrailItem` component and wrap everything with the `ImageTrail` as a parent component.
 
+<CodeSnippet title="Image trail usage example">
 ```tsx
 <ImageTrail>
   <ImageTrailItem>...</ImageTrailItem>
@@ -42,6 +43,7 @@ Wrap each image with the `ImageTrailItem` component and wrap everything with the
   <ImageTrailItem>...</ImageTrailItem>
 </ImageTrail>
 ```
+</CodeSnippet>
 
 ## Understanding the component
 
@@ -52,6 +54,7 @@ The `ImageTrail` component creates its effect by tracking the mouse (or touch) p
 1.  **Tracking Position:** The component continuously monitors the mouse or touch position.
 2.  **Calculating Target Position (Linear Interpolation):** Instead of instantly moving trail items to the current cursor position, it calculates a "target" position using linear interpolation (`lerp`). This smooths out the movement.
 
+<CodeSnippet title="Calculating target position">
     ```tsx
     const lerp = (a: number, b: number, n: number) => (1 - n) * a + n * b
 
@@ -69,20 +72,23 @@ The `ImageTrail` component creates its effect by tracking the mouse (or touch) p
       clampedIntensity
     )
     ```
+</CodeSnippet>
 
 3.  **Controlling Responsiveness (`intensity`):** The `intensity` prop (a value between 0 and 1) controls how quickly the calculated target position updates to match the actual cursor position.
     *   Lower values (e.g., 0.1) result in a smoother, more delayed "momentum" effect, where the trail items lag behind the cursor.
     *   Higher values (e.g., 0.8) make the trail more responsive but less smooth.
     *   An intensity of `1` positions the trail items exactly at the cursor's current position.
 
-    <ComponentPreview name="image-trail-instant-demo" />
+<ComponentPreview name="image-trail-instant-demo" />
 
 4.  **Triggering Animation (`threshold`):** An animation cycle for the next trail item is only triggered when the cursor moves a certain distance. This distance is calculated using the Pythagorean theorem (`Math.hypot`):
 
+<CodeSnippet title="Calculating distance">
     ```tsx
     const distance = (x1: number, y1: number, x2: number, y2: number) =>
       Math.hypot(x2 - x1, y2 - y1)
     ```
+</CodeSnippet>
 
     The `threshold` prop (default: `100` pixels) defines this minimum distance. No new trail items are animated until the cursor has moved at least this far since the last item was triggered.
 
@@ -103,6 +109,7 @@ Beyond the position animation, you can control how each `ImageTrailItem` visuall
 
 **Example:**
 
+<CodeSnippet title="Custom keyframes">
 ```tsx
 keyframes={{ scale: [0, 1, 1, 0], opacity: [0, 1, 1, 0] }}
 keyframesOptions={{
@@ -111,6 +118,7 @@ keyframesOptions={{
   opacity: { times: [0, 0.1, 0.7, 1] }, // Opacity keyframe timings
 }}
 ```
+</CodeSnippet>
 
 In this example:
 *   The item starts invisible (`opacity: 0`, `scale: 0`).
@@ -118,7 +126,7 @@ In this example:
 *   It remains fully visible until 70% of the duration (`0.42s`).
 *   From 70% to 100% (`0.42s` to `0.6s`), it scales down and fades out back to the initial state (`opacity: 0`, `scale: 0`).
 
-There must be the same number of values in a `times` array as there are keyframes for that property. If `times` is omitted, the keyframes are spread evenly across the `duration`. You can read more about this in the [Motion `animate` function documentation](https://motion.dev/docs/animate#times).
+There must be the same number of values in a `times` array as there are keyframes for that property. If `times` is omitted, the keyframes are spread evenly across the `duration`. You can read more about this in the [Motion docs](https://motion.dev/docs/animate#times).
 
 The component reuses DOM elements rather than creating new ones for each animation. It maintains a fixed set of `ImageTrailItem` elements that get recycled as needed. When an item needs to be triggered again, the component updates its position and restarts the animation without having to remove and remount elements in the DOM. For this recycling to work properly, make sure to define both initial and final states in the `keyframes` prop, as explained in the example above.
 
@@ -142,13 +150,13 @@ Example with `zIndexDirection="old-on-top"`:
 
 That's it! :)
 
-## Examples
+### Non-image elements
 
 The component is not constrained to be used with images, you can wrap videos, svgs, or basically any HTML elements inside a `ImageTrailItem`.
 
 <ComponentPreview name="image-trail-various-elements-demo" />
 
-### Notes
+## Notes
 
 - The `ImageTrailItem` component assigns a default className of `.image-trail-item` to identify elements for animation within the `ImageTrail` component. Be cautious when applying custom `className` values with the same name (`.image-trail-item`) in your application, as this may cause conflicts or unintended behavior due to duplicate class selectors. To avoid issues, ensure custom classes are unique or use the `className` prop to extend styles without overriding the default `.image-trail-item` class.
 

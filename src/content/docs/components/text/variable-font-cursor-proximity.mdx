@@ -6,7 +6,7 @@ component: true
 
 <ComponentPreview name="variable-font-cursor-proximity-demo" />
 
-A generalized version of this component (where you can control any CSS property) is available in the [Text Cursor Proximity](/docs/components/text/text-cursor-proximity) component.
+A generalized version of this component (where you can control any CSS property) is available in the <Link href="/docs/components/text/text-cursor-proximity">Text Cursor Proximity</Link> component.
 
 ## Installation 
 
@@ -18,25 +18,21 @@ A generalized version of this component (where you can control any CSS property)
 </TabsList>
 <TabsContent value="cli">
 
-<CodeBlockWrapper language="bash">{`npx shadcn@latest add "https://fancycomponents.dev/r/variable-font-cursor-proximity.json"`}</CodeBlockWrapper>
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/variable-font-cursor-proximity.json&quot;" npx />
 
 </TabsContent>
 
 <TabsContent value="manual">
 
-<Steps>
-
-<Step>Create a hook for querying the cursor/mouse position.</Step>
-
-This hook actually returns a ref to the position (instead of a state), so we can avoid re-renders when the cursor moves.
+Create a hook for querying the cursor/mouse position.
 
 <ComponentSource name="use-mouse-position-ref" />
 
-<Step>Copy and paste the following code into your project:</Step>
+This hook actually returns a ref to the position (instead of a state), so we can avoid re-renders when the cursor moves.
+
+Then, copy and paste the component source code into your project:
 
 <ComponentSource name="variable-font-cursor-proximity" />
-
-</Steps>
 
 </TabsContent>
 </Tabs>
@@ -63,7 +59,7 @@ The closer the cursor gets to a letter, the closer that letter moves toward its 
 
 ### Understanding Variable Fonts
 
-For more information about variable fonts and how they work, please refer to the [Variable Font Hover By Letter](/docs/components/text/variable-font-hover-by-letter#understanding-variable-fonts) documentation.
+For more information about variable fonts and how they work, please refer to the <Link href="/docs/components/text/variable-font-hover-by-letter#understanding-variable-fonts">Variable Font Hover By Letter</Link> documentation.
 
 ## Examples
 

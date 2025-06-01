@@ -16,9 +16,7 @@ author: Khoa Phan <https://www.pldkhoa.dev>
   </TabsList>
   <TabsContent value="cli">
 
-    ```bash
-    npx shadcn@latest add "https://fancycomponents.dev/r/stacking-cards.json"
-    ```
+  <InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/stacking-cards.json&quot;" npx />
 
   </TabsContent>
 <TabsContent value="manual">
@@ -33,13 +31,15 @@ author: Khoa Phan <https://www.pldkhoa.dev>
 Wrap `StackingCards` around the content you want to animate and `StackingCardItem` around each card you want to animate.
 The structure looks like this:
 
+<CodeSnippet title="Stacking cards usage example">
 ```tsx
 <StackingCards>
   <StackingCardItem>
-      {/* Your card go here */}
+      {/* Your card goes here */}
   </StackingCardItem>
 </StackingCards>
 ```
+</CodeSnippet>
 
 ## Understanding the component
 
