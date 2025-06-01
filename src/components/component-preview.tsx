@@ -2,8 +2,9 @@
 
 import * as React from "react"
 import { Repeat } from "lucide-react"
+import { motion } from "motion/react"
 
-import { absoluteUrl, cn } from "@/lib/utils"
+import { cn } from "@/lib/utils"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Icons } from "@/components/icons"
 import { registry } from "@/fancy/index"
@@ -123,13 +124,13 @@ export function ComponentPreview({
           <TabsList className="w-full justify-start rounded-none p-0 h-12 bg-transparent space-x-4 px-3">
             <TabsTrigger
               value="preview"
-              className="relative text-xl rounded-none border-b-transparent bg-transparent px-0 font-medium text-muted-foreground shadow-none transition-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+              className="relative text-xl rounded-none border-b-transparent bg-transparent px-0 font-semibold text-muted-foreground shadow-none transition-colors duration-300 ease-out hover:text-foreground data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
             >
               Demo
             </TabsTrigger>
             <TabsTrigger
               value="code"
-              className="relative text-xl rounded-none border-b-transparent bg-transparent px-0 font-medium text-muted-foreground shadow-none transition-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+              className="relative text-xl rounded-none border-b-transparent bg-transparent px-0 font-semibold text-muted-foreground shadow-none transition-colors duration-300 ease-out hover:text-foreground data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
             >
               Code
             </TabsTrigger>

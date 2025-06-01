@@ -274,7 +274,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.ComponentProps<typeof TabsTrigger>) => (
       <TabsTrigger
         className={cn(
-          "relative text-base h-9 rounded-none bg-transparent px-0 pb-2 pt-2 font-medium text-muted-foreground shadow-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none hover:font-semibold hover:text-foreground duration-300 ease-out transition",
+          "relative text-base h-9 rounded-none bg-transparent px-0 pb-2 pt-2 font-semibold text-muted-foreground shadow-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none hover:font-semibold hover:text-foreground duration-300 ease-out transition",
           className
         )}
         {...props}
