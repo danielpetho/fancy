@@ -94,17 +94,12 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ onCopy }) => {
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
     
-    // Calculate cursor position relative to button center
     const mouseX = e.clientX;
     const mouseY = e.clientY;
     
-    // Determine direction
-    const deltaX = mouseX - centerX;
-    const deltaY = mouseY - centerY;
-    
-    // Convert to offset for animation position
-    const offsetX = deltaX;
-    const offsetY = deltaY;
+    const offsetX = mouseX - centerX;
+    const offsetY = mouseY - centerY;
+  
     
     return { x: offsetX, y: offsetY };
   };
