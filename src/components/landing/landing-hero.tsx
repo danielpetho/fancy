@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { LayoutGroup, motion } from "motion/react"
 
-import { Component } from "@/types/types"
+import { Component } from "@/lib/get-components"
 import TextRotate from "@/fancy/components/text/text-rotate"
 
 import { HeroImages } from "./hero-images"
@@ -11,7 +11,9 @@ import { HeroImages } from "./hero-images"
 export function LandingHero({ allComps }: { allComps: Component[] | null }) {
   return (
     <section className="w-full h-screen overflow-hidden md:overflow-visible flex flex-col items-center justify-center relative">
+
       {allComps && <HeroImages allComps={allComps} />}
+
       <div className=" flex flex-col justify-center items-center w-[250px] sm:w-[300px] md:w-[500px] lg:w-[700px] z-50 pointer-events-auto">
         <motion.h1
           className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl text-center w-full justify-center items-center flex-col flex whitespace-pre leading-tight font-calendas tracking-tight space-y-1 md:space-y-4"

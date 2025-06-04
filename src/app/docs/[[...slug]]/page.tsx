@@ -5,7 +5,6 @@ import Balancer from "react-wrap-balancer"
 
 import { DocPageProps } from "@/types/types"
 import { siteConfig } from "@/config/site"
-import { getComponent } from "@/lib/api"
 import { CONTENT_DIRECTORY, getDocFromParams } from "@/lib/get-docs"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
@@ -13,6 +12,7 @@ import { DocsPager } from "@/components/doc-pager"
 import { DashboardTableOfContents } from "@/components/toc"
 import { DocBreadcrumb } from "@/components/doc-breadcrumb"
 import { DocAuthor } from "@/components/doc-author"
+import { getComponentByName } from "@/lib/get-components"
 
 export const runtime = "nodejs"
 export const dynamic = "force-static"
@@ -31,7 +31,7 @@ export async function generateMetadata({
   let ogUrl
 
   try {
-    const component = await getComponent(urlSlug!, false)
+    const component = getComponentByName(urlSlug!)
     ogUrl = component?.thumbnail?.url || siteConfig.ogImage
   } catch (error) {
     console.error("Error fetching component:", error)

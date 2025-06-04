@@ -93,7 +93,7 @@ export const docsConfig: SidebarNavItem[] = [
       },
       {
         title: "Underline Animation",
-        href: "/docs/components/text/underline",
+        href: "/docs/components/text/underline-animation",
         items: [],
       },
       {

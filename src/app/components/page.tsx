@@ -1,12 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import { getAllComponents } from "@/lib/api"
+import { getAllComponents } from "@/lib/get-components"
 
 export const revalidate = 3600
 
 export default async function ComponentsPage() {
-  const components = await getAllComponents(false)
+  const components = getAllComponents()
 
   return (
     <main className="w-screen">
@@ -27,7 +27,6 @@ export default async function ComponentsPage() {
                 className="object-cover group-hover:opacity-0 "
                 sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
               />
-
               {/* Video on Hover */}
               <video
                 src={component.demo.url}
@@ -53,8 +52,6 @@ export default async function ComponentsPage() {
                   {component.category}
                 </p>
               </div> */}
-
-            
             </Link>
           ))}
         </div>

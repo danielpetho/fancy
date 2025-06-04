@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 
-import { Component } from "@/types/types"
+import { Component } from "@/lib/get-components"
 import Floating, {
   FloatingElement,
 } from "@/fancy/components/image/parallax-floating"
