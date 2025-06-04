@@ -37,10 +37,15 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "cdn.cosmos.so",
+        hostname: "ujmo80rx5r3tzlx7.public.blob.vercel-storage.com",
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "",
+        pathname: "/**",
+      }
     ],
   },
 }

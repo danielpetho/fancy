@@ -1,9 +1,9 @@
-import { getAllComponents } from "@/lib/api"
+import { getAllComponents } from "@/lib/get-components"
 import { LandingHero } from "@/components/landing/landing-hero"
 
-export default async function Home() {
+export default function Home() {
   try {
-    const allComps = await getAllComponents(true)
+    const allComps = getAllComponents()
 
     return <LandingHero allComps={allComps} />
   } catch (error) {
