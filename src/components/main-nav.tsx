@@ -19,30 +19,20 @@ export function MainNav() {
         </Link>
         <div className="flex-row gap-x-8 text-lg  font-regular items-end hidden md:flex">
           <Link href="/docs/introduction">
-            <motion.span
-              whileHover={{
-                fontVariationSettings: "'wght' 600",
-                transition: { duration: 0.3, ease: "easeOut" },
-              }}
-              style={{
-                fontVariationSettings: "'wght' 400",
-              }}
+            <span
+              className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col ease-out`}
+              data-text="Docs"
             >
               Docs
-            </motion.span>
+            </span>
           </Link>
           <Link href="/components">
-            <motion.span
-              whileHover={{
-                fontVariationSettings: "'wght' 600",
-                transition: { duration: 0.3, ease: "easeOut" },
-              }}
-              style={{
-                fontVariationSettings: "'wght' 400",
-              }}
+            <span
+              className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col ease-out`}
+              data-text="Components"
             >
               Components
-            </motion.span>
+            </span>
           </Link>
         </div>
       </div>
@@ -60,17 +50,12 @@ export function MainNav() {
           href="https://github.com/danielpetho/fancy"
           className="hidden md:block"
         >
-          <motion.span
-            whileHover={{
-              fontVariationSettings: "'wght' 600",
-              transition: { duration: 0.3, ease: "easeOut" },
-            }}
-            style={{
-              fontVariationSettings: "'wght' 400",
-            }}
+          <span
+            className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col text-right ease-out`}
+            data-text="Github"
           >
             Github
-          </motion.span>
+          </span>
         </a>
         <ThemeSwitcher />
       </div>

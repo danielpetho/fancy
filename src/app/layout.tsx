@@ -74,7 +74,7 @@ export default function RootLayout({
         ></script>
       </head>
       <body
-        className={`font-overused-grotesk bg-background antialiased flex items-center justify-center w-full text-foreground`}
+        className={`font-overused-grotesk bg-background antialiased flex items-center justify-center w-full text-foreground [font-synthesis-weight:none]`}
       >
         <ThemeProvider
           attribute="class"
