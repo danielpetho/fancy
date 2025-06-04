@@ -20,18 +20,6 @@ const nextConfig = {
       {
         protocol: "https",
         port: "",
-        hostname: "images.ctfassets.net",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        port: "",
-        hostname: "videos.ctfassets.net",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        port: "",
         hostname: "musicbrainz.org",
         pathname: "/**",
       },
@@ -39,11 +27,6 @@ const nextConfig = {
         protocol: "https",
         hostname: "ujmo80rx5r3tzlx7.public.blob.vercel-storage.com",
         port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
-        hostname: "",
         pathname: "/**",
       }
     ],
