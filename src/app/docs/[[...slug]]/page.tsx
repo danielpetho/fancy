@@ -27,12 +27,11 @@ export async function generateMetadata({
   }
 
   const urlSlug = doc.slug.split("/").pop()
-  console.log(urlSlug)
 
   let ogUrl
 
   try {
-    const component = await getComponentByName(urlSlug!)
+    const component = getComponentByName(urlSlug!)
     ogUrl = component?.thumbnail?.url || siteConfig.ogImage
   } catch (error) {
     console.error("Error fetching component:", error)
