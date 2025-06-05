@@ -37,7 +37,7 @@ export function MainNav() {
         </div>
       </div>
       <div className="flex-row gap-x-8 text-xl font-regular flex items-center">
-        {/* <DocSearch
+        <DocSearch
           appId="2X8YUQBTLC"
           indexName="fancycomponents"
           apiKey="6f798ebaa6226dd06e44bd898b32893f"
@@ -45,7 +45,7 @@ export function MainNav() {
           disableUserPersonalization
           maxResultsPerGroup={10}
           initialQuery="fancy"
-        /> */}
+        />
         <a
           href="https://github.com/danielpetho/fancy"
           className="hidden md:block"
