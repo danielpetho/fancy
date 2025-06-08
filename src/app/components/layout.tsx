@@ -6,19 +6,19 @@ import { DocsSidebarNav } from "@/components/sidebar-nav"
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative">
+    <div className="relative w-full">
       <Header />
       <div>
-        <div className="flex-1 items-start md:grid md:grid-cols-[120px_minmax(1fr)] lg:grid-cols-[320px_minmax(0,1fr)] ">
+        <div className="items-start lg:grid lg:grid-cols-[340px_minmax(0,1fr)] ">
           <aside className="sticky top-0 pb-4 z-30 hidden h-[calc(100vh-6rem)] w-full shrink-0 lg:block pt-4 pl-4 ">
-            <div className="rounded-xl bg-background h-full border-border border shadow-lg">
+            <div className="rounded-2xl bg-background h-full border-border border">
               <ScrollArea className="h-full">
                 <DocsSidebarNav items={docsConfig} />
               </ScrollArea>
             </div>
           </aside>
 
-          <div className="flex p-4 w-screen lg:w-full">{children}</div>
+          <div className="p-4">{children}</div>
         </div>
       </div>
       <Footer />
