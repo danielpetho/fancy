@@ -53,10 +53,10 @@ export function getAllComponents(): Component[] {
         name: componentName,
         category: category,
         thumbnail: {
-          url: `${process.env.VERCEL_BLOB_URL}thumbnails/${componentName}.jpg`
+          url: `${process.env.BUNNY_CDN_URL}/thumbnails/${componentName}.jpg`
         },
         demo: {
-          url: `${process.env.VERCEL_BLOB_URL}videos/${componentName}.mp4`
+          url: `${process.env.BUNNY_CDN_URL}/demos/${componentName}.mp4`
         }
       })
     }
@@ -82,10 +82,10 @@ export function getComponentByName(name: string): Component | undefined {
         name: name,
         category: category,
         thumbnail: {
-          url: `${process.env.VERCEL_BLOB_URL}thumbnails/${name}.jpg`
+          url: `${process.env.BUNNY_CDN_URL}/thumbnails/${name}.jpg`
         },
         demo: {
-          url: `${process.env.VERCEL_BLOB_URL}videos/${name}.mp4`
+          url: `${process.env.BUNNY_CDN_URL}/demos/${name}.mp4`
         }
       }
     }
