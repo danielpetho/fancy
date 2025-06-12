@@ -25,7 +25,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "ujmo80rx5r3tzlx7.public.blob.vercel-storage.com",
+        hostname: "fancycomponents.b-cdn.net",
         port: "",
         pathname: "/**",
       }

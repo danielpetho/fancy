@@ -1,5 +1,4 @@
 import type { Metadata } from "next"
-import { Analytics } from "@vercel/analytics/react"
 
 import "./globals.css"
 
@@ -56,7 +55,7 @@ export const metadata: Metadata = {
     shortcut: "/favicon-16x16.png",
     apple: "/apple-touch-icon.png",
   },
-  manifest: `${siteConfig.url}/site.webmanifest`,
+  manifest: `/site.webmanifest`,
 }
 export default function RootLayout({
   children,
