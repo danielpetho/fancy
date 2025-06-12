@@ -5,7 +5,7 @@ import { motion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 
-const MotionIcon = motion(RotateCw)
+const MotionIcon = motion.create(RotateCw)
 
 export function RestartButton({ onRestart }: { onRestart: () => void }) {
   return (
