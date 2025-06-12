@@ -690,8 +690,13 @@ svg.DocSearch-Hit-Select-Icon {
 .DocSearch-Button:hover {
   background: hsl(var(--muted));
   box-shadow: none;
-  color: hsl(var(--foreground));
+  opacity: 0.75;
   outline: none;
+  transition: all 300ms ease-out;
+}
+
+.DocSearch-Button {
+  transition: all 200ms ease-out;
 }
 
 .DocSearch-Button-Container {
