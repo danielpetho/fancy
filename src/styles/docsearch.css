@@ -103,7 +103,7 @@
   transform: translate(-50%, -50%);
   max-width: var(--docsearch-modal-width);
   min-width: var(--docsearch-modal-width);
-  height: 500px;
+  height: 520px;
   max-height: 80vh;
   margin: 0;
 }
@@ -299,7 +299,6 @@
   display: flex;
   position: relative;
   gap: 1rem;
-  padding: 0.25rem 0.75rem;
   width: 100%;
   align-items: center;
   cursor: pointer;
@@ -311,6 +310,14 @@
 .DocSearch-Hit:focus {
   background-color: hsl(var(--muted));
   border-color: hsl(var(--border));
+}
+
+.DocSearch-Hit *[data-enter-icon="true"] {
+  display: none !important;
+}
+
+.DocSearch-Hit[aria-selected="true"] *[data-enter-icon="true"] {
+  display: block !important;
 }
 
 .DocSearch-Hit[aria-selected="true"] {

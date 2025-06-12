@@ -8,16 +8,9 @@ export function Search() {
       indexName="fancycomponents"
       apiKey="6f798ebaa6226dd06e44bd898b32893f"
       placeholder="Search documentation..."
-      transformItems={(items) => {
-        console.log(items)
-        return items
-      }}
       disableUserPersonalization
       maxResultsPerGroup={10}
-      searchParameters={{
-
-      }}
-    //   initialQuery="Text"
+      initialQuery="Text"
       hitComponent={({ hit }) => <DocSearchHit hit={hit} />}
       translations={{
         button: {
