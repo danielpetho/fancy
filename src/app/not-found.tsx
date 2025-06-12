@@ -16,55 +16,33 @@ export default function NotFound() {
       ref={containerRef}
     >
       <div className="flex flex-col items-center justify-center z-30 space-y-8">
-        <h1 className="text-3xl md:text-6xl font-overused-grotesk">
+        <h1 className="text-3xl md:text-6xl font-overused-grotesk ">
           page not found
         </h1>
 
-        <motion.button
-          className="text-sm sm:text-base md:text-lg font-semibold tracking-tight text-white bg-black px-4 py-2 sm:px-5 sm:py-2.5 rounded-full shadow-2xl font-calendas"
-          whileHover={{
-            scale: 1.05,
-            transition: { type: "spring", damping: 30, stiffness: 400 },
-          }}
+        <button
+          className="text-sm sm:text-base md:text-lg tracking-tight text-white bg-black px-4 py-2 sm:px-5 sm:py-2.5 rounded-lg md:rounded-2xl shadow-2xl hover:scale-105 transition-all duration-300 ease-out"
         >
           <Link href="/docs/introduction">
             Back to docs <span className="font-serif ml-1">→</span>
           </Link>
-        </motion.button>
+        </button>
       </div>
 
-      {[
-        { speed: 1.2, pos: [-40, 60], angle: 35, color: "bg-[#ffd726]" },
-        { speed: 1.8, pos: [85, -45], angle: -65, color: "bg-orange-500" },
-        { speed: 1.5, pos: [-60, -30], angle: 85, color: "bg-red" },
-        { speed: 1.2, pos: [25, 70], angle: -20, color: "bg-[#1f464d]" },
-        { speed: 1.8, pos: [15, 65], angle: -80, color: "bg-red" },
-        { speed: 1.5, pos: [15, -50], angle: 15, color: "bg-[#1f464d]" },
-        { speed: 1.3, pos: [-20, 40], angle: 55, color: "bg-[#ffd726]" },
-        { speed: 1.4, pos: [70, -25], angle: -40, color: "bg-primary-blue" },
-        { speed: 1.6, pos: [-45, -55], angle: 70, color: "bg-[#E794DA] " },
-        { speed: 1.9, pos: [40, 85], angle: -30, color: "bg-primary-blue" },
-        { speed: 1.4, pos: [80, 75], angle: -60, color: "bg-[#E794DA]" },
-        { speed: 1.6, pos: [5, -35], angle: 25, color: "bg-orange-500" },
-      ].map(({ speed, pos, angle, color }, i) => (
+      {[...Array(12)].map((_, i) => (
         <Screensaver
           key={i}
-          speed={speed}
-          startPosition={{ x: pos[0], y: pos[1] }}
-          startAngle={angle}
+          speed={1}
+          startPosition={{ x:  10 + i * 1, y: 10 + i * 1 }} // Offset each element's starting position slightly
+          startAngle={215} // Keep same angle for all elements
           containerRef={containerRef}
+         
         >
-          <div
-            className={cn(
-              "px-8 sm:px-12 md:px-16 lg:px-20 py-2 sm:py-3 md:py-4 lg:py-5 rounded-xl shadow-2xl text-white",
-              color
-            )}
-            style={{ transform: `rotate(${Math.random() * 4 - 2}deg)` }}
+          <span
+            className="text-[160px] sm:text-[200px] md:text-[240px] lg:text-[300px] font-bold text-black [-webkit-text-stroke-width:2px] sm:[-webkit-text-stroke-width:2.5px] md:[-webkit-text-stroke-width:3px]  lg:[-webkit-text-stroke-width:4px] [-webkit-text-stroke-color:white] align-text-top"
           >
-            <span className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black">
-              404
-            </span>
-          </div>
+            404
+          </span>
         </Screensaver>
       ))}
     </div>

@@ -15,8 +15,8 @@ const ThemeSwitcher = () => {
       onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")}
       variant={"ghost"}
     >
-      <Sun className="absolute h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 group-hover:[stroke-width:3px] duration-300 ease-out" />
-      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 group-hover:[stroke-width:3px] duration-300 ease-out" />
+      <Sun className="absolute h-[19px] w-[19px] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 group-hover:[stroke-width:3px] duration-300 ease-out" />
+      <Moon className="absolute h-[19px] w-[19px] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 group-hover:[stroke-width:3px] duration-300 ease-out" />
       <span className="sr-only">Toggle theme</span>
     </Button>
   )

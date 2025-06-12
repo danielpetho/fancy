@@ -1,11 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { DocSearch } from "@docsearch/react"
-import { motion } from "motion/react"
+
+import { Icons } from "@/components/icons"
 
 import "@/styles/docsearch.css"
 
+import { Search } from "./doc-search"
 import ThemeSwitcher from "./theme-switcher"
 
 export function MainNav() {
@@ -36,19 +37,19 @@ export function MainNav() {
           </Link>
         </div>
       </div>
-      <div className="flex-row gap-x-8 text-xl font-regular flex items-center">
-        {/* <DocSearch
-          appId="2X8YUQBTLC"
-          indexName="fancycomponents"
-          apiKey="6f798ebaa6226dd06e44bd898b32893f"
-          placeholder="Search docs"
-          disableUserPersonalization
-          maxResultsPerGroup={10}
-          initialQuery="fancy"
-        /> */}
+      <div className="flex-row gap-x-4 sm:gap-x-8 text-xl font-regular flex items-center">
+        <div className="hidden sm:block">
+          <Search />
+        </div>
         <a
           href="https://github.com/danielpetho/fancy"
-          className="hidden md:block"
+          className="block lg:hidden"
+        >
+          <Icons.gitHub className="w-[18px] h-[18px]" />
+        </a>
+        <a
+          href="https://github.com/danielpetho/fancy"
+          className="hidden lg:block"
         >
           <span
             className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col text-right ease-out`}
