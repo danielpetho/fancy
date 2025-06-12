@@ -47,7 +47,7 @@
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
-  --color-blue: var(--color-blue-700);
+  --color-blue: var(--blue);
   --color-blue-50: var(--blue-50);
   --color-blue-100: var(--blue-100);
   --color-blue-200: var(--blue-200);
@@ -302,6 +302,8 @@
 
     --editor-bg: #151515;
     --editor-border: #252525;
+
+    --blue: var(--blue-700);
   
     --blue-50: #e8f3ff;
     --blue-100: #d5e8ff;
@@ -345,11 +347,13 @@
     --input: 12 6.5% 15.1%;
     --ring: 24 5.7% 82.9%;
 
+    --blue: var(--blue-400);
+
     /* Other colors */
     --red: #ff5941;
     --orange: #f97316;
     --pink: #e794da;
-    --blue: #5570ff;
+    /* --blue: #5570ff; */
     --teal: #1f464d;
     --teal-foreground: #3bb6ab;
     --yellow: #eab308;
