@@ -10,6 +10,7 @@ import React, {
   useRef,
   useState,
 } from "react"
+import { set } from "lodash"
 import {
   animate,
   DynamicOption,
@@ -43,7 +44,11 @@ interface FaceProps {
 const CubeFace = memo(
   ({ transform, className, children, style, debug }: FaceProps) => (
     <div
-      className={cn("absolute overflow-hidden", debug && "backface-visible opacity-50", className)}
+      className={cn(
+        "absolute overflow-hidden",
+        debug && "backface-visible opacity-50",
+        className
+      )}
       style={{ transform, ...style }}
     >
       {children}
@@ -54,7 +59,15 @@ const CubeFace = memo(
 CubeFace.displayName = "CubeFace"
 
 const MediaRenderer = memo(
-  ({ item, className, debug = false }: { item: CarouselItem; className?: string; debug?: boolean }) => {
+  ({
+    item,
+    className,
+    debug = false,
+  }: {
+    item: CarouselItem
+    className?: string
+    debug?: boolean
+  }) => {
     if (!debug) {
       if (item.type === "video") {
         return (
@@ -79,7 +92,12 @@ const MediaRenderer = memo(
     }
 
     return (
-      <div className={cn("w-full h-full flex items-center justify-center border text-2xl", className)}>
+      <div
+        className={cn(
+          "w-full h-full flex items-center justify-center border text-2xl",
+          className
+        )}
+      >
         {item.id}
       </div>
     )
@@ -128,7 +146,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
       className,
       perspective = 600,
       debug = false,
-      direction = "horizontal",
+      direction = "vertical",
       transition = { duration: 1.25, ease: [0.953, 0.001, 0.019, 0.995] },
       autoPlay = false,
       autoPlayInterval = 3000,
@@ -140,10 +158,17 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
     const [currentItemIndex, setCurrentItemIndex] = useState(0)
     const [currentFrontFaceIndex, setCurrentFrontFaceIndex] = useState(1)
 
-    const [originalTop, setOriginalTop] = useState(items.length - 1)
-    const [originalFront, setOriginalFront] = useState(0)
-    const [originalBottom, setOriginalBottom] = useState(1)
-    const [originalBack, setOriginalBack] = useState(2)
+    // 0 ⇢ will be shown if the user presses “prev”
+    const [prevIndex, setPrevIndex] = useState(items.length - 1)
+
+    // 1 ⇢ item that is currently visible
+    const [currentIndex, setCurrentIndex] = useState(0)
+
+    // 2 ⇢ will be shown on the next “next”
+    const [nextIndex, setNextIndex] = useState(1)
+
+    // 3 ⇢ two steps ahead (the face that is at the back right now)
+    const [afterNextIndex, setAfterNextIndex] = useState(2)
 
     const [currentRotation, setCurrentRotation] = useState(0)
 
@@ -154,59 +179,60 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
     const baseRotateX = useMotionValue(0)
     const baseRotateY = useMotionValue(0)
 
-    const handleAnimationComplete = useCallback((direction: string) => {
-      if (isRotating.current && pendingIndexChange.current !== null) {
-        isRotating.current = false
+    const handleAnimationComplete = useCallback(
+      (direction: string) => {
+        if (isRotating.current && pendingIndexChange.current !== null) {
+          isRotating.current = false
 
-        let newFrontFaceIndex: number
-        let currentBackFaceIndex: number
+          let newFrontFaceIndex: number
+          let currentBackFaceIndex: number
 
-        if (direction === "horizontal_left" || direction === "vertical_top") {
+          if (direction === "horizontal_left" || direction === "vertical_top") {
             newFrontFaceIndex = (currentFrontFaceIndex + 1) % 4
             currentBackFaceIndex = (newFrontFaceIndex + 2) % 4
+          } else {
+            newFrontFaceIndex = (currentFrontFaceIndex - 1 + 4) % 4
+            currentBackFaceIndex = (newFrontFaceIndex + 3) % 4
+          }
+
+          setCurrentItemIndex(pendingIndexChange.current)
+          onIndexChange?.(pendingIndexChange.current)
+
+          const indexOffset =
+            direction === "horizontal_left" || direction === "vertical_top"
+              ? 2
+              : -1
+
+          if (currentBackFaceIndex === 0) {
+            setPrevIndex(
+              (pendingIndexChange.current + indexOffset + items.length) %
+                items.length
+            )
+          } else if (currentBackFaceIndex === 1) {
+            setCurrentIndex(
+              (pendingIndexChange.current + indexOffset + items.length) %
+                items.length
+            )
+          } else if (currentBackFaceIndex === 2) {
+            setNextIndex(
+              (pendingIndexChange.current + indexOffset + items.length) %
+                items.length
+            )
+          } else if (currentBackFaceIndex === 3) {
+            setAfterNextIndex(
+              (pendingIndexChange.current + indexOffset + items.length) %
+                items.length
+            )
+          }
+
+          pendingIndexChange.current = null
+          rotationCount.current++
+
+          setCurrentFrontFaceIndex(newFrontFaceIndex)
         }
-        else {
-            newFrontFaceIndex = (currentFrontFaceIndex - 1) % 4
-            currentBackFaceIndex = (newFrontFaceIndex + 2) % 4
-        }
-
-        console.log("new front face index: ", newFrontFaceIndex)
-
-        setCurrentItemIndex(pendingIndexChange.current)
-        onIndexChange?.(pendingIndexChange.current)
-
-        console.log(
-          "original face forward: ",
-          newFrontFaceIndex === 0
-            ? "top"
-            : newFrontFaceIndex === 1
-              ? "front"
-              : newFrontFaceIndex === 2
-                ? "bottom"
-                : "back"
-        )
-
-        const indexOffset = (direction === "horizontal_left" || direction === "vertical_top") ? -1 : 1
-
-        if (currentBackFaceIndex === 0) {
-          setOriginalTop((pendingIndexChange.current + indexOffset + items.length) % items.length)
-        }
-        else if (currentBackFaceIndex === 1) {
-          setOriginalFront((pendingIndexChange.current + indexOffset + items.length) % items.length)
-        }
-        else if (currentBackFaceIndex === 2) {
-          setOriginalBottom((pendingIndexChange.current + indexOffset + items.length) % items.length)
-        }
-        else if (currentBackFaceIndex === 3) {
-          setOriginalBack((pendingIndexChange.current + indexOffset + items.length) % items.length)
-        }
-
-        pendingIndexChange.current = null
-        rotationCount.current++
-
-        setCurrentFrontFaceIndex(newFrontFaceIndex)
-      }
-    }, [currentFrontFaceIndex, items.length, onIndexChange])
+      },
+      [currentFrontFaceIndex, items.length, onIndexChange]
+    )
 
     const next = useCallback(() => {
       if (items.length === 0 || isRotating.current) return
@@ -271,7 +297,6 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
 
         const rotationAmount = difference * 90
 
-        
         // Animate the rotation
         // if (direction === "horizontal") {
         //   animate(baseRotateY, rotationAmount, {
@@ -313,6 +338,25 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
         `translateZ(-${depth / 2}px) rotateX(${x}deg) rotateY(${y}deg)`
     )
 
+     // Determine face transforms based on the desired rotation axis
+     const isVertical = direction === "vertical"
+
+     const faceTransforms = !isVertical
+       ? [
+           // left, front, right, back (rotation around Y-axis)
+           `rotateY(-90deg) translateZ(${width / 2}px)`,
+           `rotateY(0deg) translateZ(${depth / 2}px)`,
+           `rotateY(90deg) translateZ(${width / 2}px)`,
+           `rotateY(180deg) translateZ(${depth / 2}px)`,
+         ]
+       : [
+           // top, front, bottom, back (rotation around X-axis)
+           `rotateX(90deg) translateZ(${height / 2}px)`,
+           `rotateY(0deg) translateZ(${depth / 2}px)`,
+           `rotateX(-90deg) translateZ(${height / 2}px)`,
+           `rotateY(180deg) translateZ(${depth / 2}px) rotateZ(180deg)`,
+         ]
+
     // Auto play functionality
     useEffect(() => {
       if (autoPlay && items.length > 0) {
@@ -337,40 +381,56 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
             transform: transform,
           }}
         >
-          {/* original top */}
+          {/* First face */}
           <CubeFace
-            transform={`rotateX(90deg) translateZ(${height / 2}px)`}
-            style={debug ? { width, height, backgroundColor: '#ff9999' } : { width, height }}
+            transform={faceTransforms[0]}
+            style={
+              debug
+                ? { width, height, backgroundColor: "#ff9999" }
+                : { width, height }
+            }
             debug={debug}
           >
-            <MediaRenderer item={items[originalTop]} debug={debug} />
+            <MediaRenderer item={items[prevIndex]} debug={debug} />
           </CubeFace>
 
-          {/* original front */}
+          {/* Second face */}
           <CubeFace
-            transform={`rotateY(0deg) translateZ(${depth / 2}px)`}
-            style={debug ? { width, height, backgroundColor: '#99ff99' } : { width, height }}
+            transform={faceTransforms[1]} 
+            style={
+              debug
+                ? { width, height, backgroundColor: "#99ff99" }
+                : { width, height }
+            }
             debug={debug}
           >
-            <MediaRenderer item={items[originalFront]} debug={debug} />
+            <MediaRenderer item={items[currentIndex]} debug={debug} />
           </CubeFace>
 
-          {/* original bottom */}
+          {/* Third face */}
           <CubeFace
-            transform={`rotateX(-90deg) translateZ(${height / 2}px)`}
-            style={debug ? { width, height, backgroundColor: '#9999ff' } : { width, height }}
+            transform={faceTransforms[2]}
+            style={
+              debug
+                ? { width, height, backgroundColor: "#9999ff" }
+                : { width, height }
+            }
             debug={debug}
           >
-            <MediaRenderer item={items[originalBottom]} debug={debug} />
+            <MediaRenderer item={items[nextIndex]} debug={debug} />
           </CubeFace>
 
-          {/* original back */}
+          {/* Fourth face */}
           <CubeFace
-            transform={`rotateY(180deg) translateZ(${depth / 2}px) rotateZ(180deg)`}
-            style={debug ? { width, height, backgroundColor: '#ffff99' } : { width, height }}
+            transform={faceTransforms[3]}
+            style={
+              debug
+                ? { width, height, backgroundColor: "#ffff99" }
+                : { width, height }
+            }
             debug={debug}
           >
-            <MediaRenderer item={items[originalBack]} debug={debug} />
+            <MediaRenderer item={items[afterNextIndex]} debug={debug} />
           </CubeFace>
         </motion.div>
       </div>
