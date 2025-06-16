@@ -3,6 +3,8 @@
 import { ElementType } from "react"
 import { motion, Transition, Variants } from "motion/react"
 
+import { cn } from "@/lib/utils"
+
 interface TextProps extends React.HTMLAttributes<HTMLElement> {
   /**
    * The content to be displayed and animated
@@ -97,7 +99,15 @@ const BreathingText = ({
   const ElementTag = as
 
   return (
-    <ElementTag className={className} {...props}>
+    <ElementTag
+      className={cn(
+        className,
+        // an after pseudo element is used to create a container large enough to hold the text with full weight. Helps avoid layout shifts
+        "relative after:absolute after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0"
+      )}
+      {...props}
+      data-text={children}
+    >
       {letters.map((letter: string, i: number) => (
         <motion.span
           key={i}

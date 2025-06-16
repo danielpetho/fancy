@@ -73,121 +73,115 @@ Video from [chrbutler.com](https://www.chrbutler.com/what-i-want-from-the-intern
       <TableCell>firstText<span className="text-red-500">*</span></TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The text to be displayed on the left</TableCell>
+      <TableCell>The text to display before the media</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>secondText<span className="text-red-500">*</span></TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The text to be displayed on the right</TableCell>
+      <TableCell>The text to display after the media</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>mediaUrl<span className="text-red-500">*</span></TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The URL of the media element</TableCell>
+      <TableCell>URL of the media (image or video) to display</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>mediaType</TableCell>
+      <TableCell>mediaType<span className="text-red-500">*</span></TableCell>
       <TableCell>`"image" | "video"`</TableCell>
-      <TableCell>`"image"`</TableCell>
-      <TableCell>The type of media element</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell>mediaWidth</TableCell>
-      <TableCell>`number`</TableCell>
-      <TableCell>`100`</TableCell>
-      <TableCell>The width of the media element</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell>mediaHeight</TableCell>
-      <TableCell>`number`</TableCell>
-      <TableCell>`100`</TableCell>
-      <TableCell>The height of the media element</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Type of media to display</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>mediaContainerClassName</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Additional CSS classes for styling the media container</TableCell>
+      <TableCell>Optional class name for the media container</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>fallbackUrl</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The URL of the fallback image for the media element</TableCell>
+      <TableCell>Fallback URL for video poster or image loading</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`"p"`</TableCell>
+      <TableCell>HTML Tag to render the text elements as</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>autoPlay</TableCell>
       <TableCell>`boolean`</TableCell>
       <TableCell>`true`</TableCell>
-      <TableCell>Whether to autoplay the media element</TableCell>
+      <TableCell>Whether video should autoplay</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>loop</TableCell>
       <TableCell>`boolean`</TableCell>
       <TableCell>`true`</TableCell>
-      <TableCell>Whether to loop the media element</TableCell>
+      <TableCell>Whether video should loop</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>muted</TableCell>
       <TableCell>`boolean`</TableCell>
       <TableCell>`true`</TableCell>
-      <TableCell>Whether to mute the media element</TableCell>
+      <TableCell>Whether video should be muted</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>playsInline</TableCell>
       <TableCell>`boolean`</TableCell>
       <TableCell>`true`</TableCell>
-      <TableCell>Whether to play the media element inline</TableCell>
+      <TableCell>Whether video should play inline</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>alt</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The alt text for the media element</TableCell>
+      <TableCell>Alt text for image</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>triggerType</TableCell>
       <TableCell>`"hover" | "ref" | "inView"`</TableCell>
       <TableCell>`"hover"`</TableCell>
-      <TableCell>The trigger type for the animation</TableCell>
+      <TableCell>Type of animation trigger</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>containerRef</TableCell>
       <TableCell>`React.RefObject<HTMLDivElement>`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Reference to the container for the animation</TableCell>
+      <TableCell>Reference to container element for inView trigger</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>useInViewOptionsProp</TableCell>
       <TableCell>`UseInViewOptions`</TableCell>
-      <TableCell>-</TableCell>
-      <TableCell>Options for the useInView hook</TableCell>
+      <TableCell>`{ once: true, amount: 0.5, root: containerRef }`</TableCell>
+      <TableCell>Options for useInView hook</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>animationVariants</TableCell>
       <TableCell>`{ initial: Variants["initial"]; animate: Variants["animate"] }`</TableCell>
-      <TableCell>-</TableCell>
-      <TableCell>Animation configuration for the media container</TableCell>
+      <TableCell>`{ initial: { width: 0, opacity: 1 }, animate: { width: "auto", opacity: 1, transition: { duration: 0.4, type: "spring", bounce: 0 } } }`</TableCell>
+      <TableCell>Custom animation variants</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Additional CSS classes for styling the container of the component</TableCell>
+      <TableCell>Optional class name for the root element</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>leftTextClassName</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Additional CSS classes for styling the left text</TableCell>
+      <TableCell>Optional class name for the left text element</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>rightTextClassName</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Additional CSS classes for styling the right text</TableCell>
+      <TableCell>Optional class name for the right text element</TableCell>
     </TableRow>
   </TableBody>
 </Table>
