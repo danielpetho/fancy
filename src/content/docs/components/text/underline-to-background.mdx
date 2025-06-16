@@ -42,46 +42,46 @@ The component creates a separate `div` element positioned absolutely below the t
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>label<span className="text-red-500">*</span></TableCell>
-      <TableCell>`string`</TableCell>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The text to be displayed</TableCell>
+      <TableCell>The content to be displayed and animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`"span"`</TableCell>
+      <TableCell>HTML Tag to render the component as</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>`undefined`</TableCell>
-      <TableCell>Additional CSS classes for styling</TableCell>
+      <TableCell>Optional class name for styling</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>transition</TableCell>
       <TableCell>`ValueAnimationTransition`</TableCell>
       <TableCell>`{ type: "spring", damping: 30, stiffness: 300 }`</TableCell>
-      <TableCell>Animation configuration for the underline-to-background effect. Refer to motion docs for more details</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell>onClick</TableCell>
-      <TableCell>`() => void`</TableCell>
-      <TableCell>`undefined`</TableCell>
-      <TableCell>Callback function when the text is clicked</TableCell>
+      <TableCell>Animation transition configuration</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>targetTextColor<span className="text-red-500">*</span></TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>`"#fef"`</TableCell>
-      <TableCell>The color of the text when the background animation is complete</TableCell>
+      <TableCell>The color that the text will animate to on hover</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>underlineHeightRatio</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`0.1`</TableCell>
-      <TableCell>The height of the underline as a ratio of the font size</TableCell>
+      <TableCell>Height of the underline as a ratio of font size</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>underlinePaddingRatio</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`0.01`</TableCell>
-      <TableCell>The padding of the underline as a ratio of the font size</TableCell>
+      <TableCell>Padding of the underline as a ratio of font size</TableCell>
     </TableRow>
   </TableBody>
 </Table>

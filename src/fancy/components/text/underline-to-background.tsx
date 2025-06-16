@@ -1,22 +1,55 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { ElementType, useEffect, useMemo, useRef } from "react"
 import { motion, ValueAnimationTransition } from "motion/react"
 
+import { cn } from "@/lib/utils"
+
 interface UnderlineProps {
-  label: string
+  /**
+   * The content to be displayed and animated
+   */
+  children: React.ReactNode
+
+  /**
+   * HTML Tag to render the component as
+   * @default span
+   */
+  as?: ElementType
+
+  /**
+   * Optional class name for styling
+   */
   className?: string
+
+  /**
+   * Animation transition configuration
+   * @default { type: "spring", damping: 30, stiffness: 300 }
+   */
   transition?: ValueAnimationTransition
-  onClick?: () => void
+
+  /**
+   * The color that the text will animate to on hover
+   */
   targetTextColor: string
+
+  /**
+   * Height of the underline as a ratio of font size
+   * @default 0.1
+   */
   underlineHeightRatio?: number
+
+  /**
+   * Padding of the underline as a ratio of font size
+   * @default 0.01
+   */
   underlinePaddingRatio?: number
 }
 
 const UnderlineToBackground = ({
-  label,
+  children,
+  as,
   className,
-  onClick,
   transition = { type: "spring", damping: 30, stiffness: 300 },
   underlineHeightRatio = 0.1, // Default to 10% of font size
   underlinePaddingRatio = 0.01, // Default to 1% of font size
@@ -25,6 +58,10 @@ const UnderlineToBackground = ({
 }: UnderlineProps) => {
   const textRef = useRef<HTMLSpanElement>(null)
 
+  // Create custom motion component based on the 'as' prop
+  const MotionComponent = useMemo(() => motion.create(as ?? "span"), [as])
+
+  // Update CSS custom properties based on font size
   useEffect(() => {
     const updateUnderlineStyles = () => {
       if (textRef.current) {
@@ -48,6 +85,7 @@ const UnderlineToBackground = ({
     return () => window.removeEventListener("resize", updateUnderlineStyles)
   }, [underlineHeightRatio, underlinePaddingRatio])
 
+  // Animation variants for the underline background
   const underlineVariants = {
     initial: {
       height: "var(--underline-height)",
@@ -58,6 +96,7 @@ const UnderlineToBackground = ({
     },
   }
 
+  // Animation variants for the text color
   const textVariants = {
     initial: {
       color: "currentColor",
@@ -69,10 +108,9 @@ const UnderlineToBackground = ({
   }
 
   return (
-    <motion.span
-      className={`relative inline-block cursor-pointer ${className}`}
+    <MotionComponent
+      className={cn("relative inline-block cursor-pointer", className)}
       whileHover="target"
-      onClick={onClick}
       ref={textRef}
       {...props}
     >
@@ -86,10 +124,12 @@ const UnderlineToBackground = ({
         aria-hidden="true"
       />
       <motion.span variants={textVariants} className="text-current relative">
-        {label}
+        {children}
       </motion.span>
-    </motion.span>
+    </MotionComponent>
   )
 }
+
+UnderlineToBackground.displayName = "UnderlineToBackground"
 
 export default UnderlineToBackground
