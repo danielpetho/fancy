@@ -1,30 +1,92 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { ElementType, useEffect, useState } from "react"
 import { motion, Variants } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
 interface TypewriterProps {
+  /**
+   * Text or array of texts to type out
+   */
   text: string | string[]
+
+  /**
+   * HTML Tag to render the component as
+   * @default div
+   */
+  as?: ElementType
+
+  /**
+   * Speed of typing in milliseconds
+   * @default 50
+   */
   speed?: number
+
+  /**
+   * Initial delay before typing starts
+   * @default 0
+   */
   initialDelay?: number
+
+  /**
+   * Time to wait between typing and deleting
+   * @default 2000
+   */
   waitTime?: number
+
+  /**
+   * Speed of deleting characters
+   * @default 30
+   */
   deleteSpeed?: number
+
+  /**
+   * Whether to loop through texts array
+   * @default true
+   */
   loop?: boolean
+
+  /**
+   * Optional class name for styling
+   */
   className?: string
+
+  /**
+   * Whether to show the cursor
+   * @default true
+   */
   showCursor?: boolean
+
+  /**
+   * Hide cursor while typing
+   * @default false
+   */
   hideCursorOnType?: boolean
+
+  /**
+   * Character or React node to use as cursor
+   * @default "|"
+   */
   cursorChar?: string | React.ReactNode
+
+  /**
+   * Animation variants for cursor
+   */
   cursorAnimationVariants?: {
     initial: Variants["initial"]
     animate: Variants["animate"]
   }
+
+  /**
+   * Optional class name for cursor styling
+   */
   cursorClassName?: string
 }
 
 const Typewriter = ({
   text,
+  as: Tag = "div",
   speed = 50,
   initialDelay = 0,
   waitTime = 2000,
@@ -47,7 +109,8 @@ const Typewriter = ({
       },
     },
   },
-}: TypewriterProps) => {
+  ...props
+}: TypewriterProps & React.HTMLAttributes<HTMLElement>) => {
   const [displayText, setDisplayText] = useState("")
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isDeleting, setIsDeleting] = useState(false)
@@ -110,7 +173,7 @@ const Typewriter = ({
   ])
 
   return (
-    <div className={`inline whitespace-pre-wrap tracking-tight ${className}`}>
+    <Tag className={cn("inline whitespace-pre-wrap tracking-tight", className)} {...props}>
       <span>{displayText}</span>
       {showCursor && (
         <motion.span
@@ -128,7 +191,7 @@ const Typewriter = ({
           {cursorChar}
         </motion.span>
       )}
-    </div>
+    </Tag>
   )
 }
 

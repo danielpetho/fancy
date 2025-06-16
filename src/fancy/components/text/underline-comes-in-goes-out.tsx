@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from "react"
+import { ElementType, useEffect, useRef, useState, useMemo } from "react"
 import cn from "clsx"
 import {
   motion,
@@ -9,20 +9,52 @@ import {
 } from "motion/react"
 
 interface ComesInGoesOutUnderlineProps {
-  label: string
+  /**
+   * The content to be displayed and animated
+   */
+  children: React.ReactNode
+
+  /**
+   * HTML Tag to render the component as
+   * @default span
+   */
+  as?: ElementType
+
+  /**
+   * Direction of the animation
+   * @default "left"
+   */
   direction?: "left" | "right"
+
+  /**
+   * Optional class name for styling
+   */
   className?: string
-  onClick?: () => void
+
+  /**
+   * Height of the underline as a ratio of font size
+   * @default 0.1
+   */
   underlineHeightRatio?: number
+
+  /**
+   * Padding of the underline as a ratio of font size
+   * @default 0.01
+   */
   underlinePaddingRatio?: number
+
+  /**
+   * Animation transition configuration
+   * @default { duration: 0.4, ease: "easeInOut" }
+   */
   transition?: ValueAnimationTransition
 }
 
-const ComesInGoesOutUnderline: React.FC<ComesInGoesOutUnderlineProps> = ({
-  label,
+const ComesInGoesOutUnderline = ({
+  children,
+  as,
   direction = "left",
   className,
-  onClick,
   underlineHeightRatio = 0.1,
   underlinePaddingRatio = 0.01,
   transition = {
@@ -30,10 +62,11 @@ const ComesInGoesOutUnderline: React.FC<ComesInGoesOutUnderlineProps> = ({
     ease: "easeInOut",
   },
   ...props
-}) => {
+}: ComesInGoesOutUnderlineProps) => {
   const controls = useAnimationControls()
   const [blocked, setBlocked] = useState(false)
   const textRef = useRef<HTMLSpanElement>(null)
+  const MotionComponent = useMemo(() => motion.create(as ?? "span"), [as])
 
   useEffect(() => {
     const updateUnderlineStyles = () => {
@@ -85,14 +118,13 @@ const ComesInGoesOutUnderline: React.FC<ComesInGoesOutUnderlineProps> = ({
   }
 
   return (
-    <motion.span
+    <MotionComponent
       className={cn("relative inline-block cursor-pointer", className)}
       onHoverStart={animate}
-      onClick={onClick}
       ref={textRef}
       {...props}
     >
-      <span>{label}</span>
+      <span>{children}</span>
       <motion.span
         className={cn("absolute bg-current w-0", {
           "left-0": direction === "left",
@@ -103,9 +135,12 @@ const ComesInGoesOutUnderline: React.FC<ComesInGoesOutUnderlineProps> = ({
           bottom: "calc(1 * var(--underline-padding))",
         }}
         animate={controls}
+        aria-hidden="true"
       />
-    </motion.span>
+    </MotionComponent>
   )
 }
+
+ComesInGoesOutUnderline.displayName = "ComesInGoesOutUnderline"
 
 export default ComesInGoesOutUnderline

@@ -29,7 +29,7 @@ const ElasticLine: React.FC<ElasticLineProps> = ({
   strokeWidth = 1,
   transition = {
     type: "spring",
-    stiffness: 400,
+    stiffness: 300,
     damping: 5,
   },
   animateInTransition = {

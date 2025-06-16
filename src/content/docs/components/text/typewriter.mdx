@@ -50,43 +50,49 @@ Ideally, the component should respect multiple lines. If you experience otherwis
       <TableCell>text<span className="text-red-500">*</span></TableCell>
       <TableCell>`string | string[]`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The text or array of texts to be displayed and animated</TableCell>
+      <TableCell>Text or array of texts to type out</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`"div"`</TableCell>
+      <TableCell>HTML Tag to render the component as</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>speed</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`50`</TableCell>
-      <TableCell>Speed of typing animation in milliseconds</TableCell>
+      <TableCell>Speed of typing in milliseconds</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>initialDelay</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`0`</TableCell>
-      <TableCell>Delay before typing starts in milliseconds</TableCell>
+      <TableCell>Initial delay before typing starts</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>waitTime</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`2000`</TableCell>
-      <TableCell>Time to wait before deleting text in milliseconds</TableCell>
-    </TableRow>
-    <TableRow >
-      <TableCell>loop</TableCell>
-      <TableCell>`boolean`</TableCell>
-      <TableCell>`true`</TableCell>
-      <TableCell>Whether to loop through the texts</TableCell>
+      <TableCell>Time to wait between typing and deleting</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>deleteSpeed</TableCell>
       <TableCell>`number`</TableCell>
       <TableCell>`30`</TableCell>
-      <TableCell>Speed of delete animation in milliseconds</TableCell>
+      <TableCell>Speed of deleting characters</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>loop</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Whether to loop through texts array</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>
       <TableCell>`string`</TableCell>
-      <TableCell>`undefined`</TableCell>
-      <TableCell>Additional CSS classes for styling</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Optional class name for styling</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>showCursor</TableCell>
@@ -94,29 +100,29 @@ Ideally, the component should respect multiple lines. If you experience otherwis
       <TableCell>`true`</TableCell>
       <TableCell>Whether to show the cursor</TableCell>
     </TableRow>
-    <TableRow >
+    <TableRow>
       <TableCell>hideCursorOnType</TableCell>
       <TableCell>`boolean`</TableCell>
       <TableCell>`false`</TableCell>
-      <TableCell>Whether to hide the cursor when typing</TableCell>
+      <TableCell>Hide cursor while typing</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>cursorChar</TableCell>
       <TableCell>`string | React.ReactNode`</TableCell>
       <TableCell>`"|"`</TableCell>
-      <TableCell>Character or node to use as cursor</TableCell>
+      <TableCell>Character or React node to use as cursor</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>cursorAnimationVariants</TableCell>
       <TableCell>`{ initial: Variants["initial"]; animate: Variants["animate"] }`</TableCell>
-      <TableCell>`{ initial: { opacity: 0 }, animate: { opacity: 1, transition: { duration: 0.01, repeat: Infinity, repeatDelay: 0.4, repeatType: "mirror" } } }`</TableCell>
-      <TableCell>Framer Motion variants for cursor animation</TableCell>
+      <TableCell>See description</TableCell>
+      <TableCell>Animation variants for cursor. Default: `{ initial: { opacity: 0 }, animate: { opacity: 1, transition: { duration: 0.01, repeat: Infinity, repeatDelay: 0.4, repeatType: "reverse" } } }`</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>cursorClassName</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>`"ml-1"`</TableCell>
-      <TableCell>Additional CSS classes for cursor styling</TableCell>
+      <TableCell>Optional class name for cursor styling</TableCell>
     </TableRow>
   </TableBody>
-  </Table>
+</Table>

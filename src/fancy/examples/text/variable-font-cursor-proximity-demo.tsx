@@ -20,7 +20,7 @@ export default function Preview() {
           <VariableFontCursorProximity
             key={i}
             label={text}
-            className={cn("text-4xl md:text-6xl lg:text-8xl leading-none")}
+            className={cn("text-4xl md:text-6xl lg:text-7xl leading-none")}
             fromFontVariationSettings="'wght' 400, 'slnt' 0"
             toFontVariationSettings="'wght' 900, 'slnt' -10"
             radius={200}

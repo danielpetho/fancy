@@ -39,10 +39,11 @@ export default function UnderlineToBackgroundDemo() {
         ))}
         <motion.span variants={wordVariants} className="inline-block">
           <UnderlineToBackground
-            label="subscribe"
             targetTextColor="#f0f0f0"
             className="cursor-pointer"
-          />
+          >
+            subscribe
+          </UnderlineToBackground>
         </motion.span>
       </motion.h2>
     </div>
