@@ -1,27 +1,56 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { ElementType, useEffect, useRef, useMemo } from "react"
 import { motion, ValueAnimationTransition } from "motion/react"
+import { cn } from "@/lib/utils"
 
 interface UnderlineProps {
-  label: string
+  /**
+   * The content to be displayed and animated
+   */
+  children: React.ReactNode
+
+  /**
+   * HTML Tag to render the component as
+   * @default span
+   */
+  as?: ElementType
+
+  /**
+   * Optional class name for styling
+   */
   className?: string
+
+  /**
+   * Animation transition configuration
+   * @default { duration: 0.25, ease: "easeInOut" }
+   */
   transition?: ValueAnimationTransition
-  onClick?: () => void
+
+  /**
+   * Height of the underline as a ratio of font size
+   * @default 0.1
+   */
   underlineHeightRatio?: number
+
+  /**
+   * Padding of the underline as a ratio of font size
+   * @default 0.01
+   */
   underlinePaddingRatio?: number
 }
 
 const CenterUnderline = ({
-  label,
+  children,
+  as,
   className,
-  onClick,
   transition = { duration: 0.25, ease: "easeInOut" },
-  underlineHeightRatio = 0.1, // Default to 10% of font size
-  underlinePaddingRatio = 0.01, // Default to 1% of font size
+  underlineHeightRatio = 0.1,
+  underlinePaddingRatio = 0.01,
   ...props
 }: UnderlineProps) => {
   const textRef = useRef<HTMLSpanElement>(null)
+  const MotionComponent = useMemo(() => motion.create(as ?? "span"), [as])
 
   useEffect(() => {
     const updateUnderlineStyles = () => {
@@ -58,14 +87,13 @@ const CenterUnderline = ({
   }
 
   return (
-    <motion.span
-      className={`relative inline-block cursor-pointer ${className}`}
+    <MotionComponent
+      className={cn("relative inline-block cursor-pointer", className)}
       whileHover="visible"
-      onClick={onClick}
       ref={textRef}
       {...props}
     >
-      <span>{label}</span>
+      <span>{children}</span>
       <motion.div
         className="absolute left-1/2 bg-current -translate-x-1/2"
         style={{
@@ -73,9 +101,12 @@ const CenterUnderline = ({
           bottom: "calc(-1 * var(--underline-padding))",
         }}
         variants={underlineVariants}
+        aria-hidden="true"
       />
-    </motion.span>
+    </MotionComponent>
   )
 }
+
+CenterUnderline.displayName = "CenterUnderline"
 
 export default CenterUnderline

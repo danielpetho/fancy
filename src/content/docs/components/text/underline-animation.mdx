@@ -95,11 +95,17 @@ The three variants work as follows:
   <TableBody>
     <TableRow>
       <TableCell>
-        label<span className="text-red-500">*</span>
+        children<span className="text-red-500">*</span>
       </TableCell>
-      <TableCell>`string`</TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The text to be displayed and underlined</TableCell>
+      <TableCell>The content to be displayed and underlined</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`"span"`</TableCell>
+      <TableCell>The HTML element to render the component as</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>
