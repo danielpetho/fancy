@@ -87,6 +87,7 @@ const MediaRenderer = memo(
         <img
           src={item.src}
           alt={item.alt || ""}
+          draggable={false}
           className={cn("w-full h-full object-cover", className)}
         />
       )
@@ -134,6 +135,8 @@ interface BoxCarouselProps extends React.HTMLProps<HTMLDivElement> {
   autoPlay?: boolean
   autoPlayInterval?: number
   onIndexChange?: (index: number) => void
+  enableDrag?: boolean
+  dragSensitivity?: number
 }
 
 const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
@@ -150,6 +153,8 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
       autoPlay = false,
       autoPlayInterval = 3000,
       onIndexChange,
+      enableDrag = true,
+      dragSensitivity = 1,
       ...props
     },
     ref
@@ -157,13 +162,13 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
     const [currentItemIndex, setCurrentItemIndex] = useState(0)
     const [currentFrontFaceIndex, setCurrentFrontFaceIndex] = useState(1)
 
-    // 0 ⇢ will be shown if the user presses “prev”
+    // 0 ⇢ will be shown if the user presses "prev"
     const [prevIndex, setPrevIndex] = useState(items.length - 1)
 
     // 1 ⇢ item that is currently visible
     const [currentIndex, setCurrentIndex] = useState(0)
 
-    // 2 ⇢ will be shown on the next “next”
+    // 2 ⇢ will be shown on the next "next"
     const [nextIndex, setNextIndex] = useState(1)
 
     // 3 ⇢ two steps ahead (the face that is at the back right now)
@@ -174,9 +179,22 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
     const rotationCount = useRef(1)
     const isRotating = useRef(false)
     const pendingIndexChange = useRef<number | null>(null)
+    const isDragging = useRef(false)
+    const startPosition = useRef({ x: 0, y: 0 })
+    const startRotation = useRef(0)
 
     const baseRotateX = useMotionValue(0)
     const baseRotateY = useMotionValue(0)
+
+    // Use springs for smoother animation during drag
+    const springRotateX = useSpring(baseRotateX, {
+      stiffness: isDragging.current ? 300 : 100,
+      damping: isDragging.current ? 30 : 20,
+    })
+    const springRotateY = useSpring(baseRotateY, {
+      stiffness: isDragging.current ? 300 : 100,
+      damping: isDragging.current ? 30 : 20,
+    })
 
     const handleAnimationComplete = useCallback(
       (triggeredBy: string) => {
@@ -232,6 +250,111 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
       },
       [currentFrontFaceIndex, items.length, onIndexChange]
     )
+
+    // Drag functionality - using direct event handlers like css-box
+    const handleDragStart = useCallback((e: React.MouseEvent | React.TouchEvent) => {
+      if (!enableDrag || isRotating.current) return
+      
+      isDragging.current = true
+      const point = 'touches' in e ? e.touches[0] : e
+      startPosition.current = { x: point.clientX, y: point.clientY }
+      startRotation.current = currentRotation
+      
+      // Prevent default to avoid text selection
+      e.preventDefault()
+    }, [enableDrag, currentRotation])
+
+    const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
+      if (!isDragging.current || isRotating.current) return
+      
+      const point = 'touches' in e ? e.touches[0] : e
+      const deltaX = point.clientX - startPosition.current.x
+      const deltaY = point.clientY - startPosition.current.y
+      
+      const isVertical = direction === "top" || direction === "bottom"
+      const delta = isVertical ? deltaY : deltaX
+      const rotationDelta = (delta * dragSensitivity) / 2
+      
+      let newRotation = startRotation.current
+      
+      if (direction === "top" || direction === "right") {
+        newRotation += rotationDelta
+      } else {
+        newRotation -= rotationDelta
+      }
+
+      // Apply the rotation immediately during drag
+      if (isVertical) {
+        baseRotateX.set(newRotation)
+      } else {
+        baseRotateY.set(newRotation)
+      }
+    }, [enableDrag, direction, dragSensitivity])
+
+    const handleDragEnd = useCallback(() => {
+      if (!isDragging.current) return
+      
+      isDragging.current = false
+      
+      const isVertical = direction === "top" || direction === "bottom"
+      const currentValue = isVertical ? baseRotateX.get() : baseRotateY.get()
+      
+      // Calculate the nearest quarter rotation (90-degree increment)
+      const quarterRotations = Math.round(currentValue / 90)
+      const snappedRotation = quarterRotations * 90
+      
+      // Calculate how many steps we've moved from the original position
+      const rotationDifference = snappedRotation - currentRotation
+      const steps = Math.round(rotationDifference / 90)
+      
+      if (steps !== 0) {
+        isRotating.current = true
+        
+        // Calculate new item index
+        let newItemIndex = currentItemIndex
+        for (let i = 0; i < Math.abs(steps); i++) {
+          if (steps > 0) {
+            newItemIndex = (newItemIndex + 1) % items.length
+          } else {
+            newItemIndex = newItemIndex === 0 ? items.length - 1 : newItemIndex - 1
+          }
+        }
+        
+        pendingIndexChange.current = newItemIndex
+        
+        // Animate to the snapped position
+        const targetMotionValue = isVertical ? baseRotateX : baseRotateY
+        animate(targetMotionValue, snappedRotation, {
+          damping: 10,
+          stiffness: 100,
+          onComplete: () => {
+            handleAnimationComplete(steps > 0 ? "next" : "prev")
+            setCurrentRotation(snappedRotation)
+          },
+        })
+      } else {
+        // Snap back to current position
+        const targetMotionValue = isVertical ? baseRotateX : baseRotateY
+        animate(targetMotionValue, currentRotation, transition)
+      }
+    }, [direction, baseRotateX, baseRotateY, currentRotation, currentItemIndex, items.length, transition, handleAnimationComplete])
+
+    // Set up global event listeners for drag
+    useEffect(() => {
+      if (enableDrag) {
+        window.addEventListener("mousemove", handleDragMove)
+        window.addEventListener("mouseup", handleDragEnd)
+        window.addEventListener("touchmove", handleDragMove)
+        window.addEventListener("touchend", handleDragEnd)
+        
+        return () => {
+          window.removeEventListener("mousemove", handleDragMove)
+          window.removeEventListener("mouseup", handleDragEnd)
+          window.removeEventListener("touchmove", handleDragMove)
+          window.removeEventListener("touchend", handleDragEnd)
+        }
+      }
+    }, [enableDrag, handleDragMove, handleDragEnd])
 
     const next = useCallback(() => {
       if (items.length === 0 || isRotating.current) return
@@ -366,7 +489,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
     const depth = useMemo(() => direction === "top" || direction === "bottom" ? height : width, [direction, width, height])
 
     const transform = useTransform(
-      [baseRotateX, baseRotateY],
+      [springRotateX, springRotateY],
       ([x, y]) =>
         `translateZ(-${depth / 2}px) rotateX(${x}deg) rotateY(${y}deg)`
     )
@@ -427,12 +550,14 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
 
     return (
       <div
-        className={cn("relative", className)}
+        className={cn("relative", enableDrag && "cursor-move", className)}
         style={{
           width,
           height,
           perspective: `${perspective}px`,
         }}
+        onMouseDown={handleDragStart}
+        onTouchStart={handleDragStart}
         {...props}
       >
         <motion.div

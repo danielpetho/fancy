@@ -12,49 +12,49 @@ const carouselItems: CarouselItem[] = [
   {
     id: "1",
     type: "image",
-    src: "https://cdn.cosmos.so/d9ed937e-7c3b-4f64-a4f3-708d639f13a1?format=jpeg",
+    src: "https://cdn.cosmos.so/33b43e2a-da66-42d9-a0b1-08165d80b0aa?format=jpeg",
     alt: "Mountain landscape"
   },
   {
     id: "2", 
     type: "image",
-    src: "https://cdn.cosmos.so/b01a6010-7df8-4d89-b195-f93c940a9899?format=jpeg",
+    src: "https://cdn.cosmos.so/c48b739d-202d-4340-ab6b-afa34f0d7142?format=jpeg",
     alt: "poster"
   },
   {
     id: "3",
     type: "image", 
-    src: "https://cdn.cosmos.so/42edd9ec-03d8-4b62-bcda-6203032561bd?format=jpeg",
+    src: "https://cdn.cosmos.so/5332f9ac-7823-4635-871d-d4b3032e1c62?format=jpeg",
     alt: "shapes"
   },
   {
     id: "4",
     type: "image",
-    src: "https://cdn.cosmos.so/bec58067-dc30-45a1-9bd1-9a6b2b197410?format=jpeg", 
+    src: "https://cdn.cosmos.so/27ac2696-1f2b-498e-8d3d-11f2dd358ab9?format=jpeg", 
     alt: "Desert dunes"
   },
   {
     id: "5",
     type: "image",
-    src: "https://cdn.cosmos.so/40342df7-2ea2-4297-add2-fe17cdc62551?format=jpeg",
+    src: "https://cdn.cosmos.so/53134561-4917-42a6-abee-a03d2303e3b6?format=jpeg",
     alt: "Snowy mountains"
   },
   {
     id: "6",
     type: "image",
-    src: "https://cdn.cosmos.so/85e75781-4fe9-4fa6-914b-f87ddb6e9e7e?format=jpeg",
+    src: "https://cdn.cosmos.so/c1e053f1-ba4f-4259-bd3b-bbb1704ace54?format=jpeg",
     alt: "Ocean waves"
   },
   {
     id: "7",
     type: "image",
-    src: "https://cdn.cosmos.so/f0765e6a-9ec0-4891-a1fe-c6bfa071adf4?format=jpeg",
+    src: "https://cdn.cosmos.so/6d557fd0-c4f2-4dac-b4a9-94b384467d40?format=jpeg",
     alt: "Autumn forest"
   },
   {
     id: "8", 
     type: "image",
-    src: "https://cdn.cosmos.so/599806c9-6623-4cbf-83e0-d9c8a0cf7a1a?format=jpeg",
+    src: "https://cdn.cosmos.so/778d0640-d4b8-45b4-8bbe-862e759c231d?format=jpeg",
     alt: "City skyline"
   }
 ]
@@ -86,7 +86,7 @@ export default function BoxCarouselDemo() {
   }
 
   return (
-    <div className="w-full max-w-4xl h-full p-6 flex justify-items-center justify-center items-center text-muted-foreground bg-[#efefef]">
+    <div className="w-full max-w-4xl h-full p-6 flex justify-items-center justify-center items-center text-muted-foreground bg-[#fefefe]">
       <button
         onClick={toggleDebug}
         className="absolute top-4 left-4 p-1.5 border border-black text-black rounded-full cursor-pointer transition-all duration-300 ease-out hover:bg-gray-100 active:scale-95"
@@ -110,6 +110,7 @@ export default function BoxCarouselDemo() {
             direction="right"
             onIndexChange={handleIndexChange}
             debug={debug}
+            enableDrag
             perspective={1000}
           />
         </div>
