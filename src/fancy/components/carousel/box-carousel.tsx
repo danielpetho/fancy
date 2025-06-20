@@ -7,6 +7,7 @@ import React, {
   useCallback,
   useEffect,
   useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from "react"
@@ -113,7 +114,7 @@ export interface BoxCarouselRef {
   getCurrentItemIndex: () => number
 }
 
-type RotationDirection = "horizontal" | "vertical"
+type RotationDirection = "top" | "bottom" | "left" | "right"
 
 interface SpringConfig {
   stiffness?: number
@@ -125,7 +126,6 @@ interface BoxCarouselProps extends React.HTMLProps<HTMLDivElement> {
   items: CarouselItem[]
   width: number
   height: number
-  depth: number
   className?: string
   debug?: boolean
   perspective?: number
@@ -142,7 +142,6 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
       items,
       width,
       height,
-      depth,
       className,
       perspective = 600,
       debug = false,
@@ -180,14 +179,14 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
     const baseRotateY = useMotionValue(0)
 
     const handleAnimationComplete = useCallback(
-      (direction: string) => {
+      (triggeredBy: string) => {
         if (isRotating.current && pendingIndexChange.current !== null) {
           isRotating.current = false
 
           let newFrontFaceIndex: number
           let currentBackFaceIndex: number
 
-          if (direction === "horizontal_left" || direction === "vertical_top") {
+          if (triggeredBy === "next") {
             newFrontFaceIndex = (currentFrontFaceIndex + 1) % 4
             currentBackFaceIndex = (newFrontFaceIndex + 2) % 4
           } else {
@@ -199,7 +198,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
           onIndexChange?.(pendingIndexChange.current)
 
           const indexOffset =
-            direction === "horizontal_left" || direction === "vertical_top"
+            triggeredBy === "next"
               ? 2
               : -1
 
@@ -241,19 +240,35 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
       const newIndex = (currentItemIndex + 1) % items.length
       pendingIndexChange.current = newIndex
 
-      if (direction === "horizontal") {
-        animate(baseRotateY, currentRotation + 90, {
-          ...transition,
-          onComplete: () => {
-            handleAnimationComplete("horizontal_left")
-            setCurrentRotation(currentRotation + 90)
-          },
-        })
-      } else {
+      if (direction === "top") {
         animate(baseRotateX, currentRotation + 90, {
           ...transition,
           onComplete: () => {
-            handleAnimationComplete("vertical_top")
+            handleAnimationComplete("next")
+            setCurrentRotation(currentRotation + 90)
+          },
+        })
+      } else if (direction === "bottom") {
+        animate(baseRotateX, currentRotation - 90, {
+          ...transition,
+          onComplete: () => {
+            handleAnimationComplete("next")
+            setCurrentRotation(currentRotation - 90)
+          },
+        })
+      } else if (direction === "left") {
+        animate(baseRotateY, currentRotation - 90, {
+          ...transition,
+          onComplete: () => {
+            handleAnimationComplete("next")
+            setCurrentRotation(currentRotation - 90)
+          },
+        })
+      } else if (direction === "right") {
+        animate(baseRotateY, currentRotation + 90, {
+          ...transition,
+          onComplete: () => {
+            handleAnimationComplete("next")
             setCurrentRotation(currentRotation + 90)
           },
         })
@@ -268,19 +283,35 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
         currentItemIndex === 0 ? items.length - 1 : currentItemIndex - 1
       pendingIndexChange.current = newIndex
 
-      if (direction === "horizontal") {
-        animate(baseRotateY, currentRotation - 90, {
-          ...transition,
-          onComplete: () => {
-            handleAnimationComplete("horizontal_right")
-            setCurrentRotation(currentRotation - 90)
-          },
-        })
-      } else {
+      if (direction === "top") {
         animate(baseRotateX, currentRotation - 90, {
           ...transition,
           onComplete: () => {
-            handleAnimationComplete("vertical_bottom")
+            handleAnimationComplete("prev")
+            setCurrentRotation(currentRotation - 90)
+          },
+        })
+      } else if (direction === "bottom") {
+        animate(baseRotateX, currentRotation + 90, {
+          ...transition,
+          onComplete: () => {
+            handleAnimationComplete("prev")
+            setCurrentRotation(currentRotation + 90)
+          },
+        })
+      } else if (direction === "left") {
+        animate(baseRotateY, currentRotation + 90, {
+          ...transition,
+          onComplete: () => {
+            handleAnimationComplete("prev")
+            setCurrentRotation(currentRotation + 90)
+          },
+        })
+      } else if (direction === "right") {
+        animate(baseRotateY, currentRotation - 90, {
+          ...transition,
+          onComplete: () => {
+            handleAnimationComplete("prev")
             setCurrentRotation(currentRotation - 90)
           },
         })
@@ -332,30 +363,59 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
       [next, prev, goToIndex, currentItemIndex]
     )
 
+    const depth = useMemo(() => direction === "top" || direction === "bottom" ? height : width, [direction, width, height])
+
     const transform = useTransform(
       [baseRotateX, baseRotateY],
       ([x, y]) =>
         `translateZ(-${depth / 2}px) rotateX(${x}deg) rotateY(${y}deg)`
     )
 
-     // Determine face transforms based on the desired rotation axis
-     const isVertical = direction === "vertical"
-
-     const faceTransforms = !isVertical
-       ? [
-           // left, front, right, back (rotation around Y-axis)
-           `rotateY(-90deg) translateZ(${width / 2}px)`,
-           `rotateY(0deg) translateZ(${depth / 2}px)`,
-           `rotateY(90deg) translateZ(${width / 2}px)`,
-           `rotateY(180deg) translateZ(${depth / 2}px)`,
-         ]
-       : [
-           // top, front, bottom, back (rotation around X-axis)
-           `rotateX(90deg) translateZ(${height / 2}px)`,
-           `rotateY(0deg) translateZ(${depth / 2}px)`,
-           `rotateX(-90deg) translateZ(${height / 2}px)`,
-           `rotateY(180deg) translateZ(${depth / 2}px) rotateZ(180deg)`,
-         ]
+    // Determine face transforms based on the desired rotation axis
+    const faceTransforms = (() => {
+      switch (direction) {
+        case "left":
+          return [
+            // left, front, right, back (rotation around Y-axis)
+            `rotateY(-90deg) translateZ(${width / 2}px)`,
+            `rotateY(0deg) translateZ(${depth / 2}px)`,
+            `rotateY(90deg) translateZ(${width / 2}px)`,
+            `rotateY(180deg) translateZ(${depth / 2}px)`,
+          ]
+        case "top":
+          return [
+            // top, front, bottom, back (rotation around X-axis)
+            `rotateX(90deg) translateZ(${height / 2}px)`,
+            `rotateY(0deg) translateZ(${depth / 2}px)`,
+            `rotateX(-90deg) translateZ(${height / 2}px)`,
+            `rotateY(180deg) translateZ(${depth / 2}px) rotateZ(180deg)`,
+          ]
+        case "right":
+          return [
+            // right, front, left, back (rotation around Y-axis)
+            `rotateY(90deg) translateZ(${width / 2}px)`,
+            `rotateY(0deg) translateZ(${depth / 2}px)`,
+            `rotateY(-90deg) translateZ(${width / 2}px)`,
+            `rotateY(180deg) translateZ(${depth / 2}px)`,
+          ]
+        case "bottom":
+          return [
+            // bottom, front, top, back (rotation around X-axis)
+            `rotateX(-90deg) translateZ(${height / 2}px)`,
+            `rotateY(0deg) translateZ(${depth / 2}px)`,
+            `rotateX(90deg) translateZ(${height / 2}px)`,
+            `rotateY(180deg) translateZ(${depth / 2}px) rotateZ(180deg)`,
+          ]
+        default:
+          return [
+            // left, front, right, back (rotation around Y-axis)
+            `rotateY(-90deg) translateZ(${width / 2}px)`,
+            `rotateY(0deg) translateZ(${depth / 2}px)`,
+            `rotateY(90deg) translateZ(${width / 2}px)`,
+            `rotateY(180deg) translateZ(${depth / 2}px)`,
+          ]
+      }
+    })()
 
     // Auto play functionality
     useEffect(() => {
@@ -396,7 +456,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
 
           {/* Second face */}
           <CubeFace
-            transform={faceTransforms[1]} 
+            transform={faceTransforms[1]}
             style={
               debug
                 ? { width, height, backgroundColor: "#99ff99" }

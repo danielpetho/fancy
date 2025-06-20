@@ -107,8 +107,7 @@ export default function BoxCarouselDemo() {
             items={carouselItems}
             width={350}
             height={250}
-            depth={350}
-            direction="horizontal"
+            direction="right"
             onIndexChange={handleIndexChange}
             debug={debug}
             perspective={1000}
