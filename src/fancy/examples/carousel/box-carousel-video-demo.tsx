@@ -1,10 +1,12 @@
 "use client"
 
-import { useRef, useState, useEffect } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Bug, BugOff } from "lucide-react"
-import BoxCarousel, { 
-  type BoxCarouselRef, 
-  type CarouselItem, 
+import { AnimatePresence, motion } from "motion/react"
+
+import BoxCarousel, {
+  type BoxCarouselRef,
+  type CarouselItem,
 } from "@/fancy/components/carousel/box-carousel"
 
 // Sample carousel items with mix of images and videos
@@ -13,50 +15,50 @@ const carouselItems: CarouselItem[] = [
     id: "1",
     type: "video",
     src: "https://cdn.cosmos.so/3fe9c8a8-b562-4090-a5ac-5bbdf655a938.mp4",
-    alt: "Mountain landscape"
+    alt: "@portalsandpaths",
   },
   {
-    id: "2", 
+    id: "2",
     type: "video",
     src: "https://cdn.cosmos.so/9e15ecba-a578-45fe-a530-b659e92d82a8.mp4",
-    alt: "poster"
+    alt: "@demo.festival",
   },
   {
     id: "3",
-    type: "image", 
-    src: "https://cdn.cosmos.so/09d4ee6f-f08b-407f-a6db-a97eda9ae3f8?format=jpeg",
-    alt: "shapes"
+    type: "video",
+    src: "https://cdn.cosmos.so/e80b1973-3f23-452d-966c-77dcb54ce59c.mp4",
+    alt: "@are.na",
   },
   {
     id: "4",
-    type: "image",
-    src: "https://cdn.cosmos.so/27ac2696-1f2b-498e-8d3d-11f2dd358ab9?format=jpeg", 
-    alt: "Desert dunes"
+    type: "video",
+    src: "https://cdn.cosmos.so/594e87df-e8ca-4d03-8137-f78b5dab6793.mp4",
+    alt: "@studio.size",
   },
   {
     id: "5",
     type: "image",
     src: "https://cdn.cosmos.so/53134561-4917-42a6-abee-a03d2303e3b6?format=jpeg",
-    alt: "Snowy mountains"
+    alt: "Snowy mountains",
   },
   {
     id: "6",
     type: "image",
     src: "https://cdn.cosmos.so/c1e053f1-ba4f-4259-bd3b-bbb1704ace54?format=jpeg",
-    alt: "Ocean waves"
+    alt: "Ocean waves",
   },
   {
     id: "7",
     type: "image",
     src: "https://cdn.cosmos.so/6d557fd0-c4f2-4dac-b4a9-94b384467d40?format=jpeg",
-    alt: "Autumn forest"
+    alt: "Autumn forest",
   },
   {
-    id: "8", 
+    id: "8",
     type: "image",
     src: "https://cdn.cosmos.so/778d0640-d4b8-45b4-8bbe-862e759c231d?format=jpeg",
-    alt: "City skyline"
-  }
+    alt: "City skyline",
+  },
 ]
 
 export default function BoxCarouselDemo() {
@@ -87,21 +89,16 @@ export default function BoxCarouselDemo() {
 
   return (
     <div className="w-full max-w-4xl h-full p-6 flex justify-items-center justify-center items-center text-muted-foreground bg-[#fefefe]">
-      <button
+      {/* <button
         onClick={toggleDebug}
         className="absolute top-4 left-4 p-1.5 border border-black text-black rounded-full cursor-pointer transition-all duration-300 ease-out hover:bg-gray-100 active:scale-95"
         title={debug ? "Debug Mode: ON" : "Debug Mode: OFF"}
       >
-        {debug ? (
-          <Bug size={10} />
-        ) : (
-          <BugOff size={10} />
-        )}
-      </button>
+        {debug ? <Bug size={10} /> : <BugOff size={10} />}
+      </button> */}
 
-      <div className="space-y-24">
-
-        <div className="flex justify-center pt-20">
+      <div className="space-y-20">
+        <div className="flex justify-center">
           <BoxCarousel
             ref={carouselRef}
             items={carouselItems}
@@ -111,13 +108,34 @@ export default function BoxCarouselDemo() {
             onIndexChange={handleIndexChange}
             debug={debug}
             enableDrag
+            transition={{ duration: 0.8, ease: [0.953, 0.001, 0.019, 0.995] }}
             perspective={1000}
           />
         </div>
 
+        <div className="flex gap-2 justify-center w-full items-start">
+          {/* <motion.div
+            className="px-3 py-1.5 text-sm w-autp bg-gray-200 text-black rounded-xl"
+            layout
+            transition={{ duration: 0.5, ease: "easeOut" }}
 
-        <div className="flex gap-2 justify-center">
-          <button 
+          > */}
+            <AnimatePresence mode="popLayout">
+              <motion.span
+                key={currentIndex}
+                layoutId="id"
+                layout
+                initial={{ opacity: 0, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="px-3 py-1.5 text-sm w-autp bg-gray-200 text-black rounded-xl"
+              >
+                {carouselItems[currentIndex]?.alt}
+              </motion.span>
+            </AnimatePresence>
+          {/* </motion.div> */}
+          {/* <button 
             onClick={handlePrev}
             className="px-2 py-0.5 text-xs border border-black text-black rounded-full cursor-pointer transition-all duration-300 ease-out hover:bg-gray-100 active:scale-95"
           >
@@ -128,7 +146,7 @@ export default function BoxCarouselDemo() {
             className="px-2 py-0.5 text-xs border border-black text-black rounded-full cursor-pointer transition-all duration-300 ease-out hover:bg-gray-100 active:scale-95"
           >
             Next
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
