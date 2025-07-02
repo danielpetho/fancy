@@ -1,6 +1,508 @@
 ---
 title: Box Carousel
-description: A carousel component that displays a set of items in a box layout.
+description: A 3D carousel component that displays items in a rotating box/cube layout with drag support and smooth animations.
+component: true
 ---
 
 <ComponentPreview name="box-carousel-video-demo" />
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/box-carousel.json&quot;" npx />
+
+</TabsContent>
+<TabsContent value="manual">
+
+<ComponentSource name="box-carousel" />
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+The Box Carousel creates a 3D rotating cube effect where each face displays a different item from your collection. You can navigate through items using mouse/touch drag, keyboard arrows, or programmatic controls. 
+
+You need to pass down at least an items array with at least 4 items to render a carousel. You need to also pass down the width and height of the carousel in pixels. The depth is calculated based on the rotation direction - for horizontal rotations (left/right), it uses the width, and for vertical rotations (top/bottom), it uses the height.
+
+<CodeSnippet title="Basic usage">
+```tsx
+import BoxCarousel, { CarouselItem } from "@/fancy/components/carousel/box-carousel"
+
+const items: CarouselItem[] = [
+  {
+    id: "1",
+    type: "image",
+    src: "/image1.jpg",
+    alt: "Description 1"
+  },
+  {
+    id: "2", 
+    type: "video",
+    src: "/video1.mp4",
+    poster: "/video1-poster.jpg"
+  },
+  // ... more items
+]
+
+function MyCarousel() {
+  return (
+    <BoxCarousel
+      items={items}
+      width={400}
+      height={300}
+      direction="right"
+      enableDrag={true}
+    />
+  )
+}
+```
+</CodeSnippet>
+
+## Understanding the Component
+
+The Box Carousel uses CSS 3D transforms to create a rotating cube where each face displays a different item.
+
+### 3D box Construction
+
+The component constructs a 3D box using four faces positioned with CSS transforms. Each face is strategically placed to form a complete cube:
+
+<CodeSnippet title="Face positioning">
+```tsx
+const faceTransforms = (() => {
+  switch (direction) {
+    case "left":
+      return [
+        `rotateY(-90deg) translateZ(${width / 2}px)`,  // left face
+        `rotateY(0deg) translateZ(${depth / 2}px)`,    // front face
+        `rotateY(90deg) translateZ(${width / 2}px)`,   // right face
+        `rotateY(180deg) translateZ(${depth / 2}px)`,  // back face
+      ]
+    // ... other directions
+  }
+})()
+```
+</CodeSnippet>
+
+The `depth` is calculated based on the rotation direction - for horizontal rotations (left/right), it uses the width, and for vertical rotations (top/bottom), it uses the height.
+
+### Item Management System
+
+The component maintains four item indices to track which items are displayed on each face:
+
+<CodeSnippet title="Item indices">
+```tsx
+const [prevIndex, setPrevIndex] = useState(items.length - 1)     // Face 0
+const [currentIndex, setCurrentIndex] = useState(0)             // Face 1 (visible)
+const [nextIndex, setNextIndex] = useState(1)                   // Face 2
+const [afterNextIndex, setAfterNextIndex] = useState(2)         // Face 3
+```
+</CodeSnippet>
+
+When rotating, the component updates these indices to ensure the correct items are always loaded on the appropriate faces, creating seamless transitions.
+
+### Motion Values and Animation
+
+The component uses Motion's `useMotionValue` for precise control over rotations:
+
+<CodeSnippet title="Motion values">
+```tsx
+const baseRotateX = useMotionValue(0)  // For vertical rotations
+const baseRotateY = useMotionValue(0)  // For horizontal rotations
+
+// Spring values for smooth drag interactions
+const springRotateX = useSpring(baseRotateX, dragSpring)
+const springRotateY = useSpring(baseRotateY, dragSpring)
+```
+</CodeSnippet>
+
+The transform combines these values with the cube positioning:
+
+<CodeSnippet title="3D transform">
+```tsx
+const transform = useTransform(
+  isDragging.current ? [springRotateX, springRotateY] : [baseRotateX, baseRotateY],
+  ([x, y]) => `translateZ(-${depth / 2}px) rotateX(${x}deg) rotateY(${y}deg)`
+)
+```
+</CodeSnippet>
+
+## Features
+
+### Rotation Directions
+
+The carousel supports four rotation directions, each providing a different visual experience:
+
+<ComponentPreview name="box-carousel-demo" />
+
+- **`left`/`right`**: Rotates around the Y-axis (horizontal spin)
+- **`top`/`bottom`**: Rotates around the X-axis (vertical flip)
+
+Each direction changes both the cube face positioning and the animation axis.
+
+### Drag Interaction
+
+The component supports intuitive drag interactions that feel natural and responsive:
+
+<CodeSnippet title="Drag handling">
+```tsx
+const handleDragMove = useCallback((e: MouseEvent | TouchEvent) => {
+  if (!isDragging.current || isRotating.current) return
+
+  const point = "touches" in e ? e.touches[0] : e
+  const deltaX = point.clientX - startPosition.current.x
+  const deltaY = point.clientY - startPosition.current.y
+
+  const isVertical = direction === "top" || direction === "bottom"
+  const delta = isVertical ? deltaY : deltaX
+  const rotationDelta = (delta * dragSensitivity) / 2
+
+  // Apply rotation based on direction
+  if (isVertical) {
+    baseRotateX.set(newRotation)
+  } else {
+    baseRotateY.set(newRotation)
+  }
+}, [direction, dragSensitivity])
+```
+</CodeSnippet>
+
+Key drag features:
+
+- **Constraint boundaries**: Limits rotation to ±120 degrees to prevent index calculation issues
+- **Snap to position**: Automatically snaps to the nearest 90-degree increment when released
+- **Spring physics**: Uses configurable spring animations for smooth feel during and after drag
+
+### Auto-play Mode
+
+Enable automatic progression through items:
+
+<CodeSnippet title="Auto-play">
+```tsx
+<BoxCarousel
+  items={items}
+  width={400}
+  height={300}
+  autoPlay={true}
+  autoPlayInterval={3000}
+  onIndexChange={(index) => console.log('Now showing:', index)}
+/>
+```
+</CodeSnippet>
+
+### Keyboard Navigation
+
+The component includes full keyboard support:
+
+- **Arrow keys**: Navigate based on rotation direction
+  - Left/Right arrows work for `left`/`right` directions
+  - Up/Down arrows work for `top`/`bottom` directions
+- **Focus management**: Properly handles focus and provides screen reader announcements
+
+### Media Support
+
+Supports both images and videos with different handling:
+
+<CodeSnippet title="Media types">
+```tsx
+interface CarouselItem {
+  id: string
+  type: "image" | "video"
+  src: string
+  alt?: string
+  poster?: string  // For video thumbnails
+}
+```
+</CodeSnippet>
+
+Videos automatically play with `muted`, `loop`, and `autoPlay` attributes for seamless experience.
+
+### Debug Mode
+
+Enable debug mode to visualize the cube faces and understand the 3D positioning:
+
+<CodeSnippet title="Debug mode">
+```tsx
+<BoxCarousel
+  items={items}
+  width={400}
+  height={300}
+  debug={true}
+/>
+```
+</CodeSnippet>
+
+Debug mode shows colored faces with item IDs instead of media content, making it easier to understand the cube structure.
+
+### Accessibility Features
+
+The component includes comprehensive accessibility support:
+
+- **ARIA labels**: Properly labeled with item counts and descriptions
+- **Live regions**: Announces content changes to screen readers
+- **Keyboard navigation**: Full keyboard support with appropriate focus management
+- **Screen reader announcements**: Announces current item information
+
+<CodeSnippet title="Accessibility">
+```tsx
+<div
+  aria-label={`3D carousel with ${items.length} items`}
+  aria-describedby="carousel-instructions"
+  aria-live="polite"
+  aria-atomic="true"
+>
+  <div className="sr-only" aria-live="assertive">
+    Showing item {currentItemIndex + 1} of {items.length}:{" "}
+    {items[currentItemIndex]?.alt || `Item ${currentItemIndex + 1}`}
+  </div>
+  {/* carousel content */}
+</div>
+```
+</CodeSnippet>
+
+### Imperative API
+
+Access carousel controls programmatically using a ref:
+
+<CodeSnippet title="Ref usage">
+```tsx
+import { useRef } from 'react'
+import BoxCarousel, { BoxCarouselRef } from '@/fancy/components/carousel/box-carousel'
+
+function MyComponent() {
+  const carouselRef = useRef<BoxCarouselRef>(null)
+
+  const handleNext = () => {
+    carouselRef.current?.next()
+  }
+
+  const handlePrev = () => {
+    carouselRef.current?.prev()
+  }
+
+  const getCurrentIndex = () => {
+    return carouselRef.current?.getCurrentItemIndex() ?? 0
+  }
+
+  return (
+    <>
+      <BoxCarousel ref={carouselRef} items={items} width={400} height={300} />
+      <button onClick={handleNext}>Next</button>
+      <button onClick={handlePrev}>Previous</button>
+    </>
+  )
+}
+```
+</CodeSnippet>
+
+## Animation Configuration
+
+### Transition Customization
+
+Control the rotation animations with custom transition settings:
+
+<CodeSnippet title="Custom transitions">
+```tsx
+<BoxCarousel
+  items={items}
+  width={400}
+  height={300}
+  transition={{
+    duration: 1.5,
+    ease: [0.4, 0.0, 0.2, 1]
+  }}
+  snapTransition={{
+    type: "spring",
+    damping: 25,
+    stiffness: 300
+  }}
+/>
+```
+</CodeSnippet>
+
+### Spring Configuration
+
+Customize the drag feel with spring physics:
+
+<CodeSnippet title="Spring physics">
+```tsx
+<BoxCarousel
+  items={items}
+  width={400}
+  height={300}
+  dragSpring={{
+    stiffness: 300,
+    damping: 20,
+    mass: 0.8
+  }}
+  dragSensitivity={0.3}
+/>
+```
+</CodeSnippet>
+
+## Reduced Motion Support
+
+The component automatically respects user preferences for reduced motion by setting transition duration to 0 when `prefers-reduced-motion` is detected.
+
+## Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        items<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`CarouselItem[]`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Array of items to display in the carousel</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>
+        width<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Width of the carousel in pixels</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>
+        height<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Height of the carousel in pixels</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for the container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>direction</TableCell>
+      <TableCell>`"top" | "bottom" | "left" | "right"`</TableCell>
+      <TableCell>`"vertical"`</TableCell>
+      <TableCell>The axis and direction of rotation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>perspective</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`600`</TableCell>
+      <TableCell>CSS perspective value for 3D effect depth</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>debug</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Enable debug mode to visualize cube faces</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>transition</TableCell>
+      <TableCell>`ValueAnimationOptions`</TableCell>
+      <TableCell>`{ duration: 1.25, ease: [0.953, 0.001, 0.019, 0.995] }`</TableCell>
+      <TableCell>Animation options for programmatic rotations</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>snapTransition</TableCell>
+      <TableCell>`ValueAnimationOptions`</TableCell>
+      <TableCell>`{ type: "spring", damping: 30, stiffness: 200 }`</TableCell>
+      <TableCell>Animation options for drag snap-back</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragSpring</TableCell>
+      <TableCell>`SpringConfig`</TableCell>
+      <TableCell>`{ stiffness: 200, damping: 30 }`</TableCell>
+      <TableCell>Spring physics configuration for drag interactions</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoPlay</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Enable automatic progression through items</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoPlayInterval</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`3000`</TableCell>
+      <TableCell>Interval in milliseconds for auto-play</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>enableDrag</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Enable drag interaction for navigation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragSensitivity</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.5`</TableCell>
+      <TableCell>Sensitivity multiplier for drag movement</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onIndexChange</TableCell>
+      <TableCell>`(index: number) => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback fired when the active item changes</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## CarouselItem Interface
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Property</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Required</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>id</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>Yes</TableCell>
+      <TableCell>Unique identifier for the item</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>type</TableCell>
+      <TableCell>`"image" | "video"`</TableCell>
+      <TableCell>Yes</TableCell>
+      <TableCell>Type of media to display</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>src</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>Yes</TableCell>
+      <TableCell>URL or path to the media file</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>alt</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>No</TableCell>
+      <TableCell>Alt text for images (accessibility)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>poster</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>No</TableCell>
+      <TableCell>Poster image URL for videos</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

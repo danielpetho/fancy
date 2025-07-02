@@ -112,7 +112,6 @@ MediaRenderer.displayName = "MediaRenderer"
 export interface BoxCarouselRef {
   next: () => void
   prev: () => void
-  goToIndex: (index: number) => void
   getCurrentItemIndex: () => number
 }
 
@@ -168,6 +167,8 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
     const [currentFrontFaceIndex, setCurrentFrontFaceIndex] = useState(1)
 
     const prefersReducedMotion = useReducedMotion()
+
+    const _transition = prefersReducedMotion ? { duration: 0 } : transition
 
     // 0 ⇢ will be shown if the user presses "prev"
     const [prevIndex, setPrevIndex] = useState(items.length - 1)
@@ -285,6 +286,11 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
           newRotation -= rotationDelta
         }
 
+        // Constrain rotation to ±120 degrees from start position. Otherwise the index recalculation will be off. TBD - find a better solution
+        const minRotation = startRotation.current - 120
+        const maxRotation = startRotation.current + 120
+        newRotation = Math.max(minRotation, Math.min(maxRotation, newRotation))
+
         // Apply the rotation immediately during drag
         if (isVertical) {
           baseRotateX.set(newRotation)
@@ -378,7 +384,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
 
       if (direction === "top") {
         animate(baseRotateX, currentRotation + 90, {
-          ...transition,
+          ..._transition,
           onComplete: () => {
             handleAnimationComplete("next")
             setCurrentRotation(currentRotation + 90)
@@ -386,7 +392,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
         })
       } else if (direction === "bottom") {
         animate(baseRotateX, currentRotation - 90, {
-          ...transition,
+          ..._transition,
           onComplete: () => {
             handleAnimationComplete("next")
             setCurrentRotation(currentRotation - 90)
@@ -394,7 +400,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
         })
       } else if (direction === "left") {
         animate(baseRotateY, currentRotation - 90, {
-          ...transition,
+          ..._transition,
           onComplete: () => {
             handleAnimationComplete("next")
             setCurrentRotation(currentRotation - 90)
@@ -402,7 +408,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
         })
       } else if (direction === "right") {
         animate(baseRotateY, currentRotation + 90, {
-          ...transition,
+          ..._transition,
           onComplete: () => {
             handleAnimationComplete("next")
             setCurrentRotation(currentRotation + 90)
@@ -421,7 +427,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
 
       if (direction === "top") {
         animate(baseRotateX, currentRotation - 90, {
-          ...transition,
+          ..._transition,
           onComplete: () => {
             handleAnimationComplete("prev")
             setCurrentRotation(currentRotation - 90)
@@ -429,7 +435,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
         })
       } else if (direction === "bottom") {
         animate(baseRotateX, currentRotation + 90, {
-          ...transition,
+          ..._transition,
           onComplete: () => {
             handleAnimationComplete("prev")
             setCurrentRotation(currentRotation + 90)
@@ -437,7 +443,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
         })
       } else if (direction === "left") {
         animate(baseRotateY, currentRotation + 90, {
-          ...transition,
+          ..._transition,
           onComplete: () => {
             handleAnimationComplete("prev")
             setCurrentRotation(currentRotation + 90)
@@ -445,7 +451,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
         })
       } else if (direction === "right") {
         animate(baseRotateY, currentRotation - 90, {
-          ...transition,
+          ..._transition,
           onComplete: () => {
             handleAnimationComplete("prev")
             setCurrentRotation(currentRotation - 90)
@@ -454,49 +460,14 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
       }
     }, [items.length, direction, transition])
 
-    const goToIndex = useCallback(
-      (index: number) => {
-        if (index < 0 || index >= items.length || isRotating.current) return
-
-        isRotating.current = true
-        const difference = index - currentItemIndex
-        pendingIndexChange.current = index
-
-        const rotationAmount = difference * 90
-
-        // Animate the rotation
-        // if (direction === "horizontal") {
-        //   animate(baseRotateY, rotationAmount, {
-        //     ...transition,
-        //     onComplete: handleAnimationComplete,
-        //   })
-        // } else {
-        //   animate(baseRotateX, -rotationAmount, {
-        //     ...transition,
-        //     onComplete: handleAnimationComplete,
-        //   })
-        // }
-      },
-      [
-        currentItemIndex,
-        items.length,
-        direction,
-        transition,
-        handleAnimationComplete,
-        baseRotateY,
-        baseRotateX,
-      ]
-    )
-
     useImperativeHandle(
       ref,
       () => ({
         next,
         prev,
-        goToIndex,
         getCurrentItemIndex: () => currentItemIndex,
       }),
-      [next, prev, goToIndex, currentItemIndex]
+      [next, prev, currentItemIndex]
     )
 
     const depth = useMemo(
@@ -599,7 +570,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
             break
         }
       },
-      [direction, next, prev, goToIndex, items.length]
+      [direction, next, prev, items.length]
     )
 
     return (
