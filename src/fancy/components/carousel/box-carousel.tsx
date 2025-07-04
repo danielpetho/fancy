@@ -11,14 +11,10 @@ import React, {
   useRef,
   useState,
 } from "react"
-import { set } from "lodash"
 import {
   animate,
-  DynamicOption,
   motion,
-  Transition,
   useMotionValue,
-  useMotionValueEvent,
   useReducedMotion,
   useSpring,
   useTransform,
@@ -28,18 +24,51 @@ import {
 import { cn } from "@/lib/utils"
 
 interface CarouselItem {
+  /**
+   * Unique identifier for the carousel item
+   */
   id: string
+  /**
+   * The type of media: "image" or "video"
+   */
   type: "image" | "video"
+  /**
+   * Source URL for the image or video
+   */
   src: string
+  /**
+   * (Optional) Alternative text for images
+   */
   alt?: string
-  poster?: string // for videos
+  /**
+   * (Optional) Poster image for videos (displayed before playback)
+   */
+  poster?: string
 }
 
+/**
+ * Props for a single face of the cube in the BoxCarousel.
+ */
 interface FaceProps {
+  /**
+   * The CSS transform string to position and rotate the face in 3D space.
+   */
   transform: string
+  /**
+   * Optional additional CSS class names for the face.
+   */
   className?: string
+  /**
+   * Optional React children to render inside the face.
+   */
   children?: ReactNode
+  /**
+   * Optional inline styles for the face.
+   */
   style?: React.CSSProperties
+  /**
+   * If true, enables debug mode (e.g., shows backface and opacity).
+   */
   debug?: boolean
 }
 
@@ -110,8 +139,19 @@ const MediaRenderer = memo(
 MediaRenderer.displayName = "MediaRenderer"
 
 export interface BoxCarouselRef {
+  /**
+   * Advance to the next item in the carousel.
+   */
   next: () => void
+
+  /**
+   * Go back to the previous item in the carousel.
+   */
   prev: () => void
+
+  /**
+   * Get the index of the currently visible item.
+   */
   getCurrentItemIndex: () => number
 }
 
@@ -123,21 +163,93 @@ interface SpringConfig {
   mass?: number
 }
 
+/**
+ * Props for the BoxCarousel component
+ */
 interface BoxCarouselProps extends React.HTMLProps<HTMLDivElement> {
+  /**
+   * Array of items to display in the carousel
+   */
   items: CarouselItem[]
+
+  /**
+   * Width of the carousel in pixels
+   */
   width: number
+
+  /**
+   * Height of the carousel in pixels
+   */
   height: number
+
+  /**
+   * Additional CSS classes for the container
+   */
   className?: string
+
+  /**
+   * Enable debug mode (shows extra info/overlays)
+   */
   debug?: boolean
+
+  /**
+   * Perspective value for 3D effect (in px)
+   * @default 600
+   */
   perspective?: number
+
+  /**
+   * The axis and direction of rotation
+   * @default "vertical"
+   * "top" | "bottom" | "left" | "right"
+   */
   direction?: RotationDirection
+
+  /**
+   * Transition configuration for rotation animation
+   * @default { duration: 1.25, ease: [0.953, 0.001, 0.019, 0.995] }
+   */
   transition?: ValueAnimationOptions
+
+  /**
+   * Transition configuration for snapping after drag
+   * @default { type: "spring", damping: 30, stiffness: 200 }
+   */
   snapTransition?: ValueAnimationOptions
+
+  /**
+   * Spring physics config for drag interaction
+   * @default { stiffness: 200, damping: 30 }
+   */
   dragSpring?: SpringConfig
+
+  /**
+   * Enable auto-play mode
+   * @default false
+   */
   autoPlay?: boolean
+
+  /**
+   * Interval (ms) between auto-play transitions
+   * @default 3000
+   */
   autoPlayInterval?: number
+
+  /**
+   * Callback when the current item index changes
+   */
   onIndexChange?: (index: number) => void
+
+  /**
+   * Enable drag interaction
+   * @default true
+   */
   enableDrag?: boolean
+
+  /**
+   * Sensitivity of drag (higher = more rotation per pixel)
+   * @default 0.5
+   */
   dragSensitivity?: number
 }
 
@@ -150,7 +262,7 @@ const BoxCarousel = forwardRef<BoxCarouselRef, BoxCarouselProps>(
       className,
       perspective = 600,
       debug = false,
-      direction = "vertical",
+      direction = "left",
       transition = { duration: 1.25, ease: [0.953, 0.001, 0.019, 0.995] },
       snapTransition = { type: "spring", damping: 30, stiffness: 200 },
       dragSpring = { stiffness: 200, damping: 30 },
