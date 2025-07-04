@@ -30,7 +30,7 @@ component: true
 
 The Box Carousel creates a 3D rotating cube effect where each face displays a different item from your collection. You can navigate through items using mouse/touch drag, keyboard arrows, or control it via ref.
 
-You need to pass down at least an items array with at least 4 items to render a carousel. You need to also pass down the desired width and height of your items. 
+You need to pass an items array with at least 4 items, as well as the desired width and height of your items.
 
 <CodeSnippet title="High-level example">
 ```tsx
@@ -50,7 +50,7 @@ function MyCarousel() {
 
 ## Understanding the Component
 
-The component constructs a 3D box using four faces positioned with CSS transforms. The order of the faces depends on the rotation direction, which will be important when we update the item indices. In the following snippet you can follow through the order when the rotation direction is `left`. If you want to dive deeper how these transforms work, check out the <Link href="/docs/components/blocks/css-box">CSS Box documentation</Link>.
+The component constructs a 3D box using four faces positioned with CSS transforms. The order of the faces depends on the rotation direction, which will be important when we update the item indices. In the following snippet you can follow through the order when the rotation direction is `left`. If you want to dive deeper into how these transforms work, check out the <Link href="/docs/components/blocks/css-box">CSS Box documentation</Link>.
 
 <CodeSnippet title="Face positioning">
 ```tsx
@@ -82,7 +82,7 @@ const depth = useMemo(
 
 ### Rotation
 
-The component uses Motion's `useMotionValue` for control over rotations. Each rotation, we just add or subtract 90 degrees from the current rotation value.
+The component uses Motion's `useMotionValue` for control over rotations. For each rotation, we just add or subtract 90 degrees:
 
 <CodeSnippet title="Motion values">
 ```tsx
@@ -107,7 +107,7 @@ const baseRotateY = useMotionValue(0)  // For horizontal rotations
 ```
 </CodeSnippet>
 
-Then, we just transform these motion values to a CSS transform and use it on a the whole box container
+Then, we just transform these motion values to a CSS transform and use it on the whole box container.
 
 <CodeSnippet title="3D transform">
 ```tsx
@@ -131,7 +131,7 @@ const transform = useTransform(
 
 ### Item Management
 
-The component maintains four item indices to track which items are displayed on each face. The first face at `prevIndex` is by default the last item in our items array. The second face is the current, camera-facing item, which is the first item in our array. The third face is the next item in our array, and the fourth face (backward facing face) is the next item after the next item in our array.
+The component maintains four item indices to track which items are displayed on each face. The first face (at `prevIndex`) is, by default, the last item in our items array. The second face is the current camera-facing item, which is the first item in our array. The third face is the next item in our array, and the fourth face (backward-facing face) is the next item after the next item in our array.
 
 <CodeSnippet title="Item indices">
 ```ts
@@ -245,7 +245,7 @@ const handleDragMove = useCallback(
 ```
 </CodeSnippet>
 
-When the drag interaction released, the carousel will snap back to the nearest 90-degree increment:
+When the drag interaction is released, the carousel will snap back to the nearest 90-degree increment:
 
 <CodeSnippet title="Drag snap">
 ```ts
@@ -312,8 +312,8 @@ You can customize the snap transition by passing in a custom value for `snapTran
 
 You can also customize the drag sensitivity and spring physics by passing in custom values for `dragSensitivity` and `dragSpring` props. The default values are `0.5` and `{ stiffness: 200, damping: 30 }` respectively.
 
-An important note here is that the `dragRotation` is constrained to a +/- 120 degree range for the sake of simplicity. Otherwise we would need to re-order the whole items array to keep the correct ordering of items after a huge rotation.
-Feel free to open a PR if you'd like to fix this:).
+An important note here is that the drag rotation is constrained to a +/- 120 degree range for the sake of simplicity. Otherwise we would need to re-order the whole items array to keep the correct ordering of items after a huge rotation.
+Feel free to open a PR if you'd like to fix this :).
 
 ### Auto-play Mode
 
@@ -371,7 +371,7 @@ function MyComponent() {
 
 ### Reduced Motion Support
 
-The component automatically respects user preferences for reduced motion by setting transition duration to 0 when `prefers-reduced-motion` is detected. The drag interaction is intact though.
+The component automatically respects user preferences for reduced motion by setting transition duration to 0 when `prefers-reduced-motion` is detected. The drag interaction remains intact, though.
 
 ## Credits
 
@@ -527,7 +527,7 @@ You can find the links for each artwork used in the demo [here](https://www.cosm
       <TableCell>Go to the previous item</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>getCurrentIndex</TableCell>
+      <TableCell>getCurrentItemIndex</TableCell>
       <TableCell>`() => number`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>Get the current active item index</TableCell>
