@@ -72,6 +72,32 @@ const getToc = () => (node, file) => {
   file.data = { toc: items }
 }
 
+function preprocessContentForToc(content: string): string {
+  // Remove frontmatter section
+  let processed = content.replace(/^---[\s\S]*?---\n/, "")
+  
+  // Remove JSX components that break markdown parsing
+  // Remove CodeSnippet components and their content
+  processed = processed.replace(/<CodeSnippet[^>]*>[\s\S]*?<\/CodeSnippet>/g, "")
+  
+  // Remove Table components and their content  
+  processed = processed.replace(/<Table>[\s\S]*?<\/Table>/g, "")
+  
+  // Remove other JSX components but keep their content if they're inline
+  processed = processed.replace(/<ComponentPreview[^>]*\/>/g, "")
+  processed = processed.replace(/<ComponentSource[^>]*\/>/g, "")
+  processed = processed.replace(/<InstallTabs[^>]*\/>/g, "")
+  processed = processed.replace(/<Tabs[^>]*>[\s\S]*?<\/Tabs>/g, "")
+  
+  // Remove self-closing JSX tags
+  processed = processed.replace(/<[A-Z][^>]*\/>/g, "")
+  
+  // Remove opening/closing JSX tags but keep content
+  processed = processed.replace(/<\/?[A-Z][^>]*>/g, "")
+  
+  return processed
+}
+
 export type TableOfContents = Items
 
 export async function getTableOfContents(
@@ -80,20 +106,22 @@ export async function getTableOfContents(
   const markdownContent =
     typeof content === "string" ? content : content?.props?.children || ""
 
-  // Remove frontmatter section
-  const contentWithoutFrontmatter = markdownContent.replace(
-    /^---[\s\S]*?---\n/,
-    ""
-  )
+  // Preprocess content to remove JSX components that break markdown parsing
+  const cleanedContent = preprocessContentForToc(markdownContent)
 
-  const processedContent = await remark()
-    .use(() => (node, file) => {
-      const table = toc(node)
-      if (!table.map) return
-      const items = getItems(table.map, {})
-      file.data = { toc: items }
-    })
-    .process(contentWithoutFrontmatter)
+  try {
+    const processedContent = await remark()
+      .use(() => (node, file) => {
+        const table = toc(node)
+        if (!table.map) return
+        const items = getItems(table.map, {})
+        file.data = { toc: items }
+      })
+      .process(cleanedContent)
 
-  return processedContent.data.toc || {}
+    return processedContent.data.toc || {}
+  } catch (error) {
+    console.error("Error generating table of contents:", error)
+    return {}
+  }
 }

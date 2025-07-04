@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState  } from "react"
+import { useRef, useState, useEffect } from "react"
 import { Bug, BugOff } from "lucide-react"
 import BoxCarousel, { 
   type BoxCarouselRef, 
@@ -89,13 +89,15 @@ export default function BoxCarouselDemo() {
 
       <div className="space-y-24">
 
-        <div className="flex justify-center pt-20">
+        <div className="flex justify-center">
           <BoxCarousel
             ref={carouselRef}
             items={carouselItems}
             width={350}
             height={250}
-            direction="right"
+            direction="top"
+            autoPlay
+            autoPlayInterval={1500}
             onIndexChange={handleIndexChange}
             debug={debug}
             enableDrag
@@ -103,21 +105,6 @@ export default function BoxCarouselDemo() {
           />
         </div>
 
-
-        <div className="flex gap-2 justify-center">
-          <button 
-            onClick={handlePrev}
-            className="px-2 py-0.5 text-xs border border-black text-black rounded-full cursor-pointer transition-all duration-300 ease-out hover:bg-gray-100 active:scale-95"
-          >
-            Prev
-          </button>
-          <button 
-            onClick={handleNext}
-            className="px-2 py-0.5 text-xs border border-black text-black rounded-full cursor-pointer transition-all duration-300 ease-out hover:bg-gray-100 active:scale-95"
-          >
-            Next
-          </button>
-        </div>
       </div>
     </div>
   )

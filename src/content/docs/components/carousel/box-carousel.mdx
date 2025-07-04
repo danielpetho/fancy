@@ -4,7 +4,7 @@ description: A 3D carousel component that displays items in a rotating box/cube 
 component: true
 ---
 
-<ComponentPreview name="box-carousel-video-demo" />
+<ComponentPreview name="box-carousel-demo" />
 
 ## Installation
 
@@ -50,7 +50,7 @@ function MyCarousel() {
 
 ## Understanding the Component
 
-The component constructs a 3D box using four faces positioned with CSS transforms. The order of the faces depends on the rotation direction, which will be important when we update the item indices. In the following snippet you can follow through the order when the rotation direction is `left`. If you want to dive deeper how these transforms work, check out the [CSS Box documentation](/docs/components/blocks/css-box)
+The component constructs a 3D box using four faces positioned with CSS transforms. The order of the faces depends on the rotation direction, which will be important when we update the item indices. In the following snippet you can follow through the order when the rotation direction is `left`. If you want to dive deeper how these transforms work, check out the <Link href="/docs/components/blocks/css-box">CSS Box documentation</Link>.
 
 <CodeSnippet title="Face positioning">
 ```tsx
@@ -134,7 +134,7 @@ const transform = useTransform(
 The component maintains four item indices to track which items are displayed on each face. The first face at `prevIndex` is by default the last item in our items array. The second face is the current, camera-facing item, which is the first item in our array. The third face is the next item in our array, and the fourth face (backward facing face) is the next item after the next item in our array.
 
 <CodeSnippet title="Item indices">
-```tsx
+```ts
 const [prevIndex, setPrevIndex] = useState(items.length - 1)     // Face 0
 const [currentIndex, setCurrentIndex] = useState(0)             // Face 1 (visible)
 const [nextIndex, setNextIndex] = useState(1)                   // Face 2
@@ -142,12 +142,12 @@ const [afterNextIndex, setAfterNextIndex] = useState(2)         // Face 3
 ```
 </CodeSnippet>
 
-Now, if we would have only 4 items, we wouldn't need to do anything with these indices. When we have more though, we need to update them after each rotation to ensure that after a few rotations, we will always load the next item from our items array. 
+If our carousel only had 4 items, we could leave these indices as-is. However, with more than 4 items, we need to update the indices after each rotation so that the correct items are always displayed on each face—even after several rotations.
 
-To be more precise, we only update the backward facing face, because the other three should be always the same. The function which handles this seems a bit of a head-scratcher, but it's not that complicated. We first check that from the original face which is facing backwards, and update it to the correct index:
+In practice, only the index for the backward-facing face needs to be updated after a rotation; the other three faces remain consistent. The function that handles this may look a bit tricky at first, but the logic is straightforward: after each rotation, we determine which face is now at the back and update its index to point to the next appropriate item in the array.
 
 <CodeSnippet title="Update item indices">
-```tsx
+```ts
 const handleAnimationComplete = useCallback(
   (triggeredBy: string) => {
     if (isRotating.current && pendingIndexChange.current !== null) {
@@ -207,7 +207,7 @@ const handleAnimationComplete = useCallback(
 The component supports drag interaction. In the following function you can see that we're modifying the base rotation values based on the delta of the mouse/touch position:
 
 <CodeSnippet title="Drag handling">
-```tsx
+```ts
 const handleDragMove = useCallback(
   (e: MouseEvent | TouchEvent) => {
     if (!isDragging.current || isRotating.current) return
@@ -228,7 +228,7 @@ const handleDragMove = useCallback(
       newRotation -= rotationDelta
     }
 
-    // Constrain rotation to ±120 degrees from start position. Otherwise the index recalculation will be off. TBD - find a better solution
+    // Constrain rotation to +/-120 degrees from start position. Otherwise the index recalculation will be off. TBD - find a better solution
     const minRotation = startRotation.current - 120
     const maxRotation = startRotation.current + 120
     newRotation = Math.max(minRotation, Math.min(maxRotation, newRotation))
@@ -245,10 +245,10 @@ const handleDragMove = useCallback(
 ```
 </CodeSnippet>
 
-When the drag interaction ended, the carousel will snap back to the nearest 90-degree increment:
+When the drag interaction released, the carousel will snap back to the nearest 90-degree increment:
 
 <CodeSnippet title="Drag snap">
-```tsx
+```ts
 const handleDragEnd = useCallback(() => {
   if (!isDragging.current) return
 
@@ -308,26 +308,18 @@ const handleDragEnd = useCallback(() => {
 ```
 </CodeSnippet>
 
-- **Constraint boundaries**: Limits rotation to ±120 degrees to prevent index calculation issues
-- **Snap to position**: Automatically snaps to the nearest 90-degree increment when released
-- **Spring physics**: Uses configurable spring animations for smooth feel during and after drag
+You can customize the snap transition by passing in a custom value for `snapTransition` prop. The default value is `{ type: "spring", damping: 30, stiffness: 200 }`.
+
+You can also customize the drag sensitivity and spring physics by passing in custom values for `dragSensitivity` and `dragSpring` props. The default values are `0.5` and `{ stiffness: 200, damping: 30 }` respectively.
+
+An important note here is that the `dragRotation` is constrained to a +/- 120 degree range for the sake of simplicity. Otherwise we would need to re-order the whole items array to keep the correct ordering of items after a huge rotation.
+Feel free to open a PR if you'd like to fix this:).
 
 ### Auto-play Mode
 
-Enable automatic progression through items:
+You can enable automatic progression through items with the `autoPlay` prop:
 
-<CodeSnippet title="Auto-play">
-```tsx
-<BoxCarousel
-  items={items}
-  width={400}
-  height={300}
-  autoPlay={true}
-  autoPlayInterval={3000}
-  onIndexChange={(index) => console.log('Now showing:', index)}
-/>
-```
-</CodeSnippet>
+<ComponentPreview name="box-carousel-autoplay-demo" />
 
 ### Keyboard Navigation
 
@@ -337,33 +329,20 @@ The component includes full keyboard support when the carousel is in focus:
   - Left/Right arrows work for `left`/`right` directions
   - Up/Down arrows work for `top`/`bottom` directions
 
-### Media Support
+### Mixed Media Support
 
 Supports both images and videos with different handling:
 
-<CodeSnippet title="Media types">
-```tsx
-interface CarouselItem {
-  id: string
-  type: "image" | "video"
-  src: string
-  alt?: string
-  poster?: string  // For video thumbnails
-}
-```
-</CodeSnippet>
+<ComponentPreview name="box-carousel-video-demo" />
 
-Videos automatically play with `muted`, `loop`, and `autoPlay` attributes.
+Videos automatically play with `muted`, `loop`, and `autoPlay` attributes. If you need more custom controls here, modify the `MediaRenderer` component.
 
 ### Imperative API
 
-You can access carousel controls programmatically using a ref. This can be handy when you want to trigger a rotation via buttons. 
+You can access carousel controls programmatically using a ref. This can be handy when you want to trigger a rotation via buttons, just like in the first demo on the page:
 
 <CodeSnippet title="Ref usage">
 ```tsx
-import { useRef } from 'react'
-import BoxCarousel, { BoxCarouselRef } from '@/fancy/components/carousel/box-carousel'
-
 function MyComponent() {
   const carouselRef = useRef<BoxCarouselRef>(null)
 
@@ -392,9 +371,21 @@ function MyComponent() {
 
 ### Reduced Motion Support
 
-The component automatically respects user preferences for reduced motion by setting transition duration to 0 when `prefers-reduced-motion` is detected.
+The component automatically respects user preferences for reduced motion by setting transition duration to 0 when `prefers-reduced-motion` is detected. The drag interaction is intact though.
+
+## Credits
+
+You can find the links for each artwork used in the demo [here](https://www.cosmos.so/danielpetho/box-carousel-demo).
+
+## Resources
+
+- [Intro to CSS 3D transforms](https://3dtransforms.desandro.com/) by David DeSandro
+- <Link href="/docs/components/blocks/css-box">CSS Box</Link>
+- [Flickity](https://flickity.metafizzy.co/) by MetaFizzy
 
 ## Props
+
+### BoxCarousel Props
 
 <Table>
   <TableHeader>
@@ -439,7 +430,7 @@ The component automatically respects user preferences for reduced motion by sett
     <TableRow>
       <TableCell>direction</TableCell>
       <TableCell>`"top" | "bottom" | "left" | "right"`</TableCell>
-      <TableCell>`"vertical"`</TableCell>
+      <TableCell>`"left"`</TableCell>
       <TableCell>The axis and direction of rotation</TableCell>
     </TableRow>
     <TableRow>
@@ -505,12 +496,12 @@ The component automatically respects user preferences for reduced motion by sett
   </TableBody>
 </Table>
 
-## BoxCarousel Ref Methods
+### BoxCarousel Ref Methods
 
 <Table>
   <TableHeader>
     <TableRow>
-      <TableHead>Prop</TableHead>
+      <TableHead>Method</TableHead>
       <TableHead>Type</TableHead>
       <TableHead>Default</TableHead>
       <TableHead>Description</TableHead>
