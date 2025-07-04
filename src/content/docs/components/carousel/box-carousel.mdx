@@ -1,0 +1,536 @@
+---
+title: Box Carousel
+description: A 3D carousel component that displays items in a rotating box/cube layout with drag support and smooth animations.
+component: true
+---
+
+<ComponentPreview name="box-carousel-demo" />
+
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<InstallTabs command="shadcn@latest add &quot;https://fancycomponents.dev/r/box-carousel.json&quot;" npx />
+
+</TabsContent>
+<TabsContent value="manual">
+
+<ComponentSource name="box-carousel" />
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+The Box Carousel creates a 3D rotating cube effect where each face displays a different item from your collection. You can navigate through items using mouse/touch drag, keyboard arrows, or control it via ref.
+
+You need to pass an items array with at least 4 items, as well as the desired width and height of your items.
+
+<CodeSnippet title="High-level example">
+```tsx
+function MyCarousel() {
+  return (
+    <BoxCarousel
+      items={items}
+      width={400}
+      height={300}
+      direction="right"
+      enableDrag={true}
+    />
+  )
+}
+```
+</CodeSnippet>
+
+## Understanding the Component
+
+The component constructs a 3D box using four faces positioned with CSS transforms. The order of the faces depends on the rotation direction, which will be important when we update the item indices. In the following snippet you can follow through the order when the rotation direction is `left`. If you want to dive deeper into how these transforms work, check out the <Link href="/docs/components/blocks/css-box">CSS Box documentation</Link>.
+
+<CodeSnippet title="Face positioning">
+```tsx
+const faceTransforms = (() => {
+  switch (direction) {
+    case "left":
+      return [
+        `rotateY(-90deg) translateZ(${width / 2}px)`,  // left face
+        `rotateY(0deg) translateZ(${depth / 2}px)`,    // front face
+        `rotateY(90deg) translateZ(${width / 2}px)`,   // right face
+        `rotateY(180deg) translateZ(${depth / 2}px)`,  // back face
+      ]
+    // ... other directions
+  }
+})()
+```
+</CodeSnippet>
+
+The `depth` is calculated based on the rotation direction - for horizontal rotations (left/right), it uses the width, and for vertical rotations (top/bottom), it uses the height. This means all items are constrained to the same aspect ratio:
+
+<CodeSnippet title="Depth">
+```tsx
+const depth = useMemo(
+  () => (direction === "top" || direction === "bottom" ? height : width),
+  [direction, width, height]
+)
+```
+</CodeSnippet>
+
+### Rotation
+
+The component uses Motion's `useMotionValue` for control over rotations. For each rotation, we just add or subtract 90 degrees:
+
+<CodeSnippet title="Motion values">
+```tsx
+//...
+
+const baseRotateX = useMotionValue(0)  // For vertical rotations
+const baseRotateY = useMotionValue(0)  // For horizontal rotations
+
+//...
+
+// Rotate to next face when direction is left
+} else if (direction === "left") {
+  animate(baseRotateY, currentRotation - 90, {
+    ..._transition,
+    onComplete: () => {
+      handleAnimationComplete("next")
+      setCurrentRotation(currentRotation - 90)
+    },
+  })
+}
+//...
+```
+</CodeSnippet>
+
+Then, we just transform these motion values to a CSS transform and use it on the whole box container.
+
+<CodeSnippet title="3D transform">
+```tsx
+//...
+
+const transform = useTransform(
+  isDragging.current ? [springRotateX, springRotateY] : [baseRotateX, baseRotateY],
+  ([x, y]) => `translateZ(-${depth / 2}px) rotateX(${x}deg) rotateY(${y}deg)`
+)
+
+//...
+
+<motion.div
+  className="relative w-full h-full [transform-style:preserve-3d]"
+  style={{
+    transform: transform,
+  }}
+>
+```
+</CodeSnippet>
+
+### Item Management
+
+The component maintains four item indices to track which items are displayed on each face. The first face (at `prevIndex`) is, by default, the last item in our items array. The second face is the current camera-facing item, which is the first item in our array. The third face is the next item in our array, and the fourth face (backward-facing face) is the next item after the next item in our array.
+
+<CodeSnippet title="Item indices">
+```ts
+const [prevIndex, setPrevIndex] = useState(items.length - 1)     // Face 0
+const [currentIndex, setCurrentIndex] = useState(0)             // Face 1 (visible)
+const [nextIndex, setNextIndex] = useState(1)                   // Face 2
+const [afterNextIndex, setAfterNextIndex] = useState(2)         // Face 3
+```
+</CodeSnippet>
+
+If our carousel only had 4 items, we could leave these indices as-is. However, with more than 4 items, we need to update the indices after each rotation so that the correct items are always displayed on each face—even after several rotations.
+
+In practice, only the index for the backward-facing face needs to be updated after a rotation; the other three faces remain consistent. The function that handles this may look a bit tricky at first, but the logic is straightforward: after each rotation, we determine which face is now at the back and update its index to point to the next appropriate item in the array.
+
+<CodeSnippet title="Update item indices">
+```ts
+const handleAnimationComplete = useCallback(
+  (triggeredBy: string) => {
+    if (isRotating.current && pendingIndexChange.current !== null) {
+      isRotating.current = false
+
+      let newFrontFaceIndex: number
+      let currentBackFaceIndex: number
+
+      if (triggeredBy === "next") {
+        newFrontFaceIndex = (currentFrontFaceIndex + 1) % 4
+        currentBackFaceIndex = (newFrontFaceIndex + 2) % 4
+      } else {
+        newFrontFaceIndex = (currentFrontFaceIndex - 1 + 4) % 4
+        currentBackFaceIndex = (newFrontFaceIndex + 3) % 4
+      }
+
+      setCurrentItemIndex(pendingIndexChange.current)
+      onIndexChange?.(pendingIndexChange.current)
+
+      const indexOffset = triggeredBy === "next" ? 2 : -1
+
+      if (currentBackFaceIndex === 0) {
+        setPrevIndex(
+          (pendingIndexChange.current + indexOffset + items.length) %
+            items.length
+        )
+      } else if (currentBackFaceIndex === 1) {
+        setCurrentIndex(
+          (pendingIndexChange.current + indexOffset + items.length) %
+            items.length
+        )
+      } else if (currentBackFaceIndex === 2) {
+        setNextIndex(
+          (pendingIndexChange.current + indexOffset + items.length) %
+            items.length
+        )
+      } else if (currentBackFaceIndex === 3) {
+        setAfterNextIndex(
+          (pendingIndexChange.current + indexOffset + items.length) %
+            items.length
+        )
+      }
+
+      pendingIndexChange.current = null
+      rotationCount.current++
+
+      setCurrentFrontFaceIndex(newFrontFaceIndex)
+    }
+  },
+[currentFrontFaceIndex, items.length, onIndexChange]
+)
+```
+</CodeSnippet>
+
+### Drag Interaction
+
+The component supports drag interaction. In the following function you can see that we're modifying the base rotation values based on the delta of the mouse/touch position:
+
+<CodeSnippet title="Drag handling">
+```ts
+const handleDragMove = useCallback(
+  (e: MouseEvent | TouchEvent) => {
+    if (!isDragging.current || isRotating.current) return
+
+    const point = "touches" in e ? e.touches[0] : e
+    const deltaX = point.clientX - startPosition.current.x
+    const deltaY = point.clientY - startPosition.current.y
+
+    const isVertical = direction === "top" || direction === "bottom"
+    const delta = isVertical ? deltaY : deltaX
+    const rotationDelta = (delta * dragSensitivity) / 2
+
+    let newRotation = startRotation.current
+
+    if (direction === "top" || direction === "right") {
+      newRotation += rotationDelta
+    } else {
+      newRotation -= rotationDelta
+    }
+
+    // Constrain rotation to +/-120 degrees from start position. Otherwise the index recalculation will be off. TBD - find a better solution
+    const minRotation = startRotation.current - 120
+    const maxRotation = startRotation.current + 120
+    newRotation = Math.max(minRotation, Math.min(maxRotation, newRotation))
+
+    // Apply the rotation immediately during drag
+    if (isVertical) {
+      baseRotateX.set(newRotation)
+    } else {
+      baseRotateY.set(newRotation)
+    }
+  },
+  [enableDrag, direction, dragSensitivity]
+)
+```
+</CodeSnippet>
+
+When the drag interaction is released, the carousel will snap back to the nearest 90-degree increment:
+
+<CodeSnippet title="Drag snap">
+```ts
+const handleDragEnd = useCallback(() => {
+  if (!isDragging.current) return
+
+  isDragging.current = false
+
+  const isVertical = direction === "top" || direction === "bottom"
+  const currentValue = isVertical ? baseRotateX.get() : baseRotateY.get()
+
+  // Calculate the nearest quarter rotation (90-degree increment)
+  const quarterRotations = Math.round(currentValue / 90)
+  const snappedRotation = quarterRotations * 90
+
+  // Calculate how many steps we've moved from the original position
+  const rotationDifference = snappedRotation - currentRotation
+  const steps = Math.round(rotationDifference / 90)
+
+  if (steps !== 0) {
+    isRotating.current = true
+
+    // Calculate new item index
+    let newItemIndex = currentItemIndex
+    for (let i = 0; i < Math.abs(steps); i++) {
+      if (steps > 0) {
+        newItemIndex = (newItemIndex + 1) % items.length
+      } else {
+        newItemIndex =
+          newItemIndex === 0 ? items.length - 1 : newItemIndex - 1
+      }
+    }
+
+    pendingIndexChange.current = newItemIndex
+
+    // Animate to the snapped position
+    const targetMotionValue = isVertical ? baseRotateX : baseRotateY
+    animate(targetMotionValue, snappedRotation, {
+      ...snapTransition,
+      onComplete: () => {
+        handleAnimationComplete(steps > 0 ? "next" : "prev")
+        setCurrentRotation(snappedRotation)
+      },
+    })
+  } else {
+    // Snap back to current position
+    const targetMotionValue = isVertical ? baseRotateX : baseRotateY
+    animate(targetMotionValue, currentRotation, snapTransition)
+  }
+}, [
+  direction,
+  baseRotateX,
+  baseRotateY,
+  currentRotation,
+  currentItemIndex,
+  items.length,
+  transition,
+  handleAnimationComplete,
+])
+```
+</CodeSnippet>
+
+You can customize the snap transition by passing in a custom value for `snapTransition` prop. The default value is `{ type: "spring", damping: 30, stiffness: 200 }`.
+
+You can also customize the drag sensitivity and spring physics by passing in custom values for `dragSensitivity` and `dragSpring` props. The default values are `0.5` and `{ stiffness: 200, damping: 30 }` respectively.
+
+An important note here is that the drag rotation is constrained to a +/- 120 degree range for the sake of simplicity. Otherwise we would need to re-order the whole items array to keep the correct ordering of items after a huge rotation.
+Feel free to open a PR if you'd like to fix this :).
+
+### Auto-play Mode
+
+You can enable automatic progression through items with the `autoPlay` prop:
+
+<ComponentPreview name="box-carousel-autoplay-demo" />
+
+### Keyboard Navigation
+
+The component includes full keyboard support when the carousel is in focus:
+
+- **Arrow keys**: Navigate based on rotation direction
+  - Left/Right arrows work for `left`/`right` directions
+  - Up/Down arrows work for `top`/`bottom` directions
+
+### Mixed Media Support
+
+Supports both images and videos with different handling:
+
+<ComponentPreview name="box-carousel-video-demo" />
+
+Videos automatically play with `muted`, `loop`, and `autoPlay` attributes. If you need more custom controls here, modify the `MediaRenderer` component.
+
+### Imperative API
+
+You can access carousel controls programmatically using a ref. This can be handy when you want to trigger a rotation via buttons, just like in the first demo on the page:
+
+<CodeSnippet title="Ref usage">
+```tsx
+function MyComponent() {
+  const carouselRef = useRef<BoxCarouselRef>(null)
+
+  const handleNext = () => {
+    carouselRef.current?.next()
+  }
+
+  const handlePrev = () => {
+    carouselRef.current?.prev()
+  }
+
+  const getCurrentIndex = () => {
+    return carouselRef.current?.getCurrentItemIndex() ?? 0
+  }
+
+  return (
+    <>
+      <BoxCarousel ref={carouselRef} items={items} width={400} height={300} />
+      <button onClick={handleNext}>Next</button>
+      <button onClick={handlePrev}>Previous</button>
+    </>
+  )
+}
+```
+</CodeSnippet>
+
+### Reduced Motion Support
+
+The component automatically respects user preferences for reduced motion by setting transition duration to 0 when `prefers-reduced-motion` is detected. The drag interaction remains intact, though.
+
+## Credits
+
+You can find the links for each artwork used in the demo [here](https://www.cosmos.so/danielpetho/box-carousel-demo).
+
+## Resources
+
+- [Intro to CSS 3D transforms](https://3dtransforms.desandro.com/) by David DeSandro
+- <Link href="/docs/components/blocks/css-box">CSS Box</Link>
+- [Flickity](https://flickity.metafizzy.co/) by MetaFizzy
+
+## Props
+
+### BoxCarousel Props
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>
+        items<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`CarouselItem[]`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Array of items to display in the carousel</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>
+        width<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Width of the carousel in pixels</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>
+        height<span className="text-red-500">*</span>
+      </TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Height of the carousel in pixels</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Additional CSS classes for the container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>direction</TableCell>
+      <TableCell>`"top" | "bottom" | "left" | "right"`</TableCell>
+      <TableCell>`"left"`</TableCell>
+      <TableCell>The axis and direction of rotation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>perspective</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`600`</TableCell>
+      <TableCell>CSS perspective value for 3D effect depth</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>debug</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Enable debug mode to visualize cube faces</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>transition</TableCell>
+      <TableCell>`ValueAnimationOptions`</TableCell>
+      <TableCell>`{ duration: 1.25, ease: [0.953, 0.001, 0.019, 0.995] }`</TableCell>
+      <TableCell>Animation options for programmatic rotations</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>snapTransition</TableCell>
+      <TableCell>`ValueAnimationOptions`</TableCell>
+      <TableCell>`{ type: "spring", damping: 30, stiffness: 200 }`</TableCell>
+      <TableCell>Animation options for drag snap-back</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragSpring</TableCell>
+      <TableCell>`SpringConfig`</TableCell>
+      <TableCell>`{ stiffness: 200, damping: 30 }`</TableCell>
+      <TableCell>Spring physics configuration for drag interactions</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoPlay</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`false`</TableCell>
+      <TableCell>Enable automatic progression through items</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>autoPlayInterval</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`3000`</TableCell>
+      <TableCell>Interval in milliseconds for auto-play</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>enableDrag</TableCell>
+      <TableCell>`boolean`</TableCell>
+      <TableCell>`true`</TableCell>
+      <TableCell>Enable drag interaction for navigation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>dragSensitivity</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.5`</TableCell>
+      <TableCell>Sensitivity multiplier for drag movement</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>onIndexChange</TableCell>
+      <TableCell>`(index: number) => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Callback fired when the active item changes</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### BoxCarousel Ref Methods
+
+<Table>
+  <TableHeader>
+    <TableRow>
+      <TableHead>Method</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </TableRow>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>goTo</TableCell>
+      <TableCell>`(index: number) => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Programmatically go to a specific item index</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>next</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Advance to the next item</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>prev</TableCell>
+      <TableCell>`() => void`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Go to the previous item</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>getCurrentItemIndex</TableCell>
+      <TableCell>`() => number`</TableCell>
+      <TableCell>-</TableCell>
+      <TableCell>Get the current active item index</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

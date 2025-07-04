@@ -120,7 +120,6 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Text Highlighter",
         href: "/docs/components/text/text-highlighter",
         items: [],
-        label: "New"
       },
       {
         title: "Scramble In",
@@ -132,6 +131,18 @@ export const docsConfig: SidebarNavItem[] = [
         href: "/docs/components/text/text-along-path",
         items: [],
       }
+    ],
+  },
+  {
+    title: "Carousel",
+    href: "/docs/components/carousel",
+    items: [
+      {
+        title: "Box Carousel",
+        href: "/docs/components/carousel/box-carousel",
+        items: [],
+        label: "New"
+      },
     ],
   },
   {
