@@ -8,18 +8,18 @@ const PixelTrailDemo: React.FC = () => {
     <div className="relative w-full h-full bg-white text-black flex flex-col font-calendas">
       <div className="absolute inset-0 z-0">
         <PixelTrail
-          pixelSize={screenSize.lessThan(`md`) ? 28 : 40}
+          pixelSize={screenSize.lessThan(`md`) ? 14 : 20}
           fadeDuration={0}
-          delay={1200}
-          pixelClassName="rounded-full bg-[#ffa04f]"
+          delay={600}
+          pixelClassName="rounded-full bg-"
         />
       </div>
 
-      <div className="justify-center items-center flex flex-col w-full h-full z-10 pointer-events-none space-y-2 md:space-y-8">
-        <h2 className="text-3xl cursor-pointer sm:text-5xl md:text-7xl tracking-tight">
+      <div className="justify-center items-center flex flex-col w-full h-full z-10 pointer-events-none space-y-2 md:space-y-4">
+        <h2 className="text-xl cursor-pointer sm:text-3xl md:text-5xl tracking-tight">
           fancy ✽ components{" "}
         </h2>
-        <p className="text-xs md:text-2xl">
+        <p className="text-xs md:text-lg font-overused-grotesk">
           with react, motion, and typrscript.
         </p>
       </div>

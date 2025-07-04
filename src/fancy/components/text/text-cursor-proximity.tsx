@@ -1,6 +1,6 @@
 "use client"
 
-import React, { CSSProperties, forwardRef, useRef } from "react"
+import React, { CSSProperties, ElementType, forwardRef, useRef, useMemo } from "react"
 import {
   motion,
   useAnimationFrame,
@@ -9,6 +9,7 @@ import {
 } from "motion/react"
 
 import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
+import { cn } from "@/lib/utils"
 
 // Helper type that makes all properties of CSSProperties accept number | string
 type CSSPropertiesWithValues = {
@@ -21,35 +22,67 @@ interface StyleValue<T extends keyof CSSPropertiesWithValues> {
 }
 
 interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
-  label: string
+  /**
+   * The content to be displayed and animated
+   */
+  children: React.ReactNode
+
+  /**
+   * HTML Tag to render the component as
+   * @default span
+   */
+  as?: ElementType
+
+  /**
+   * Object containing style properties to animate
+   * Each property should have 'from' and 'to' values
+   */
   styles: Partial<{
     [K in keyof CSSPropertiesWithValues]: StyleValue<K>
   }>
+
+  /**
+   * Reference to the container element for mouse position calculations
+   */
   containerRef: React.RefObject<HTMLDivElement>
+
+  /**
+   * Radius of the proximity effect in pixels
+   * @default 50
+   */
   radius?: number
+
+  /**
+   * Type of falloff function to use for the proximity effect
+   * @default "linear"
+   */
   falloff?: "linear" | "exponential" | "gaussian"
 }
 
 const TextCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
   (
     {
-      label,
+      children,
+      as,
       styles,
       containerRef,
       radius = 50,
       falloff = "linear",
       className,
-      onClick,
       ...props
     },
     ref
   ) => {
+    const MotionComponent = useMemo(() => motion.create(as ?? "span"), [as])
     const letterRefs = useRef<(HTMLSpanElement | null)[]>([])
     const mousePositionRef = useMousePositionRef(containerRef)
 
+    // Convert children to string for letter processing
+    const text = React.Children.toArray(children).join("")
+
     // Create a motion value for each letter's proximity
     const letterProximities = useRef(
-      Array(label.replace(/\s/g, "").length)
+      Array(text.replace(/\s/g, "").length)
         .fill(0)
         .map(() => useMotionValue(0))
     )
@@ -100,20 +133,19 @@ const TextCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
       })
     })
 
-    const words = label.split(" ")
+    const words = text.split(" ")
     let letterIndex = 0
 
     return (
-      <span
+      <MotionComponent
         ref={ref}
-        className={`${className} inline`}
-        onClick={onClick}
+        className={cn("", className)}
         {...props}
       >
         {words.map((word, wordIndex) => (
           <span
             key={wordIndex}
-            className="inline-block whitespace-nowrap"
+            className="inline-block"
             aria-hidden={true}
           >
             {word.split("").map((letter) => {
@@ -152,8 +184,8 @@ const TextCursorProximity = forwardRef<HTMLSpanElement, TextProps>(
             )}
           </span>
         ))}
-        <span className="sr-only">{label}</span>
-      </span>
+        <span className="sr-only">{text}</span>
+      </MotionComponent>
     )
   }
 )

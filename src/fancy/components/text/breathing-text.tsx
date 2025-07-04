@@ -1,21 +1,59 @@
 "use client"
 
+import { ElementType } from "react"
 import { motion, Transition, Variants } from "motion/react"
 
-interface TextProps {
-  label: string
+import { cn } from "@/lib/utils"
+
+interface TextProps extends React.HTMLAttributes<HTMLElement> {
+  /**
+   * The content to be displayed and animated
+   */
+  children: React.ReactNode
+
+  /**
+   * HTML Tag to render the component as
+   */
+  as?: ElementType
+
+  /**
+   * Initial font variation settings
+   */
   fromFontVariationSettings: string
+
+  /**
+   * Target font variation settings to animate to
+   */
   toFontVariationSettings: string
+
+  /**
+   * Animation transition configuration
+   * @default { duration: 1.5, ease: "easeInOut" }
+   */
   transition?: Transition
+
+  /**
+   * Duration of stagger delay between elements in seconds
+   * @default 0.1
+   */
   staggerDuration?: number
+
+  /**
+   * Direction to stagger animations from
+   * @default "first"
+   */
   staggerFrom?: "first" | "last" | "center" | number
+
+  /**
+   * Delay between animation repeats in seconds
+   * @default 0.1
+   */
   repeatDelay?: number
-  className?: string
-  onClick?: () => void
 }
 
 const BreathingText = ({
-  label,
+  children,
+  as = "span",
   fromFontVariationSettings,
   toFontVariationSettings,
   transition = {
@@ -26,7 +64,6 @@ const BreathingText = ({
   staggerFrom = "first",
   repeatDelay = 0.1,
   className,
-  onClick,
   ...props
 }: TextProps) => {
   const letterVariants: Variants = {
@@ -58,10 +95,19 @@ const BreathingText = ({
     }
   }
 
-  const letters = label.split("")
+  const letters = String(children).split("")
+  const ElementTag = as
 
   return (
-    <span className={`${className}`} onClick={onClick} {...props}>
+    <ElementTag
+      className={cn(
+        className,
+        // an after pseudo element is used to create a container large enough to hold the text with full weight. Helps avoid layout shifts
+        "relative after:absolute after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0"
+      )}
+      {...props}
+      data-text={children}
+    >
       {letters.map((letter: string, i: number) => (
         <motion.span
           key={i}
@@ -75,8 +121,8 @@ const BreathingText = ({
           {letter}
         </motion.span>
       ))}
-      <span className="sr-only">{label}</span>
-    </span>
+      <span className="sr-only">{children}</span>
+    </ElementTag>
   )
 }
 

@@ -1,36 +1,113 @@
 "use client"
 
-import { forwardRef, useImperativeHandle, useRef, useState } from "react"
+import { ElementType, forwardRef, useImperativeHandle, useRef, useState } from "react"
 import { motion, useInView, UseInViewOptions, Variants } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
-type MediaBetweenTextProps = {
+interface MediaBetweenTextProps {
+  /**
+   * The text to display before the media
+   */
   firstText: string
+
+  /**
+   * The text to display after the media
+   */
   secondText: string
-  // Media props
+
+  /**
+   * URL of the media (image or video) to display
+   */
   mediaUrl: string
+
+  /**
+   * Type of media to display
+   */
   mediaType: "image" | "video"
+
+  /**
+   * Optional class name for the media container
+   */
   mediaContainerClassName?: string
+
+  /**
+   * Fallback URL for video poster or image loading
+   */
   fallbackUrl?: string
-  // Video props
+
+  /**
+   * HTML Tag to render the text elements as
+   * @default p
+   */
+  as?: ElementType
+
+  /**
+   * Whether video should autoplay
+   * @default true
+   */
   autoPlay?: boolean
+
+  /**
+   * Whether video should loop
+   * @default true
+   */
   loop?: boolean
+
+  /**
+   * Whether video should be muted
+   * @default true
+   */
   muted?: boolean
+
+  /**
+   * Whether video should play inline
+   * @default true
+   */
   playsInline?: boolean
-  // Image props
+
+  /**
+   * Alt text for image
+   */
   alt?: string
-  // Animation props
+
+  /**
+   * Type of animation trigger
+   * @default "hover"
+   */
   triggerType?: "hover" | "ref" | "inView"
+
+  /**
+   * Reference to container element for inView trigger
+   */
   containerRef?: React.RefObject<HTMLDivElement>
+
+  /**
+   * Options for useInView hook
+   */
   useInViewOptionsProp?: UseInViewOptions
+
+  /**
+   * Custom animation variants
+   */
   animationVariants?: {
     initial: Variants["initial"]
     animate: Variants["animate"]
   }
+
+  /**
+   * Optional class name for the root element
+   */
   className?: string
-  // Text styling
+
+  /**
+   * Optional class name for the left text element
+   */
   leftTextClassName?: string
+
+  /**
+   * Optional class name for the right text element
+   */
   rightTextClassName?: string
 }
 
@@ -51,6 +128,7 @@ export const MediaBetweenText = forwardRef<
       mediaType,
       mediaContainerClassName,
       fallbackUrl,
+      as = "p",
       autoPlay = true,
       loop = true,
       muted = true,
@@ -100,6 +178,8 @@ export const MediaBetweenText = forwardRef<
             ? isAnimating
             : false
 
+    const TextComponent = motion.create(as)
+
     return (
       <div
         className={cn("flex", className)}
@@ -107,9 +187,9 @@ export const MediaBetweenText = forwardRef<
         onMouseEnter={() => triggerType === "hover" && setIsHovered(true)}
         onMouseLeave={() => triggerType === "hover" && setIsHovered(false)}
       >
-        <motion.p layout className={leftTextClassName}>
+        <TextComponent layout className={leftTextClassName}>
           {firstText}
-        </motion.p>
+        </TextComponent>
         <motion.div
           className={mediaContainerClassName}
           variants={animationVariants}
@@ -135,9 +215,9 @@ export const MediaBetweenText = forwardRef<
             />
           )}
         </motion.div>
-        <motion.p layout className={rightTextClassName}>
+        <TextComponent layout className={rightTextClassName}>
           {secondText}
-        </motion.p>
+        </TextComponent>
       </div>
     )
   }

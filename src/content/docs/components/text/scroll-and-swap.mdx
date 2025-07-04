@@ -49,14 +49,20 @@ The trick here is similar to the [Letter Swap Hover](/docs/components/text/lette
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>label<span className="text-red-500">*</span></TableCell>
-      <TableCell>`string`</TableCell>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The text to be displayed and animated</TableCell>
+      <TableCell>The content to be displayed and animated</TableCell>
     </TableRow>
-     <TableRow>
-      <TableCell>containerRef <span className="text-red-500">*</span></TableCell>
-      <TableCell>`React.RefObject<HTMLSpanElement>`</TableCell>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`"span"`</TableCell>
+      <TableCell>HTML Tag to render the component as</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>containerRef<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.RefObject<HTMLElement>`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>Reference to the container element for scroll tracking</TableCell>
     </TableRow>
@@ -64,13 +70,19 @@ The trick here is similar to the [Letter Swap Hover](/docs/components/text/lette
       <TableCell>offset</TableCell>
       <TableCell>`[string, string]`</TableCell>
       <TableCell>`["0 0", "0 1"]`</TableCell>
-      <TableCell>The scroll offset range for the animation</TableCell>
+      <TableCell>Offset configuration for when the animation should start and end relative to the scroll container</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>className</TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Additional CSS classes for styling</TableCell>
+      <TableCell>Additional CSS classes for styling the component</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>springConfig</TableCell>
+      <TableCell>`{ stiffness?: number, damping?: number, mass?: number }`</TableCell>
+      <TableCell>`{ stiffness: 200, damping: 30 }`</TableCell>
+      <TableCell>Spring animation configuration for smoothing the scroll-based animation</TableCell>
     </TableRow>
   </TableBody>
 </Table>

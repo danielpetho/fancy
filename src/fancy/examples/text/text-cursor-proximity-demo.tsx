@@ -4,7 +4,20 @@ import { useRef } from "react"
 
 import TextCursorProximity from "@/fancy/components/text/text-cursor-proximity"
 
-const ASCII = ["✎", "✐", "✏", "✑"]
+const styles = {
+  title: {
+    filter: {
+      from: "blur(0px)",
+      to: "blur(8px)",
+    }
+  },
+  details: {
+    filter: {
+      from: "blur(0px)", 
+      to: "blur(4px)",
+    }
+  }
+}
 
 export default function Preview() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -14,60 +27,81 @@ export default function Preview() {
       className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-12 md:p-16 lg:p-24 shadow-lg bg-white"
       ref={containerRef}
     >
-      <div className="relative h-full w-full cursor-pointer overflow-hidden  justify-start items-start shadow-lg flex bg-primary-blue text-white">
-        <div className="flex flex-col justify-center uppercase leading-none pt-4 pl-6">
+      <div className="relative min-w-[280px] max-w-[400px] sm:min-w-[350px] h-2/3 sm:h-full overflow-hidden w-full sm:w-4/5 md:w-4/5 lg:w-2/3 justify-between flex-col flex items-start shadow-lg p-4 bg-primary-blue text-white select-none">
+        <div className="flex flex-col justify-center uppercase -space-y-2">
           <TextCursorProximity
-            label="DIGITAL"
-            className=" text-3xl will-change-transform sm:text-6xl md:text-6xl lg:text-7xl font-overused-grotesk"
-            styles={{
-              transform: {
-                from: "scale(1)",
-                to: "scale(1.4)",
-              },
-              color: { from: "#ffffff", to: "#ff87c1" },
-            }}
+            className="text-xl will-change-transform sm:text-2xl md:text-3xl lg:text-5xl font-overused-grotesk font-bold"
+            styles={styles.title}
             falloff="gaussian"
             radius={100}
             containerRef={containerRef}
-          />
+          >
+            DIGITAL
+          </TextCursorProximity>
           <TextCursorProximity
-            label="WORKSHOP"
-            className="leading-none text-3xl will-change-transform sm:text-6xl md:text-6xl lg:text-7xl font-overused-grotesk"
-            styles={{
-              transform: {
-                from: "scale(1)",
-                to: "scale(1.4)",
-              },
-              color: { from: "#ffffff", to: "#ff87c1" },
-            }}
+            className="text-xl will-change-transform sm:text-2xl md:text-3xl lg:text-5xl font-overused-grotesk font-bold"
+            styles={styles.title}
             falloff="gaussian"
             radius={100}
             containerRef={containerRef}
-          />
+          >
+            WORKSHOP
+          </TextCursorProximity>
         </div>
 
-        <div className="absolute bottom-2 flex w-full justify-between px-6">
-          {ASCII.map((hand, i) => (
-            <span key={i} className="text-2xl opacity-80">
-              {hand}
-            </span>
-          ))}
-        </div>
+        <div className=" flex w-full justify-between font-medium">
+          <div className="flex flex-col w-full leading-tight text-xs sm:text-sm md:text-sm lg:text-base ">
+            <TextCursorProximity
+              className="text-left"
+              styles={styles.details}
+              falloff="exponential"
+              radius={70}
+              containerRef={containerRef}
+            >
+              LONDON, UK ⟡ 18:30 GMT
+            </TextCursorProximity>
 
-        <TextCursorProximity
-          className="absolute top-6 right-6 hidden sm:block text-xs "
-          label="15/01/2025"
-          styles={{
-            transform: {
-              from: "scale(1)",
-              to: "scale(1.4)",
-            },
-            color: { from: "#ffffff", to: "#ff87c1" },
-          }}
-          falloff="linear"
-          radius={10}
-          containerRef={containerRef}
-        />
+            <TextCursorProximity
+              className=" text-right"
+              styles={styles.details}
+              falloff="exponential"
+              radius={70}
+              containerRef={containerRef}
+            >
+              123 DIGITAL STREET, EC1A 1BB ⟶
+            </TextCursorProximity>
+
+            <TextCursorProximity
+              className="text-left"
+              styles={styles.details}
+              falloff="exponential"
+              radius={70}
+              containerRef={containerRef}
+            >
+              +44 20 7123 4567 ⟨⟩ INFO@DIGITAL.WORK
+            </TextCursorProximity>
+
+            <TextCursorProximity
+              className="text-left"
+              styles={styles.details}
+              falloff="exponential"
+              radius={70}
+              containerRef={containerRef}
+            >
+              @DIGITALWORKSHOP * DIGITAL.WORK®
+            </TextCursorProximity>
+
+            <TextCursorProximity
+              className="text-right"
+              styles={styles.details}
+              falloff="exponential"
+              radius={70}
+              containerRef={containerRef}
+            >
+              RSVP REQUIRED ⌲ LIMITED SEATS
+            </TextCursorProximity>
+          </div>
+        </div>
       </div>
     </div>
   )

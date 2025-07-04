@@ -151,7 +151,7 @@ export const docsConfig: SidebarNavItem[] = [
     items: [
       {
         title: "Animated Gradient With SVG",
-        href: "/docs/components/background/animated-gradient-with-svg",
+        href: "/docs/components/background/animated-gradient-svg",
         items: [],
       },
       {

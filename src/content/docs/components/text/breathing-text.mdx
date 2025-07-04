@@ -47,10 +47,16 @@ Since the animation is continous, keep the performance in check when using this 
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>label<span className="text-red-500">*</span></TableCell>
-      <TableCell>`string`</TableCell>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The text to be displayed and animated</TableCell>
+      <TableCell>The content to be displayed and animated</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`"span"`</TableCell>
+      <TableCell>HTML Tag to render the component as</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>fromFontVariationSettings<span className="text-red-500">*</span></TableCell>
@@ -62,37 +68,37 @@ Since the animation is continous, keep the performance in check when using this 
       <TableCell>toFontVariationSettings<span className="text-red-500">*</span></TableCell>
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Target font variation settings on hover</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell>className</TableCell>
-      <TableCell>`string`</TableCell>
-      <TableCell>-</TableCell>
-      <TableCell>Additional CSS classes for styling</TableCell>
+      <TableCell>Target font variation settings to animate to</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>transition</TableCell>
-      <TableCell>`AnimationOptions`</TableCell>
-      <TableCell>`{ type: "spring", duration: 0.7 }`</TableCell>
-      <TableCell>Transition settings for the animation. Refer to motion docs for more details</TableCell>
+      <TableCell>`Transition`</TableCell>
+      <TableCell>`{ duration: 1.5, ease: "easeInOut" }`</TableCell>
+      <TableCell>Animation transition configuration</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>staggerDuration</TableCell>
       <TableCell>`number`</TableCell>
-      <TableCell>`0.03`</TableCell>
-      <TableCell>Delay between each letter's animation start</TableCell>
+      <TableCell>`0.1`</TableCell>
+      <TableCell>Duration of stagger delay between elements in seconds</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>staggerFrom</TableCell>
       <TableCell>`"first" | "last" | "center" | number`</TableCell>
       <TableCell>`"first"`</TableCell>
-      <TableCell>Starting point of the stagger effect. Number is the index of the letter where the stagger animation starts</TableCell>
+      <TableCell>Direction to stagger animations from</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>onClick</TableCell>
-      <TableCell>`() => void`</TableCell>
+      <TableCell>repeatDelay</TableCell>
+      <TableCell>`number`</TableCell>
+      <TableCell>`0.1`</TableCell>
+      <TableCell>Delay between animation repeats in seconds</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>className</TableCell>
+      <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>Callback function for click events</TableCell>
+      <TableCell>Class name for styling</TableCell>
     </TableRow>
   </TableBody>
 </Table>
