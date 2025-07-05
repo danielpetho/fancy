@@ -6,6 +6,7 @@ import BoxCarousel, {
   type BoxCarouselRef, 
   type CarouselItem, 
 } from "@/fancy/components/carousel/box-carousel"
+import useScreenSize from "@/hooks/use-screen-size"
 
 // Sample carousel items with mix of images and videos
 const carouselItems: CarouselItem[] = [
@@ -57,13 +58,17 @@ export default function BoxCarouselDemo() {
   const carouselRef = useRef<BoxCarouselRef>(null)
   const [debug, setDebug] = useState(false)
 
-  const handleNext = () => {
-    carouselRef.current?.next()
+  const screenSize = useScreenSize()
+
+  // Responsive dimensions based on screen size
+  const getCarouselDimensions = () => {
+    if (screenSize.lessThan("md")) {
+      return { width: 200, height: 150 }
+    }
+    return { width: 350, height: 250 }
   }
 
-  const handlePrev = () => {
-    carouselRef.current?.prev()
-  }
+  const { width, height } = getCarouselDimensions()
 
   const handleIndexChange = (index: number) => {
     console.log('Index changed:', index)
@@ -93,8 +98,8 @@ export default function BoxCarouselDemo() {
           <BoxCarousel
             ref={carouselRef}
             items={carouselItems}
-            width={350}
-            height={250}
+            width={width}
+            height={height}
             direction="top"
             autoPlay
             autoPlayInterval={1500}
