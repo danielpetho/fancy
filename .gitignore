@@ -42,6 +42,8 @@ next-env.d.ts
 src/fancy/index.ts
 /public/r
 /public/index.json
+/public/docs/
 
 # Million Lint
 .million
+
