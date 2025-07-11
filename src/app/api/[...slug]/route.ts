@@ -4,9 +4,14 @@ import path from "node:path"
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string[] } }
+  { params }: { params: { slug: string[] } | undefined }
 ) {
   try {
+    // Check if params and slug exist
+    if (!params?.slug) {
+      return new NextResponse("Not Found", { status: 404 })
+    }
+    
     // Check if the request is for a markdown file
     const lastSegment = params.slug[params.slug.length - 1]
     if (!lastSegment.endsWith(".md")) {
@@ -37,7 +42,7 @@ export async function GET(
       status: 200,
       headers: {
         "Content-Type": "text/markdown; charset=utf-8",
-        "Cache-Control": "public, max-age=31536000, immutable", // Cache for 1 year since it's static
+        "Cache-Control": "public, max-age=31536000, immutable",
         "Content-Disposition": `inline; filename="${actualSlug.join("-")}.md"`
       }
     })
