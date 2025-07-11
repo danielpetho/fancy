@@ -13,6 +13,94 @@ interface ConversionOptions {
   includeInstallInstructions?: boolean
 }
 
+interface TocItem {
+  text: string
+  anchor: string
+  level: number
+  children: TocItem[]
+}
+
+function generateTableOfContents(content: string): string {
+  // Extract headings from the markdown content
+  const headingRegex = /^(#{2,6})\s+(.+)$/gm
+  const headings: { level: number; text: string; anchor: string }[] = []
+  let match
+
+  while ((match = headingRegex.exec(content)) !== null) {
+    const level = match[1].length
+    const text = match[2].trim()
+    const anchor = generateAnchor(text)
+    
+    headings.push({ level, text, anchor })
+  }
+
+  if (headings.length === 0) {
+    return ""
+  }
+
+  // Build nested TOC structure
+  const tocItems = buildTocStructure(headings)
+  
+  // Generate TOC markdown
+  let toc = "## Table of Contents\n\n"
+  toc += generateTocMarkdown(tocItems)
+  toc += "\n"
+  
+  return toc
+}
+
+function generateAnchor(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '') // Remove special characters except spaces and hyphens
+    .replace(/\s+/g, '-') // Replace spaces with hyphens
+    .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+    .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+}
+
+function buildTocStructure(headings: { level: number; text: string; anchor: string }[]): TocItem[] {
+  const root: TocItem[] = []
+  const stack: TocItem[] = []
+
+  for (const heading of headings) {
+    const item: TocItem = {
+      text: heading.text,
+      anchor: heading.anchor,
+      level: heading.level,
+      children: []
+    }
+
+    // Find the appropriate parent
+    while (stack.length > 0 && stack[stack.length - 1].level >= heading.level) {
+      stack.pop()
+    }
+
+    if (stack.length === 0) {
+      root.push(item)
+    } else {
+      stack[stack.length - 1].children.push(item)
+    }
+
+    stack.push(item)
+  }
+
+  return root
+}
+
+function generateTocMarkdown(items: TocItem[], depth: number = 0): string {
+  let markdown = ""
+  const indent = "  ".repeat(depth)
+
+  for (const item of items) {
+    markdown += `${indent}- [${item.text}](#${item.anchor})\n`
+    if (item.children.length > 0) {
+      markdown += generateTocMarkdown(item.children, depth + 1)
+    }
+  }
+
+  return markdown
+}
+
 async function convertMdxToMarkdown(
   slug: string[], 
   options: ConversionOptions = {}
@@ -93,7 +181,11 @@ async function convertMdxToMarkdown(
     // Clean up any remaining JSX-style components
     convertedContent = cleanupRemainingComponents(convertedContent)
     
-    markdown += convertedContent
+    // Generate table of contents
+    const toc = generateTableOfContents(convertedContent)
+    
+    // Combine everything
+    markdown += toc + convertedContent
     
     // Add footer
     markdown += `\n\n---\n\n*This documentation is also available in [interactive format](https://fancycomponents.dev/docs/components/${slug.join("/")}).*\n`
