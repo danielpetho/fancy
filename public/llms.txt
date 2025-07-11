@@ -10,7 +10,7 @@ Fancy Components aims to inject playfulness into web UI by providing copy-and-pa
 - [Installation](https://fancycomponents.dev/docs/installation.md)
 - [Introduction](https://fancycomponents.dev/docs/introduction.md)
 
-## Components Components
+## Components
 
 - [3D CSS Box](https://fancycomponents.dev/docs/components/blocks/css-box.md): A simple 3D box component with CSS-only 3D transforms.
 - [Animated Gradient With SVG](https://fancycomponents.dev/docs/components/background/animated-gradient-svg.md): An animated multi-color gradient background effect with SVG elements.

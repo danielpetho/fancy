@@ -119,7 +119,7 @@ function generateLlmsTxt(categories: Record<string, DocFile[]>): string {
     // Format category name
     const categoryName = categoryKey.split('-')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ') + ' Components'
+      .join(' ')
     
     llmsTxt += `## ${categoryName}\n\n`
     
