@@ -1,0 +1,65 @@
+# Fancy Components
+
+> A collection of fun and weird, ready-to-use components and microinteractions built with React, TypeScript, Tailwind CSS, and Motion (formerly Framer Motion).
+
+Fancy Components aims to inject playfulness into web UI by providing copy-and-paste-able components inspired by award-winning sites. All components are open source and free to use for personal or commercial projects.
+
+## Getting Started
+
+- [Changelog](https://fancycomponents.dev/docs/changelog.md)
+- [Installation](https://fancycomponents.dev/docs/installation.md)
+- [Introduction](https://fancycomponents.dev/docs/introduction.md)
+
+## Components Components
+
+- [3D CSS Box](https://fancycomponents.dev/docs/components/blocks/css-box.md): A simple 3D box component with CSS-only 3D transforms.
+- [Animated Gradient With SVG](https://fancycomponents.dev/docs/components/background/animated-gradient-svg.md): An animated multi-color gradient background effect with SVG elements.
+- [Basic Number Ticker](https://fancycomponents.dev/docs/components/text/basic-number-ticker.md): A component that animates a number from one value to another.
+- [Box Carousel](https://fancycomponents.dev/docs/components/carousel/box-carousel.md): A 3D carousel component that displays items in a rotating box/cube layout with drag support and smooth animations.
+- [Breathing Text](https://fancycomponents.dev/docs/components/text/breathing-text.md): A text component that animates the font variation settings of letters in a breathing effect continuously. Works only with variable fonts.
+- [Circling Elements](https://fancycomponents.dev/docs/components/blocks/circling-elements.md): A component that creates a circling effect on its children.
+- [Cursor Attractor & Gravity](https://fancycomponents.dev/docs/components/physics/cursor-attractor-and-gravity.md): A set of wrapper components for creating physics-based attractors and gravity animations with Matter.js.
+- [Drag Elements](https://fancycomponents.dev/docs/components/blocks/drag-elements.md): Drag any html element — image, div, video — around freely in a container.
+- [Elastic Line](https://fancycomponents.dev/docs/components/physics/elastic-line.md): A wobbly svg line with a spring cursor interaction.
+- [Float](https://fancycomponents.dev/docs/components/blocks/float.md): A component that creates a gentle floating effect on its child.
+- [Gooey SVG Filter](https://fancycomponents.dev/docs/components/filter/gooey-svg-filter.md): An svg filter component that creates a gooey effect on the background. Can be used to create fluid interfaces or rounded-at-all-corners panels. Limited support for Safari.
+- [Gravity](https://fancycomponents.dev/docs/components/physics/gravity.md): A set of wrapper components for creating physics-based gravity animations with Matter.js.
+- [Image Trail](https://fancycomponents.dev/docs/components/image/image-trail.md): A component that creates a trail effect on cursor/touch movement. Works also with videos, svgs, or any type of html elements.
+- [Letter 3D Swap](https://fancycomponents.dev/docs/components/text/letter-3d-swap.md): A text component that swap the letters in a text with a box 3D effect.
+- [Letter Swap](https://fancycomponents.dev/docs/components/text/letter-swap.md): A text component that swaps the letters vertically on hover.
+- [Marquee Along SVG Path](https://fancycomponents.dev/docs/components/blocks/marquee-along-svg-path.md): A component that scrolls html elements along an SVG path.
+- [Media Between Text](https://fancycomponents.dev/docs/components/blocks/media-between-text.md): A component that animates a media (image or video) between two text elements.
+- [Parallax Floating](https://fancycomponents.dev/docs/components/image/parallax-floating.md): A component that creates a parallax floating effect on cursor/touch movement. Works also with videos, svgs, or any type of html elements.
+- [Pixel Trail](https://fancycomponents.dev/docs/components/background/pixel-trail.md): A pixelated trail effect that recolors grid pixels as you move your cursor.
+- [Pixelate SVG Filter](https://fancycomponents.dev/docs/components/filter/pixelate-svg-filter.md): A filter component that applies a pixelation effect with an SVG filter. Safari is not supported.
+- [Random Letter Swap](https://fancycomponents.dev/docs/components/text/random-letter-swap.md): A text component that randomly swaps the letters vertically on hover.
+- [Scramble Hover](https://fancycomponents.dev/docs/components/text/scramble-hover.md): A text component that scrambles the text on hover.
+- [Scramble In](https://fancycomponents.dev/docs/components/text/scramble-in.md): A text component that reveals the text with a scrambled part in front.
+- [Screensaver](https://fancycomponents.dev/docs/components/blocks/screensaver.md): A component that animates its child with the infamous screensaver effect.
+- [Scroll and Swap Text](https://fancycomponents.dev/docs/components/text/scroll-and-swap.md): A text component that swaps the letters vertically on scroll.
+- [Simple Marquee](https://fancycomponents.dev/docs/components/blocks/simple-marquee.md): A simple marquee component for scrolling HTML elements.
+- [Stacking Cards](https://fancycomponents.dev/docs/components/blocks/stacking-cards.md): A component used in websites to display layered cards that stack on top of one another, often with interactive animations.
+- [Sticky Footer](https://fancycomponents.dev/docs/components/blocks/sticky-footer.md): A demo showcasing a footer that sticks to the bottom of the page.
+- [Text Along Path](https://fancycomponents.dev/docs/components/text/text-along-path.md): A text component that animates along an SVG path.
+- [Text Cursor Proximity](https://fancycomponents.dev/docs/components/text/text-cursor-proximity.md): A text component that animates the letters based on the cursor proximity
+- [Text Highlighter](https://fancycomponents.dev/docs/components/text/text-highlighter.md): An animated text highlighting component with multiple trigger modes and directional animations.
+- [Text Rotate](https://fancycomponents.dev/docs/components/text/text-rotate.md): A text component that switches the rendered text from a list.
+- [Typewriter](https://fancycomponents.dev/docs/components/text/typewriter.md): A component that types out a text, one letter at a time.
+- [Underline Animation](https://fancycomponents.dev/docs/components/text/underline-animation.md): A component that animates a text underline.
+- [Underline To Background](https://fancycomponents.dev/docs/components/text/underline-to-background.md): A text component that animates a text underline into a text background.
+- [Variable Font And Cursor](https://fancycomponents.dev/docs/components/text/variable-font-and-cursor.md): A text component that animates the font variation settings based on the cursor position. Works only with variable fonts.
+- [Variable Font Cursor Proximity](https://fancycomponents.dev/docs/components/text/variable-font-cursor-proximity.md): A text component that animates the font variation settings of letters based on the cursor proximity. Works only with variable fonts.
+- [Variable Font Hover By Letter](https://fancycomponents.dev/docs/components/text/variable-font-hover-by-letter.md): A text component that animates the font variation settings of letters. Works only with variable fonts.
+- [Variable Font Hover By Random Letter](https://fancycomponents.dev/docs/components/text/variable-font-hover-by-random-letter.md): A text component that animates the font variation settings of letters in a random order. Works only with variable fonts.
+- [Vertical Cut Reveal](https://fancycomponents.dev/docs/components/text/vertical-cut-reveal.md): A text component that reveals the text with a cut reveal effect.
+
+## Additional Resources
+
+- [GitHub Repository](https://github.com/danielpetho/fancy): Source code and contributions
+- [Interactive Documentation](https://fancycomponents.dev): Full documentation with live examples
+- [Installation Guide](https://fancycomponents.dev/docs/installation.md): Setup instructions
+- [Changelog](https://fancycomponents.dev/docs/changelog.md): Recent updates and new components
+
+---
+
+All components are available in both interactive format (for developers) and markdown format (for LLMs and documentation tools). Simply append `.md` to any documentation URL to access the markdown version.

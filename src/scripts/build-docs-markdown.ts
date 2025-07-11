@@ -40,7 +40,7 @@ async function convertMdxToMarkdown(
       markdown += `# ${title}\n\n`
     }
     if (description) {
-      markdown += `${description}\n\n`
+      markdown += `> ${description}\n\n`
     }
     
     // Convert MDX components to markdown
@@ -72,6 +72,9 @@ async function convertMdxToMarkdown(
       }
     )
     
+    // Convert Link components to markdown links
+    convertedContent = convertLinksToMarkdown(convertedContent)
+    
     // Convert ComponentSource to markdown code block
     convertedContent = convertComponentSourceToMarkdown(convertedContent, includeSourceCode)
     
@@ -101,6 +104,25 @@ async function convertMdxToMarkdown(
     console.error("Error converting MDX to markdown:", error)
     throw new Error(`Failed to convert ${slug.join("/")} to markdown`)
   }
+}
+
+function convertLinksToMarkdown(content: string): string {
+  // Convert Link components to markdown links
+  return content.replace(
+    /<Link\s+href="([^"]+)"[^>]*>([\s\S]*?)<\/Link>/g,
+    (match, href, linkText) => {
+      // Clean the link text (remove any nested HTML)
+      const cleanText = linkText.replace(/<[^>]*>/g, '').trim()
+      
+      // Add the base URL if it's a relative path
+      let fullUrl = href
+      if (href.startsWith('/')) {
+        fullUrl = `https://fancycomponents.dev${href}.md`
+      }
+      
+      return `[${cleanText}](${fullUrl})`
+    }
+  )
 }
 
 function convertComponentSourceToMarkdown(content: string, includeSourceCode: boolean): string {

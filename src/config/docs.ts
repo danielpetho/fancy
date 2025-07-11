@@ -23,6 +23,11 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Changelog",
         href: "/docs/changelog",
         items: [],
+      },
+      {
+        title: "llms.txt",
+        href: "/llms.txt",
+        items: [],
       }
     ],
   },
