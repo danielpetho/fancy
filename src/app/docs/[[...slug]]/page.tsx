@@ -12,6 +12,7 @@ import { DocsPager } from "@/components/doc-pager"
 import { DashboardTableOfContents } from "@/components/toc"
 import { DocBreadcrumb } from "@/components/doc-breadcrumb"
 import { DocAuthor } from "@/components/doc-author"
+import { CopyPageMenu } from "@/components/copy-page-menu"
 import { getComponentByName } from "@/lib/get-components"
 
 export const runtime = "nodejs"
@@ -106,11 +107,27 @@ export default async function DocPage({ params }: DocPageProps) {
     params.slug?.[1]?.charAt(0).toUpperCase() +
       params.slug?.[1]?.slice(1).toLowerCase() || "Getting Started"
 
+  // Generate current URL for markdown links
+  const currentUrl = `https://fancycomponents.dev/docs/${params.slug?.join("/") || ""}`
+  
+  // Extract plain text content from the page (simplified version)
+  // For now, using description. Could be enhanced to extract more content client-side
+  const plainTextContent = doc.description || "No description available"
+
   return (
     <main className="xl:grid xl:grid-cols-[minmax(0,1fr)_340px] justify-center w-full">
       <div className="rounded-2xl bg-background py-6 lg:gap-10 lg:py-6 border-border border">
         <div data-algolia-crawl className="px-4 md:px-8 flex flex-col">
-          <DocBreadcrumb componentType={componentType} title={doc.title} />
+          <div className="flex items-start justify-between gap-4">
+            <DocBreadcrumb componentType={componentType} title={doc.title} />
+            <div className="flex-shrink-0">
+              <CopyPageMenu 
+                title={doc.title}
+                content={plainTextContent}
+                currentUrl={currentUrl}
+              />
+            </div>
+          </div>
           <div className="">
             <h1
               className={cn(
@@ -119,6 +136,8 @@ export default async function DocPage({ params }: DocPageProps) {
             >
               {doc.title}
             </h1>
+          </div>
+          <div className="">{/* Description and author */}
             {!!doc.description && doc.description !== "null" && (
               <p className="text-sm md:text-lg text-muted-foreground pt-2 md:pt-4">
                 <Balancer>{doc.description}</Balancer>
