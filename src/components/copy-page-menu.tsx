@@ -103,28 +103,23 @@ export function CopyPageMenu({ title, content, currentUrl }: CopyPageMenuProps) 
         setStatus("idle")
       }, 2000)
     } catch (error) {
-      // Reset to idle if copy fails
       setStatus("idle")
     }
   }
 
   const handleViewAsMarkdown = () => {
-    // Generate markdown URL by appending .md
     const markdownUrl = `${currentUrl}.md`
     window.open(markdownUrl, "_blank")
   }
 
   const handleOpenInChatGPT = () => {
-    // Create the prompt with markdown content
     const prompt = `Please help me understand this documentation: ${currentUrl}.md`
     const chatGPTUrl = `https://chat.openai.com/?model=gpt-4&q=${encodeURIComponent(prompt)}`
     window.open(chatGPTUrl, "_blank")
   }
 
   const handleOpenInClaude = () => {
-    // Create the prompt with markdown content  
     const prompt = `Please help me understand this documentation: ${currentUrl}.md`
-    // Claude uses a similar pattern with the 'q' parameter
     const claudeUrl = `https://claude.ai/new?q=${encodeURIComponent(prompt)}`
     window.open(claudeUrl, "_blank")
   }
