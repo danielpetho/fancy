@@ -4,13 +4,15 @@ description: A simple 3D box component with "CSS-only" 3D transforms.
 component: true
 ---
 
-<ComponentPreview name="css-box-demo" />
+<ComponentPreview name="css-box-demo" framerLink="https://framer.university/resources/3d-text-cube-interaction-in-framer" />
 
 Artwork inspiration from [Ignite Amsterdam](https://www.instagram.com/p/CaDHtZKrk0F/)
 
 ## Credits
 
 The component is derived from the Box chapter of David De Sandro's [extremely awesome Intro to CSS 3D transforms tutorial](https://3dtransforms.desandro.com/box). 
+
+Ported to Framer by [Framer University](https://framer.university/)
 
 ## Installation
 
@@ -37,8 +39,6 @@ The component is derived from the Box chapter of David De Sandro's [extremely aw
 ## Usage
 
 The component renders a fully-featured 3D cube. Pass `width`, `height`, `depth` and optionally six React nodes for the faces. You may also grab the cube with a ref for programmatic control. 
-
-
 
 <CodeSnippet title="High-level cube example">
 ```tsx
@@ -146,7 +146,7 @@ Via `ref` you can trigger the following methods:
 
 This can be handy for syncing cube state to a carousel or step-based walkthrough. For example, you can trigger a cube rotation with hover:
 
-<ComponentPreview name="css-box-hover-demo" />
+<ComponentPreview name="css-box-hover-demo" framerLink="https://framer.university/resources/3d-stacked-tower-spin-animation-in-framer" />
 
 Or, tie the rotation to a scroll progress:
 
