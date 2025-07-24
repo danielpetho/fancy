@@ -17,3 +17,9 @@ Huge thanks to [shadcn](https://github.com/shadcn-ui/ui), as many parts of this 
 ## License
 
 Licensed under the [MIT license](LICENSE).
+
+<br/>
+<a href="https://vercel.com/oss">
+    <img alt="Vercel OSS Program" src="https://vercel.com/oss/program-badge.svg" />
+</a>
+
