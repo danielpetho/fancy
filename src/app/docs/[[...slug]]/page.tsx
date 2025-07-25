@@ -5,15 +5,15 @@ import Balancer from "react-wrap-balancer"
 
 import { DocPageProps } from "@/types/types"
 import { siteConfig } from "@/config/site"
-import { getComponentByName } from "@/lib/get-components"
 import { CONTENT_DIRECTORY, getDocFromParams } from "@/lib/get-docs"
 import { cn } from "@/lib/utils"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { CopyPageMenu } from "@/components/copy-page-menu"
-import { DocAuthor } from "@/components/doc-author"
-import { DocBreadcrumb } from "@/components/doc-breadcrumb"
 import { DocsPager } from "@/components/doc-pager"
 import { DashboardTableOfContents } from "@/components/toc"
+import { DocBreadcrumb } from "@/components/doc-breadcrumb"
+import { DocAuthor } from "@/components/doc-author"
+import { CopyPageMenu } from "@/components/copy-page-menu"
+import { getComponentByName } from "@/lib/get-components"
 
 export const runtime = "nodejs"
 export const dynamic = "force-static"
@@ -109,7 +109,7 @@ export default async function DocPage({ params }: DocPageProps) {
 
   // Generate current URL for markdown links
   const currentUrl = `https://fancycomponents.dev/docs/${params.slug?.join("/") || ""}`
-
+  
   // Extract plain text content from the page (simplified version)
   // For now, using description. Could be enhanced to extract more content client-side
   const plainTextContent = doc.description || "No description available"
@@ -121,7 +121,7 @@ export default async function DocPage({ params }: DocPageProps) {
           <div className="flex items-start justify-between gap-4">
             <DocBreadcrumb componentType={componentType} title={doc.title} />
             <div className="flex-shrink-0">
-              <CopyPageMenu
+              <CopyPageMenu 
                 title={doc.title}
                 content={plainTextContent}
                 currentUrl={currentUrl}
@@ -137,8 +137,7 @@ export default async function DocPage({ params }: DocPageProps) {
               {doc.title}
             </h1>
           </div>
-          <div className="">
-            {/* Description and author */}
+          <div className="">{/* Description and author */}
             {!!doc.description && doc.description !== "null" && (
               <p className="text-sm md:text-lg text-muted-foreground pt-2 md:pt-4">
                 <Balancer>{doc.description}</Balancer>
@@ -154,19 +153,11 @@ export default async function DocPage({ params }: DocPageProps) {
         </div>
       </div>
       {doc.toc && (
-        <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-8rem)] pl-4 space-y-4">
+        <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-8rem)] pl-4">
           <div className="bg-background rounded-2xl border">
             <ScrollArea className="pb-10 p-6">
               <DashboardTableOfContents toc={toc} />
             </ScrollArea>
-          </div>
-          <div className="bg-background rounded-2xl border h-20 p-6 flex items-center justify-start">
-            <a href="https://vercel.com/oss">
-              <img
-                alt="Vercel OSS Program"
-                src="https://vercel.com/oss/program-badge.svg"
-              />
-            </a>
           </div>
         </div>
       )}
