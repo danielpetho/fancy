@@ -141,7 +141,7 @@ function processItemFiles(registryItem: any): any[] {
         : ".ts"
     const pathWithExt = file.path.startsWith("/")
       ? file.path + extension
-      : `/${file.path}${extension}`
+      : `${file.path}${extension}`
 
     // We also compute the "target" path as your original code does
     let targetPath = ""
@@ -170,6 +170,8 @@ function processItemFiles(registryItem: any): any[] {
     if (file.type === "registry:block") {
       content = resolveColorInContent(content)
     }
+
+    console.log(targetPath)
 
     out.push({
       path: pathWithExt,
