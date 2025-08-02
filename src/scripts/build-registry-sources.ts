@@ -150,14 +150,14 @@ function processItemFiles(registryItem: any): any[] {
     } else if (file.type === "registry:ui") {
       const category = getCategory(file.path.replace("fancy/", ""))
       targetPath = category
-        ? `fancy/components/${category}/${fileName}.tsx`
-        : `fancy/components/${fileName}.tsx`
+        ? `components/fancy/${category}/${fileName}.tsx`
+        : `components/fancy/${fileName}.tsx`
     } else if (file.type === "registry:block") {
       const examplePath = file.path.replace("examples/", "")
       const category = getCategory(examplePath)
       targetPath = category
-        ? `fancy/components/${category}/${fileName}.tsx`
-        : `fancy/components/${fileName}.tsx`
+        ? `components/fancy/${category}/${fileName}.tsx`
+        : `components/fancy/${fileName}.tsx`
     } else if (file.type === "registry:lib") {
       const utilPath = file.path.replace("utils/", "")
       const category = getCategory(utilPath)
