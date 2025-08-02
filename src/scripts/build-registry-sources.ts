@@ -146,24 +146,24 @@ function processItemFiles(registryItem: any): any[] {
     // We also compute the "target" path as your original code does
     let targetPath = ""
     if (file.type === "registry:hook") {
-      targetPath = `/hooks/${fileName}.ts`
+      targetPath = `hooks/${fileName}.ts`
     } else if (file.type === "registry:ui") {
       const category = getCategory(file.path.replace("fancy/", ""))
       targetPath = category
-        ? `/fancy/components/${category}/${fileName}.tsx`
-        : `/fancy/components/${fileName}.tsx`
+        ? `fancy/components/${category}/${fileName}.tsx`
+        : `fancy/components/${fileName}.tsx`
     } else if (file.type === "registry:block") {
       const examplePath = file.path.replace("examples/", "")
       const category = getCategory(examplePath)
       targetPath = category
-        ? `/fancy/components/${category}/${fileName}.tsx`
-        : `/fancy/components/${fileName}.tsx`
+        ? `fancy/components/${category}/${fileName}.tsx`
+        : `fancy/components/${fileName}.tsx`
     } else if (file.type === "registry:lib") {
       const utilPath = file.path.replace("utils/", "")
       const category = getCategory(utilPath)
       targetPath = category
-        ? `/utils/${category}/${fileName}.ts`
-        : `/utils/${fileName}.ts`
+        ? `utils/${category}/${fileName}.ts`
+        : `utils/${fileName}.ts`
     }
 
     // Only resolve colors for block registry items
