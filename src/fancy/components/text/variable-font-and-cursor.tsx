@@ -15,13 +15,13 @@ interface FontVariationAxis {
    * This corresponds to the OpenType variation axis tags, but can be arbitrary. Make sure to check the font variation settings of the font you are using to see the available axes.
    */
   name: string
-  
+
   /**
    * The minimum value for this axis.
    * Applied when the cursor is at the left edge (for x-axis) or top edge (for y-axis).
    */
   min: number
-  
+
   /**
    * The maximum value for this axis.
    * Applied when the cursor is at the right edge (for x-axis) or bottom edge (for y-axis).
@@ -38,7 +38,7 @@ interface FontVariationMapping {
    * Font variation axis controlled by horizontal cursor movement.
    */
   x: FontVariationAxis
-  
+
   /**
    * Font variation axis controlled by vertical cursor movement.
    */
@@ -54,27 +54,27 @@ interface TextProps {
    * Required prop with no default value.
    */
   label: string
-  
+
   /**
    * Mapping configuration that defines how cursor position affects font variation settings.
    * Maps x and y cursor positions to specific font variation axes and value ranges.
    * Required prop with no default value.
    */
   fontVariationMapping: FontVariationMapping
-  
+
   /**
    * Reference to the container element for mouse tracking.
    * The cursor position will be calculated relative to this container's bounds.
    * Required prop with no default value.
    */
   containerRef: React.RefObject<HTMLDivElement>
-  
+
   /**
    * Additional CSS classes for styling the text element.
    * @default undefined
    */
   className?: string
-  
+
   /**
    * Click event handler for the text element.
    * @default undefined
@@ -92,17 +92,17 @@ const VariableFontAndCursor = ({
 }: TextProps) => {
   // Hook to track mouse position relative to the specified container
   const mousePositionRef = useMousePositionRef(containerRef)
-  
+
   // Ref for the visible text span to apply font variation settings
   const spanRef = useRef<HTMLSpanElement>(null)
 
   /**
    * Calculates font variation settings based on cursor position within the container.
-   * 
+   *
    * This function maps the cursor's x and y coordinates to font variation values
    * by interpolating between the minimum and maximum values defined in the mapping.
    * The position is normalized to a 0-1 range based on the container dimensions.
-   * 
+   *
    * @param xPosition - Horizontal cursor position relative to container
    * @param yPosition - Vertical cursor position relative to container
    * @returns CSS font-variation-settings string with calculated values
@@ -148,14 +148,13 @@ const VariableFontAndCursor = ({
 
   return (
     <motion.span
-      className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 ${className}`}
+      className={className}
       data-text={label}
       onClick={onClick}
+      ref={spanRef}
       {...props}
     >
-      <span ref={spanRef} className="inline-block">
-        {label}
-      </span>
+      {label}
     </motion.span>
   )
 }

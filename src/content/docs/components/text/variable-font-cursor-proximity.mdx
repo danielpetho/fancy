@@ -71,7 +71,9 @@ With the `falloff` prop, you can control the type of falloff. It can be either `
 
 ## Notes
 
-It seems like interpolating on large number of letters simultaneously can be a bit slow, even when we're avoiding re-renders with state updates. If you're experienceing performance issues, try to limit the length of the text you're animating.
+- Interpolating on large number of letters simultaneously can be a bit slow, even when we're avoiding re-renders with state updates. If you're experienceing performance issues, try to limit the length of the text you're animating.
+
+- Make sure the main container have enough space to hold the text with full weight to avoid layout shifts. For example, you can use negative margins like in the 2nd example.
 
 ## Credits
 
@@ -109,7 +111,7 @@ Ported to Framer by [Framer University](https://framer.university/)
     </TableRow>
     <TableRow>
       <TableCell>containerRef<span className="text-red-500">*</span></TableCell>
-      <TableCell>`React.RefObject<HTMLElement>`</TableCell>
+      <TableCell>`React.RefObject<HTMLDivElement>`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>Reference to the container for mouse tracking</TableCell>
     </TableRow>
