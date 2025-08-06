@@ -18,14 +18,15 @@ export default function Preview() {
       {/* this is the important stuff */}
       <div className="w-full h-full items-center justify-center flex">
         <VariableFontAndCursor
-          label="fancy!"
           className="text-5xl sm:text-7xl md:text-9xl text-primary-orange"
           fontVariationMapping={{
             y: { name: "wght", min: 100, max: 900 },
             x: { name: "slnt", min: 0, max: -10 },
           }}
           containerRef={containerRef}
-        />
+        >
+          fancy!
+        </VariableFontAndCursor>
       </div>
 
       {/* this is just fluff for the demo */}

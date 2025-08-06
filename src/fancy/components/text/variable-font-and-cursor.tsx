@@ -1,8 +1,9 @@
 "use client"
 
-import React, { useCallback, useRef } from "react"
+import React, { ElementType, useCallback, useRef } from "react"
 import { motion, useAnimationFrame } from "motion/react"
 
+import { cn } from "@/lib/utils"
 import { useMousePositionRef } from "@/hooks/use-mouse-position-ref"
 
 /**
@@ -48,12 +49,18 @@ interface FontVariationMapping {
 /**
  * Props for the VariableFontAndCursor component.
  */
-interface TextProps {
+interface TextProps extends React.HTMLAttributes<HTMLElement> {
   /**
    * The text content to display and animate.
    * Required prop with no default value.
    */
-  label: string
+  children: React.ReactNode
+
+  /**
+   * HTML Tag to render the component as.
+   * @default "span"
+   */
+  as?: ElementType
 
   /**
    * Mapping configuration that defines how cursor position affects font variation settings.
@@ -68,26 +75,14 @@ interface TextProps {
    * Required prop with no default value.
    */
   containerRef: React.RefObject<HTMLDivElement>
-
-  /**
-   * Additional CSS classes for styling the text element.
-   * @default undefined
-   */
-  className?: string
-
-  /**
-   * Click event handler for the text element.
-   * @default undefined
-   */
-  onClick?: () => void
 }
 
 const VariableFontAndCursor = ({
-  label,
+  children,
+  as = "span",
   fontVariationMapping,
   className,
   containerRef,
-  onClick,
   ...props
 }: TextProps) => {
   // Hook to track mouse position relative to the specified container
@@ -146,16 +141,18 @@ const VariableFontAndCursor = ({
     }
   })
 
+  // Custom motion component to render as the specified HTML tag
+  const MotionComponent = motion.create(as)
+
   return (
-    <motion.span
-      className={className}
-      data-text={label}
-      onClick={onClick}
+    <MotionComponent
+      className={cn(className)}
+      data-text={children}
       ref={spanRef}
       {...props}
     >
-      {label}
-    </motion.span>
+      <span className="inline-block">{children}</span>
+    </MotionComponent>
   )
 }
 

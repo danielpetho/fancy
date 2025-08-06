@@ -63,6 +63,10 @@ The component interpolates between `min` and `max` based on the cursor position 
 
 For more information about variable fonts and how they work, please refer to the <Link href="/docs/components/text/variable-font-hover-by-letter#understanding-variable-fonts">Variable Font Hover By Letter</Link> documentation.
 
+## Notes
+
+Make sure the main container has enough space to hold the text at its full weight to avoid layout shifts. For example, you can use negative margins, or an invisible pseudo element.
+
 ## Props
 
 <Table>
@@ -76,10 +80,16 @@ For more information about variable fonts and how they work, please refer to the
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell>label<span className="text-red-500">*</span></TableCell>
-      <TableCell>`string`</TableCell>
+      <TableCell>children<span className="text-red-500">*</span></TableCell>
+      <TableCell>`React.ReactNode`</TableCell>
       <TableCell>-</TableCell>
-      <TableCell>The text content to display</TableCell>
+      <TableCell>The text content to display and animate</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>as</TableCell>
+      <TableCell>`ElementType`</TableCell>
+      <TableCell>`"span"`</TableCell>
+      <TableCell>HTML tag to render the component as</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>fontVariationMapping<span className="text-red-500">*</span></TableCell>
@@ -98,12 +108,6 @@ For more information about variable fonts and how they work, please refer to the
       <TableCell>`string`</TableCell>
       <TableCell>-</TableCell>
       <TableCell>Additional CSS classes for styling</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell>onClick</TableCell>
-      <TableCell>`() => void`</TableCell>
-      <TableCell>`undefined`</TableCell>
-      <TableCell>Click event handler for the text</TableCell>
     </TableRow>
   </TableBody>
 </Table>
