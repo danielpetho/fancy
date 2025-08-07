@@ -146,6 +146,11 @@ export const docsConfig: SidebarNavItem[] = [
         title: "Box Carousel",
         href: "/docs/components/carousel/box-carousel",
         items: [],
+      },
+      {
+        title: "Circular Carousel",
+        href: "/docs/components/carousel/circular-carousel",
+        items: [],
         label: "New"
       },
     ],
