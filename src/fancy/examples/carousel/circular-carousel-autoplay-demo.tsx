@@ -91,7 +91,7 @@ const carouselImages = [
 
 function CarouselItem({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="w-20 h-24 rounded-lg overflow-hidden cursor-pointer hover:scale-110 transition-all duration-200 ease-in-out">
+    <div className="w-28 h-32 rounded-lg overflow-hidden cursor-pointer hover:scale-110 transition-all duration-400 ease-out">
       <img src={src} alt={alt} className="w-full h-full object-cover" />
     </div>
   )
@@ -121,8 +121,8 @@ export default function CircularCarouselDemo() {
   }
 
   return (
-    <div className="w-full h-full relative p-8">
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+    <div className="w-full h-full relative ">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[calc(50%-20px)]">
         <CircularCarousel
           ref={carouselRef}
           items={items}
@@ -132,48 +132,16 @@ export default function CircularCarouselDemo() {
             ease: [0.89, 0.017, 0.205, 0.983],
           }}
           autoPlay={true}
-          autoPlayInterval={3000}
+          autoPlayInterval={2500}
           staggerDelay={0.07}
-          radius={280}
+          radius={360}
         />
       </div>
-
-      {/* Controls */}
-      {/* <div className="flex gap-4 items-center">
-        <button
-          onClick={handlePrev}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
-        >
-          ← Previous
-        </button>
-
-        <span className="text-sm text-gray-600 tabular-nums">
-          Item {currentIndex + 1} of {items.length}
-        </span>
-
-        <button
-          onClick={handleNext}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
-        >
-          Next →
-        </button>
-      </div> */}
-
-      {/* Direct navigation
-      <div className="flex gap-2">
-        {items.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleGoTo(index)}
-            className={`w-2 h-2 rounded-full text-sm font-medium transition-colors ${
-              index === currentIndex
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 hover:bg-gray-300"
-            }`}
-          >
-          </button>
-        ))}
-      </div> */}
+      <div className="absolute top-[calc(50%+6rem)] left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight">
+        <p className="text-2xl font uppercase">IMAGINARY STUDIO<sup>*</sup></p>
+        <p className="text-2xl font uppercase">SELECTED WORKS<sup className="text-sm font-normal">(16)</sup>—2025</p>
+      </div>
+      <div className="absolute h-12 bg-gradient-to-b from-transparent to-white/90 w-full bottom-0"></div>
     </div>
   )
 }
