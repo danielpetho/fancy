@@ -138,8 +138,8 @@ export default function CircularCarouselDemo() {
         />
       </div>
       <div className="absolute top-[calc(50%+6rem)] left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight">
-        <p className="text-2xl font uppercase">IMAGINARY STUDIO<sup>*</sup></p>
-        <p className="text-2xl font uppercase">SELECTED WORKS<sup className="text-sm font-normal">(16)</sup>—2025</p>
+        <p className="text-2xl font uppercase">IMAGINARY STUDIO<sup>©</sup></p>
+        <p className="text-2xl font uppercase">SELECTED WORKS<sup className="text-sm font-normal">(16)</sup> — 2025</p>
       </div>
       <div className="absolute h-12 bg-gradient-to-b from-transparent to-white/90 w-full bottom-0"></div>
     </div>
