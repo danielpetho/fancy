@@ -6,7 +6,7 @@ import React, {
   useImperativeHandle,
   useState,
 } from "react"
-import { motion, Transition, ValueAnimationOptions } from "motion/react"
+import { motion, TargetAndTransition, Transition } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
@@ -21,14 +21,30 @@ interface CircularCarouselProps {
    */
   radius?: number
   /**
-   * Additional CSS classes for the container
+   * The state to animate to when an item becomes in focus.
+   * @default {}
    */
-  className?: string
+  focusTargetState?: TargetAndTransition
   /**
    * Keep items facing the camera (counter-rotate to maintain local rotation)
    * @default false
    */
   keepOriginalOrientation?: boolean
+  /**
+   * Whether to change the z index to the top when the item is in focus
+   * @default false
+   */
+  focusedOnTop?: boolean
+  /**
+   * The base z index to use for all items
+   * @default 0
+   */
+  baseZIndex?: number
+  /**
+   * Whether to go to a specific item when an item is clicked
+   * @default false
+   */
+  goToOnClick?: boolean
   /**
    * Render debug items instead of actual items (random colors with numbers)
    * @default false
@@ -62,6 +78,14 @@ interface CircularCarouselProps {
    * @default 3000
    */
   autoPlayInterval?: number
+  /**
+   * Additional CSS classes for the container
+   */
+  containerClassName?: string
+  /**
+   * Additional CSS classes for the items
+   */
+  itemClassName?: string
 }
 
 export interface CircularCarouselRef {
@@ -88,14 +112,19 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     {
       items,
       radius = 100,
-      className,
       keepOriginalOrientation = false,
       debug = false,
+      focusedOnTop = false,
+      baseZIndex = 0,
+      focusTargetState = {},
+      goToOnClick = false,
       transition = { type: "spring", stiffness: 300, damping: 30 },
       staggerDelay = 0,
       staggerOrigin = Math.PI,
       autoPlay = false,
       autoPlayInterval = 3000,
+      containerClassName,
+      itemClassName,
     },
     ref
   ) => {
@@ -134,17 +163,17 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
     const goTo = (index: number) => {
       if (index >= 0 && index < items.length) {
-        let diff = Math.abs(index - currentIndex)
-
+        let diff = index - currentIndex
+        let angle = diff * angleStep
         // Find the shortest path around the circle
         if (diff > items.length / 2) {
-          diff = diff + items.length
-        } else if (diff < -items.length / 2) {
-          diff = diff - items.length
+          angle = angle
+        } else if (diff < items.length / 2) {
+          angle = -angle
         }
 
         setCurrentIndex(index)
-        setTotalRotation((prev) => prev + diff * angleStep)
+        setTotalRotation((prev) => prev - diff * angleStep)
       } else {
         console.error("CircularCarousel: Index out of bounds")
       }
@@ -172,7 +201,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       <div
         className={cn(
           "relative w-full h-full grid place-items-center",
-          className
+          containerClassName
         )}
         style={{
           width: radius * 2,
@@ -182,10 +211,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         {items.map((item, index) => {
           const baseAngle = index * angleStep
           const angle = baseAngle + totalRotation
-          const x = Math.sin(angle) * radius
-          const y = -Math.cos(angle) * radius
-
-          const itemRotation = keepOriginalOrientation ? -totalRotation : angle
 
           // Create item-specific transition with stagger delay based on distance from staggerOrigin
           let itemTransition = transition
@@ -228,11 +253,26 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
               className="absolute"
               animate={{
                 transform: `rotate(${angle}rad) translate(0, -${radius}px)`,
+                zIndex:
+                  currentIndex === index && focusedOnTop
+                    ? baseZIndex + items.length
+                    : baseZIndex + index,
               }}
               initial={false}
+              onClick={() => {
+                if (goToOnClick) {
+                  goTo(index)
+                }
+              }}
               transition={itemTransition}
             >
-              {itemContent}
+              <motion.div
+                animate={currentIndex === index ? focusTargetState : {}}
+                transition={itemTransition}
+                className={cn("", itemClassName)}
+              >
+                {itemContent}
+              </motion.div>
             </motion.div>
           )
         })}

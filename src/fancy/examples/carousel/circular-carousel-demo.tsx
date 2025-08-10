@@ -1,179 +1,119 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef } from "react"
 
 import CircularCarousel, {
   type CircularCarouselRef,
 } from "@/fancy/components/carousel/circular-carousel"
 
-const carouselImages = [
-  {
-    id: "1",
-    src: "https://cdn.cosmos.so/778d0640-d4b8-45b4-8bbe-862e759c231d?format=jpeg",
-    alt: "Blurry poster",
-  },
-  {
-    id: "2",
-    src: "https://cdn.cosmos.so/27ac2696-1f2b-498e-8d3d-11f2dd358ab9?format=jpeg",
-    alt: "Abstract blurry figure",
-  },
-  {
-    id: "3",
-    src: "https://cdn.cosmos.so/c48b739d-202d-4340-ab6b-afa34f0d7142?format=jpeg",
-    alt: "Long exposure photo of a person",
-  },
-  {
-    id: "4",
-    src: "https://cdn.cosmos.so/5332f9ac-7823-4635-871d-d4b3032e1c62?format=jpeg",
-    alt: "Blurry portrait photo of a person",
-  },
-  {
-    id: "5",
-    src: "https://cdn.cosmos.so/d9ed937e-7c3b-4f64-a4f3-708d639f13a1?format=jpeg",
-    alt: "Long exposure shots with multiple people",
-  },
-  {
-    id: "6",
-    src: "https://cdn.cosmos.so/33b43e2a-da66-42d9-a0b1-08165d80b0aa?format=jpeg",
-    alt: "Close up blurry photo of a person poster",
-  },
-  {
-    id: "7",
-    src: "https://cdn.cosmos.so/40342df7-2ea2-4297-add2-fe17cdc62551?format=jpeg",
-    alt: "Long exposure shot of a motorcyclist",
-  },
-  {
-    id: "8",
-    src: "https://cdn.cosmos.so/ce9342ee-1b49-481b-b143-72ec12f19a59?format=jpeg",
-    alt: "Long exposure shot of a person",
-  },
-  {
-    id: "9",
-    src: "https://cdn.cosmos.so/826fd6f5-f9ec-4109-a5a6-3c137962a120?format=jpeg",
-    alt: "Artwork",
-  },
-  {
-    id: "10",
-    src: "https://cdn.cosmos.so/53134561-4917-42a6-abee-a03d2303e3b6?format=jpeg",
-    alt: "Long exposure shot of people",
-  },
-  {
-    id: "11",
-    src: "https://cdn.cosmos.so/3805990a-46ef-4d70-8b77-43fb67b74840?format=jpeg",
-    alt: "Blurry photo",
-  },
-  {
-    id: "12",
-    src: "https://cdn.cosmos.so/ca346107-04c8-4241-85e6-f26c8b64c85c?format=jpeg",
-    alt: "Blurry shot of a person",
-  },
-  {
-    id: "13",
-    src: "https://cdn.cosmos.so/0b222964-1f15-4fb4-ac41-34ead2e0e807?format=jpeg",
-    alt: "Gradient artwork with a person",
-  },
-  {
-    id: "14",
-    src: "https://cdn.cosmos.so/7084b9ad-1ec6-410e-9f75-d5fcd1ecd908?format=jpeg",
-    alt: "Blurry poster",
-  },
-  {
-    id: "15",
-    src: "https://cdn.cosmos.so/37468f33-6a49-46e4-bbdb-7569998c9f84?format=jpeg",
-    alt: "Blurred photo of a person",
-  },
-  {
-    id: "16",
-    src: "https://cdn.cosmos.so/369966ba-acec-403b-802e-76cd9f3f840a?format=jpeg",
-    alt: "Blurred photo of a person",
-  },
+// 100+ random city names with country
+const cityNames = [
+  "Budapest, Hungary",
+  "Tokyo, Japan",
+  "Paris, France",
+  "New York, USA",
+  "London, UK",
+  "Berlin, Germany",
+  "Sydney, Australia",
+  "Cape Town, South Africa",
+  "Moscow, Russia",
+  "Toronto, Canada",
+  "Beijing, China",
+  "Rome, Italy",
+  "Madrid, Spain",
+  "Lisbon, Portugal",
+  "Vienna, Austria",
+  "Prague, Czech Republic",
+  "Warsaw, Poland",
+  "Istanbul, Turkey",
+  "Athens, Greece",
+  "Copenhagen, Denmark",
+  "Stockholm, Sweden",
+  "Oslo, Norway",
+  "Helsinki, Finland",
+  "Dublin, Ireland",
+  "Brussels, Belgium",
+  "Zurich, Switzerland",
+  "Amsterdam, Netherlands",
+  "Edinburgh, UK",
+  "Venice, Italy",
+  "Munich, Germany",
+  "Barcelona, Spain",
+  "Seoul, South Korea",
+  "Bangkok, Thailand",
+  "Singapore, Singapore",
+  "Kuala Lumpur, Malaysia",
+  "Jakarta, Indonesia",
+  "Manila, Philippines",
+  "Hanoi, Vietnam",
+  "Nairobi, Kenya",
+  "Lagos, Nigeria",
+  "Buenos Aires, Argentina",
+  "Santiago, Chile",
+  "Bogotá, Colombia",
+  "Caracas, Venezuela",
+  "Mexico City, Mexico",
+  "San Francisco, USA",
+  "Los Angeles, USA",
+  "Chicago, USA",
+  "Miami, USA",
+  "Boston, USA",
+  "Montreal, Canada",
+  "Vancouver, Canada",
+  "Calgary, Canada",
+  "Auckland, New Zealand",
+  "Brisbane, Australia",
+  "Melbourne, Australia",
+  "Perth, Australia",
+  "Tallinn, Estonia",
+  "Riga, Latvia",
+  "Vilnius, Lithuania",
+  "Krakow, Poland",
+  "Belgrade, Serbia",
+  "Sofia, Bulgaria",
+  "Bucharest, Romania",
+  "Reykjavik, Iceland",
+  "Tallinn, Estonia",
+  "Kiev, Ukraine",
+  "Minsk, Belarus",
+  "Tbilisi, Georgia",
+  "Jerusalem, Israel",
+  "New Delhi, India",
 ]
-
-function CarouselItem({ src, alt }: { src: string; alt: string }) {
-  return (
-    <div className="w-20 h-24 rounded-lg overflow-hidden cursor-pointer hover:scale-110 transition-all duration-200 ease-in-out">
-      <img src={src} alt={alt} className="w-full h-full object-cover" />
-    </div>
-  )
-}
 
 export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
-  const [currentIndex, setCurrentIndex] = useState(0)
 
-  const items = carouselImages.map((image, i) => (
-    <CarouselItem key={image.id} src={image.src} alt={image.alt} />
+  const items = cityNames.map((text, i) => (
+    <p className="text-xs font-bold cursor-pointer select-none">{text}</p>
   ))
 
-  const handleNext = () => {
-    carouselRef.current?.next()
-    setCurrentIndex((prev) => (prev + 1) % items.length)
-  }
-
-  const handlePrev = () => {
-    carouselRef.current?.prev()
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length)
-  }
-
-  const handleGoTo = (index: number) => {
-    carouselRef.current?.goTo(index)
-    setCurrentIndex(index)
-  }
-
   return (
-    <div className="w-full h-full relative p-8">
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
+    <div className="w-full h-full relative">
+      <div className="absolute -top-[92px] left-0 -translate-x-1/2 text-black/40">
         <CircularCarousel
           ref={carouselRef}
           items={items}
           keepOriginalOrientation={true}
           transition={{
-            duration: 1.5,
-            ease: [0.89, 0.017, 0.205, 0.983],
+            duration: 0.5,
+            type: "spring",
+            stiffness: 300,
+            damping: 25,
+          }}
+          focusTargetState={{
+            x: 20,
+            color: "#000",
           }}
           autoPlay={true}
-          autoPlayInterval={3000}
-          staggerDelay={0.07}
-          radius={280}
+          autoPlayInterval={1000}
+          staggerDelay={0.0}
+          containerClassName="rotate-90"
+          itemClassName="-rotate-90 flex items-center justify-start w-40"
+          radius={360}
         />
+        <div className="absolute rounded-full top-[calc(50%-5px)] left-[calc(100%-132px)]  flex items-center text-2xl justify-center w-2 h-2 bg-black "></div>
       </div>
-
-      {/* Controls */}
-      {/* <div className="flex gap-4 items-center">
-        <button
-          onClick={handlePrev}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
-        >
-          ← Previous
-        </button>
-
-        <span className="text-sm text-gray-600 tabular-nums">
-          Item {currentIndex + 1} of {items.length}
-        </span>
-
-        <button
-          onClick={handleNext}
-          className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300 transition-colors"
-        >
-          Next →
-        </button>
-      </div> */}
-
-      {/* Direct navigation
-      <div className="flex gap-2">
-        {items.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleGoTo(index)}
-            className={`w-2 h-2 rounded-full text-sm font-medium transition-colors ${
-              index === currentIndex
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 hover:bg-gray-300"
-            }`}
-          >
-          </button>
-        ))}
-      </div> */}
     </div>
   )
 }

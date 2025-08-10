@@ -1,6 +1,7 @@
 "use client"
 
-import { useRef, useState } from "react"
+import { useRef } from "react"
+import { motion } from "motion/react"
 
 import CircularCarousel, {
   type CircularCarouselRef,
@@ -91,38 +92,120 @@ const carouselImages = [
 
 function CarouselItem({ src, alt }: { src: string; alt: string }) {
   return (
-    <div className="w-28 h-32 rounded-lg overflow-hidden cursor-pointer hover:scale-110 transition-all duration-400 ease-out">
+    <motion.div 
+      className="w-28 h-32 rounded-lg overflow-hidden cursor-pointer hover:scale-110 transition-all duration-400 ease-out"
+      variants={itemVariants}
+      whileHover={{ scale: 1.1 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
       <img src={src} alt={alt} className="w-full h-full object-cover" />
-    </div>
+    </motion.div>
   )
+}
+
+// Animation variants for Framer Motion
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      staggerChildren: 0.4,
+    },
+  },
+}
+
+const carouselVariants = {
+  hidden: { 
+    opacity: 0, 
+    filter: "blur(8px)", 
+    scale: 0.95 
+  },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    scale: 1,
+    transition: {
+      duration: 1.5,
+      ease: [0.25, 0.46, 0.45, 0.94],
+      staggerChildren: 0.07,
+      delayChildren: 1,
+      delay: 0.3,
+    },
+  },
+}
+
+const itemVariants = {
+  hidden: { 
+    opacity: 0, 
+    scale: 1,
+    filter: "blur(4px)",
+    y: 0,
+    rotateY: -15,
+  },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    filter: "blur(0px)",
+    y: 0,
+    rotateY: 0,
+    transition: {
+      duration: 1.5,
+      ease: "easeOut",
+      type: "spring",
+      stiffness: 100,
+      damping: 15,
+    },
+  },
+}
+
+const textVariants = {
+  hidden: { 
+    opacity: 0, 
+    filter: "blur(4px)", 
+    y: 20 
+  },
+  visible: {
+    opacity: 1,
+    filter: "blur(0px)",
+    y: 0,
+    transition: {
+      duration: 1,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+}
+
+const gradientVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      duration: 0.8,
+      ease: "easeOut",
+    },
+  },
 }
 
 export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
-  const [currentIndex, setCurrentIndex] = useState(0)
 
   const items = carouselImages.map((image, i) => (
     <CarouselItem key={image.id} src={image.src} alt={image.alt} />
   ))
 
-  const handleNext = () => {
-    carouselRef.current?.next()
-    setCurrentIndex((prev) => (prev + 1) % items.length)
-  }
-
-  const handlePrev = () => {
-    carouselRef.current?.prev()
-    setCurrentIndex((prev) => (prev - 1 + items.length) % items.length)
-  }
-
-  const handleGoTo = (index: number) => {
-    carouselRef.current?.goTo(index)
-    setCurrentIndex(index)
-  }
-
   return (
-    <div className="w-full h-full relative ">
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[calc(50%-20px)]">
+    <motion.div 
+      className="w-full h-full relative"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {/* Carousel with fade/blur-in animation */}
+      <motion.div 
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[calc(50%-20px)]"
+        variants={carouselVariants}
+      >
         <CircularCarousel
           ref={carouselRef}
           items={items}
@@ -136,12 +219,22 @@ export default function CircularCarouselDemo() {
           staggerDelay={0.07}
           radius={360}
         />
-      </div>
-      <div className="absolute top-[calc(50%+6rem)] left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight">
+      </motion.div>
+      
+      {/* Text with staggered fade/blur-in animation */}
+      <motion.div 
+        className="absolute top-[calc(50%+6rem)] left-1/2 -translate-x-1/2 flex flex-col items-center leading-tight"
+        variants={textVariants}
+      >
         <p className="text-2xl font uppercase">IMAGINARY STUDIO<sup>©</sup></p>
         <p className="text-2xl font uppercase">SELECTED WORKS<sup className="text-sm font-normal">(16)</sup> — 2025</p>
-      </div>
-      <div className="absolute h-12 bg-gradient-to-b from-transparent to-white/90 w-full bottom-0"></div>
-    </div>
+      </motion.div>
+      
+      {/* Gradient overlay with fade-in animation */}
+      <motion.div 
+        className="absolute h-12 bg-gradient-to-b from-transparent to-white/90 w-full bottom-0"
+        variants={gradientVariants}
+      />
+    </motion.div>
   )
 }
