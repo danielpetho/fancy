@@ -85,12 +85,12 @@ export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
 
   const items = cityNames.map((text, i) => (
-    <p className="text-xs font-bold cursor-pointer select-none">{text}</p>
+    <p className="text-base font-bold cursor-pointer select-none">{text}</p>
   ))
 
   return (
-    <div className="w-full h-full relative">
-      <div className="absolute -top-[92px] left-0 -translate-x-1/2 text-black/50">
+    <div className="w-full h-full relative bg-white">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-blue/50">
         <CircularCarousel
           ref={carouselRef}
           items={items}
@@ -102,18 +102,22 @@ export default function CircularCarouselDemo() {
             damping: 25,
           }}
           focusTargetState={{
-            x: 10,
-            color: "#000",
+            x: -100,
+            color: "#0055ff",
           }}
+
+          enableDrag={true}
+          //goToOnClick={true}
+          //momentumDecay={0.8}
           //autoPlay={true}
           autoPlayInterval={1000}
           autoPlayDirection="ccw"
-          staggerDelay={0.0}
-          containerClassName="rotate-90"
-          itemClassName="-rotate-90 flex items-center justify-start w-40"
-          radius={360}
+          // staggerDelay={0.01}
+          containerClassName="-rotate-90 scale-50"
+          itemClassName="rotate-90 flex items-center justify-start w-64"
+          radius={400}
         />
-        <div className="absolute rounded-full top-[calc(50%-5px)] left-[calc(100%-132px)]  flex items-center text-2xl justify-center w-2 h-2 bg-red-500 "></div>
+        <div className="absolute rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center text-2xl justify-center w-4 h-4 bg-blue"></div>
       </div>
     </div>
   )

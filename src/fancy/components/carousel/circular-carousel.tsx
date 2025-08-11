@@ -2,8 +2,10 @@
 
 import React, {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
+  useRef,
   useState,
 } from "react"
 import { motion, TargetAndTransition, Transition } from "motion/react"
@@ -78,6 +80,11 @@ interface CircularCarouselProps {
    * @default 3000
    */
   autoPlayInterval?: number
+    /**
+   * Rotation direction of the carousel on autoplay, cw as clockwise, ccw as counter-clockwise
+   * @default "cw"
+   */
+  autoPlayDirection?: "cw" | "ccw"
   /**
    * Additional CSS classes for the container
    */
@@ -86,6 +93,41 @@ interface CircularCarouselProps {
    * Additional CSS classes for the items
    */
   itemClassName?: string
+  /**
+   * Enable drag interaction to rotate the carousel
+   * @default true
+   */
+  enableDrag?: boolean
+  /**
+   * Sensitivity of the drag movement
+   * @default 1
+   */
+  dragSensitivity?: number
+  /**
+   * Snap to the closest item on drag release
+   * @default true
+   */
+  snapOnRelease?: boolean
+  /**
+   * Show grab/grabbing cursor while dragging
+   * @default true
+   */
+  grabCursor?: boolean
+  /**
+   * Continue rotation with decaying velocity after release
+   * @default true
+   */
+  enableMomentum?: boolean
+  /**
+   * Decay factor per 60fps frame for momentum (0..1).
+   * @default 0.95
+   */
+  momentumDecay?: number
+  /**
+   * Velocity threshold (rad/s) under which momentum stops and snaps to the nearest item
+   * @default 0.2
+   */
+  momentumStopSpeed?: number
 }
 
 export interface CircularCarouselRef {
@@ -123,13 +165,33 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       staggerOrigin = Math.PI,
       autoPlay = false,
       autoPlayInterval = 3000,
+      autoPlayDirection = "cw",
       containerClassName,
       itemClassName,
+      enableDrag = true,
+      dragSensitivity = 1,
+      snapOnRelease = true,
+      grabCursor = true,
+      enableMomentum = true,
+      momentumDecay = 0.95,
+      momentumStopSpeed = 0.2,
     },
     ref
   ) => {
     const [currentIndex, setCurrentIndex] = useState(0)
     const [totalRotation, setTotalRotation] = useState(0)
+
+    const containerRef = useRef<HTMLDivElement | null>(null)
+    const isDragging = useRef(false)
+    const [dragging, setDragging] = useState(false)
+    const startRotationRef = useRef(0)
+    const startAngleRef = useRef(0)
+    const lastMoveAngleRef = useRef(0)
+    const lastMoveTimeRef = useRef(0)
+    const angularVelocityRef = useRef(0) // rad/s
+    const [inertiaRunning, setInertiaRunning] = useState(false)
+    const inertiaRafRef = useRef<number | null>(null)
+    const lastInertiaTimeRef = useRef(0)
 
     const angleStep = (2 * Math.PI) / items.length
 
@@ -162,21 +224,26 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     }
 
     const goTo = (index: number) => {
-      if (index >= 0 && index < items.length) {
-        let diff = index - currentIndex
-        let angle = diff * angleStep
-        // Find the shortest path around the circle
-        if (diff > items.length / 2) {
-          angle = angle
-        } else if (diff < items.length / 2) {
-          angle = -angle
-        }
-
-        setCurrentIndex(index)
-        setTotalRotation((prev) => prev - diff * angleStep)
-      } else {
+      if (index < 0 || index >= items.length) {
         console.error("CircularCarousel: Index out of bounds")
+        return
       }
+
+      // Stop any running inertia so it doesn't interfere
+      if (inertiaRunning) {
+        setInertiaRunning(false)
+        if (inertiaRafRef.current) cancelAnimationFrame(inertiaRafRef.current)
+        inertiaRafRef.current = null
+        angularVelocityRef.current = 0
+      }
+
+      // Compute shortest signed step difference in [-N/2, N/2]
+      const n = items.length
+      let diff = ((index - currentIndex) % n + n) % n // normalize to [0, n-1]
+      if (diff > n / 2) diff -= n // now in (-n/2, n/2]
+
+      setCurrentIndex(index)
+      setTotalRotation((prev) => prev - diff * angleStep)
     }
 
     const getCurrentIndex = () => currentIndex
@@ -189,24 +256,175 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     }))
 
     useEffect(() => {
-      if (autoPlay && items.length > 0) {
+      if (autoPlay && items.length > 0 && !dragging && !inertiaRunning) {
         const interval = setInterval(() => {
-          next()
+          if (autoPlayDirection === "cw") {
+            next()
+          } else {
+            prev()
+          }
         }, autoPlayInterval)
         return () => clearInterval(interval)
       }
-    }, [autoPlay, items.length, autoPlayInterval])
+    }, [autoPlay, items.length, autoPlayInterval, dragging, inertiaRunning])
+
+    const snapToNearest = useCallback(() => {
+      setTotalRotation((curr) => {
+        const stepsFromZero = Math.round(-curr / angleStep)
+        const snappedRotation = -stepsFromZero * angleStep
+        const newIndex = ((stepsFromZero % items.length) + items.length) % items.length
+        setCurrentIndex(newIndex)
+        return snappedRotation
+      })
+    }, [angleStep, items.length])
+
+    const getCenterAndAngle = useCallback(
+      (e: PointerEvent | React.PointerEvent) => {
+        const container = containerRef.current
+        if (!container) return { angle: 0 }
+        const rect = container.getBoundingClientRect()
+        const cx = rect.left + rect.width / 2
+        const cy = rect.top + rect.height / 2
+        const clientX = (e as PointerEvent).clientX ?? (e as React.PointerEvent).clientX
+        const clientY = (e as PointerEvent).clientY ?? (e as React.PointerEvent).clientY
+        const dx = clientX - cx
+        const dy = clientY - cy
+        // Screen Y grows downwards; atan2 handles it correctly for relative changes
+        const angle = Math.atan2(dy, dx)
+        return { angle }
+      },
+      []
+    )
+
+    const handlePointerDown = useCallback(
+      (e: React.PointerEvent) => {
+        if (!enableDrag) return
+        const target = e.currentTarget as HTMLElement
+        try {
+          target.setPointerCapture(e.pointerId)
+        } catch {}
+        isDragging.current = true
+        setDragging(true)
+        startRotationRef.current = totalRotation
+        const { angle } = getCenterAndAngle(e)
+        startAngleRef.current = angle
+        lastMoveAngleRef.current = angle
+        lastMoveTimeRef.current = performance.now()
+        angularVelocityRef.current = 0
+        if (grabCursor) {
+          target.style.cursor = "grabbing"
+        }
+        // stop any running inertia
+        if (inertiaRunning) {
+          setInertiaRunning(false)
+          if (inertiaRafRef.current) cancelAnimationFrame(inertiaRafRef.current)
+          inertiaRafRef.current = null
+        }
+      },
+      [enableDrag, totalRotation, getCenterAndAngle, grabCursor, inertiaRunning]
+    )
+
+    const handlePointerMove = useCallback(
+      (e: PointerEvent) => {
+        if (!isDragging.current || !enableDrag) return
+        const { angle } = getCenterAndAngle(e)
+        let delta = angle - startAngleRef.current
+        // Normalize to [-PI, PI] to avoid jumps when crossing the seam
+        while (delta > Math.PI) delta -= 2 * Math.PI
+        while (delta < -Math.PI) delta += 2 * Math.PI
+        const deltaAngle = delta * dragSensitivity
+        // Negative sign to align with next() which subtracts angleStep for clockwise move
+        setTotalRotation(startRotationRef.current + deltaAngle)
+
+        // compute angular velocity (rad/s)
+        let moveDelta = angle - lastMoveAngleRef.current
+        while (moveDelta > Math.PI) moveDelta -= 2 * Math.PI
+        while (moveDelta < -Math.PI) moveDelta += 2 * Math.PI
+        const now = performance.now()
+        const dt = (now - lastMoveTimeRef.current) / 1000
+        if (dt > 0) {
+          angularVelocityRef.current = moveDelta / dt
+        }
+        lastMoveAngleRef.current = angle
+        lastMoveTimeRef.current = now
+      },
+      [enableDrag, getCenterAndAngle, dragSensitivity]
+    )
+
+    const handlePointerUp = useCallback(
+      (e: PointerEvent | React.PointerEvent) => {
+        if (!isDragging.current) return
+        isDragging.current = false
+        setDragging(false)
+        const target = containerRef.current
+        if (target && grabCursor) {
+          target.style.cursor = grabCursor ? "grab" : "auto"
+        }
+
+        const speed = Math.abs(angularVelocityRef.current)
+        const shouldGlide = enableMomentum && speed > momentumStopSpeed
+        if (shouldGlide) {
+          // start inertia
+          setInertiaRunning(true)
+          lastInertiaTimeRef.current = performance.now()
+
+          const step = () => {
+            const now = performance.now()
+            const dt = (now - lastInertiaTimeRef.current) / 1000
+            lastInertiaTimeRef.current = now
+
+            const decay = Math.pow(momentumDecay, dt * 60)
+            angularVelocityRef.current *= decay
+            // integrate
+            setTotalRotation((curr) => curr + angularVelocityRef.current * dt)
+
+            if (Math.abs(angularVelocityRef.current) <= momentumStopSpeed) {
+              setInertiaRunning(false)
+              inertiaRafRef.current = null
+              if (snapOnRelease) snapToNearest()
+              return
+            }
+
+            inertiaRafRef.current = requestAnimationFrame(step)
+          }
+
+          inertiaRafRef.current = requestAnimationFrame(step)
+          return
+        }
+
+        if (!snapOnRelease) return
+        snapToNearest()
+      },
+      [snapOnRelease, grabCursor, enableMomentum, momentumStopSpeed, momentumDecay, snapToNearest]
+    )
+
+    // Global listeners while dragging so movement outside still tracked
+    useEffect(() => {
+      const onMove = (e: PointerEvent) => handlePointerMove(e)
+      const onUp = (e: PointerEvent) => handlePointerUp(e)
+      window.addEventListener("pointermove", onMove)
+      window.addEventListener("pointerup", onUp)
+      window.addEventListener("pointercancel", onUp)
+      return () => {
+        window.removeEventListener("pointermove", onMove)
+        window.removeEventListener("pointerup", onUp)
+        window.removeEventListener("pointercancel", onUp)
+      }
+    }, [handlePointerMove, handlePointerUp])
 
     return (
       <div
         className={cn(
           "relative w-full h-full grid place-items-center",
+          enableDrag && grabCursor && "cursor-grab",
           containerClassName
         )}
         style={{
           width: radius * 2,
           height: radius * 2,
         }}
+        ref={containerRef}
+        onPointerDown={handlePointerDown}
       >
         {items.map((item, index) => {
           const baseAngle = index * angleStep
@@ -237,6 +455,11 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
             }
           }
 
+          // During drag, we want immediate response (no animation)
+          if (dragging || inertiaRunning) {
+            itemTransition = { ...itemTransition, duration: 0 }
+          }
+
           const itemContent = debug ? (
             <div
               className={`w-16 h-16 ${getDebugColor(index)} flex items-center justify-center font-medium text-black text`}
@@ -252,7 +475,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
               key={index}
               className="absolute"
               animate={{
-                transform: `rotate(${angle}rad) translate(0, -${radius}px)`,
+                transform: keepOriginalOrientation ? `rotate(${angle}rad) translate(0, -${radius}px) rotate(${-angle}rad)` : `rotate(${angle}rad) translate(0, -${radius}px)`,
                 zIndex:
                   currentIndex === index && focusedOnTop
                     ? baseZIndex + items.length
