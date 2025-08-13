@@ -234,7 +234,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         return
       }
 
-      // Stop any running inertia so it doesn't interfere
+      // Stop any running inertia so it doesn't interfere. If 
       if (inertiaRunning) {
         setInertiaRunning(false)
         if (inertiaRafRef.current) cancelAnimationFrame(inertiaRafRef.current)
@@ -242,7 +242,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         angularVelocityRef.current = 0
       }
 
-      // Compute shortest signed step difference in [-N/2, N/2]
+      // Get the "shortest" path to the focus angle. For example, if the carousel is at index 0 and we want to go to items.length - 1, it will not rotate an almost full circle, only one step. 
       const n = items.length
       let diff = (((index - currentIndex) % n) + n) % n // normalize to [0, n-1]
       if (diff > n / 2) diff -= n // now in (-n/2, n/2]
