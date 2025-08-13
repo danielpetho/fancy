@@ -19,25 +19,118 @@ const wrap = (min: number, max: number, value: number): number => {
 }
 
 interface SimpleMarqueeProps {
-  children: React.ReactNode // The elements to be scrolled
-  className?: string // Additional CSS classes for the container
-  direction?: "left" | "right" | "up" | "down" // The direction of the marquee
-  baseVelocity?: number // The base velocity of the marquee in pixels per second
-  easing?: (value: number) => number // The easing function for the animation
-  slowdownOnHover?: boolean // Whether to slow down the animation on hover
-  slowDownFactor?: number // The factor to slow down the animation on hover
-  slowDownSpringConfig?: SpringOptions // The spring config for the slow down animation
-  useScrollVelocity?: boolean // Whether to use the scroll velocity to control the marquee speed
-  scrollAwareDirection?: boolean // Whether to adjust the direction based on the scroll direction
-  scrollSpringConfig?: SpringOptions // The spring config for the scroll velocity-based direction adjustment
-  scrollContainer?: RefObject<HTMLElement> | HTMLElement | null // The container to use for the scroll velocity
-  repeat?: number // The number of times to repeat the children.
-  draggable?: boolean // Whether to allow dragging of the marquee
-  dragSensitivity?: number // The sensitivity of the drag movement
-  dragVelocityDecay?: number // The decay of the drag velocity. This means how fast the velocity will gradually reduce to baseVelocity when we release the drag
-  dragAwareDirection?: boolean // Whether to adjust the direction based on the drag velocity
-  dragAngle?: number // The angle of the drag movement in degrees. This is useful if you eg. rotating your marquee by 45 degrees
-  grabCursor?: boolean // Whether to change the cursor to grabbing when dragging
+  /**
+   * The elements to be scrolled
+   */
+  children: React.ReactNode
+
+  /**
+   * Additional CSS classes for the container
+   * @default undefined
+   */
+  className?: string
+
+  /**
+   * The direction of the marquee
+   * @default "right"
+   */
+  direction?: "left" | "right" | "up" | "down"
+
+  /**
+   * The base velocity of the marquee in pixels per second
+   * @default 5
+   */
+  baseVelocity?: number
+
+  /**
+   * The easing function for the animation
+   * @default undefined
+   */
+  easing?: (value: number) => number
+
+  /**
+   * Whether to slow down the animation on hover
+   * @default false
+   */
+  slowdownOnHover?: boolean
+
+  /**
+   * The factor to slow down the animation on hover
+   * @default 0.3
+   */
+  slowDownFactor?: number
+
+  /**
+   * The spring config for the slow down animation
+   * @default { damping: 50, stiffness: 400 }
+   */
+  slowDownSpringConfig?: SpringOptions
+
+  /**
+   * Whether to use the scroll velocity to control the marquee speed
+   * @default false
+   */
+  useScrollVelocity?: boolean
+
+  /**
+   * Whether to adjust the direction based on the scroll direction
+   * @default false
+   */
+  scrollAwareDirection?: boolean
+
+  /**
+   * The spring config for the scroll velocity-based direction adjustment
+   * @default { damping: 50, stiffness: 400 }
+   */
+  scrollSpringConfig?: SpringOptions
+
+  /**
+   * The container to use for the scroll velocity
+   * @default undefined
+   */
+  scrollContainer?: RefObject<HTMLElement> | HTMLElement | null
+
+  /**
+   * The number of times to repeat the children.
+   * @default 3
+   */
+  repeat?: number
+
+  /**
+   * Whether to allow dragging of the marquee
+   * @default false
+   */
+  draggable?: boolean
+
+  /**
+   * The sensitivity of the drag movement
+   * @default 0.2
+   */
+  dragSensitivity?: number
+
+  /**
+   * The decay of the drag velocity. This means how fast the velocity will gradually reduce to baseVelocity when we release the drag
+   * @default 0.96
+   */
+  dragVelocityDecay?: number
+
+  /**
+   * Whether to adjust the direction based on the drag direction
+   * @default false
+   */
+  dragAwareDirection?: boolean
+
+  /**
+   * The angle of the drag movement in degrees. This is useful if you eg. rotating your marquee by 45 degrees
+   * @default 0
+   */
+  dragAngle?: number
+
+  /**
+   * Whether to change the cursor to grabbing when dragging
+   * @default false
+   */
+  grabCursor?: boolean
 }
 
 const SimpleMarquee = ({
