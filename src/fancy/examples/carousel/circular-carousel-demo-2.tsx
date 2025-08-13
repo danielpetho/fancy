@@ -85,12 +85,12 @@ export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
 
   const items = cityNames.map((text, i) => (
-    <p className="text-base font-bold cursor-pointer select-none">{text}</p>
+    <p className="text-base font-bold cursor-grab select-none">{text}</p>
   ))
 
   return (
     <div className="w-full h-full relative bg-white">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-blue/50">
+      <div className="absolute top-1/2 left-1/2 pl-16 -translate-x-1/2 -translate-y-1/2 text-blue perspective-1000 transform-style-preserve-3d border w-full h-full">
         <CircularCarousel
           ref={carouselRef}
           items={items}
@@ -101,10 +101,10 @@ export default function CircularCarouselDemo() {
             stiffness: 300,
             damping: 25,
           }}
-          focusTargetState={{
-            x: -100,
-            color: "#0055ff",
-          }}
+          // focusTargetState={{
+          //   x: -100,
+          //   color: "#0055ff",
+          // }}
 
           enableDrag={true}
           //goToOnClick={true}
@@ -112,12 +112,14 @@ export default function CircularCarouselDemo() {
           //autoPlay={true}
           autoPlayInterval={1000}
           autoPlayDirection="ccw"
+          dragSensitivity={0.6}
+          momentumDecay={0.9}
           // staggerDelay={0.01}
-          containerClassName="-rotate-90 scale-50"
+          containerClassName="-rotate-z-90 scale-[65%] rotate-y-[35deg]"
           itemClassName="rotate-90 flex items-center justify-start w-64"
-          radius={400}
+          radius={"auto"}
         />
-        <div className="absolute rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center text-2xl justify-center w-4 h-4 bg-blue"></div>
+        {/* <div className="absolute rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center text-2xl justify-center w-4 h-4 bg-blue"></div> */}
       </div>
     </div>
   )

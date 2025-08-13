@@ -18,10 +18,10 @@ interface CircularCarouselProps {
    */
   items: React.ReactNode[]
   /**
-   * Radius of the circular arrangement in pixels
-   * @default 100
+   * Radius of the circular arrangement in pixels, or auto to fit the container
+   * @default auto
    */
-  radius?: number
+  radius?: number | "auto"
   /**
    * The state to animate to when an item becomes in focus.
    * @default {}
@@ -80,7 +80,7 @@ interface CircularCarouselProps {
    * @default 3000
    */
   autoPlayInterval?: number
-    /**
+  /**
    * Rotation direction of the carousel on autoplay, cw as clockwise, ccw as counter-clockwise
    * @default "cw"
    */
@@ -153,7 +153,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
   (
     {
       items,
-      radius = 100,
+      radius = "auto",
       keepOriginalOrientation = false,
       debug = false,
       focusedOnTop = false,
@@ -182,6 +182,11 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const [totalRotation, setTotalRotation] = useState(0)
 
     const containerRef = useRef<HTMLDivElement | null>(null)
+
+    const [calculatedRadius, setCalculatedRadius] = useState<number | "auto">(
+      radius
+    )
+
     const isDragging = useRef(false)
     const [dragging, setDragging] = useState(false)
     const startRotationRef = useRef(0)
@@ -239,7 +244,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
       // Compute shortest signed step difference in [-N/2, N/2]
       const n = items.length
-      let diff = ((index - currentIndex) % n + n) % n // normalize to [0, n-1]
+      let diff = (((index - currentIndex) % n) + n) % n // normalize to [0, n-1]
       if (diff > n / 2) diff -= n // now in (-n/2, n/2]
 
       setCurrentIndex(index)
@@ -255,6 +260,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       getCurrentIndex,
     }))
 
+    /**
+     * Auto-play the carousel
+     */
     useEffect(() => {
       if (autoPlay && items.length > 0 && !dragging && !inertiaRunning) {
         const interval = setInterval(() => {
@@ -268,11 +276,39 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       }
     }, [autoPlay, items.length, autoPlayInterval, dragging, inertiaRunning])
 
+    /**
+     * If radius is auto, calculate the radius based on the container size
+     */
+    useEffect(() => {
+      if (radius !== "auto") setCalculatedRadius(radius)
+
+      const container = containerRef.current
+      if (!container) return
+
+      const updateRadius = () => {
+        setCalculatedRadius(
+          Math.min(container.clientWidth, container.clientHeight) / 2
+        )
+      }
+
+      updateRadius()
+
+      const resizeObserver = new window.ResizeObserver(() => {
+        updateRadius()
+      })
+      resizeObserver.observe(container)
+
+      return () => {
+        resizeObserver.disconnect()
+      }
+    }, [radius])
+
     const snapToNearest = useCallback(() => {
       setTotalRotation((curr) => {
         const stepsFromZero = Math.round(-curr / angleStep)
         const snappedRotation = -stepsFromZero * angleStep
-        const newIndex = ((stepsFromZero % items.length) + items.length) % items.length
+        const newIndex =
+          ((stepsFromZero % items.length) + items.length) % items.length
         setCurrentIndex(newIndex)
         return snappedRotation
       })
@@ -285,8 +321,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         const rect = container.getBoundingClientRect()
         const cx = rect.left + rect.width / 2
         const cy = rect.top + rect.height / 2
-        const clientX = (e as PointerEvent).clientX ?? (e as React.PointerEvent).clientX
-        const clientY = (e as PointerEvent).clientY ?? (e as React.PointerEvent).clientY
+        const clientX =
+          (e as PointerEvent).clientX ?? (e as React.PointerEvent).clientX
+        const clientY =
+          (e as PointerEvent).clientY ?? (e as React.PointerEvent).clientY
         const dx = clientX - cx
         const dy = clientY - cy
         // Screen Y grows downwards; atan2 handles it correctly for relative changes
@@ -375,7 +413,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
             const decay = Math.pow(momentumDecay, dt * 60)
             angularVelocityRef.current *= decay
-            // integrate
             setTotalRotation((curr) => curr + angularVelocityRef.current * dt)
 
             if (Math.abs(angularVelocityRef.current) <= momentumStopSpeed) {
@@ -395,10 +432,19 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         if (!snapOnRelease) return
         snapToNearest()
       },
-      [snapOnRelease, grabCursor, enableMomentum, momentumStopSpeed, momentumDecay, snapToNearest]
+      [
+        snapOnRelease,
+        grabCursor,
+        enableMomentum,
+        momentumStopSpeed,
+        momentumDecay,
+        snapToNearest,
+      ]
     )
 
-    // Global listeners while dragging so movement outside still tracked
+    /**
+     * add pointer listeners for dragging
+     */
     useEffect(() => {
       const onMove = (e: PointerEvent) => handlePointerMove(e)
       const onUp = (e: PointerEvent) => handlePointerUp(e)
@@ -416,12 +462,11 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       <div
         className={cn(
           "relative w-full h-full grid place-items-center",
-          enableDrag && grabCursor && "cursor-grab",
           containerClassName
         )}
         style={{
-          width: radius * 2,
-          height: radius * 2,
+          width: radius === "auto" ? "100%" : radius * 2,
+          height: radius === "auto" ? "100%" : radius * 2,
         }}
         ref={containerRef}
         onPointerDown={handlePointerDown}
@@ -473,9 +518,14 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           return (
             <motion.div
               key={index}
-              className="absolute"
+              className={cn(
+                "absolute",
+                enableDrag && grabCursor && "cursor-grab"
+              )}
               animate={{
-                transform: keepOriginalOrientation ? `rotate(${angle}rad) translate(0, -${radius}px) rotate(${-angle}rad)` : `rotate(${angle}rad) translate(0, -${radius}px)`,
+                transform: keepOriginalOrientation
+                  ? `rotate(${angle}rad) translate(0, -${calculatedRadius}px) rotate(${-angle}rad)`
+                  : `rotate(${angle}rad) translate(0, -${calculatedRadius}px)`,
                 zIndex:
                   currentIndex === index && focusedOnTop
                     ? baseZIndex + items.length
