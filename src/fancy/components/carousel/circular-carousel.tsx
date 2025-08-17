@@ -169,6 +169,14 @@ export interface CircularCarouselRef {
    * @returns {progress: number, remainingTime: number} - progress from 0 to 1, remainingTime in ms
    */
   getAutoPlayProgress: () => { progress: number; remainingTime: number }
+  /**
+   * Pause autoplay (saves current progress)
+   */
+  pause: () => void
+  /**
+   * Resume/start autoplay (continues from saved progress if paused)
+   */
+  start: () => void
 }
 
 const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
@@ -207,6 +215,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const [totalRotation, setTotalRotation] = useState(0)
 
     const [isHovered, setIsHovered] = useState(false)
+    const [isManuallyPaused, setIsManuallyPaused] = useState(false)
 
     const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -228,6 +237,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const autoPlayStartTimeRef = useRef<number>(0)
     const currentProgressRef = useRef<number>(0)
     const currentRemainingTimeRef = useRef<number>(0)
+    const currentProgressTimeRef = useRef<number>(0)
 
     const angleStep = (2 * Math.PI) / items.length
 
@@ -235,8 +245,11 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
     useAnimationFrame((time, delta) => {
 
-      currentProgressRef.current = (time - autoPlayStartTimeRef.current) / autoPlayInterval;
-      currentRemainingTimeRef.current = autoPlayInterval - (time - autoPlayStartTimeRef.current);
+      if (!(autoPlayPauseOnHover && isHovered) && !isManuallyPaused) {
+        currentProgressTimeRef.current = t.get() - autoPlayStartTimeRef.current;
+        currentProgressRef.current = (t.get() - autoPlayStartTimeRef.current) / autoPlayInterval;
+        currentRemainingTimeRef.current = autoPlayInterval - (t.get() - autoPlayStartTimeRef.current);
+      }
 
       if (!inertiaRunning) return
 
@@ -323,12 +336,29 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
     const getCurrentIndex = () => currentIndex
 
+    const pause = useCallback(() => {
+      if (!isManuallyPaused) {
+        currentProgressTimeRef.current = t.get() - autoPlayStartTimeRef.current
+        setIsManuallyPaused(true)
+      }
+    }, [isManuallyPaused])
+
+    const start = useCallback(() => {
+      if (isManuallyPaused) {
+        // Resume from where we left off
+        autoPlayStartTimeRef.current = t.get() - currentProgressTimeRef.current
+        setIsManuallyPaused(false)
+      }
+    }, [isManuallyPaused])
+
     useImperativeHandle(ref, () => ({
       next,
       prev,
       goTo,
       getCurrentIndex,
       getAutoPlayProgress,
+      pause,
+      start,
     }))
 
     /**
@@ -340,18 +370,38 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         items.length > 0 &&
         !dragging &&
         !inertiaRunning &&
+        !isManuallyPaused &&
         !(autoPlayPauseOnHover && isHovered)
       ) {
-        const interval = setInterval(() => {
+        let intervalId: NodeJS.Timeout | null = null
+
+        const step = () => {
           if (autoPlayDirection === "cw") {
             next()
           } else {
             prev()
           }
-        }, autoPlayInterval)
-        return () => clearInterval(interval)
+        }
+
+        // If we have remaining time from a pause, use that for the first timeout
+        const hasRemainingTime = currentRemainingTimeRef.current > 0 && currentRemainingTimeRef.current < autoPlayInterval
+        const initialDelay = hasRemainingTime ? currentRemainingTimeRef.current : autoPlayInterval
+
+        // First execution (either full interval or remaining time)
+        const timeout = setTimeout(() => {
+          step()
+          // After the first execution, set up regular interval
+          intervalId = setInterval(step, autoPlayInterval)
+        }, initialDelay)
+
+        return () => {
+          clearTimeout(timeout)
+          if (intervalId) {
+            clearInterval(intervalId)
+          }
+        }
       }
-    }, [autoPlay, items.length, autoPlayInterval, dragging, inertiaRunning, autoPlayPauseOnHover, isHovered])
+    }, [autoPlay, items.length, autoPlayInterval, dragging, inertiaRunning, isManuallyPaused, autoPlayPauseOnHover, isHovered])
 
     useEffect(() => {
       /**
@@ -448,22 +498,23 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         if (!isDragging.current || !enableDrag) return
         const { angle } = getCenterAndAngle(e)
         let delta = angle - startAngleRef.current
-        // Normalize to [-PI, PI] to avoid jumps when crossing the seam
+
         while (delta > Math.PI) delta -= 2 * Math.PI
         while (delta < -Math.PI) delta += 2 * Math.PI
         const deltaAngle = delta * dragSensitivity
-        // Negative sign to align with next() which subtracts angleStep for clockwise move
+
         setTotalRotation(startRotationRef.current + deltaAngle)
 
-        // compute angular velocity (rad/s)
         let moveDelta = angle - lastMoveAngleRef.current
         while (moveDelta > Math.PI) moveDelta -= 2 * Math.PI
         while (moveDelta < -Math.PI) moveDelta += 2 * Math.PI
         const now = performance.now()
         const dt = (now - lastMoveTimeRef.current) / 1000
+
         if (dt > 0) {
           angularVelocityRef.current = moveDelta / dt
         }
+
         lastMoveAngleRef.current = angle
         lastMoveTimeRef.current = now
       },
@@ -502,12 +553,15 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
     const handleMouseEnter = useCallback(() => {
       if (autoPlayPauseOnHover) {
+        currentProgressTimeRef.current = t.get() - autoPlayStartTimeRef.current;
         setIsHovered(true)
       }
     }, [autoPlayPauseOnHover])
 
     const handleMouseLeave = useCallback(() => {
       if (autoPlayPauseOnHover) {
+        // Resume from where we left off instead of restarting
+        autoPlayStartTimeRef.current = t.get() - currentProgressTimeRef.current
         setIsHovered(false)
       }
     }, [autoPlayPauseOnHover])
@@ -580,21 +634,17 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           const baseAngle = index * angleStep
           const angle = baseAngle + totalRotation
 
-          // Create item-specific transition with stagger delay based on distance from staggerOrigin
           let itemTransition = transition
           if (staggerDelay > 0) {
-            // Calculate this item's current angle in space
+
             const itemCurrentAngle = angle
 
-            // Calculate the angular distance from staggerOrigin, going clockwise
             let clockwiseDistance = itemCurrentAngle - staggerOrigin
 
-            // Normalize to 0 to 2π range (always positive, clockwise from origin)
             while (clockwiseDistance < 0) clockwiseDistance += 2 * Math.PI
             while (clockwiseDistance >= 2 * Math.PI)
               clockwiseDistance -= 2 * Math.PI
 
-            // Convert to a step count (0 to items.length-1)
             const stepCount =
               Math.round((clockwiseDistance / (2 * Math.PI)) * items.length) %
               items.length
@@ -605,7 +655,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
             }
           }
 
-          // During drag, we want immediate response (no animation)
           if (dragging || inertiaRunning) {
             itemTransition = { ...itemTransition, duration: 0 }
           }
