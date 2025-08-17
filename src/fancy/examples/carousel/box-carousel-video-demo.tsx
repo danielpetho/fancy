@@ -90,7 +90,7 @@ export default function BoxCarouselDemo() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 0 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              className="px-3 py-1.5 text-sm w-autp bg-gray-200 text-black rounded-xl"
+              className="px-3 py-1.5 text-sm w-auto bg-gray-200 text-black rounded-xl"
             >
               {carouselItems[currentIndex]?.alt}
             </motion.span>
