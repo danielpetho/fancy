@@ -110,11 +110,16 @@ const carouselImages = [
 function CarouselItem({ src, alt }: { src: string; alt: string }) {
   return (
     <motion.div
-      className="w-40 h-40 rounded-lg overflow-hidden cursor-pointer"
+      className="w-40 h-40 rounded-lg overflow-hidden"
       whileHover={{ scale: 1.05 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
     >
-      <img src={src} alt={alt} className="w-full h-full object-cover" />
+      <img
+        src={src}
+        alt={alt}
+        className="w-full h-full object-cover select-none"
+        draggable={false}
+      />
     </motion.div>
   )
 }
@@ -187,6 +192,8 @@ export default function CircularCarouselMorphingDemo() {
           }}
           radius={600}
           autoPlay={true}
+          goToOnClick={false}
+          enableDrag={true}
           autoPlayInterval={3000}
           autoPlayDirection="cw"
           autoPlayPauseOnHover={true}

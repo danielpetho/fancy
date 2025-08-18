@@ -250,11 +250,14 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const currentRemainingTimeRef = useRef<number>(0)
     const currentProgressTimeRef = useRef<number>(0)
 
+    // Angle difference between each item in radians
     const angleStep = (2 * Math.PI) / items.length
 
+    // Handy time value from motion. It counts from its creation time.
     const t = useTime()
 
     useAnimationFrame((time, delta) => {
+      // Update autoplay progress if nit paused or hovered
       if (!(autoPlayPauseOnHover && isHovered) && !isManuallyPaused) {
         currentProgressTimeRef.current = t.get() - autoPlayStartTimeRef.current
         currentProgressRef.current =
@@ -263,8 +266,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           autoPlayInterval - (t.get() - autoPlayStartTimeRef.current)
       }
 
+      // If no intertia is running, no need to calculate anything.
       if (!inertiaRunning) return
 
+      // Otherwise rotate the carousel until inertia stops.
       const dt = delta / 1000
 
       const decay = Math.pow(momentumDecay, dt * 60)
@@ -298,13 +303,12 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       return colors[index % colors.length]
     }
 
-    // Reset autoplay progress.
+    // Reset autoplay progress
     const resetAutoPlayProgress = useCallback(() => {
       autoPlayStartTimeRef.current = t.get()
       currentProgressRef.current = 0
       currentRemainingTimeRef.current = autoPlayInterval
       currentProgressTimeRef.current = t.get() - autoPlayStartTimeRef.current
-      
     }, [autoPlayInterval])
 
     const getAutoPlayProgress = useCallback(() => {
@@ -318,14 +322,14 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       setCurrentIndex((prev) => (prev + 1) % items.length)
       setTotalRotation((prev) => prev - angleStep)
       resetAutoPlayProgress()
-      setManualNavTrigger((prev) => prev + 1) // Force autoplay effect to re-run
+      setManualNavTrigger((prev) => prev + 1)
     }
 
     const prev = () => {
       setCurrentIndex((prev) => (prev - 1 + items.length) % items.length)
       setTotalRotation((prev) => prev + angleStep)
       resetAutoPlayProgress()
-      setManualNavTrigger((prev) => prev + 1) // Force autoplay effect to re-run
+      setManualNavTrigger((prev) => prev + 1)
     }
 
     const goTo = (index: number) => {
@@ -340,15 +344,21 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         angularVelocityRef.current = 0
       }
 
-      // Get the "shortest" path to the focus angle. For example, if the carousel is at index 0 and we want to go to items.length - 1, it will not rotate an almost full circle, only one step.
+      /*
+       * Get the "shortest" path to the focus angle. For example, if the carousel is at index 0 and we want to go to items.length - 1, it will not rotate an almost full circle, only one step.
+       */
       const n = items.length
-      let diff = (((index - currentIndex) % n) + n) % n // normalize to [0, n-1]
-      if (diff > n / 2) diff -= n // now in (-n/2, n/2]
+      // Find the distance between the current index and the target index, with mod to wrap around the carousel.
+      let diff = (index - currentIndex) % n
+      // If diff is negative, wrap it to a positive equivalent.
+      if (diff < 0) diff += n
+      // If moving forward is longer than moving backward, go backward instead.
+      if (diff > n / 2) diff -= n
 
       setCurrentIndex(index)
       setTotalRotation((prev) => prev - diff * angleStep)
       resetAutoPlayProgress()
-      setManualNavTrigger((prev) => prev + 1) // Force autoplay effect to re-run
+      setManualNavTrigger((prev) => prev + 1)
     }
 
     const getCurrentIndex = () => currentIndex
@@ -370,7 +380,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
     const getAutoplayState = useCallback(() => {
       return {
-        state: isManuallyPaused ? "paused" : "running" as "paused" | "running",
+        state: isManuallyPaused
+          ? "paused"
+          : ("running" as "paused" | "running"),
       }
     }, [isManuallyPaused])
 
@@ -418,7 +430,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         // First execution (either full interval or remaining time)
         const timeout = setTimeout(() => {
           step()
-          // After the first execution, set up regular interval
+          // After the first execution, set up regular interval. This will be in effect until the next manual nav trigger / hover / pause etc.
           intervalId = setInterval(step, autoPlayInterval)
         }, initialDelay)
 
@@ -441,10 +453,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       manualNavTrigger,
     ])
 
+    /**
+     * If radius is auto, calculate the radius based on the container size
+     */
     useEffect(() => {
-      /**
-       * If radius is auto, calculate the radius based on the container size
-       */
       if (radius !== "auto") setCalculatedRadius(radius)
 
       const container = containerRef.current
@@ -473,6 +485,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       }
     }, [radius])
 
+    /**
+     * Snap to the nearest item
+     */
     const snapToNearest = useCallback(() => {
       setTotalRotation((curr) => {
         const stepsFromZero = Math.round(-curr / angleStep)
@@ -484,6 +499,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       })
     }, [angleStep, items.length])
 
+    /**
+     * Get the center and angle of the pointer event. Needed for correctly calculating the angle of the dragging.
+     */
     const getCenterAndAngle = useCallback(
       (e: PointerEvent | React.PointerEvent) => {
         const container = containerRef.current
@@ -517,7 +535,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         const { angle } = getCenterAndAngle(e)
         startAngleRef.current = angle
         lastMoveAngleRef.current = angle
-        lastMoveTimeRef.current = performance.now()
+        lastMoveTimeRef.current = t.get()
         angularVelocityRef.current = 0
         if (grabCursor) {
           target.style.cursor = "grabbing"
@@ -624,7 +642,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     )
 
     /**
-     * add pointer listeners for dragging
+     * Add pointer listeners for dragging
      */
     useEffect(() => {
       const onMove = (e: PointerEvent) => handlePointerMove(e)
@@ -640,6 +658,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       }
     }, [handlePointerMove, handlePointerUp])
 
+    /**
+     * Add keyboard listeners for navigation
+     */
     useEffect(() => {
       if (!enableKeyboardNav) return
 
@@ -655,7 +676,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     return (
       <div
         className={cn(
-          "relative w-full h-full grid place-items-center",
+          "relative w-full h-full grid place-items-center focus:outline-none",
           containerClassName
         )}
         style={{
@@ -664,8 +685,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         }}
         ref={containerRef}
         onPointerDown={handlePointerDown}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         {...(enableKeyboardNav && { tabIndex: 0 })}
       >
         {items.map((item, index) => {
@@ -710,7 +729,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
             <motion.div
               key={index}
               className={cn(
-                "absolute",
+                "absolute ",
                 enableDrag && grabCursor && "cursor-grab"
               )}
               animate={{
@@ -729,6 +748,8 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
                 }
               }}
               transition={itemTransition}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <motion.div
                 animate={currentIndex === index ? focusTargetState : {}}
