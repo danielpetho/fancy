@@ -191,6 +191,7 @@ export default function CircularCarouselMorphingDemo() {
             y: -28,
           }}
           radius={600}
+          enableWheelNav={true}
           autoPlay={true}
           goToOnClick={false}
           enableDrag={true}

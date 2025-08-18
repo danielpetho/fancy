@@ -150,6 +150,11 @@ interface CircularCarouselProps {
    * @default "horizontal" - left/right arrows
    */
   keyboardNavDirection?: "horizontal" | "vertical"
+  /**
+   * Enable wheel navigation to trigger next/prev
+   * @default true
+   */
+  enableWheelNav?: boolean
 }
 
 export interface CircularCarouselRef {
@@ -218,6 +223,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       momentumStopSpeed = 0.2,
       enableKeyboardNav = true,
       keyboardNavDirection = "horizontal",
+      enableWheelNav = true,
     },
     ref
   ) => {
@@ -428,7 +434,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           : autoPlayInterval
 
         // First execution (either full interval or remaining time)
-        const timeout = setTimeout(() => {
+        const timeout = window.setTimeout(() => {
           step()
           // After the first execution, set up regular interval. This will be in effect until the next manual nav trigger / hover / pause etc.
           intervalId = setInterval(step, autoPlayInterval)
@@ -641,6 +647,23 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       [enableKeyboardNav, keyboardNavDirection, next, prev]
     )
 
+    const handleWheel = useCallback(
+      (e: WheelEvent) => {
+        if (!enableWheelNav) return
+
+        // Prevent default scrolling behavior
+        e.preventDefault()
+
+        // deltaY is positive when scrolling down, negative when scrolling up
+        if (e.deltaY > 0) {
+          next()
+        } else if (e.deltaY < 0) {
+          prev()
+        }
+      },
+      [enableWheelNav, next, prev]
+    )
+
     /**
      * Add pointer listeners for dragging
      */
@@ -668,10 +691,17 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       if (!container) return
 
       container.addEventListener("keydown", handleKeyDown)
+
+      if (!enableWheelNav) return
+
+      container.addEventListener("wheel", handleWheel)
+
       return () => {
         container.removeEventListener("keydown", handleKeyDown)
+        container.removeEventListener("wheel", handleWheel)
       }
     }, [enableKeyboardNav, handleKeyDown])
+
 
     return (
       <div
@@ -767,6 +797,4 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 )
 
 CircularCarousel.displayName = "CircularCarousel"
-
 export default CircularCarousel
-export type { CircularCarouselProps }
