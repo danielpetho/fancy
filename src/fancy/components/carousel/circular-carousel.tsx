@@ -13,6 +13,7 @@ import {
   TargetAndTransition,
   Transition,
   useAnimationFrame,
+  useReducedMotion,
   useTime,
 } from "motion/react"
 
@@ -224,6 +225,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       enableKeyboardNav = true,
       keyboardNavDirection = "horizontal",
       enableWheelNav = true,
+      ...props
     },
     ref
   ) => {
@@ -239,6 +241,11 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const [calculatedRadius, setCalculatedRadius] = useState<number | "auto">(
       radius
     )
+
+    // Announcement for screen readers
+    const [announcement, setAnnouncement] = useState<string>("")
+
+    const prefersReducedMotion = useReducedMotion()
 
     // Dragging and inertia refs and states
     const isDragging = useRef(false)
@@ -413,7 +420,8 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         !dragging &&
         !inertiaRunning &&
         !isManuallyPaused &&
-        !(autoPlayPauseOnHover && isHovered)
+        !(autoPlayPauseOnHover && isHovered) &&
+        !prefersReducedMotion
       ) {
         let intervalId: NodeJS.Timeout | null = null
 
@@ -702,6 +710,11 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       }
     }, [enableKeyboardNav, handleKeyDown])
 
+    useEffect(() => {
+      const currentItem = currentIndex + 1
+      const totalItems = items.length
+      setAnnouncement(`Item ${currentItem} of ${totalItems}`)
+    }, [currentIndex, items.length])
 
     return (
       <div
@@ -715,14 +728,26 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         }}
         ref={containerRef}
         onPointerDown={handlePointerDown}
+        role="region"
+        aria-label={"Circular carousel"}
+        aria-roledescription="carousel"
         {...(enableKeyboardNav && { tabIndex: 0 })}
+        {...props}
       >
+        {
+          <div aria-live="polite" aria-atomic="true" className="sr-only">
+            {announcement}
+          </div>
+        }
+
         {items.map((item, index) => {
           const baseAngle = index * angleStep
           const angle = baseAngle + totalRotation
 
           let itemTransition = transition
-          if (staggerDelay > 0) {
+          if (prefersReducedMotion) {
+            itemTransition = { duration: 0 }
+          } else if (staggerDelay > 0) {
             const itemCurrentAngle = angle
 
             let clockwiseDistance = itemCurrentAngle - staggerOrigin
@@ -780,10 +805,14 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
               transition={itemTransition}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${index + 1} of ${items.length}`}
+              {...(currentIndex === index && { "aria-current": "true" })}
             >
               <motion.div
                 animate={currentIndex === index ? focusTargetState : {}}
-                transition={itemTransition}
+                transition={prefersReducedMotion ? { duration: 0 } : itemTransition}
                 className={cn("", itemClassName)}
               >
                 {itemContent}
