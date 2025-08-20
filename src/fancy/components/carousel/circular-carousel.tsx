@@ -248,6 +248,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const [isHovered, setIsHovered] = useState(false)
     const [isManuallyPaused, setIsManuallyPaused] = useState(false)
     const [manualNavTrigger, setManualNavTrigger] = useState(0)
+    const [isTabNavigation, setIsTabNavigation] = useState(false)
 
     const containerRef = useRef<HTMLDivElement | null>(null)
 
@@ -347,20 +348,32 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       }
     }, [])
 
-    const next = () => {
+    const next = (isTabNav = false) => {
       setCurrentIndex((prev) => (prev + 1) % items.length)
       setTotalRotation((prev) => prev - angleStep)
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
       announceCurrentItem()
+      
+      if (isTabNav) {
+        setIsTabNavigation(true)
+        // Reset tab navigation flag after a short delay
+        setTimeout(() => setIsTabNavigation(false), 50)
+      }
     }
 
-    const prev = () => {
+    const prev = (isTabNav = false) => {
       setCurrentIndex((prev) => (prev - 1 + items.length) % items.length)
       setTotalRotation((prev) => prev + angleStep)
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
       announceCurrentItem()
+      
+      if (isTabNav) {
+        setIsTabNavigation(true)
+        // Reset tab navigation flag after a short delay
+        setTimeout(() => setIsTabNavigation(false), 50)
+      }
     }
 
     const goTo = (index: number) => {
@@ -665,6 +678,14 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       }
     }, [autoPlayPauseOnHover])
 
+    const handleFocus = useCallback(() => {
+      // When carousel receives focus, reset to first item if we're on the last item
+      // This allows proper Tab navigation after returning to the carousel
+      if (currentIndex === items.length - 1) {
+        goTo(0)
+      }
+    }, [currentIndex, items.length, goTo])
+
     const handleKeyDown = useCallback(
       (e: KeyboardEvent) => {
         if (!enableKeyboardNav) return
@@ -679,9 +700,18 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         } else if (prevKeys.includes(e.key)) {
           e.preventDefault()
           next()
+        } else if (e.key === "Tab" && !e.shiftKey) {
+          // Tab key moves to next item with instant transition for a11y
+          // But escape the carousel when reaching the last item
+          if (currentIndex === items.length - 1) {
+            // Don't prevent default - let Tab escape to next focusable element
+            return
+          }
+          e.preventDefault()
+          next(true)
         }
       },
-      [enableKeyboardNav, keyboardNavDirection, next, prev]
+      [enableKeyboardNav, keyboardNavDirection, next, prev, currentIndex, items.length]
     )
 
     useEffect(() => {
@@ -781,6 +811,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         }}
         ref={containerRef}
         onPointerDown={handlePointerDown}
+        onFocus={handleFocus}
         role="region"
         aria-label={"Circular carousel"}
         aria-roledescription="carousel"
@@ -798,7 +829,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           const angle = baseAngle + totalRotation
 
           let itemTransition = transition
-          if (prefersReducedMotion) {
+          if (prefersReducedMotion || isTabNavigation) {
             itemTransition = { duration: 0 }
           } else if (staggerDelay > 0) {
             const itemCurrentAngle = angle
@@ -819,7 +850,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
             }
           }
 
-          if (dragging || inertiaRunning) {
+          if (dragging || inertiaRunning || isTabNavigation) {
             itemTransition = { ...itemTransition, duration: 0 }
           }
 
@@ -865,7 +896,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
             >
               <motion.div
                 animate={currentIndex === index ? focusTargetState : {}}
-                transition={prefersReducedMotion ? { duration: 0 } : itemTransition}
+                transition={prefersReducedMotion || isTabNavigation ? { duration: 0 } : itemTransition}
                 className={cn("", itemClassName)}
               >
                 {itemContent}

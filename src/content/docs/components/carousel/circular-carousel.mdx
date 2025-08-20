@@ -6,3 +6,47 @@ component: true
 
 <ComponentPreview name="circular-carousel-morphing-demo" />
 
+## Installation
+
+<Tabs defaultValue="cli">
+
+<TabsList>
+  <TabsTrigger value="cli">CLI</TabsTrigger>
+  <TabsTrigger value="manual">Manual</TabsTrigger>
+</TabsList>
+<TabsContent value="cli">
+
+<InstallTabs
+  command='shadcn@latest add "https://fancycomponents.dev/r/circular-carousel.json"'
+  npx
+/>
+
+</TabsContent>
+<TabsContent value="manual">
+
+<ComponentSource name="circular-carousel" />
+
+</TabsContent>
+</Tabs>
+
+## Usage
+
+Create your own items and pass them to the `items` prop, the rest of the props are optional. You can either define a radius in pixels, or set it to `auto` (default) to automatically fill up the parent container.
+
+<CodeSnippet title="High-level example">
+  ```tsx
+  const items = Array.from({ length: 10 }, (_, index) => (
+    <img src={`https://picsum.photos/200/300?random=${index}`} alt={`Item #${index + 1}`} />
+  ))
+
+  <CircularCarousel items={items} radius={300} />
+  ```
+</CodeSnippet>
+
+## Understanding the Component
+
+The component is really similar to a regular one-dimensional carousel, only the items here are positioned in a circle, and rotated around the center of the container. 
+
+Each item is positioned at a specific angle, and  
+
+
