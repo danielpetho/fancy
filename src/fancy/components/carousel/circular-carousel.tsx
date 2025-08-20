@@ -16,6 +16,7 @@ import {
   useReducedMotion,
   useTime,
 } from "motion/react"
+import { debounce } from "lodash"
 
 import { cn } from "@/lib/utils"
 
@@ -156,6 +157,16 @@ interface CircularCarouselProps {
    * @default true
    */
   enableWheelNav?: boolean
+  /**
+   * Debounce time in ms for wheel handling
+   * @default 200
+   */
+  wheelDebounce?: number
+  /**
+   * Axis for wheel navigation - x, y, or both
+   * @default "y"
+   */
+  wheelAxis?: "x" | "y" | "both"
 }
 
 export interface CircularCarouselRef {
@@ -225,6 +236,8 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       enableKeyboardNav = true,
       keyboardNavDirection = "horizontal",
       enableWheelNav = true,
+      wheelDebounce = 200,
+      wheelAxis = "x",
       ...props
     },
     ref
@@ -262,6 +275,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const currentProgressRef = useRef<number>(0)
     const currentRemainingTimeRef = useRef<number>(0)
     const currentProgressTimeRef = useRef<number>(0)
+
+    // Wheel navigation ref
+    const debouncedNavigateRef = useRef<((direction: number) => void) & { cancel?: () => void } | null>(null)
 
     // Angle difference between each item in radians
     const angleStep = (2 * Math.PI) / items.length
@@ -336,6 +352,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       setTotalRotation((prev) => prev - angleStep)
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
+      announceCurrentItem()
     }
 
     const prev = () => {
@@ -343,6 +360,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       setTotalRotation((prev) => prev + angleStep)
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
+      announceCurrentItem()
     }
 
     const goTo = (index: number) => {
@@ -368,6 +386,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       // If moving forward is longer than moving backward, go backward instead.
       if (diff > n / 2) diff -= n
 
+      announceCurrentItem()
       setCurrentIndex(index)
       setTotalRotation((prev) => prev - diff * angleStep)
       resetAutoPlayProgress()
@@ -499,6 +518,12 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       }
     }, [radius])
 
+    const announceCurrentItem = useCallback(() => {
+      const currentItem = currentIndex + 1
+      const totalItems = items.length
+      setAnnouncement(`Item ${currentItem} of ${totalItems}`)
+    }, [currentIndex, items.length])
+
     /**
      * Snap to the nearest item
      */
@@ -511,7 +536,8 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         setCurrentIndex(newIndex)
         return snappedRotation
       })
-    }, [angleStep, items.length])
+      announceCurrentItem()
+    }, [angleStep, items.length, announceCurrentItem])
 
     /**
      * Get the center and angle of the pointer event. Needed for correctly calculating the angle of the dragging.
@@ -655,21 +681,50 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       [enableKeyboardNav, keyboardNavDirection, next, prev]
     )
 
+    useEffect(() => {
+
+      if (debouncedNavigateRef.current?.cancel) {
+        debouncedNavigateRef.current.cancel()
+      }
+
+      const navigate = (direction: number) => {
+        if (direction > 0) {
+          next()
+        } else {
+          prev()
+        }
+      }
+
+      debouncedNavigateRef.current = debounce(navigate, wheelDebounce)
+    }, [next, prev, wheelDebounce])
+
     const handleWheel = useCallback(
       (e: WheelEvent) => {
         if (!enableWheelNav) return
 
-        // Prevent default scrolling behavior
         e.preventDefault()
 
-        // deltaY is positive when scrolling down, negative when scrolling up
-        if (e.deltaY > 0) {
-          next()
-        } else if (e.deltaY < 0) {
-          prev()
+        let delta = 0
+        if (wheelAxis === "y") {
+          delta = e.deltaY
+          console.log("delta", delta)
+        } else if (wheelAxis === "x") {
+          delta = e.deltaX
+          console.log("delta", delta)
+        } else if (wheelAxis === "both") {
+          // Use the axis with the larger magnitude
+          delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
+        }
+
+        if (debouncedNavigateRef.current) {
+          if (delta > 5) {
+            debouncedNavigateRef.current(1)
+          } else if (delta < -5) {
+            debouncedNavigateRef.current(-1)
+          }
         }
       },
-      [enableWheelNav, next, prev]
+      [enableWheelNav, wheelAxis]
     )
 
     /**
@@ -707,14 +762,11 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       return () => {
         container.removeEventListener("keydown", handleKeyDown)
         container.removeEventListener("wheel", handleWheel)
+        if (debouncedNavigateRef.current?.cancel) {
+          debouncedNavigateRef.current.cancel()
+        }
       }
-    }, [enableKeyboardNav, handleKeyDown])
-
-    useEffect(() => {
-      const currentItem = currentIndex + 1
-      const totalItems = items.length
-      setAnnouncement(`Item ${currentItem} of ${totalItems}`)
-    }, [currentIndex, items.length])
+    }, [enableKeyboardNav, enableWheelNav, handleKeyDown, handleWheel])
 
     return (
       <div
