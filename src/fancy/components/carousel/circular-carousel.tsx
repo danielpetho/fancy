@@ -287,7 +287,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
     useAnimationFrame((time, delta) => {
       // Update autoplay progress if nit paused or hovered
-      if (!(autoPlayPauseOnHover && isHovered) && !isManuallyPaused) {
+      if (!(autoPlayPauseOnHover && isHovered) && !isManuallyPaused && !inertiaRunning) {
         currentProgressTimeRef.current = t.get() - autoPlayStartTimeRef.current
         currentProgressRef.current =
           (t.get() - autoPlayStartTimeRef.current) / autoPlayInterval
@@ -536,6 +536,8 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         setCurrentIndex(newIndex)
         return snappedRotation
       })
+
+      resetAutoPlayProgress()
       announceCurrentItem()
     }, [angleStep, items.length, announceCurrentItem])
 
@@ -565,6 +567,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const handlePointerDown = useCallback(
       (e: React.PointerEvent) => {
         if (!enableDrag) return
+        
         const target = e.currentTarget as HTMLElement
         try {
           target.setPointerCapture(e.pointerId)
@@ -707,10 +710,8 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         let delta = 0
         if (wheelAxis === "y") {
           delta = e.deltaY
-          console.log("delta", delta)
         } else if (wheelAxis === "x") {
           delta = e.deltaX
-          console.log("delta", delta)
         } else if (wheelAxis === "both") {
           // Use the axis with the larger magnitude
           delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY
