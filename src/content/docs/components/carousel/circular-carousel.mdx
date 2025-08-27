@@ -4,7 +4,7 @@ description: A circular carousel component that displays items in a rotating cir
 component: true
 ---
 
-<ComponentPreview name="circular-carousel-morphing-demo" />
+<ComponentPreview name="circular-carousel-play-demo" />
 
 ## Installation
 
@@ -45,8 +45,55 @@ Create your own items and pass them to the `items` prop, the rest of the props a
 
 ## Understanding the Component
 
-The component is really similar to a regular one-dimensional carousel, only the items here are positioned in a circle, and rotated around the center of the container. 
+The component is really similar to a regular one-dimensional carousel, only the items here are positioned in a circle, and rotated around the center of the container. The items are mapped out and evenly distributed along the circle path. Therefore, taking care of responsiveness, and avoiding overlapping elements (if that's what you want) is your responsibility.
 
-Each item is positioned at a specific angle, and  
+<CodeSnippet title="Distribution in a circle">
+```tsx
+  //...
+
+  // Angle difference between each item in radians
+  const angleStep = (2 * Math.PI) / items.length
+
+  //...
+
+  {items.map((item, index) => {
+    const baseAngle = index * angleStep
+    const angle = baseAngle + totalRotation
+
+    let itemTransition = transition
+
+    //...
+
+    return (
+      <motion.div
+        key={index}
+        className={cn(
+          "absolute ",
+          enableDrag && grabCursor && "cursor-grab"
+        )}
+        animate={{
+          transform: keepOriginalOrientation
+            ? `rotate(${angle}rad) translate(0, -${calculatedRadius}px) rotate(${-angle}rad)`
+            : `rotate(${angle}rad) translate(0, -${calculatedRadius}px)`,
+          zIndex:
+            currentIndex === index && focusedOnTop
+              ? baseZIndex + items.length
+              : baseZIndex + index,
+        }}
+        initial={false}
+
+        //...
+        >
+        {/*... */}
+      </motion.div>
+```
+</CodeSnippet>
+
+The calculatedRadius in the transform is either the radius you passed down 
+
+Besides the positioning transform, the rotation is also applied to the items individually (instead of the whole container circle). 
+
+
+This allows us to apply different transition to each item.
 
 
