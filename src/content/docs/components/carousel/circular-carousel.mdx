@@ -4,7 +4,7 @@ description: A circular carousel component that displays items in a rotating cir
 component: true
 ---
 
-<ComponentPreview name="circular-carousel-play-demo" />
+<ComponentPreview name="circular-carousel-demo-2" framerLink="https://framer.university/resources/circular-selection-on-scroll-in-framer" />
 
 ## Installation
 
@@ -45,7 +45,7 @@ Create your own items and pass them to the `items` prop, the rest of the props a
 
 ## Understanding the Component
 
-The component is really similar to a regular one-dimensional carousel, only the items here are positioned in a circle, and rotated around the center of the container. The items are mapped out and evenly distributed along the circle path. Therefore, taking care of responsiveness, and avoiding overlapping elements (if that's what you want) is your responsibility.
+The component is really similar to a regular one-dimensional carousel, only the items here are positioned in a circle, and rotated around the center of the container. The items are evenly distributed along the circle path. Therefore, taking care of responsiveness, and avoiding overlapping elements (if that's what you want) is your responsibility.
 
 <CodeSnippet title="Distribution in a circle">
 ```tsx
@@ -89,7 +89,7 @@ The component is really similar to a regular one-dimensional carousel, only the 
 ```
 </CodeSnippet>
 
-The calculatedRadius in the transform is either the radius you passed down 
+The calculatedRadius in the transform is either the radius passed down, or if set to `auto`, it will be the minimum of the container's width and height, divided by 2.
 
 Besides the positioning transform, the rotation is also applied to the items individually (instead of the whole container circle). 
 
