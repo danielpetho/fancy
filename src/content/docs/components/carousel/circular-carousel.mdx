@@ -89,11 +89,59 @@ The component is really similar to a regular one-dimensional carousel, only the 
 ```
 </CodeSnippet>
 
-The calculatedRadius in the transform is either the radius passed down, or if set to `auto`, it will be the minimum of the container's width and height, divided by 2.
+The `calculatedRadius` in the transform is either the `radius` passed down, or if set to `auto`, it will be the minimum of the container's width and height, divided by 2.
 
-Besides the positioning transform, the rotation is also applied to the items individually (instead of the whole container circle). 
+### Staggering animations
+
+The circular carousel supports staggered animations, 
+
+We apply rotation and animation to each item individually, rather than rotating the entire carousel as a single unit. This per-item approach allows us to apply an animation for each item individually. This also makes it possible to support staggered animations, where each item animates with a slight delay based on its position relative to a fixed origin point.
+
+You can control this behavior with two props:
+- `staggerDelay`: The delay (in seconds) between each item's animation
+- `staggerOrigin`: The fixed angle (in radians) where the stagger effect starts from
+
+<CodeSnippet title="Stagger delay calculation">
+```tsx
+//,,,
+{items.map((item, index) => {
+  const baseAngle = index * angleStep
+  const angle = baseAngle + totalRotation
+
+  let itemTransition = transition
+  if (prefersReducedMotion || isTabNavigation) {
+    itemTransition = { duration: 0 }
+  } else if (staggerDelay > 0) {
+    const itemCurrentAngle = angle
+
+    let clockwiseDistance = itemCurrentAngle - staggerOrigin
+
+    while (clockwiseDistance < 0) clockwiseDistance += 2 * Math.PI
+    while (clockwiseDistance >= 2 * Math.PI)
+      clockwiseDistance -= 2 * Math.PI
+
+    const stepCount =
+      Math.round((clockwiseDistance / (2 * Math.PI)) * items.length) %
+      items.length
+
+    itemTransition = {
+      ...transition,
+      delay: (transition.delay || 0) + stepCount * staggerDelay,
+    }
+  }
+//,,,
+```
+</CodeSnippet>
+
+- `staggerOrigin` sets where the stagger effect starts (in radians).
+- For each item, calculate how far it is from this origin around the circle.
+- Convert that distance into a step number.
+- Each item's animation is delayed by `stepCount * staggerDelay`.
+
+This produces a wave-like effect as the animation propagates around the circle:
+
+<ComponentPreview name="circular-carousel-stagger-demo" />
 
 
-This allows us to apply different transition to each item.
 
 
