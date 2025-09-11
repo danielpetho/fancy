@@ -59,7 +59,7 @@ interface ElementAlongPathProps {
   transition?: any
 
   // Scroll animation properties if animationType is scroll
-  scrollContainer?: RefObject<HTMLElement>
+  scrollContainer?: RefObject<HTMLElement | null>
   scrollOffset?: UseScrollOptions["offset"]
   scrollTransformValues?: [number, number]
 

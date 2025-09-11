@@ -11,7 +11,7 @@ type DragElementsProps = {
     | boolean
   dragConstraints?:
     | { top?: number; left?: number; right?: number; bottom?: number }
-    | React.RefObject<Element>
+    | React.RefObject<Element | null>
   dragMomentum?: boolean
   dragTransition?: InertiaOptions
   dragPropagation?: boolean

@@ -69,7 +69,7 @@ interface MarqueeAlongSvgPathProps {
   useScrollVelocity?: boolean
   scrollAwareDirection?: boolean
   scrollSpringConfig?: SpringOptions
-  scrollContainer?: RefObject<HTMLElement> | HTMLElement | null
+  scrollContainer?: RefObject<HTMLElement | null> | HTMLElement | null
 
   // Item repetition
   repeat?: number
@@ -180,7 +180,7 @@ const MarqueeAlongSvgPath = ({
 
   // Scroll tracking
   const { scrollY } = useScroll({
-    container: (scrollContainer as RefObject<HTMLDivElement>) || container,
+    container: (scrollContainer as RefObject<HTMLDivElement | null>) || container,
   })
 
   const scrollVelocity = useVelocity(scrollY)

@@ -37,7 +37,7 @@ interface ScrollAndSwapTextProps {
   /**
    * Reference to the container element for scroll tracking
    */
-  containerRef: React.RefObject<HTMLElement>
+  containerRef: React.RefObject<HTMLElement | null>
 
   /**
    * Offset configuration for when the animation should start and end relative to the scroll container. Check motion documentation for more details.

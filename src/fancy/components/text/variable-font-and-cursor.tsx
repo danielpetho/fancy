@@ -74,7 +74,7 @@ interface TextProps extends React.HTMLAttributes<HTMLElement> {
    * The cursor position will be calculated relative to this container's bounds.
    * Required prop with no default value.
    */
-  containerRef: React.RefObject<HTMLDivElement>
+  containerRef: React.RefObject<HTMLDivElement | null>
 }
 
 const VariableFontAndCursor = ({

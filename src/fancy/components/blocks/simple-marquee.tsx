@@ -30,7 +30,7 @@ interface SimpleMarqueeProps {
   useScrollVelocity?: boolean // Whether to use the scroll velocity to control the marquee speed
   scrollAwareDirection?: boolean // Whether to adjust the direction based on the scroll direction
   scrollSpringConfig?: SpringOptions // The spring config for the scroll velocity-based direction adjustment
-  scrollContainer?: RefObject<HTMLElement> | HTMLElement | null // The container to use for the scroll velocity
+  scrollContainer?: RefObject<HTMLElement | null> | HTMLElement | null // The container to use for the scroll velocity
   repeat?: number // The number of times to repeat the children.
   draggable?: boolean // Whether to allow dragging of the marquee
   dragSensitivity?: number // The sensitivity of the drag movement
@@ -67,7 +67,7 @@ const SimpleMarquee = ({
 
   const { scrollY } = useScroll({
     container:
-      (scrollContainer as RefObject<HTMLDivElement>) || innerContainer.current,
+      (scrollContainer as RefObject<HTMLDivElement | null>) || innerContainer.current,
   })
 
   const scrollVelocity = useVelocity(scrollY)

@@ -12,7 +12,7 @@ import { useDimensions } from "@/hooks/use-dimensions"
 
 type ScreensaverProps = {
   children: React.ReactNode
-  containerRef: React.RefObject<HTMLElement>
+  containerRef: React.RefObject<HTMLElement | null>
   speed?: number
   startPosition?: { x: number; y: number } // x,y as percentages (0-100)
   startAngle?: number // in degrees

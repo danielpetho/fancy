@@ -126,5 +126,5 @@ export default function SimpleMarqueeDemo() {
         </SimpleMarquee>
       </div>
     </div>
-  )
+  );
 }

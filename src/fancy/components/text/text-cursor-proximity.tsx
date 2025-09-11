@@ -44,7 +44,7 @@ interface TextProps extends React.HTMLAttributes<HTMLSpanElement> {
   /**
    * Reference to the container element for mouse position calculations
    */
-  containerRef: React.RefObject<HTMLDivElement>
+  containerRef: React.RefObject<HTMLDivElement | null>
 
   /**
    * Radius of the proximity effect in pixels

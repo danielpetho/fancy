@@ -51,7 +51,7 @@ interface AnimatedPathTextProps {
   }
 
   // Scroll animation properties if animationType is scroll
-  scrollContainer?: RefObject<HTMLElement>
+  scrollContainer?: RefObject<HTMLElement | null>
   scrollOffset?: UseScrollOptions["offset"]
   scrollTransformValues?: [number, number]
 }

@@ -61,5 +61,5 @@ export default function MarqueeAlongSvgPathDemo() {
         </MarqueeAlongSvgPath>
       </div>
     </div>
-  )
+  );
 }

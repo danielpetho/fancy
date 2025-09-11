@@ -6,7 +6,7 @@ interface Dimensions {
 }
 
 export function useDimensions(
-  ref: RefObject<HTMLElement | SVGElement>
+  ref: RefObject<HTMLElement | SVGElement | null>
 ): Dimensions {
   const [dimensions, setDimensions] = useState<Dimensions>({
     width: 0,

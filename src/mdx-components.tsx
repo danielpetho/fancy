@@ -155,13 +155,13 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       ...props
     }: React.ImgHTMLAttributes<HTMLImageElement>) => (
       //@ts-expect-error img src expects a Blob or string
-      <ImageComponent
+      (<ImageComponent
         src={props.src as string}
         alt={alt as string}
         caption={true}
         className={className}
         {...props}
-      />
+      />)
     ),
     hr: ({ ...props }: React.HTMLAttributes<HTMLHRElement>) => (
       <hr className="" {...props} />
@@ -185,7 +185,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       title?: string
     }) => {
       // Extract code content and language from children
-      const preElement = Children.toArray(children)[0] as React.ReactElement
+      const preElement = Children.toArray(children)[0] as React.ReactElement<any>
 
       //@ts-ignore
       const codeElement = preElement?.props?.children as React.ReactElement<{
@@ -287,5 +287,5 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <TabsContent className={cn("space-y-5",className)} {...props} />
     ),
     ...components,
-  }
+  };
 }
