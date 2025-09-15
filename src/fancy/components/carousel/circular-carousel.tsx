@@ -20,6 +20,12 @@ import { debounce } from "lodash"
 
 import { cn } from "@/lib/utils"
 
+interface FocusStyleInterpolation {
+  property: string
+  from: number | string
+  to: number | string
+}
+
 interface CircularCarouselProps {
   /**
    * Array of React components to display in the carousel
@@ -34,7 +40,24 @@ interface CircularCarouselProps {
    * The state to animate to when an item becomes in focus.
    * @default {}
    */
-  focusTargetState?: TargetAndTransition
+  focusStyleTargetState?: TargetAndTransition
+  /**
+   * Enable continuous focus style mapping during dragging.
+   * When enabled, items will continuously apply focusStyleTargetState based on their distance from the focus origin.
+   * @default false
+   */
+  continuousFocus?: boolean
+  /**
+   * The angle (in radians) where the focused item should be positioned.
+   * Items closer to this angle will have stronger focus effects.
+   * @default 0 (top of circle)
+   */
+  focusOrigin?: number
+  /**
+   * Array of properties to interpolate based on focus intensity.
+   * Supports both CSS variables and motion properties.
+   */
+  focusStyleInterpolation?: FocusStyleInterpolation[]
   /**
    * Keep items facing the camera (counter-rotate to maintain local rotation)
    * @default false
@@ -167,6 +190,11 @@ interface CircularCarouselProps {
    * @default "y"
    */
   wheelAxis?: "x" | "y" | "both"
+  /**
+   * Show skip carousel link for accessibility
+   * @default false
+   */
+  showSkipLink?: boolean
 }
 
 export interface CircularCarouselRef {
@@ -215,7 +243,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       debug = false,
       focusedOnTop = false,
       baseZIndex = 0,
-      focusTargetState = {},
+      focusStyleTargetState = {},
+      continuousFocus = false,
+      focusOrigin = 0,
+      focusStyleInterpolation = [],
       goToOnClick = false,
       transition = { type: "spring", stiffness: 300, damping: 30 },
       staggerDelay = 0,
@@ -238,6 +269,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       enableWheelNav = true,
       wheelDebounce = 200,
       wheelAxis = "x",
+      showSkipLink = false,
       ...props
     },
     ref
@@ -332,6 +364,42 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       ]
       return colors[index % colors.length]
     }
+
+    /**
+     * Calculate the focus intensity for an item based on its distance from the focus origin.
+     * Only applies focus between the next and previous elements relative to the focus origin.
+     * Returns a value between 0 and 1, where 1 is maximum focus (at the origin) and 0 is no focus.
+     */
+    const getFocusIntensity = useCallback((itemAngle: number) => {
+      if (!continuousFocus) return 0
+
+      // Calculate the shortest angular distance from the item to the focus origin
+      let distance = itemAngle - focusOrigin
+      
+      // Handle wrapping around the circle (shortest path)
+      while (distance > Math.PI) distance -= 2 * Math.PI
+      while (distance < -Math.PI) distance += 2 * Math.PI
+
+      // Only apply focus within the range of one step on each side of the focus origin
+      // This corresponds to the next and previous elements
+      const maxDistance = angleStep
+      
+      if (Math.abs(distance) > maxDistance) {
+        return 0
+      }
+
+      // Normalize distance to 0-1 range within the focus range
+      // Distance of 0 (at origin) = 1, distance of ±maxDistance = 0
+      const normalizedDistance = Math.abs(distance) / maxDistance
+      
+      // Apply a smooth falloff curve
+      // Using a cosine curve for smooth falloff from 1 to 0
+      const intensity = Math.cos(normalizedDistance * Math.PI / 2)
+
+      return Math.max(0, intensity)
+    }, [continuousFocus, focusOrigin, angleStep])
+
+
 
     // Reset autoplay progress
     const resetAutoPlayProgress = useCallback(() => {
@@ -679,12 +747,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     }, [autoPlayPauseOnHover])
 
     const handleFocus = useCallback(() => {
-      // When carousel receives focus, reset to first item if we're on the last item
-      // This allows proper Tab navigation after returning to the carousel
-      if (currentIndex === items.length - 1) {
-        goTo(0)
-      }
-    }, [currentIndex, items.length, goTo])
+      // When carousel receives focus, announce current item
+      announceCurrentItem()
+    }, [announceCurrentItem])
 
     const handleKeyDown = useCallback(
       (e: KeyboardEvent) => {
@@ -696,22 +761,19 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
         if (nextKeys.includes(e.key)) {
           e.preventDefault()
-          prev()
+          next()
         } else if (prevKeys.includes(e.key)) {
           e.preventDefault()
-          next()
-        } else if (e.key === "Tab" && !e.shiftKey) {
-          // Tab key moves to next item with instant transition for a11y
-          // But escape the carousel when reaching the last item
-          if (currentIndex === items.length - 1) {
-            // Don't prevent default - let Tab escape to next focusable element
-            return
-          }
+          prev()
+        } else if (e.key === "Home") {
           e.preventDefault()
-          next(true)
+          goTo(0)
+        } else if (e.key === "End") {
+          e.preventDefault()
+          goTo(items.length - 1)
         }
       },
-      [enableKeyboardNav, keyboardNavDirection, next, prev, currentIndex, items.length]
+      [enableKeyboardNav, keyboardNavDirection, next, prev, goTo, items.length]
     )
 
     useEffect(() => {
@@ -895,15 +957,44 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
               {...(currentIndex === index && { "aria-current": "true" })}
             >
               <motion.div
-                animate={currentIndex === index ? focusTargetState : {}}
+                animate={currentIndex === index ? focusStyleTargetState : {}}
                 transition={prefersReducedMotion || isTabNavigation ? { duration: 0 } : itemTransition}
                 className={cn("", itemClassName)}
+                style={(() => {
+                  if (!continuousFocus || focusStyleInterpolation.length === 0) return {}
+                  
+                  const focusIntensity = getFocusIntensity(angle)
+                  
+                  // Create interpolated values for focus properties
+                  const interpolatedValues: Record<string, any> = {}
+                  focusStyleInterpolation.forEach(({ property, from, to }) => {
+                    // Interpolate between from and to based on focus intensity
+                    if (typeof from === 'number' && typeof to === 'number') {
+                      interpolatedValues[property] = from + (to - from) * focusIntensity
+                    } else {
+                      // For non-numeric values, use threshold-based switching
+                      interpolatedValues[property] = focusIntensity > 0.5 ? to : from
+                    }
+                  })
+                  
+                  return interpolatedValues
+                })()}
               >
                 {itemContent}
               </motion.div>
             </motion.div>
           )
         })}
+
+        {/* Skip Link */}
+        {showSkipLink && (
+          <a
+            href="#skip-carousel"
+            className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-500 focus:text-white focus:rounded focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Skip carousel
+          </a>
+        )}
       </div>
     )
   }
@@ -911,3 +1002,4 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
 CircularCarousel.displayName = "CircularCarousel"
 export default CircularCarousel
+

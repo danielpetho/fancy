@@ -140,8 +140,59 @@ You can control this behavior with two props:
 
 This produces a wave-like effect as the animation propagates around the circle:
 
-<ComponentPreview name="circular-carousel-stagger-demo" />
+<ComponentPreview name="circular-carousel-continuous-focus-demo" />
 
+### Continuous Focus Mapping
+
+The circular carousel supports continuous focus mapping during dragging, which allows items to smoothly transition their focus effects based on their position relative to a focus origin point.
+
+When `continuousFocus` is enabled, items will continuously interpolate properties defined in `focusStyleInterpolation` based on their angular distance from the `focusOrigin`. The focus mapping is limited to only the next and previous elements relative to the focus origin, creating a smooth transition between adjacent items.
+
+<CodeSnippet title="Continuous Focus Example">
+```tsx
+<CircularCarousel
+  items={items}
+  radius={200}
+  continuousFocus={true}
+  focusOrigin={0} // Focus at the top of the circle (0 radians)
+  focusStyleInterpolation={[
+    {
+      property: "scale",
+      from: 1,
+      to: 1.5,
+    },
+    {
+      property: "rotateZ",
+      from: 0,
+      to: 15,
+    },
+    {
+      property: "y",
+      from: 0,
+      to: -20,
+    },
+    {
+      property: "--shadow-blur",
+      from: 0,
+      to: 20,
+    },
+    {
+      property: "--shadow-opacity", 
+      from: 0,
+      to: 0.3,
+    },
+  ]}
+  enableDrag={true}
+/>
+```
+</CodeSnippet>
+
+Key features of continuous focus:
+- **Limited range**: Focus effects only apply between the next and previous elements relative to the focus origin
+- **Smooth transitions**: Focus effects are applied continuously during dragging, not just when items snap to positions
+- **Distance-based intensity**: Items closer to the focus origin have stronger effects
+- **Configurable origin**: Set the `focusOrigin` angle to define where the strongest focus should be
+- **Unified interpolation**: Use `focusStyleInterpolation` to animate both CSS variables and motion properties with from/to ranges using `useTransform`
 
 
 
