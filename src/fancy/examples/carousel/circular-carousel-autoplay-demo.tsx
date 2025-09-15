@@ -4,6 +4,7 @@ import { useRef } from "react"
 import { motion } from "motion/react"
 
 import CircularCarousel, {
+  CircularCarouselItem,
   type CircularCarouselRef,
 } from "@/fancy/components/carousel/circular-carousel"
 
@@ -190,10 +191,6 @@ const gradientVariants = {
 export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
 
-  const items = carouselImages.map((image, i) => (
-    <CarouselItem key={image.id} src={image.src} alt={image.alt} />
-  ))
-
   return (
     <motion.div 
       className="w-full h-full relative"
@@ -208,7 +205,6 @@ export default function CircularCarouselDemo() {
       >
         <CircularCarousel
           ref={carouselRef}
-          items={items}
           keepOriginalOrientation={true}
           transition={{
             duration: 1.5,
@@ -218,7 +214,13 @@ export default function CircularCarouselDemo() {
           autoPlayInterval={2500}
           staggerDelay={0.07}
           radius={360}
-        />
+        >
+          {carouselImages.map((image, i) => (
+            <CircularCarouselItem key={image.id}>
+              <CarouselItem src={image.src} alt={image.alt} />
+            </CircularCarouselItem>
+          ))}
+        </CircularCarousel>
       </motion.div>
       
       {/* Text with staggered fade/blur-in animation */}

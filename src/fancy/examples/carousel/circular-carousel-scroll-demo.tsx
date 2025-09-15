@@ -4,6 +4,7 @@ import React, { useRef } from "react"
 import { motion, useAnimationFrame } from "motion/react"
 
 import CircularCarousel, {
+  CircularCarouselItem,
   type CircularCarouselRef,
 } from "@/fancy/components/carousel/circular-carousel"
 
@@ -195,10 +196,6 @@ export default function CircularCarouselDemo() {
   const progressCircleRef = useRef<SVGCircleElement>(null)
   const timeDisplayRef = useRef<HTMLSpanElement>(null)
 
-  const items = carouselImages.map((image, i) => (
-    <CarouselItem key={image.id} src={image.src} alt={image.alt} />
-  ))
-
   // Use Motion's animation frame hook for progress tracking
   useAnimationFrame(() => {
     if (carouselRef.current) {
@@ -240,7 +237,6 @@ export default function CircularCarouselDemo() {
       >
         <CircularCarousel
           ref={carouselRef}
-          items={items}
           keepOriginalOrientation={true}
           transition={{
             duration: 1.5,
@@ -255,7 +251,13 @@ export default function CircularCarouselDemo() {
           autoPlayInterval={3000}
           autoPlayDirection="ccw"
           autoPlayPauseOnHover={true}
-        />
+        >
+          {carouselImages.map((image, i) => (
+            <CircularCarouselItem key={image.id}>
+              <CarouselItem src={image.src} alt={image.alt} />
+            </CircularCarouselItem>
+          ))}
+        </CircularCarousel>
       </motion.div>
       
       {/* Text with staggered fade/blur-in animation */}

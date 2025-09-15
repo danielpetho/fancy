@@ -5,6 +5,7 @@ import { AnimatePresence, motion, useAnimationFrame } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import CircularCarousel, {
+  CircularCarouselItem,
   type CircularCarouselRef,
 } from "@/fancy/components/carousel/circular-carousel"
 
@@ -132,10 +133,6 @@ export default function CircularCarouselMorphingDemo() {
 
   const progressCircleRef = useRef<SVGCircleElement>(null)
 
-  const items = carouselImages.map((image, i) => (
-    <CarouselItem key={image.id} src={image.src} alt={image.alt} />
-  ))
-
   const radius = 5 // Radius for the progress circle
   const circumference = 2 * Math.PI * radius
   const strokeWidth = 2
@@ -180,12 +177,11 @@ export default function CircularCarouselMorphingDemo() {
       >
         <CircularCarousel
           ref={carouselRef}
-          items={items}
           transition={{
             duration: 1.2,
             ease: [0.89, 0.017, 0.205, 0.983],
           }}
-          focusTargetState={{
+          focusStyleTargetState={{
             scaleX: 1.4,
             scaleY: 1.4,
             y: -28,
@@ -198,7 +194,13 @@ export default function CircularCarouselMorphingDemo() {
           autoPlayInterval={3000}
           autoPlayDirection="cw"
           autoPlayPauseOnHover={true}
-        />
+        >
+          {carouselImages.map((image, i) => (
+            <CircularCarouselItem key={image.id}>
+              <CarouselItem src={image.src} alt={image.alt} />
+            </CircularCarouselItem>
+          ))}
+        </CircularCarousel>
       </div>
 
       <motion.div

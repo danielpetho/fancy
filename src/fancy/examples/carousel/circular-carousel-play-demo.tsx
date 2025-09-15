@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react"
 import { motion, useAnimationFrame } from "motion/react"
 
 import CircularCarousel, {
+  CircularCarouselItem,
   type CircularCarouselRef,
 } from "@/fancy/components/carousel/circular-carousel"
 
@@ -114,10 +115,6 @@ export default function CircularCarouselPlayDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
   const [currentIndex, setCurrentIndex] = useState(0)
 
-  const items = albumImages.map((image, i) => (
-    <AlbumCover key={i} src={image} alt={`Album ${i + 1}`} />
-  ))
-
   useAnimationFrame(() => {
     if (carouselRef.current) {
       const currentIdx = carouselRef.current.getCurrentIndex()
@@ -133,7 +130,6 @@ export default function CircularCarouselPlayDemo() {
       <div className="absolute -left-1/3 top-1/2 -translate-y-1/2">
         <CircularCarousel
           ref={carouselRef}
-          items={items}
           radius={300}
           transition={{
             duration: 0.5,
@@ -141,12 +137,11 @@ export default function CircularCarouselPlayDemo() {
             stiffness: 200,
             damping: 20,
           }}
-          focusTargetState={{
+          focusStyleTargetState={{
             scale: 1.3,
             x: 30,
           }}
-          containerClassName="rotate-90"
-          itemClassName="-rotate-90"
+          className="rotate-90"
           enableWheelNav={true}
           enableKeyboardNav={true}
           keepOriginalOrientation={true}
@@ -157,10 +152,15 @@ export default function CircularCarouselPlayDemo() {
           dragSensitivity={1.2}
           snapOnRelease={true}
           enableMomentum={true}
-          focusedOnTop={true}
           staggerDelay={0.01}
           goToOnClick={true}
-        />
+        >
+          {albumImages.map((image, i) => (
+            <CircularCarouselItem key={i} className="-rotate-90">
+              <AlbumCover src={image} alt={`Album ${i + 1}`} />
+            </CircularCarouselItem>
+          ))}
+        </CircularCarousel>
       </div>
 
       {/* Title on the right side */}

@@ -3,6 +3,7 @@
 import { useRef } from "react"
 
 import CircularCarousel, {
+  CircularCarouselItem,
   type CircularCarouselRef,
 } from "@/fancy/components/carousel/circular-carousel"
 
@@ -84,16 +85,11 @@ const cityNames = [
 export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
 
-  const items = cityNames.map((text, i) => (
-    <p className="text-base font-bold cursor-grab select-none">{text}</p>
-  ))
-
   return (
     <div className="w-full h-full relative bg-white">
       <div className="absolute top-1/2 left-1/2 pl-16 -translate-x-1/2 -translate-y-1/2 text-blue perspective-1000 transform-style-preserve-3d border w-full h-full">
         <CircularCarousel
           ref={carouselRef}
-          items={items}
           keepOriginalOrientation={true}
           transition={{
             duration: 0.5,
@@ -115,10 +111,15 @@ export default function CircularCarouselDemo() {
           dragSensitivity={0.6}
           momentumDecay={0.9}
           // staggerDelay={0.01}
-          containerClassName="-rotate-z-90 scale-[65%] rotate-y-[35deg]"
-          itemClassName="rotate-90 flex items-center justify-start w-64"
+          className="-rotate-z-90 scale-[65%] rotate-y-[35deg]"
           radius={"auto"}
-        />
+        >
+          {cityNames.map((text, i) => (
+            <CircularCarouselItem key={i} className="rotate-90 flex items-center justify-start w-64">
+              <p className="text-base font-bold cursor-grab select-none">{text}</p>
+            </CircularCarouselItem>
+          ))}
+        </CircularCarousel>
         {/* <div className="absolute rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center text-2xl justify-center w-4 h-4 bg-blue"></div> */}
       </div>
     </div>

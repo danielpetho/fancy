@@ -146,7 +146,7 @@ This produces a wave-like effect as the animation propagates around the circle:
 
 The circular carousel supports continuous focus mapping during dragging, which allows items to smoothly transition their focus effects based on their position relative to a focus origin point.
 
-When `continuousFocus` is enabled, items will continuously interpolate properties defined in `focusStyleInterpolation` based on their angular distance from the `focusOrigin`. The focus mapping is limited to only the next and previous elements relative to the focus origin, creating a smooth transition between adjacent items.
+When `continuousFocus` is enabled, items will continuously interpolate properties defined in `focusStyleInterpolation` based on their angular distance from the `focusOrigin`. You can control the range of the focus effect using `focusItemRange`.
 
 <CodeSnippet title="Continuous Focus Example">
 ```tsx
@@ -155,6 +155,7 @@ When `continuousFocus` is enabled, items will continuously interpolate propertie
   radius={200}
   continuousFocus={true}
   focusOrigin={0} // Focus at the top of the circle (0 radians)
+  focusItemRange={3} // Affect 3 items on each side of focus origin
   focusStyleInterpolation={[
     {
       property: "scale",
@@ -167,19 +168,14 @@ When `continuousFocus` is enabled, items will continuously interpolate propertie
       to: 15,
     },
     {
-      property: "y",
+      property: "translateY",
       from: 0,
-      to: -20,
+      to: -100,
     },
     {
-      property: "--shadow-blur",
+      property: "borderWidth",
       from: 0,
-      to: 20,
-    },
-    {
-      property: "--shadow-opacity", 
-      from: 0,
-      to: 0.3,
+      to: 10,
     },
   ]}
   enableDrag={true}
@@ -188,11 +184,11 @@ When `continuousFocus` is enabled, items will continuously interpolate propertie
 </CodeSnippet>
 
 Key features of continuous focus:
-- **Limited range**: Focus effects only apply between the next and previous elements relative to the focus origin
+- **Configurable range**: Use `focusItemRange` to control how many items are affected (1 = adjacent only, higher values = wider range)
+- **Full circle support**: If `focusItemRange >= items.length/2`, the entire circle is affected with smooth falloff
 - **Smooth transitions**: Focus effects are applied continuously during dragging, not just when items snap to positions
 - **Distance-based intensity**: Items closer to the focus origin have stronger effects
 - **Configurable origin**: Set the `focusOrigin` angle to define where the strongest focus should be
-- **Unified interpolation**: Use `focusStyleInterpolation` to animate both CSS variables and motion properties with from/to ranges using `useTransform`
-
+- **Unified interpolation**: Use `focusStyleInterpolation` to animate both CSS variables and motion properties with from/to ranges
 
 
