@@ -85,7 +85,7 @@ export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
 
   return (
-    <div className="w-full h-full relative bg-black">
+    <div className="w-full h-full relative bg-[#fefefe]">
       <div className="absolute -top-[92px] left-0 -translate-x-1/2 ">
         <CircularCarousel
           ref={carouselRef}
@@ -108,12 +108,12 @@ export default function CircularCarouselDemo() {
             {
               property: "color",
               from: "#777",
-              to: "#fff",
+              to: "#000",
             },
             {
               property: "fontWeight",
-              from: "normal",
-              to: "bold",
+              from: "400",
+              to: "600",
             },
             {
               property: "x",
@@ -129,11 +129,11 @@ export default function CircularCarouselDemo() {
         >
           {cityNames.map((text, i) => (
             <CircularCarouselItem key={i} className="-rotate-90 flex items-center justify-start w-40">
-              <p className="text-xs font-bold cursor-pointer select-none">{text}</p>
+              <p className="text-xs cursor-pointer select-none">{text}</p>
             </CircularCarouselItem>
           ))}
         </CircularCarousel>
-        <div className="absolute rounded-full top-[calc(50%-5px)] left-[calc(100%-132px)]  flex items-center text-2xl justify-center w-2 h-2 bg-red-500 "></div>
+        <div className="absolute rounded-full top-[calc(50%-5px)] left-[calc(100%-132px)]  flex items-center text-2xl justify-center w-2 h-2 bg-[#ff7300] "></div>
       </div>
     </div>
   )
