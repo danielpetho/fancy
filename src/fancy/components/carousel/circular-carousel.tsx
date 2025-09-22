@@ -8,6 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react"
+import { debounce } from "lodash"
 import {
   motion,
   TargetAndTransition,
@@ -17,8 +18,8 @@ import {
   useReducedMotion,
   useTime,
   useTransform,
+  animate,
 } from "motion/react"
-import { debounce } from "lodash"
 
 import { cn } from "@/lib/utils"
 
@@ -33,7 +34,10 @@ interface CircularCarouselItemProps {
   className?: string
 }
 
-const CircularCarouselItem = ({ children, className }: CircularCarouselItemProps) => {
+const CircularCarouselItem = ({
+  children,
+  className,
+}: CircularCarouselItemProps) => {
   return <div className={className}>{children}</div>
 }
 
@@ -282,9 +286,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     },
     ref
   ) => {
-  const [currentIndex, setCurrentIndex] = useState(0)
-  const [totalRotation, setTotalRotation] = useState(0)
-  const totalRotationMotionValue = useMotionValue(0)
+    const [currentIndex, setCurrentIndex] = useState(0)
+    const [totalRotation, setTotalRotation] = useState(0)
+    const totalRotationMotionValue = useMotionValue(0)
 
     const [isHovered, setIsHovered] = useState(false)
     const [isManuallyPaused, setIsManuallyPaused] = useState(false)
@@ -312,6 +316,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const angularVelocityRef = useRef(0) // rad/s
     const [inertiaRunning, setInertiaRunning] = useState(false)
 
+    // Animation control refs
+    const currentAnimationRef = useRef<ReturnType<typeof animate> | null>(null)
+
     // Progress tracking refs
     const autoPlayStartTimeRef = useRef<number>(0)
     const currentProgressRef = useRef<number>(0)
@@ -319,39 +326,46 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const currentProgressTimeRef = useRef<number>(0)
 
     // Wheel navigation ref
-    const debouncedNavigateRef = useRef<((direction: number) => void) & { cancel?: () => void } | null>(null)
+    const debouncedNavigateRef = useRef<
+      (((direction: number) => void) & { cancel?: () => void }) | null
+    >(null)
 
-  // Process children to extract items and their props
-  const items = React.useMemo(() => {
-    return React.Children.toArray(children).map((child) => {
-      if (React.isValidElement(child) && child.type === CircularCarouselItem) {
-        return {
-          content: child.props.children,
-          className: child.props.className,
+    // Process children to extract items and their props
+    const items = React.useMemo(() => {
+      return React.Children.toArray(children).map((child) => {
+        if (
+          React.isValidElement(child) &&
+          child.type === CircularCarouselItem
+        ) {
+          return {
+            content: child.props.children,
+            className: child.props.className,
+          }
         }
-      }
-      // Fallback for non-CircularCarouselItem children
-      return {
-        content: child,
-        className: undefined,
-      }
-    })
-  }, [children])
+        // Warn if non-CircularCarouselItem children are passed
+        console.error("CircularCarousel: Only CircularCarouselItem components should be used as children")
+        return null
+      })
+    }, [children])
 
-  // Angle difference between each item in radians
-  const angleStep = (2 * Math.PI) / items.length
+    // Angle difference between each item in radians
+    const angleStep = (2 * Math.PI) / items.length
 
-  // Sync motion value with state
-  useEffect(() => {
-    totalRotationMotionValue.set(totalRotation)
-  }, [totalRotation])
+    // Sync motion value with state
+    // useEffect(() => {
+    //   totalRotationMotionValue.set(totalRotation)
+    // }, [totalRotation])
 
-  // Handy time value from motion. It counts from its creation time.
-  const t = useTime()
+    // Handy time value from motion. It counts from its creation time.
+    const t = useTime()
 
     useAnimationFrame((time, delta) => {
       // Update autoplay progress if nit paused or hovered
-      if (!(autoPlayPauseOnHover && isHovered) && !isManuallyPaused && !inertiaRunning) {
+      if (
+        !(autoPlayPauseOnHover && isHovered) &&
+        !isManuallyPaused &&
+        !inertiaRunning
+      ) {
         currentProgressTimeRef.current = t.get() - autoPlayStartTimeRef.current
         currentProgressRef.current =
           (t.get() - autoPlayStartTimeRef.current) / autoPlayInterval
@@ -405,56 +419,100 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
      * Applies focus within the range defined by focusItemRange.
      * Returns a value between 0 and 1, where 1 is maximum focus (at the origin) and 0 is no focus.
      */
-    const getFocusIntensity = useCallback((itemAngle: number) => {
-      if (!continuousFocus) return 0
+    const getFocusIntensity = useCallback(
+      (itemAngle: number) => {
+        if (!continuousFocus) return 0
 
-      // Calculate the shortest angular distance from the item to the focus origin
-      let distance = itemAngle - focusOrigin
-      
-      // Handle wrapping around the circle (shortest path)
-      while (distance > Math.PI) distance -= 2 * Math.PI
-      while (distance < -Math.PI) distance += 2 * Math.PI
+        // Calculate the shortest angular distance from the item to the focus origin
+        let distance = itemAngle - focusOrigin
 
-      // Calculate max distance based on focusItemRange
-      // If focusItemRange >= items.length/2, affect the entire circle
-      const maxDistance = focusItemRange >= items.length / 2 
-        ? Math.PI  // Half circle (which covers everything due to shortest path)
-        : focusItemRange * angleStep
-      
-      if (Math.abs(distance) > maxDistance) {
-        return 0
-      }
+        // Handle wrapping around the circle (shortest path)
+        while (distance > Math.PI) distance -= 2 * Math.PI
+        while (distance < -Math.PI) distance += 2 * Math.PI
 
-      // Normalize distance to 0-1 range within the focus range
-      // Distance of 0 (at origin) = 1, distance of ±maxDistance = 0
-      const normalizedDistance = Math.abs(distance) / maxDistance
-      
-      // Apply a smooth falloff curve
-      // Using a cosine curve for smooth falloff from 1 to 0
-      const intensity = Math.cos(normalizedDistance * Math.PI / 2)
+        // Calculate max distance based on focusItemRange
+        // If focusItemRange >= items.length/2, affect the entire circle
+        const maxDistance =
+          focusItemRange >= items.length / 2
+            ? Math.PI // Half circle (which covers everything due to shortest path)
+            : focusItemRange * angleStep
 
-      return Math.max(0, intensity)
-    }, [continuousFocus, focusOrigin, angleStep, focusItemRange])
+        if (Math.abs(distance) > maxDistance) {
+          return 0
+        }
+
+        // Normalize distance to 0-1 range within the focus range
+        // Distance of 0 (at origin) = 1, distance of ±maxDistance = 0
+        const normalizedDistance = Math.abs(distance) / maxDistance
+
+        // Apply a smooth falloff curve
+        // Using a cosine curve for smooth falloff from 1 to 0
+        const intensity = Math.cos((normalizedDistance * Math.PI) / 2)
+
+        return Math.max(0, intensity)
+      },
+      [continuousFocus, focusOrigin, angleStep, focusItemRange]
+    )
 
     /**
      * Calculate the distance from focus origin for z-index mapping
      * Returns a value between 0 and 1, where 0 is at focus origin (closest) and 1 is furthest away
      */
-    const getDistanceFromFocus = useCallback((itemAngle: number) => {
-      // Calculate the shortest angular distance from the item to the focus origin
-      let distance = itemAngle - focusOrigin
-      
-      // Handle wrapping around the circle (shortest path)
-      while (distance > Math.PI) distance -= 2 * Math.PI
-      while (distance < -Math.PI) distance += 2 * Math.PI
+    const getDistanceFromFocus = useCallback(
+      (itemAngle: number) => {
+        // Calculate the shortest angular distance from the item to the focus origin
+        let distance = itemAngle - focusOrigin
 
-      // Normalize distance to 0-1 range where 0 is at focus origin and 1 is at the opposite side
-      const normalizedDistance = Math.abs(distance) / Math.PI
-      
-      return Math.min(1, normalizedDistance)
-    }, [focusOrigin])
+        // Handle wrapping around the circle (shortest path)
+        while (distance > Math.PI) distance -= 2 * Math.PI
+        while (distance < -Math.PI) distance += 2 * Math.PI
 
+        // Normalize distance to 0-1 range where 0 is at focus origin and 1 is at the opposite side
+        const normalizedDistance = Math.abs(distance) / Math.PI
 
+        return Math.min(1, normalizedDistance)
+      },
+      [focusOrigin]
+    )
+
+    /**
+     * Animate the rotation smoothly to a target value
+     */
+    const animateRotationTo = useCallback(
+      (targetRotation: number, animationTransition?: Transition) => {
+        // Stop any existing animation
+        if (currentAnimationRef.current) {
+          currentAnimationRef.current.stop()
+        }
+
+        // Use the provided transition or fallback to the component's transition
+        const finalTransition = animationTransition || transition
+
+        // Don't animate if reduced motion is preferred or during tab navigation
+        if (prefersReducedMotion || isTabNavigation) {
+          setTotalRotation(targetRotation)
+          totalRotationMotionValue.set(targetRotation)
+          return
+        }
+
+        // Animate the motion value from current to target rotation
+        currentAnimationRef.current = animate(
+          totalRotationMotionValue.get(),
+          targetRotation,
+          {
+            ...finalTransition,
+            onUpdate: (value: number) => {
+              setTotalRotation(value)
+              totalRotationMotionValue.set(value)
+            },
+            onComplete: () => {
+              currentAnimationRef.current = null
+            },
+          } as any
+        )
+      },
+      [transition, prefersReducedMotion, isTabNavigation]
+    )
 
     // Reset autoplay progress
     const resetAutoPlayProgress = useCallback(() => {
@@ -472,16 +530,21 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     }, [])
 
     const next = (isTabNav = false) => {
+      // Stop any running rotation animation
+      if (currentAnimationRef.current) {
+        currentAnimationRef.current.stop()
+        currentAnimationRef.current = null
+      }
+      
       setCurrentIndex((prev) => (prev + 1) % items.length)
-      setTotalRotation((prev) => {
-        const newRotation = prev - angleStep
-        totalRotationMotionValue.set(newRotation)
-        return newRotation
-      })
+      
+      const newRotation = totalRotation - angleStep
+      animateRotationTo(newRotation)
+      
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
       announceCurrentItem()
-      
+
       if (isTabNav) {
         setIsTabNavigation(true)
         // Reset tab navigation flag after a short delay
@@ -490,16 +553,21 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     }
 
     const prev = (isTabNav = false) => {
+      // Stop any running rotation animation
+      if (currentAnimationRef.current) {
+        currentAnimationRef.current.stop()
+        currentAnimationRef.current = null
+      }
+      
       setCurrentIndex((prev) => (prev - 1 + items.length) % items.length)
-      setTotalRotation((prev) => {
-        const newRotation = prev + angleStep
-        totalRotationMotionValue.set(newRotation)
-        return newRotation
-      })
+      
+      const newRotation = totalRotation + angleStep
+      animateRotationTo(newRotation)
+      
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
       announceCurrentItem()
-      
+
       if (isTabNav) {
         setIsTabNavigation(true)
         // Reset tab navigation flag after a short delay
@@ -513,10 +581,16 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         return
       }
 
-      // Stop any running inertia so it doesn't interfere
+      // Stop any running inertia and animations so they don't interfere
       if (inertiaRunning) {
         setInertiaRunning(false)
         angularVelocityRef.current = 0
+      }
+      
+      // Stop any running rotation animation
+      if (currentAnimationRef.current) {
+        currentAnimationRef.current.stop()
+        currentAnimationRef.current = null
       }
 
       /*
@@ -532,11 +606,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
       announceCurrentItem()
       setCurrentIndex(index)
-      setTotalRotation((prev) => {
-        const newRotation = prev - diff * angleStep
-        totalRotationMotionValue.set(newRotation)
-        return newRotation
-      })
+      
+      const newRotation = totalRotation - diff * angleStep
+      animateRotationTo(newRotation)
+      
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
     }
@@ -663,6 +736,11 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
       return () => {
         resizeObserver.disconnect()
+        // Clean up any running animations
+        if (currentAnimationRef.current) {
+          currentAnimationRef.current.stop()
+          currentAnimationRef.current = null
+        }
       }
     }, [radius])
 
@@ -676,19 +754,17 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
      * Snap to the nearest item
      */
     const snapToNearest = useCallback(() => {
-      setTotalRotation((curr) => {
-        const stepsFromZero = Math.round(-curr / angleStep)
-        const snappedRotation = -stepsFromZero * angleStep
-        const newIndex =
-          ((stepsFromZero % items.length) + items.length) % items.length
-        setCurrentIndex(newIndex)
-        totalRotationMotionValue.set(snappedRotation)
-        return snappedRotation
-      })
+      const stepsFromZero = Math.round(-totalRotation / angleStep)
+      const snappedRotation = -stepsFromZero * angleStep
+      const newIndex =
+        ((stepsFromZero % items.length) + items.length) % items.length
+      
+      setCurrentIndex(newIndex)
+      animateRotationTo(snappedRotation)
 
       resetAutoPlayProgress()
       announceCurrentItem()
-    }, [angleStep, items.length, announceCurrentItem])
+    }, [angleStep, items.length, announceCurrentItem, totalRotation, animateRotationTo])
 
     /**
      * Get the center and angle of the pointer event. Needed for correctly calculating the angle of the dragging.
@@ -716,7 +792,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const handlePointerDown = useCallback(
       (e: React.PointerEvent) => {
         if (!enableDrag) return
-        
+
+        // Prevent default to avoid scrolling/panning on touch devices
+        e.preventDefault()
+
         const target = e.currentTarget as HTMLElement
         try {
           target.setPointerCapture(e.pointerId)
@@ -732,10 +811,16 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         if (grabCursor) {
           target.style.cursor = "grabbing"
         }
-        // stop any running inertia
+        // stop any running inertia and animations
         if (inertiaRunning) {
           setInertiaRunning(false)
           angularVelocityRef.current = 0
+        }
+        
+        // Stop any running rotation animation
+        if (currentAnimationRef.current) {
+          currentAnimationRef.current.stop()
+          currentAnimationRef.current = null
         }
       },
       [enableDrag, totalRotation, getCenterAndAngle, grabCursor, inertiaRunning]
@@ -744,6 +829,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     const handlePointerMove = useCallback(
       (e: PointerEvent) => {
         if (!isDragging.current || !enableDrag) return
+        
+        // Prevent default to avoid scrolling/panning during drag on touch devices
+        e.preventDefault()
+        
         const { angle } = getCenterAndAngle(e)
         let delta = angle - startAngleRef.current
 
@@ -847,7 +936,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     )
 
     useEffect(() => {
-
       if (debouncedNavigateRef.current?.cancel) {
         debouncedNavigateRef.current.cancel()
       }
@@ -940,6 +1028,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         style={{
           width: radius === "auto" ? "100%" : radius * 2,
           height: radius === "auto" ? "100%" : radius * 2,
+          touchAction: enableDrag ? "none" : "auto",
         }}
         ref={containerRef}
         onPointerDown={handlePointerDown}
@@ -960,29 +1049,36 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           const baseAngle = index * angleStep
 
           // Create a transform that calculates the item's current angle from total rotation
-          const itemAngle = useTransform(totalRotationMotionValue, (rotation) => 
-            baseAngle + rotation
+          const itemAngle = useTransform(
+            totalRotationMotionValue,
+            (rotation) => baseAngle + rotation
           )
 
           // Create a transform that calculates focus intensity from the item angle
-          const itemFocusIntensity = useTransform(itemAngle, (angle) => 
+          const itemFocusIntensity = useTransform(itemAngle, (angle) =>
             continuousFocus ? getFocusIntensity(angle) : 0
           )
 
           // Create interpolated motion values for each focus style property
           const interpolatedMotionValues = focusStyleInterpolation.reduce(
             (acc, { property, from, to }) => {
-              acc[property] = useTransform(itemFocusIntensity, [0, 1], [from, to])
+              acc[property] = useTransform(
+                itemFocusIntensity,
+                [0, 1],
+                [from, to]
+              )
               return acc
             },
             {} as Record<string, any>
           )
 
-          const angle = baseAngle + totalRotation
+          const angle = baseAngle + totalRotationMotionValue.get()
 
           // Calculate z-index based on distance from focus origin
           const distanceFromFocus = getDistanceFromFocus(angle)
-          const zIndexFromDistance = Math.round(baseZIndex + (items.length - 1) * (1 - distanceFromFocus))
+          const zIndexFromDistance = Math.round(
+            baseZIndex + (items.length - 1) * (1 - distanceFromFocus)
+          )
 
           let itemTransition = transition
           if (prefersReducedMotion || isTabNavigation) {
@@ -1017,7 +1113,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
               {index + 1}
             </div>
           ) : (
-            item.content
+            item?.content
           )
 
           return (
@@ -1027,17 +1123,21 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
                 "absolute ",
                 enableDrag && grabCursor && "cursor-grab"
               )}
-              animate={{
-                transform: keepOriginalOrientation
-                  ? `rotate(${angle}rad) translate(0, -${calculatedRadius}px) rotate(${-angle}rad)`
-                  : `rotate(${angle}rad) translate(0, -${calculatedRadius}px)`,
-                zIndex: zIndexFromDistance,
-              }}
+              // animate={{
+               
+              // }}
               initial={false}
               onClick={() => {
                 if (goToOnClick) {
                   goTo(index)
                 }
+              }}
+              style={{
+                touchAction: enableDrag ? "none" : "auto",
+                transform: keepOriginalOrientation
+                ? `rotate(${angle}rad) translate(0, -${calculatedRadius}px) rotate(${-angle}rad)`
+                : `rotate(${angle}rad) translate(0, -${calculatedRadius}px)`,
+                zIndex: zIndexFromDistance,
               }}
               transition={itemTransition}
               onMouseEnter={handleMouseEnter}
@@ -1049,9 +1149,17 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
             >
               <motion.div
                 animate={currentIndex === index ? focusStyleTargetState : {}}
-                transition={prefersReducedMotion || isTabNavigation ? { duration: 0 } : itemTransition}
-                className={item.className}
-                style={continuousFocus && focusStyleInterpolation.length > 0 ? interpolatedMotionValues : {}}
+                transition={
+                  prefersReducedMotion || isTabNavigation
+                    ? { duration: 0 }
+                    : itemTransition
+                }
+                className={item?.className}
+                style={
+                  continuousFocus && focusStyleInterpolation.length > 0
+                    ? interpolatedMotionValues
+                    : {}
+                }
               >
                 {itemContent}
               </motion.div>

@@ -190,38 +190,6 @@ const gradientVariants = {
 
 export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
-  
-  // Progress tracking refs for smooth animations without re-renders
-  const progressBarRef = useRef<HTMLDivElement>(null)
-  const progressCircleRef = useRef<SVGCircleElement>(null)
-  const timeDisplayRef = useRef<HTMLSpanElement>(null)
-
-  // Use Motion's animation frame hook for progress tracking
-  useAnimationFrame(() => {
-    if (carouselRef.current) {
-      const { progress, remainingTime } = carouselRef.current.getAutoPlayProgress()
-
-      console.log(remainingTime)
-      
-      // Update progress bar
-      if (progressBarRef.current) {
-        progressBarRef.current.style.width = `${progress * 100}%`
-      }
-      
-      // Update circular progress
-      if (progressCircleRef.current) {
-        const circumference = 2 * Math.PI * 12
-        const strokeDashoffset = circumference * (1 - progress)
-        progressCircleRef.current.style.strokeDashoffset = `${strokeDashoffset}`
-      }
-      
-      // Update time display
-      if (timeDisplayRef.current) {
-        const seconds = Math.ceil(remainingTime / 1000)
-        timeDisplayRef.current.textContent = `${seconds}s`
-      }
-    }
-  })
 
   return (
     <motion.div 
@@ -267,54 +235,6 @@ export default function CircularCarouselDemo() {
       >
         <p className="text-2xl font uppercase">IMAGINARY STUDIO<sup>©</sup></p>
         <p className="text-2xl font uppercase">SELECTED WORKS<sup className="text-sm font-normal">(16)</sup> — 2025</p>
-      </motion.div>
-      
-      {/* Progress indicators */}
-      <motion.div 
-        className="absolute top-16 left-4 right-4 flex items-center justify-between"
-        variants={textVariants}
-      >
-        {/* Linear progress bar */}
-        <div className="flex-1 mr-4">
-          <div className="bg-black/10 rounded-full h-1 overflow-hidden">
-            <div 
-              ref={progressBarRef}
-              className="bg-black h-full transition-none"
-              style={{ width: '0%' }}
-            />
-          </div>
-          <div className="text-xs text-black/60 mt-1">
-            Next in <span ref={timeDisplayRef}>3s</span>
-          </div>
-        </div>
-        
-        {/* Circular progress indicator */}
-        <div className="relative">
-          <svg className="w-8 h-8 transform -rotate-90">
-            <circle
-              cx="16"
-              cy="16"
-              r="12"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              className="text-black/10"
-            />
-            <circle
-              ref={progressCircleRef}
-              cx="16"
-              cy="16"
-              r="12"
-              stroke="currentColor"
-              strokeWidth="2"
-              fill="none"
-              strokeDasharray={`${2 * Math.PI * 12}`}
-              strokeDashoffset={`${2 * Math.PI * 12}`}
-              className="text-black transition-none"
-              style={{ strokeLinecap: 'round' }}
-            />
-          </svg>
-        </div>
       </motion.div>
 
       {/* Gradient overlay with fade-in animation */}

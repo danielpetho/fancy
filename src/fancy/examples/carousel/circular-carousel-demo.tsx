@@ -78,7 +78,6 @@ const cityNames = [
   "Kiev, Ukraine",
   "Minsk, Belarus",
   "Tbilisi, Georgia",
-  "Jerusalem, Israel",
   "New Delhi, India",
 ]
 
@@ -86,8 +85,8 @@ export default function CircularCarouselDemo() {
   const carouselRef = useRef<CircularCarouselRef>(null)
 
   return (
-    <div className="w-full h-full relative">
-      <div className="absolute -top-[92px] left-0 -translate-x-1/2 text-black/50">
+    <div className="w-full h-full relative bg-black">
+      <div className="absolute -top-[92px] left-0 -translate-x-1/2 ">
         <CircularCarousel
           ref={carouselRef}
           keepOriginalOrientation={true}
@@ -97,11 +96,31 @@ export default function CircularCarouselDemo() {
             stiffness: 300,
             damping: 25,
           }}
-          focusStyleTargetState={{
-            x: 10,
-            color: "#000",
-          }}
+          // focusStyleTargetState={{
+          //   x: 10,
+          //   color: "#000",
+          // }}
           //autoPlay={true}
+          focusOrigin={0}
+          focusItemRange={1}
+          continuousFocus={true}
+          focusStyleInterpolation={[
+            {
+              property: "color",
+              from: "#777",
+              to: "#fff",
+            },
+            {
+              property: "fontWeight",
+              from: "normal",
+              to: "bold",
+            },
+            {
+              property: "x",
+              from: 0,
+              to: 4,
+            }
+          ]}
           autoPlayInterval={1000}
           autoPlayDirection="ccw"
           staggerDelay={0.0}
