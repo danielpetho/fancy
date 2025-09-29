@@ -10,6 +10,7 @@ import React, {
 } from "react"
 import { debounce } from "lodash"
 import {
+  animate,
   motion,
   TargetAndTransition,
   Transition,
@@ -18,19 +19,37 @@ import {
   useReducedMotion,
   useTime,
   useTransform,
-  animate,
 } from "motion/react"
 
 import { cn } from "@/lib/utils"
 
 interface FocusStyleInterpolation {
+
+  /**
+   * The CSS property to interpolate
+   */
   property: string
+
+  /**
+   * The starting value of the property
+   */
   from: number | string
+
+  /**
+   * The ending value of the property
+   */
   to: number | string
 }
 
 interface CircularCarouselItemProps {
+  /**
+   * The content of the item
+   */
   children: React.ReactNode
+
+  /**
+   * The CSS classes to apply to the item
+   */
   className?: string
 }
 
@@ -46,28 +65,33 @@ interface CircularCarouselProps {
    * CircularCarouselItem components to display in the carousel
    */
   children: React.ReactNode
+
   /**
    * Radius of the circular arrangement in pixels, or auto to fit the container
    * @default auto
    */
   radius?: number | "auto"
+
   /**
    * The state to animate to when an item becomes in focus.
    * @default {}
    */
   focusStyleTargetState?: TargetAndTransition
+
   /**
    * Enable continuous focus style mapping during dragging.
    * When enabled, items will continuously apply focusStyleTargetState based on their distance from the focus origin.
    * @default false
    */
   continuousFocus?: boolean
+
   /**
    * The angle (in radians) where the focused item should be positioned.
    * Items closer to this angle will have stronger focus effects.
    * @default 0 (top of circle)
    */
   focusOrigin?: number
+
   /**
    * Number of items on each side of the focus origin that should be affected by continuous focus.
    * For example, focusItemRange = 2 means 2 items before + 2 items after the focus origin.
@@ -75,42 +99,50 @@ interface CircularCarouselProps {
    * @default 1 (only adjacent items)
    */
   focusItemRange?: number
+
   /**
    * Array of properties to interpolate based on focus intensity.
    * Supports both CSS variables and motion properties.
    */
   focusStyleInterpolation?: FocusStyleInterpolation[]
+
   /**
    * Keep items facing the camera (counter-rotate to maintain local rotation)
    * @default false
    */
   keepOriginalOrientation?: boolean
+
   /**
    * The base z index to use for all items
    * @default 0
    */
   baseZIndex?: number
+
   /**
    * Whether to go to a specific item when an item is clicked
    * @default false
    */
   goToOnClick?: boolean
+
   /**
    * Render debug items instead of actual items (random colors with numbers)
    * @default false
    */
   debug?: boolean
+
   /**
    * Transition configuration for animations
    * @default { type: "spring", stiffness: 300, damping: 30 }
    */
   transition?: Transition
+
   /**
    * Stagger delay between each item's animation (in seconds)
    * If provided, each item will animate with this delay multiplied by its distance from staggerOrigin
    * @default 0
    */
   staggerDelay?: number
+
   /**
    * Fixed angle (in radians) or position where stagger animation should start from
    * This position stays fixed regardless of carousel rotation
@@ -118,60 +150,72 @@ interface CircularCarouselProps {
    * @example Math.PI (bottom), Math.PI/2 (right), -Math.PI/2 (left)
    */
   staggerOrigin?: number
+
   /**
    * Enable auto-play mode
    * @default false
    */
   autoPlay?: boolean
+
   /**
    * Interval (ms) between auto-play transitions
    * @default 3000
    */
   autoPlayInterval?: number
+
   /**
    * Rotation direction of the carousel on autoplay, cw as clockwise, ccw as counter-clockwise
    * @default "cw"
    */
   autoPlayDirection?: "cw" | "ccw"
+
   /**
    * Pause auto-play on hover
    * @default false
    */
   autoPlayPauseOnHover?: boolean
+
   /**
    * Additional CSS classes for the container
    */
   className?: string
+
   /**
    * Enable drag interaction to rotate the carousel
    * @default true
    */
   enableDrag?: boolean
+
   /**
    * Sensitivity of the drag movement
    * @default 1
    */
   dragSensitivity?: number
+
   /**
    * Snap to the closest item on drag release
    * @default true
    */
   snapOnRelease?: boolean
+
   /**
    * Show grab/grabbing cursor while dragging
    * @default true
    */
   grabCursor?: boolean
+
   /**
    * Continue rotation with decaying velocity after release
    * @default true
    */
   enableMomentum?: boolean
+
   /**
    * Decay factor per 60fps frame for momentum (0..1).
    * @default 0.95
    */
   momentumDecay?: number
+
   /**
    * Velocity threshold (rad/s) under which momentum stops and snaps to the nearest item
    * @default 0.2
@@ -183,26 +227,31 @@ interface CircularCarouselProps {
    * @default true
    */
   enableKeyboardNav?: boolean
+
   /**
    * Direction of keyboard navigation
    * @default "horizontal" - left/right arrows
    */
   keyboardNavDirection?: "horizontal" | "vertical"
+
   /**
    * Enable wheel navigation to trigger next/prev
    * @default true
    */
   enableWheelNav?: boolean
+
   /**
    * Debounce time in ms for wheel handling
    * @default 200
    */
   wheelDebounce?: number
+
   /**
    * Axis for wheel navigation - x, y, or both
    * @default "y"
    */
   wheelAxis?: "x" | "y" | "both"
+
   /**
    * Show skip carousel link for accessibility
    * @default false
@@ -287,7 +336,8 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     ref
   ) => {
     const [currentIndex, setCurrentIndex] = useState(0)
-    const [totalRotation, setTotalRotation] = useState(0)
+
+    // Track the total rotation of the carousel
     const totalRotationMotionValue = useMotionValue(0)
 
     const [isHovered, setIsHovered] = useState(false)
@@ -343,7 +393,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           }
         }
         // Warn if non-CircularCarouselItem children are passed
-        console.error("CircularCarousel: Only CircularCarouselItem components should be used as children")
+        console.error(
+          "CircularCarousel: Only CircularCarouselItem components should be used as children"
+        )
         return null
       })
     }, [children])
@@ -359,7 +411,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
     // Handy time value from motion. It counts from its creation time.
     const t = useTime()
 
-    useAnimationFrame((time, delta) => {
+    useAnimationFrame((_, delta) => {
       // Update autoplay progress if nit paused or hovered
       if (
         !(autoPlayPauseOnHover && isHovered) &&
@@ -382,11 +434,9 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
       const decay = Math.pow(momentumDecay, dt * 60)
       angularVelocityRef.current *= decay
 
-      setTotalRotation((curr) => {
-        const newRotation = curr + angularVelocityRef.current * dt
-        totalRotationMotionValue.set(newRotation)
-        return newRotation
-      })
+      const newRotation =
+        totalRotationMotionValue.get() + angularVelocityRef.current * dt
+      totalRotationMotionValue.set(newRotation)
 
       // Check if velocity has decreased below threshold, then we snap to the nearest item.
       if (Math.abs(angularVelocityRef.current) <= momentumStopSpeed) {
@@ -490,9 +540,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
         // Don't animate if reduced motion is preferred or during tab navigation
         if (prefersReducedMotion || isTabNavigation) {
-          setTotalRotation(targetRotation)
           totalRotationMotionValue.set(targetRotation)
-          return
+          //setTotalRotation(targetRotation)
+          totalRotationMotionValue.set(targetRotation)
+          //return
         }
 
         // Animate the motion value from current to target rotation
@@ -502,7 +553,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           {
             ...finalTransition,
             onUpdate: (value: number) => {
-              setTotalRotation(value)
+              // setTotalRotation(value)
               totalRotationMotionValue.set(value)
             },
             onComplete: () => {
@@ -535,12 +586,12 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         currentAnimationRef.current.stop()
         currentAnimationRef.current = null
       }
-      
+
       setCurrentIndex((prev) => (prev + 1) % items.length)
-      
-      const newRotation = totalRotation - angleStep
+
+      const newRotation = totalRotationMotionValue.get() - angleStep
       animateRotationTo(newRotation)
-      
+
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
       announceCurrentItem()
@@ -558,12 +609,12 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         currentAnimationRef.current.stop()
         currentAnimationRef.current = null
       }
-      
+
       setCurrentIndex((prev) => (prev - 1 + items.length) % items.length)
-      
-      const newRotation = totalRotation + angleStep
+
+      const newRotation = totalRotationMotionValue.get() + angleStep
       animateRotationTo(newRotation)
-      
+
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
       announceCurrentItem()
@@ -586,7 +637,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         setInertiaRunning(false)
         angularVelocityRef.current = 0
       }
-      
+
       // Stop any running rotation animation
       if (currentAnimationRef.current) {
         currentAnimationRef.current.stop()
@@ -606,10 +657,10 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
       announceCurrentItem()
       setCurrentIndex(index)
-      
-      const newRotation = totalRotation - diff * angleStep
+
+      const newRotation = totalRotationMotionValue.get() - diff * angleStep
       animateRotationTo(newRotation)
-      
+
       resetAutoPlayProgress()
       setManualNavTrigger((prev) => prev + 1)
     }
@@ -754,17 +805,19 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
      * Snap to the nearest item
      */
     const snapToNearest = useCallback(() => {
-      const stepsFromZero = Math.round(-totalRotation / angleStep)
+      const stepsFromZero = Math.round(
+        -totalRotationMotionValue.get() / angleStep
+      )
       const snappedRotation = -stepsFromZero * angleStep
       const newIndex =
         ((stepsFromZero % items.length) + items.length) % items.length
-      
+
       setCurrentIndex(newIndex)
       animateRotationTo(snappedRotation)
 
       resetAutoPlayProgress()
       announceCurrentItem()
-    }, [angleStep, items.length, announceCurrentItem, totalRotation, animateRotationTo])
+    }, [angleStep, items.length, announceCurrentItem, animateRotationTo])
 
     /**
      * Get the center and angle of the pointer event. Needed for correctly calculating the angle of the dragging.
@@ -802,7 +855,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         } catch {}
         isDragging.current = true
         setDragging(true)
-        startRotationRef.current = totalRotation
+        startRotationRef.current = totalRotationMotionValue.get()
         const { angle } = getCenterAndAngle(e)
         startAngleRef.current = angle
         lastMoveAngleRef.current = angle
@@ -816,23 +869,23 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           setInertiaRunning(false)
           angularVelocityRef.current = 0
         }
-        
+
         // Stop any running rotation animation
         if (currentAnimationRef.current) {
           currentAnimationRef.current.stop()
           currentAnimationRef.current = null
         }
       },
-      [enableDrag, totalRotation, getCenterAndAngle, grabCursor, inertiaRunning]
+      [enableDrag, getCenterAndAngle, grabCursor, inertiaRunning]
     )
 
     const handlePointerMove = useCallback(
       (e: PointerEvent) => {
         if (!isDragging.current || !enableDrag) return
-        
+
         // Prevent default to avoid scrolling/panning during drag on touch devices
         e.preventDefault()
-        
+
         const { angle } = getCenterAndAngle(e)
         let delta = angle - startAngleRef.current
 
@@ -841,7 +894,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         const deltaAngle = delta * dragSensitivity
 
         const newRotation = startRotationRef.current + deltaAngle
-        setTotalRotation(newRotation)
+        //setTotalRotation(newRotation)
         totalRotationMotionValue.set(newRotation)
 
         let moveDelta = angle - lastMoveAngleRef.current
@@ -1072,19 +1125,25 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
             {} as Record<string, any>
           )
 
-          const angle = baseAngle + totalRotationMotionValue.get()
+          const actualTransformValue = useTransform(itemAngle, (angle) =>
+            keepOriginalOrientation
+              ? `rotate(${angle}rad) translate(0, -${calculatedRadius}px) rotate(${-angle}rad)`
+              : `rotate(${angle}rad) translate(0, -${calculatedRadius}px)`
+          )
 
           // Calculate z-index based on distance from focus origin
-          const distanceFromFocus = getDistanceFromFocus(angle)
-          const zIndexFromDistance = Math.round(
-            baseZIndex + (items.length - 1) * (1 - distanceFromFocus)
-          )
+          const zIndexFromDistance = useTransform(itemAngle, (angle) => {
+            const distanceFromFocus = getDistanceFromFocus(angle)
+            return Math.round(
+              baseZIndex + (items.length - 1) * (1 - distanceFromFocus)
+            )
+          })
 
           let itemTransition = transition
           if (prefersReducedMotion || isTabNavigation) {
             itemTransition = { duration: 0 }
           } else if (staggerDelay > 0) {
-            const itemCurrentAngle = angle
+            const itemCurrentAngle = itemAngle.get()
 
             let clockwiseDistance = itemCurrentAngle - staggerOrigin
 
@@ -1123,9 +1182,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
                 "absolute ",
                 enableDrag && grabCursor && "cursor-grab"
               )}
-              // animate={{
-               
-              // }}
               initial={false}
               onClick={() => {
                 if (goToOnClick) {
@@ -1134,9 +1190,7 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
               }}
               style={{
                 touchAction: enableDrag ? "none" : "auto",
-                transform: keepOriginalOrientation
-                ? `rotate(${angle}rad) translate(0, -${calculatedRadius}px) rotate(${-angle}rad)`
-                : `rotate(${angle}rad) translate(0, -${calculatedRadius}px)`,
+                transform: actualTransformValue,
                 zIndex: zIndexFromDistance,
               }}
               transition={itemTransition}
