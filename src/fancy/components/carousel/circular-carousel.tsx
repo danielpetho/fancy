@@ -541,7 +541,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         // Don't animate if reduced motion is preferred or during tab navigation
         if (prefersReducedMotion || isTabNavigation) {
           totalRotationMotionValue.set(targetRotation)
-          //setTotalRotation(targetRotation)
           totalRotationMotionValue.set(targetRotation)
           //return
         }
@@ -553,7 +552,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
           {
             ...finalTransition,
             onUpdate: (value: number) => {
-              // setTotalRotation(value)
               totalRotationMotionValue.set(value)
             },
             onComplete: () => {
@@ -775,8 +773,12 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
       updateRadius()
 
+      // Create a debounced version of updateRadius to prevent excessive updates during resizing
+      // 150ms delay ensures we only update when resizing has settled, improving performance
+      const debouncedUpdateRadius = debounce(updateRadius, 150)
+
       const resizeObserver = new window.ResizeObserver(() => {
-        updateRadius()
+        debouncedUpdateRadius()
       })
       resizeObserver.observe(container)
 
@@ -787,6 +789,8 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
 
       return () => {
         resizeObserver.disconnect()
+        // Cancel any pending debounced calls
+        debouncedUpdateRadius.cancel()
         // Clean up any running animations
         if (currentAnimationRef.current) {
           currentAnimationRef.current.stop()
@@ -894,7 +898,6 @@ const CircularCarousel = forwardRef<CircularCarouselRef, CircularCarouselProps>(
         const deltaAngle = delta * dragSensitivity
 
         const newRotation = startRotationRef.current + deltaAngle
-        //setTotalRotation(newRotation)
         totalRotationMotionValue.set(newRotation)
 
         let moveDelta = angle - lastMoveAngleRef.current
