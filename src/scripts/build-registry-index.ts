@@ -476,14 +476,47 @@ const cleanRegistry = {
   ...createCleanRegistry(utils),
 }
 
-const jsonOutputDir = path.join(__dirname, "..", "..", "public")
+// Convert the flat registry to shadcn schema format
+const registryItems = Object.values(cleanRegistry).map((item: any) => {
+  // Add title and description if they don't exist
+  const title = item.title || item.name
+    .split('-')
+    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ')
+  
+  const description = item.description || `A ${item.type.replace('registry:', '')} component.`
+  
+  return {
+    name: item.name,
+    type: item.type,
+    title,
+    description,
+    ...(item.registryDependencies && { registryDependencies: item.registryDependencies }),
+    ...(item.dependencies && { dependencies: item.dependencies }),
+    ...(item.devDependencies && { devDependencies: item.devDependencies }),
+    ...(item.tailwind && { tailwind: item.tailwind }),
+    ...(item.cssVars && { cssVars: item.cssVars }),
+    ...(item.author && { author: item.author }),
+    files: item.files || []
+  }
+})
+
+// Create the shadcn schema format
+const shadcnRegistry = {
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "fancy",
+  "homepage": "https://fancycomponents.dev",
+  "items": registryItems
+}
+
+const jsonOutputDir = path.join(__dirname, "..", "..", "public/r")
 if (!fs.existsSync(jsonOutputDir)) {
   fs.mkdirSync(jsonOutputDir, { recursive: true })
 }
 
 fs.writeFileSync(
-  path.join(jsonOutputDir, "index.json"),
-  JSON.stringify(cleanRegistry, null, 2)
+  path.join(jsonOutputDir, "registry.json"),
+  JSON.stringify(shadcnRegistry, null, 2)
 )
 
 console.log("Registry files generated successfully!")

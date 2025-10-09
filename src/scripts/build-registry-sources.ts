@@ -5,7 +5,7 @@ const path = require("path")
 
 // @ts-ignore
 const baseDir = path.join(__dirname, "..", "..")
-const registryJsonPath = path.join(baseDir, "public", "index.json")
+const registryJsonPath = path.join(baseDir, "public/r/registry.json")
 
 // Single output directory for all registry items
 const registryOutputDir = path.join(baseDir, "public/r")
@@ -260,6 +260,8 @@ function processRegistryItem(name: string, item: any): any {
     $schema: "https://ui.shadcn.com/schema/registry-item.json",
     name,
     type: item.type,
+    title: item.title,
+    description: item.description,
     dependencies: item.dependencies || [],
     author: item.author, // Add this line
   }
@@ -399,7 +401,20 @@ function processRegistryItem(name: string, item: any): any {
 // Build the source files for all items
 function buildSourceFiles() {
   // Read the registry
-  const registry = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
+  const registryData = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
+  
+  // Handle both old and new schema formats
+  let registry: any
+  if (registryData.items) {
+    // New shadcn schema format
+    registry = {}
+    registryData.items.forEach((item: any) => {
+      registry[item.name] = item
+    })
+  } else {
+    // Old format (fallback)
+    registry = registryData
+  }
 
   // Process items in order: utils -> hooks -> ui -> blocks
   const processItemsByType = (type: string) => {
