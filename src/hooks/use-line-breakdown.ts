@@ -6,7 +6,7 @@ interface UseLineBreakdownResult {
 }
 
 export function useLineBreakdown(
-  elementRef: RefObject<HTMLElement>,
+  elementRef: RefObject<HTMLElement | null>,
   text: string
 ): UseLineBreakdownResult {
   const [breakdown, setBreakdown] = useState<UseLineBreakdownResult>({

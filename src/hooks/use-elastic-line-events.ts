@@ -9,7 +9,7 @@ interface ElasticLineEvents {
 }
 
 export function useElasticLineEvents(
-  containerRef: React.RefObject<SVGSVGElement>,
+  containerRef: React.RefObject<SVGSVGElement | null>,
   isVertical: boolean,
   grabThreshold: number,
   releaseThreshold: number

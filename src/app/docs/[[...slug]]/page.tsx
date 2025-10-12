@@ -18,9 +18,8 @@ import { getComponentByName } from "@/lib/get-components"
 export const runtime = "nodejs"
 export const dynamic = "force-static"
 
-export async function generateMetadata({
-  params,
-}: DocPageProps): Promise<Metadata> {
+export async function generateMetadata(props: DocPageProps): Promise<Metadata> {
+  const params = await props.params;
   const doc = await getDocFromParams({ params })
 
   if (!doc) {
@@ -98,7 +97,8 @@ export function generateStaticParams() {
   }))
 }
 
-export default async function DocPage({ params }: DocPageProps) {
+export default async function DocPage(props: DocPageProps) {
+  const params = await props.params;
   const doc = await getDocFromParams({ params })
 
   const toc = doc.toc
@@ -109,7 +109,7 @@ export default async function DocPage({ params }: DocPageProps) {
 
   // Generate current URL for markdown links
   const currentUrl = `https://fancycomponents.dev/docs/${params.slug?.join("/") || ""}`
-  
+
   // Extract plain text content from the page (simplified version)
   // For now, using description. Could be enhanced to extract more content client-side
   const plainTextContent = doc.description || "No description available"

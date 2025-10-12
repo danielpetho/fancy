@@ -102,5 +102,5 @@ export default function StackingCardsDemo() {
         </div>
       </StackingCards>
     </div>
-  )
+  );
 }

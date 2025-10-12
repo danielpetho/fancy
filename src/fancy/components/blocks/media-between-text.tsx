@@ -80,7 +80,7 @@ interface MediaBetweenTextProps {
   /**
    * Reference to container element for inView trigger
    */
-  containerRef?: React.RefObject<HTMLDivElement>
+  containerRef?: React.RefObject<HTMLDivElement | null>
 
   /**
    * Options for useInView hook

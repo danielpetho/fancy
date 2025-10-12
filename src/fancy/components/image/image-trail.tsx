@@ -105,7 +105,7 @@ const ImageTrail = ({
   zIndexDirection = "new-on-top",
   ...props
 }: ImageTrailProps) => {
-  const allImages = React.useRef<NodeListOf<HTMLElement>>()
+  const allImages = React.useRef<NodeListOf<HTMLElement>>(undefined)
   const currentId = React.useRef(0)
   const lastMousePos = React.useRef({ x: 0, y: 0 })
   const cachedMousePos = React.useRef({ x: 0, y: 0 })

@@ -1,7 +1,7 @@
 import { RefObject, useEffect, useState } from "react"
 
 export const useMouseVector = (
-  containerRef?: RefObject<HTMLElement | SVGElement>
+  containerRef?: RefObject<HTMLElement | SVGElement | null>
 ) => {
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const [vector, setVector] = useState({ dx: 0, dy: 0 })

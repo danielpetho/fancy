@@ -185,7 +185,6 @@ export default function SimpleMarqueeDemo() {
       <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-1/4 text-white font-calendas">
         Weekly Mix
       </h1>
-
       {loading ? (
         <div className="text-white">Loading album covers...</div>
       ) : (
@@ -238,5 +237,5 @@ export default function SimpleMarqueeDemo() {
         </>
       )}
     </div>
-  )
+  );
 }

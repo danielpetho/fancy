@@ -4,8 +4,9 @@ import path from "node:path"
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string[] } | undefined }
+  props: { params: Promise<{ slug: string[] } | undefined> }
 ) {
+  const params = await props.params;
   try {
     // Check if params and slug exist
     if (!params?.slug) {
