@@ -2,7 +2,7 @@
 
 "use client"
 
-import { useState } from "react"
+import { useRef } from "react"
 import Image from "next/image"
 
 import { cn } from "@/lib/utils"
@@ -54,16 +54,16 @@ const cards = [
 ]
 
 export default function StackingCardsDemo() {
-  const [container, setContainer] = useState<HTMLElement | null>(null)
+  const container = useRef<HTMLDivElement>(null)
 
   return (
     <div
       className="h-[620px] bg-white overflow-auto text-white"
-      ref={(node) => setContainer(node)}
+      ref={container}
     >
       <StackingCards
         totalCards={cards.length}
-        scrollOptons={{ container: { current: container } }}
+        scrollOptions={{ container: container }}
       >
         <div className="relative font-calendas h-[620px] w-full z-10 text-2xl md:text-7xl font-bold uppercase flex justify-center items-center text-primary-red whitespace-pre">
           Scroll down ↓

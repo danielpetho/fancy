@@ -89,7 +89,6 @@ const AnimatedPathText = ({
   scrollOffset = ["start end", "end end"],
   scrollTransformValues = [0, 100],
 }: AnimatedPathTextProps) => {
-  const container = useRef<HTMLDivElement>(null)
   const textPathRefs = useRef<SVGTextPathElement[]>([])
 
   // naive id for the path. you should rather use yours :)
@@ -97,7 +96,7 @@ const AnimatedPathText = ({
     pathId || `animated-path-${Math.random().toString(36).substring(7)}`
 
   const { scrollYProgress } = useScroll({
-    container: scrollContainer || container,
+    ...(scrollContainer && { container: scrollContainer }),
     offset: scrollOffset,
   })
 
