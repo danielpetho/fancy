@@ -19,7 +19,7 @@ export const runtime = "nodejs"
 export const dynamic = "force-static"
 
 export async function generateMetadata(props: DocPageProps): Promise<Metadata> {
-  const params = await props.params;
+  const params = await props.params
   const doc = await getDocFromParams({ params })
 
   if (!doc) {
@@ -98,7 +98,7 @@ export function generateStaticParams() {
 }
 
 export default async function DocPage(props: DocPageProps) {
-  const params = await props.params;
+  const params = await props.params
   const doc = await getDocFromParams({ params })
 
   const toc = doc.toc

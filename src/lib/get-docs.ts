@@ -3,13 +3,13 @@ import path from "node:path"
 import { mdxComponents } from "@/mdx-components"
 import { compileMDX } from "next-mdx-remote/rsc"
 
-import { Doc, DocPageProps } from "@/types/types"
+import { Doc } from "@/types/types"
 
 import { getTableOfContents } from "./toc"
 
 export const CONTENT_DIRECTORY = "/src/content/docs/"
 
-export async function getDocFromParams({ params }: DocPageProps): Promise<Doc> {
+export async function getDocFromParams({ params }: { params: { slug: string[] } }): Promise<Doc> {
   const source = fs.readFileSync(
     path.join(process.cwd(), CONTENT_DIRECTORY, params.slug.join("/")) + ".mdx",
     "utf8"

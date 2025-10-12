@@ -22,9 +22,9 @@ export type NpmCommands = {
 }
 
 export interface DocPageProps {
-  params: {
+  params: Promise<{
     slug: string[]
-  }
+  }>
 }
 
 // CMS data
