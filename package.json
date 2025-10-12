@@ -36,7 +36,7 @@
     "flubber": "^0.4.2",
     "lenis": "^1.1.20",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.383.0",
+    "lucide-react": "^0.545.0",
     "matter-js": "^0.20.0",
     "mdast-util-toc": "^7.1.0",
     "motion": "^12.11.0",
