@@ -24,7 +24,8 @@ const extractTextFromChildren = (children: React.ReactNode): string => {
   if (typeof children === "string") return children
 
   if (React.isValidElement(children)) {
-    const childText = children.props.children
+    const props = (children as React.ReactElement).props
+    const childText = (props as any).children as React.ReactNode
     if (typeof childText === "string") return childText
     if (React.isValidElement(childText)) {
       return extractTextFromChildren(childText)
@@ -309,7 +310,7 @@ const CharBox = ({
       }}
     >
       {/* Front face */}
-      <div
+      <span
         className={cn("relative backface-hidden h-[1lh]", frontFaceClassName)}
         style={{
           transform: `${
@@ -322,7 +323,7 @@ const CharBox = ({
         }}
       >
         {char}
-      </div>
+      </span>
 
       {/* Second face - positioned based on rotation direction */}
       <span
