@@ -91,7 +91,6 @@ const ScrollAndSwapText = ({
     container: containerRef,
     target: ref,
     offset: offset as any, // framer motion doesnt export the type, so we have to cast it, sorry :/
-    layoutEffect: false,
   })
 
   // Apply spring physics to smooth the scroll-based animation
