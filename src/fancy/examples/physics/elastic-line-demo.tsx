@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "motion/react"
+import { motion, Variants } from "motion/react"
 
 import ElasticLine from "@/fancy/components/physics/elastic-line"
 
