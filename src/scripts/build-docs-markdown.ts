@@ -255,6 +255,12 @@ function convertInstallTabsToMarkdown(content: string, includeInstructions: bool
     /<InstallTabs\s+command="([^"]+)"[^>]*\/>/g,
     (match, command) => {
       const decodedCommand = command.replace(/&quot;/g, '"')
+      
+      // Check if it's a shadcn command and add npx prefix if needed
+      if (decodedCommand.includes('shadcn add') && !decodedCommand.startsWith('npx')) {
+        return `\`\`\`bash\nnpx ${decodedCommand}\n\`\`\`\n\n`
+      }
+      
       return `\`\`\`bash\n${decodedCommand}\n\`\`\`\n\n`
     }
   )
