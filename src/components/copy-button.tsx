@@ -3,7 +3,7 @@
 import React, { useState, useRef } from 'react';
 import { Copy } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { motion, Variants } from 'motion/react';
+import { motion, TargetAndTransition, Variants } from 'motion/react';
 
 interface CopyButtonProps {
   onCopy: () => Promise<void> | void;
@@ -180,7 +180,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ onCopy }) => {
       {/* animated Background */}
       <motion.div
         className="absolute inset-0 bg-editor-border rounded-md"
-        animate={getBackgroundAnimation()}
+        animate={getBackgroundAnimation() as TargetAndTransition}
       />
       
       <MotionButton
