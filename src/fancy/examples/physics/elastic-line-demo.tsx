@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "motion/react"
+import { motion, Variants } from "motion/react"
 
 import ElasticLine from "@/fancy/components/physics/elastic-line"
 
@@ -39,7 +39,7 @@ export default function Preview() {
       <div className="h-full flex flex-col py-6 w-full px-6 sm:px-8 md:px-12 font-light">
         <div className="h-1/2 py-8 w-full items-end flex">
           <motion.p
-            variants={textVariants}
+            variants={textVariants as Variants}
             initial="hidden"
             animate="visible"
             className="uppercase text-4xl sm:text-5xl md:text-6xl font-medium"
@@ -50,7 +50,7 @@ export default function Preview() {
         </div>
         <div className="flex flex-row  pt-8 justify-between items-start gap-x-4">
           <motion.p
-            variants={textVariants}
+            variants={textVariants as Variants}
             initial="hidden"
             animate="visible"
             className="w-1/3 uppercase md:text-7xl hidden md:block text-orange-500"
@@ -59,7 +59,7 @@ export default function Preview() {
             ✽
           </motion.p>
           <motion.p
-            variants={textVariants}
+            variants={textVariants as Variants}
             initial="hidden"
             animate="visible"
             className="w-full md:w-2/3 sm:text-left text-base sm:text-xl md:text-2xl"

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react"
-import { motion } from "motion/react"
+import React, { useEffect, useRef, useState } from "react"
+import { motion, Variants } from "motion/react"
 
 import { cn } from "@/lib/utils"
 import SimpleMarquee from "@/fancy/components/blocks/simple-marquee"
@@ -77,7 +77,7 @@ const hardcodedAlbums: Album[] = [
 export default function SimpleMarqueeDemo() {
   const [albums, setAlbums] = useState<Album[]>([])
   const [loading, setLoading] = useState(true)
-  const [container, setContainer] = useState<HTMLElement | null>(null)
+  const container = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     // Simulate loading time
@@ -156,9 +156,9 @@ export default function SimpleMarqueeDemo() {
         className={containerClasses}
         initial="initial"
         whileHover="hover"
-        variants={variants}
+        variants={variants as Variants}
       >
-        <motion.div className={textContainerClasses} variants={textVariants}>
+        <motion.div className={textContainerClasses} variants={textVariants as Variants}>
           <h3 className="text-white text-sm sm:text-base md:text-lg font-medium z-30">
             {album.title}
           </h3>
@@ -171,7 +171,7 @@ export default function SimpleMarqueeDemo() {
           alt={`${album.title} by ${album.artist}`}
           draggable={false}
           className={imageClasses}
-          variants={imageVariants}
+          variants={imageVariants as Variants}
         />
       </motion.div>
     )
@@ -180,7 +180,7 @@ export default function SimpleMarqueeDemo() {
   return (
     <div
       className="flex w-full h-full relative justify-center items-center flex-col bg-black overflow-y-auto overflow-x-hidden"
-      ref={(node) => setContainer(node)}
+      ref={container}
     >
       <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-1/4 text-white font-calendas">
         Weekly Mix
@@ -206,7 +206,7 @@ export default function SimpleMarqueeDemo() {
               slowdownOnHover
               slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
               scrollAwareDirection={true}
-              scrollContainer={{ current: container }}
+              scrollContainer={container}
               useScrollVelocity={true}
               direction="left"
             >
@@ -225,7 +225,7 @@ export default function SimpleMarqueeDemo() {
               slowDownFactor={0.2}
               slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
               useScrollVelocity={true}
-              scrollContainer={{ current: container }}
+              scrollContainer={container}
               draggable={false}
               direction="right"
             >

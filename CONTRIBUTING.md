@@ -131,7 +131,7 @@ author: johndoe <https://example.com>
 ```
 
 5. The first node after the header should be a `ComponentPreview` component, which will render the main demo of the component.
-6. Then, a header called `Installation`. There should be a `Tabs` component there, with two tabs: `CLI` and `Manual`. The `CLI` tab should contain the command to install the component with `npx shadcn@latest add "https://fancycomponents.dev/r/component-name.json"`. The `Manual` tab should contain the source code of the component referenced in a `ComponentSource` component.
+6. Then, a header called `Installation`. There should be a `Tabs` component there, with two tabs: `CLI` and `Manual`. The `CLI` tab should contain the command to install the component with `shadcn add @fancy/{component-name}"` wrapped in an `InstallTabs` component. The `Manual` tab should contain the source code of the component referenced in a `ComponentSource` component.
 7. If the component uses hooks, or need to add other dependencies, make sure to include them in that section, in a `ComponentSource` component.
 8. Add an `Usage` and/or `Understanding the component` section, if applicable.
 9. Add an `Examples` section, if applicable.

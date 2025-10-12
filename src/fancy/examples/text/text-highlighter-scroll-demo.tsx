@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react"
-import { motion, useInView } from "motion/react"
+import { motion, Transition, useInView } from "motion/react"
 
 import { TextHighlighter } from "@/fancy/components/text/text-highlighter"
 
@@ -110,7 +110,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               object detection systems
             </TextHighlighter>
@@ -119,7 +119,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               facial recognition
             </TextHighlighter>
@@ -135,7 +135,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               traffic monitoring
             </TextHighlighter>
@@ -144,7 +144,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               inventory management
             </TextHighlighter>
@@ -163,7 +163,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               video analytics
             </TextHighlighter>
@@ -172,7 +172,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               object tracking algorithms
             </TextHighlighter>
@@ -187,7 +187,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               Scene understanding
             </TextHighlighter>
@@ -199,7 +199,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               sports performance analysis
             </TextHighlighter>
@@ -208,7 +208,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               surveillance systems
             </TextHighlighter>
@@ -223,7 +223,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               OCR technology
             </TextHighlighter>
@@ -235,7 +235,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               Document automation
             </TextHighlighter>
@@ -248,7 +248,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               invoice processing
             </TextHighlighter>
@@ -257,7 +257,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               accessibility solutions
             </TextHighlighter>
@@ -274,7 +274,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               3D depth perception
             </TextHighlighter>
@@ -283,7 +283,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               stereo vision systems
             </TextHighlighter>
@@ -299,7 +299,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               augmented reality
             </TextHighlighter>
@@ -308,7 +308,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               virtual reality applications
             </TextHighlighter>
@@ -325,7 +325,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               Image segmentation
             </TextHighlighter>
@@ -337,7 +337,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               enhancement algorithms
             </TextHighlighter>
@@ -353,7 +353,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               synthetic training data
             </TextHighlighter>
@@ -362,7 +362,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               high-resolution imagery
             </TextHighlighter>
@@ -374,7 +374,7 @@ export default function TextHighlighterDemo() {
               highlightColor={HIGHLIGHT_COLOR}
               direction={scrollDirection}
               useInViewOptions={DEMO_USE_IN_VIEW_OPTIONS}
-              transition={DEMO_TRANSITION}
+              transition={DEMO_TRANSITION as Transition}
             >
               Transform your industry
             </TextHighlighter>

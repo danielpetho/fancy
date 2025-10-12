@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react"
 import Lenis from "lenis"
 
 import { TextHighlighter } from "@/fancy/components/text/text-highlighter"
+import { Transition } from "motion"
 
 export default function TextHighlighterDemo() {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -50,7 +51,7 @@ export default function TextHighlighterDemo() {
               disposal.{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -59,7 +60,7 @@ export default function TextHighlighterDemo() {
               hundreds of different types have been designed and cast in lead.{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -72,7 +73,7 @@ export default function TextHighlighterDemo() {
             <p>
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -81,7 +82,7 @@ export default function TextHighlighterDemo() {
               It is left to his feeling for form to use{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -98,7 +99,7 @@ export default function TextHighlighterDemo() {
               importance for the{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -110,7 +111,7 @@ export default function TextHighlighterDemo() {
               the impression created.{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -126,7 +127,7 @@ export default function TextHighlighterDemo() {
             <p>
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -135,7 +136,7 @@ export default function TextHighlighterDemo() {
               of{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -150,7 +151,7 @@ export default function TextHighlighterDemo() {
               The lead type designs of{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -164,7 +165,7 @@ export default function TextHighlighterDemo() {
             <p>
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -176,7 +177,7 @@ export default function TextHighlighterDemo() {
               few of these have gained acceptance.{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -193,7 +194,7 @@ export default function TextHighlighterDemo() {
               trouble when creating graphic designs to{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -209,7 +210,7 @@ export default function TextHighlighterDemo() {
             <p>
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -223,7 +224,7 @@ export default function TextHighlighterDemo() {
             <p>
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -237,7 +238,7 @@ export default function TextHighlighterDemo() {
               try to{" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -248,7 +249,7 @@ export default function TextHighlighterDemo() {
             <p>
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >
@@ -261,7 +262,7 @@ export default function TextHighlighterDemo() {
               Earlier typography (midline typography){" "}
               <TextHighlighter
                 className={highlightClass}
-                transition={transition}
+                transition={transition as Transition}
                 highlightColor={highlightColor}
                 useInViewOptions={inViewOptions}
               >

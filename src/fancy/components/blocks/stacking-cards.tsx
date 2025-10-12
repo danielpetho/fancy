@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils"
 interface StackingCardsProps
   extends PropsWithChildren,
     HTMLAttributes<HTMLDivElement> {
-  scrollOptons?: UseScrollOptions
+  scrollOptions?: UseScrollOptions
   scaleMultiplier?: number
   totalCards: number
 }
@@ -37,7 +37,7 @@ interface StackingCardItemProps
 export default function StackingCards({
   children,
   className,
-  scrollOptons,
+  scrollOptions,
   scaleMultiplier,
   totalCards,
   ...props
@@ -45,7 +45,7 @@ export default function StackingCards({
   const targetRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     offset: ["start start", "end end"],
-    ...scrollOptons,
+    ...scrollOptions,
     target: targetRef,
   })
 

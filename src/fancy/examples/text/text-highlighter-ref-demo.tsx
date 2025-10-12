@@ -6,6 +6,7 @@ import {
   TextHighlighter,
   TextHighlighterRef,
 } from "@/fancy/components/text/text-highlighter"
+import { Transition } from "motion"
 
 export default function TextHighlighterDemo() {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -48,7 +49,7 @@ export default function TextHighlighterDemo() {
                   }}
                   triggerType="ref"
                   className={highlightClass}
-                  transition={transition}
+                  transition={transition as Transition}
                   highlightColor={highlightColor}
                 >
                   Gutenberg
@@ -61,7 +62,7 @@ export default function TextHighlighterDemo() {
                   }}
                   triggerType="ref"
                   className={highlightClass}
-                  transition={transition}
+                  transition={transition as Transition}
                   highlightColor={highlightColor}
                 >
                   most recent technical developments
@@ -81,7 +82,7 @@ export default function TextHighlighterDemo() {
                   }}
                   triggerType="ref"
                   className={highlightClass}
-                  transition={transition}
+                  transition={transition as Transition}
                   highlightColor={highlightColor}
                 >
                   functional, aesthetic and psychological effect
@@ -102,7 +103,7 @@ export default function TextHighlighterDemo() {
                   }}
                   triggerType="ref"
                   className={highlightClass}
-                  transition={transition}
+                  transition={transition as Transition}
                   highlightColor={highlightColor}
                 >
                   Garamond, Caslon, Bodoni, Walbaum
@@ -122,7 +123,7 @@ export default function TextHighlighterDemo() {
                   }}
                   triggerType="ref"
                   className={highlightClass}
-                  transition={transition}
+                  transition={transition as Transition}
                   highlightColor={highlightColor}
                 >
                   Berthold, Helvetica, Folio, Univers
@@ -141,7 +142,7 @@ export default function TextHighlighterDemo() {
                   }}
                   triggerType="ref"
                   className={highlightClass}
-                  transition={transition}
+                  transition={transition as Transition}
                   highlightColor={highlightColor}
                 >
                   The creators of these type designs
@@ -156,7 +157,7 @@ export default function TextHighlighterDemo() {
                   }}
                   triggerType="ref"
                   className={highlightClass}
-                  transition={transition}
+                  transition={transition as Transition}
                   highlightColor={highlightColor}
                 >
                   alphabet of Garamond
@@ -175,7 +176,7 @@ export default function TextHighlighterDemo() {
                   }}
                   triggerType="ref"
                   className={highlightClass}
-                  transition={transition}
+                  transition={transition as Transition}
                   highlightColor={highlightColor}
                 >
                   sketch words and sentences by hand

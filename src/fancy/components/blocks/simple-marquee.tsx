@@ -61,13 +61,13 @@ const SimpleMarquee = ({
   grabCursor = false,
   easing,
 }: SimpleMarqueeProps) => {
-  const innerContainer = useRef<HTMLDivElement>(null)
   const baseX = useMotionValue(0)
   const baseY = useMotionValue(0)
 
   const { scrollY } = useScroll({
-    container:
-      (scrollContainer as RefObject<HTMLDivElement | null>) || innerContainer.current,
+    ...(scrollContainer && {
+      container: scrollContainer as RefObject<HTMLDivElement>,
+    }),
   })
 
   const scrollVelocity = useVelocity(scrollY)
@@ -251,7 +251,6 @@ const SimpleMarquee = ({
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
-      ref={innerContainer}
     >
       {Array.from({ length: repeat }, (_, i) => i).map((i) => (
         <motion.div

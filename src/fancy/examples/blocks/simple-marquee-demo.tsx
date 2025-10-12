@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useRef } from "react"
 
 import SimpleMarquee from "@/fancy/components/blocks/simple-marquee"
 
@@ -39,12 +39,12 @@ export default function SimpleMarqueeDemo() {
     Math.floor((2 * exampleImages.length) / 3)
   )
 
-  const [container, setContainer] = useState<HTMLElement | null>(null)
+  const container = useRef<HTMLDivElement>(null)
 
   return (
     <div
       className="flex w-full h-full relative justify-center items-center flex-col bg-black overflow-auto"
-      ref={(node) => setContainer(node)}
+      ref={container}
     >
       <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-1/3 sm:top-1/3 md:top-1/4 text-white font-calendas">
         Weekly Finds
@@ -60,7 +60,7 @@ export default function SimpleMarqueeDemo() {
           slowdownOnHover
           slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
           scrollAwareDirection={true}
-          scrollContainer={{ current: container }}
+          scrollContainer={container}
           useScrollVelocity={true}
           direction="left"
         >
@@ -85,7 +85,7 @@ export default function SimpleMarqueeDemo() {
           slowDownFactor={0.1}
           slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
           useScrollVelocity={true}
-          scrollContainer={{ current: container }}
+          scrollContainer={container}
           draggable={false}
           direction="right"
         >
@@ -110,7 +110,7 @@ export default function SimpleMarqueeDemo() {
           slowdownOnHover
           slowDownSpringConfig={{ damping: 60, stiffness: 300 }}
           scrollAwareDirection={true}
-          scrollContainer={{ current: container }}
+          scrollContainer={container}
           useScrollVelocity={true}
           direction="left"
         >

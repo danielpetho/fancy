@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useRef } from "react"
 import { motion } from "motion/react"
 
 import SimpleMarquee from "@/fancy/components/blocks/simple-marquee"
@@ -42,12 +42,12 @@ const MarqueeItem = ({
 )
 
 export default function SimpleMarqueeDemo() {
-  const [container, setContainer] = useState<HTMLElement | null>(null)
+  const container = useRef<HTMLDivElement>(null)
 
   return (
     <div
       className="flex w-full h-full relative justify-center items-center flex-col bg-black overflow-y-auto overflow-x-hidden"
-      ref={(node) => setContainer(node)}
+      ref={container}
     >
       <h1 className="absolute text-center text-3xl sm:text-5xl md:text-6xl top-32 sm:top-1/4 text-white font-calendas">
         <VerticalCutReveal splitBy="characters" staggerDuration={0.04}>
@@ -64,7 +64,7 @@ export default function SimpleMarqueeDemo() {
           useScrollVelocity={true}
           scrollAwareDirection={true}
           scrollSpringConfig={{ damping: 50, stiffness: 400 }}
-          scrollContainer={{ current: container }}
+          scrollContainer={container}
           dragAwareDirection={true}
           grabCursor
           direction="left"
@@ -90,7 +90,7 @@ export default function SimpleMarqueeDemo() {
           useScrollVelocity={true}
           scrollAwareDirection={true}
           scrollSpringConfig={{ damping: 50, stiffness: 400 }}
-          scrollContainer={{ current: container }}
+          scrollContainer={container}
           dragAwareDirection={true}
           grabCursor
           direction="right"
