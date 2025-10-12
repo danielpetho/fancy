@@ -4,6 +4,7 @@ import "./globals.css"
 
 import { siteConfig } from "@/config/site"
 import { ThemeProvider } from "@/components/theme-provider"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata: Metadata = {
   title: {
@@ -85,6 +86,7 @@ export default function RootLayout({
             {children}
           </main>
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
