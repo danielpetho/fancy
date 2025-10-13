@@ -38,19 +38,26 @@ function getSourceContent(filePath: string): string {
   }
 }
 
-  // Transform @/fancy/components imports to @/components/fancy/... 
+  // Transform @/fancy/components and @/fancy/examples imports to @/components/fancy/... 
   // so it will work with open in v0
 function transformImportPaths(content: string): string {
   let newContent = content
   
-  // Match import statements with @/fancy/components
+  // Match import statements with @/fancy/components or @/fancy/examples
   // Handles patterns like:
   // - import Foo from "@/fancy/components/text/bar"
-  // - import { Bar } from '@/fancy/components/blocks/baz'
-  const importRegex = /import\s+([^"'\n]+?)\s+from\s+['"]@\/fancy\/components(\/[^'"]*)?['"]/g
+  // - import { Bar } from '@/fancy/examples/blocks/baz'
+  // - Multi-line imports like:
+  //   import Foo, { 
+  //     Bar, 
+  //     Baz 
+  //   } from "@/fancy/components/something"
+  const importRegex = /import\s+([\s\S]+?)\s+from\s+['"]@\/fancy\/(components|examples)(\/[^'"]*)?['"]/g
   
-  newContent = newContent.replace(importRegex, (match, importPart, subPath) => {
-    // Transform: @/fancy/components/text/something -> @/components/fancy/text/something
+  newContent = newContent.replace(importRegex, (match, importPart, type, subPath) => {
+    // Transform: 
+    // - @/fancy/components/text/something -> @/components/fancy/text/something
+    // - @/fancy/examples/carousel/demo -> @/components/fancy/carousel/demo
     const newPath = subPath ? `@/components/fancy${subPath}` : '@/components/fancy'
     return `import ${importPart} from "${newPath}"`
   })
