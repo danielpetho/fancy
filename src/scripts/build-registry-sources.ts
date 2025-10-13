@@ -38,6 +38,26 @@ function getSourceContent(filePath: string): string {
   }
 }
 
+  // Transform @/fancy/components imports to @/components/fancy/... 
+  // so it will work with open in v0
+function transformImportPaths(content: string): string {
+  let newContent = content
+  
+  // Match import statements with @/fancy/components
+  // Handles patterns like:
+  // - import Foo from "@/fancy/components/text/bar"
+  // - import { Bar } from '@/fancy/components/blocks/baz'
+  const importRegex = /import\s+([^"'\n]+?)\s+from\s+['"]@\/fancy\/components(\/[^'"]*)?['"]/g
+  
+  newContent = newContent.replace(importRegex, (match, importPart, subPath) => {
+    // Transform: @/fancy/components/text/something -> @/components/fancy/text/something
+    const newPath = subPath ? `@/components/fancy${subPath}` : '@/components/fancy'
+    return `import ${importPart} from "${newPath}"`
+  })
+  
+  return newContent
+}
+
 function resolveColorInContent(content: string): string {
   const colorMappings = {
     "primary-red": "#ff5941",
@@ -133,6 +153,9 @@ function processItemFiles(registryItem: any): any[] {
     if (!sourceFilePath) return
 
     let content = getSourceContent(sourceFilePath)
+
+    // Apply import path transformations to all content
+    content = transformImportPaths(content)
 
     // Add appropriate extension for the path
     let extension =
