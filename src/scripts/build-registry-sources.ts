@@ -332,10 +332,22 @@ function processRegistryItem(name: string, item: any): any {
         return
       }
 
-      // Handle local references
+      // Handle local references (hooks, utils, components)
       const possibleName = importPath.split("/").pop() || ""
-      const registry = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
-      if (registry[possibleName] && possibleName !== name) {
+      
+      // Read and parse registry with schema format support
+      const registryData = JSON.parse(fs.readFileSync(registryJsonPath, "utf-8"))
+      let registryMap: any
+      if (registryData.items) {
+        registryMap = {}
+        registryData.items.forEach((item: any) => {
+          registryMap[item.name] = item
+        })
+      } else {
+        registryMap = registryData
+      }
+      
+      if (registryMap[possibleName] && possibleName !== name) {
         registryDeps.add(`https://fancycomponents.dev/r/${possibleName}.json`)
       }
     })

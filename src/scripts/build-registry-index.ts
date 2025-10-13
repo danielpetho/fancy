@@ -329,8 +329,8 @@ function generateRegistryItem(
             : "registry:ui",
     files,
     author: getAuthor(name, type),
-    ...(componentDeps.length > 0 && {
-      registryDependencies: componentDeps,
+    ...(registryDependencies.length > 0 && {
+      registryDependencies: registryDependencies,
     }),
     ...(externalDeps.size > 0 || additionalConfig?.devDependencies
       ? {
