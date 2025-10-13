@@ -91,9 +91,16 @@ export function CopyPageMenu({ title, content, currentUrl }: CopyPageMenuProps) 
     setStatus("copying")
     
     try {
-      // Create markdown content optimized for LLMs
-      const markdownContent = `# ${title}\n\n${content}\n\n---\n\nSource: ${currentUrl}`
-      await copyToClipboard(markdownContent)
+      const url = new URL(currentUrl)
+      const markdownPath = `${url.pathname}.md`
+      const response = await fetch(markdownPath)
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch markdown: ${response.statusText}`)
+      }
+      
+      const fullMarkdownContent = await response.text()
+      await copyToClipboard(fullMarkdownContent)
       
       setTimeout(() => {
         setStatus("copied")
@@ -103,6 +110,7 @@ export function CopyPageMenu({ title, content, currentUrl }: CopyPageMenuProps) 
         setStatus("idle")
       }, 2000)
     } catch (error) {
+      console.error("Failed to copy markdown:", error)
       setStatus("idle")
     }
   }
