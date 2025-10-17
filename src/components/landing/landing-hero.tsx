@@ -8,9 +8,11 @@ import TextRotate from "@/fancy/components/text/text-rotate"
 
 import { HeroImages } from "./hero-images"
 
+const MotionLink = motion.create(Link)
+
 export function LandingHero({ allComps }: { allComps: Component[] | null }) {
   return (
-    <section className="w-full h-screen overflow-hidden md:overflow-visible flex flex-col items-center justify-center relative">
+    <section className="w-full h-screen overflow-hidden md:overflow-clip overscroll-none flex flex-col items-center justify-center relative">
 
       {allComps && <HeroImages allComps={allComps} />}
 
@@ -68,8 +70,9 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
         </motion.p>
 
         <div className="flex flex-row justify-center space-x-4 items-center mt-10 sm:mt-16 md:mt-20 lg:mt-20 text-xs">
-          <motion.button
-            className="w-28 sm:w-32 md:w-36 lg:w-40 sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-background bg-foreground px-3 py-1.5 sm:px-4 sm:py-2 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-lg md:rounded-xl z-20 shadow-2xl whitespace-nowrap cursor-pointer"
+          <MotionLink
+            href="/docs/introduction"
+            className="w-28 sm:w-32 md:w-36 lg:w-40 sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-background bg-foreground px-3 py-1.5 sm:px-4 sm:py-2 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-lg md:rounded-xl z-20 shadow-2xl whitespace-nowrap cursor-pointer inline-block text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-foreground"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{
@@ -86,12 +89,11 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
               transition: { type: "spring", damping: 30, stiffness: 400 },
             }}
           >
-            <Link href="/docs/introduction">
-              Check docs <span className="font-serif ml-1">→</span>
-            </Link>
-          </motion.button>
-          <motion.button
-            className="w-28 sm:w-32 md:w-36 lg:w-40 sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-white bg-blue dark:bg-blue-500 px-3 py-1.5 sm:px-4 sm:py-2 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-lg md:rounded-xl z-20 shadow-2xl whitespace-nowrap cursor-pointer" 
+            Check docs <span className="font-serif ml-1">→</span>
+          </MotionLink>
+          <MotionLink
+            href="https://github.com/danielpetho/fancy"
+            className="w-28 sm:w-32 md:w-36 lg:w-40 sm:text-base md:text-lg lg:text-xl font-medium tracking-tight text-white bg-blue dark:bg-blue-500 px-3 py-1.5 sm:px-4 sm:py-2 md:px-4 md:py-2 lg:px-5 lg:py-2.5 rounded-lg md:rounded-xl z-20 shadow-2xl whitespace-nowrap cursor-pointer inline-block text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue"
             animate={{ opacity: 1, y: 0 }}
             initial={{ opacity: 0, y: 20 }}
             transition={{
@@ -108,8 +110,8 @@ export function LandingHero({ allComps }: { allComps: Component[] | null }) {
               transition: { type: "spring", damping: 30, stiffness: 400 },
             }}
           >
-            <Link href="https://github.com/danielpetho/fancy">★ on GitHub</Link>
-          </motion.button>
+            ★ on GitHub
+          </MotionLink>
         </div>
       </div>
     </section>
