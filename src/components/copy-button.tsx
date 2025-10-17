@@ -190,7 +190,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ onCopy }) => {
         onMouseLeave={handleMouseLeave}
         variant="ghost"
         size="icon"
-        className="relative text-muted-foreground cursor-pointer w-8 h-8 hover:text-white hover:scale-105 duration-300 transition ease-out hover:bg-transparent bg-none"
+        className="relative text-muted-foreground cursor-pointer w-8 h-8 hover:text-white hover:scale-105 duration-300 transition-[scale,color,background-color,opacity] ease-out hover:bg-transparent bg-none focus:outline-none! focus-visible:ring-2! focus-visible:ring-offset-0! focus-visible:ring-white!"
         aria-label="Copy code"
         whileTap={{ scale: 0.9 }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}
