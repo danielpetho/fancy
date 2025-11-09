@@ -1,7 +1,6 @@
 "use client"
 
 import { RotateCw } from "lucide-react"
-import { motion } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 
@@ -11,7 +10,7 @@ export function RestartButton({ onRestart }: { onRestart: () => void }) {
         variant="outline"
         size="icon"
         onClick={onRestart}
-        className="h-8 w-8 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue active:scale-95 duration-300 ease-out transition-[scale,background-color,opacity] group/restart-button"
+        className="h-8 w-8 active:scale-95 duration-300 ease-out transition-[scale,background-color,opacity] group/restart-button"
         aria-label="Restart demo"
       >
         <RotateCw
