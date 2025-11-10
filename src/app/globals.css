@@ -241,6 +241,47 @@
   }
 }
 
+@utility focus-outline {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0 -0.5rem;
+    inset-block: -0.25rem;
+    border: 2px solid transparent;
+    border-radius: 0.75rem;
+    pointer-events: none;
+    transform: scale(0.95);
+    opacity: 0;
+    /* transition: transform 200ms ease-out, opacity 200ms ease-out, border-color 200ms ease-out; */
+  }
+  
+  &:focus-visible {
+    outline: none;
+    
+    &::after {
+      border-color: var(--focus-outline-color, var(--color-primary-blue));
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+}
+
+@utility focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  /* transition: outline-color 200ms ease-out, outline-offset 200ms ease-out; */
+  
+  &:focus-visible {
+    outline-color: var(--focus-ring-color, var(--color-primary-blue));
+  }
+}
+
+@utility focus-primary {
+  @apply focus-outline [--focus-outline-color:var(--color-primary-blue)];
+}
+
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
   so we've added these compatibility styles to make sure everything still
@@ -364,6 +405,12 @@
 @layer base {
   * {
     @apply border-border;
+  }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-primary-blue);
+    border-radius: 0.5rem;
+    outline-offset: 2px;
   }
 
   body {

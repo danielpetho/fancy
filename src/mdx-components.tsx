@@ -74,7 +74,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.HTMLAttributes<HTMLAnchorElement>) => (
       <a
         className={cn(
-          "font-medium text-base md:text-lg  text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 duration-300 ease-out transition inline-flex items-center leading-0",
+          "font-medium text-base md:text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 duration-300 ease-out transition-[color,background-color,opacity] inline-flex items-center leading-0 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-blue",
           className
         )}
         {...props}
@@ -92,7 +92,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
       <Link
         href={href}
         className={cn(
-          "font-medium text-base md:text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 duration-300 ease-out transition inline-flex items-center leading-0",
+          "font-medium text-base md:text-lg text-blue hover:text-blue-400 dark:text-blue-400 dark:hover:text-blue-300 duration-300 ease-out transition-[color,background-color,opacity] items-center leading-0 rounded-sm focus-primary",
           className
         )}
         {...props}
@@ -274,7 +274,7 @@ export function mdxComponents(components?: MDXComponents): MDXComponents {
     }: React.ComponentProps<typeof TabsTrigger>) => (
       <TabsTrigger
         className={cn(
-          "relative text-base h-9 rounded-none bg-transparent px-0 pb-2 pt-2 font-semibold text-muted-foreground shadow-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none hover:font-semibold hover:text-foreground duration-300 ease-out transition",
+          "relative text-base h-7 mt-3 bg-transparent px-0 font-semibold text-muted-foreground shadow-none data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none hover:font-semibold hover:text-foreground duration-300 ease-out transition-[colors,background-color,text-color] focus-visible:outline-hidden focus-visible:ring-0 focus-visible:outline-2 focus-visible:outline-offset-2 rounded-lg focus-visible:outline-primary-blue",
           className
         )}
         {...props}

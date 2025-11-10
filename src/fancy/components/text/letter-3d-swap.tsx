@@ -19,23 +19,34 @@ const splitIntoCharacters = (text: string): string[] => {
   return Array.from(text)
 }
 
-// handy function  to extract text from children
-const extractTextFromChildren = (children: React.ReactNode): string => {
+// handy function to extract text from children
+const extractTextFromChildren = (children: React.ReactNode): string | undefined => {
+  // Handle null/undefined
+  if (children == null) return ""
+
+  // Handle string
   if (typeof children === "string") return children
 
+  // Handle number
+  if (typeof children === "number") return String(children)
+
+  // Handle arrays (including fragments)
+  if (Array.isArray(children)) {
+    return children.map(extractTextFromChildren).join("")
+  }
+
+  // Handle React elements
   if (React.isValidElement(children)) {
     const props = (children as React.ReactElement).props
     const childText = (props as any).children as React.ReactNode
-    if (typeof childText === "string") return childText
-    if (React.isValidElement(childText)) {
+
+    // Recursively extract text from children
+    if (childText != null) {
       return extractTextFromChildren(childText)
     }
-  }
 
-  throw new Error(
-    "Letter3DSwap: Children must be a string or a React element containing a string. " +
-      "Complex nested structures are not supported."
-  )
+    return ""
+  }
 }
 
 /**
@@ -146,7 +157,7 @@ const Letter3DSwap = ({
 
   // Splitting the text into animation segments
   const characters = useMemo(() => {
-    const t = text.split(" ")
+    const t = text?.split(" ") ?? []
     const result = t.map((word: string, i: number) => ({
       characters: splitIntoCharacters(word),
       needsSpace: i !== t.length - 1,

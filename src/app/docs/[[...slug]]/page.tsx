@@ -155,7 +155,7 @@ export default async function DocPage(props: DocPageProps) {
       {doc.toc && (
         <div className="hidden text-base xl:block sticky top-4 pt-0 pb-4 h-[calc(100vh-8rem)] pl-4">
           <div className="bg-background rounded-2xl border">
-            <ScrollArea className="pb-10 p-6">
+            <ScrollArea className="">
               <DashboardTableOfContents toc={toc} />
             </ScrollArea>
           </div>

@@ -85,7 +85,7 @@ export const InstallTabs: React.FC<InstallTabsProps> = ({
               <TabsTrigger
                 key={pm.id}
                 value={pm.id}
-                className="text hover:text-white duration-300 ease-out transition px-2 py-1 h-auto data-[state=active]:bg-editor-background data-[state=active]:text-white text-muted-foreground cursor-pointer"
+                className="text hover:text-white duration-300 ease-out transition px-2 py-1 h-auto data-[state=active]:bg-editor-background data-[state=active]:text-white text-muted-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white rounded"
                 aria-label={pm.label}
               >
                 {pm.label}
@@ -93,7 +93,7 @@ export const InstallTabs: React.FC<InstallTabsProps> = ({
             ))}
           </TabsList>
         </Tabs>
-        <CopyButton onCopy={handleCopy} />
+        <CopyButton onCopy={handleCopy} className='focus-visible:outline-2! focus-visible:outline-offset-2! focus-visible:outline-white! rounded!' />
       </div>
       <div className="bg-editor-background py-4">
         <Highlight

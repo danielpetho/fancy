@@ -7,6 +7,8 @@ import { NavItem, NavItemWithChildren } from "@/types/nav"
 import { Doc } from "@/types/types"
 import { docsConfig } from "@/config/docs"
 
+const MotionLink = motion.create(Link)
+
 interface DocsPagerProps {
   doc: Doc
 }
@@ -23,58 +25,52 @@ export function DocsPager({ doc }: DocsPagerProps) {
       className={`flex flex-row items-center ${pager.prev && pager.next ? "justify-between" : pager.next ? "justify-end" : "justify-start"} text`}
     >
       {pager?.prev?.href && (
-        <motion.div 
+        <MotionLink
+          href={pager.prev.href}
+          className="items-center flex flex-row justify-center bg-muted rounded-xl pl-2 pr-6 py-2 hover:bg-muted/60 duration-300 ease-out transition-[colors,background-color] focus-ring"
           whileHover="hover"
           whileTap={{ scale: 0.97 }}
         >
-          <Link
-            href={pager.prev.href}
-            className="items-center flex flex-row justify-center bg-muted rounded-xl pl-2 pr-6 py-2 hover:bg-muted/60 duration-300 ease-out transition"
-          >
-            <motion.p 
-              className="font-serif sm:mr-2 h-7 w-7 rotate-180"
-              variants={{
-                hover: {
-                  x: 5,
-                  transition: {
-                    duration: 0.3,
-                    ease: "easeOut"
-                  }
+          <motion.p 
+            className="font-serif sm:mr-2 h-7 w-7 rotate-180"
+            variants={{
+              hover: {
+                x: 5,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeOut"
                 }
-              }}
-            >
-              &#8594;
-            </motion.p>
-            <span className="truncate hidden sm:block">{pager.prev.title}</span>
-          </Link>
-        </motion.div>
+              }
+            }}
+          >
+            &#8594;
+          </motion.p>
+          <span className="truncate hidden sm:block">{pager.prev.title}</span>
+        </MotionLink>
       )}
       {pager?.next?.href && (
-        <motion.div 
+        <MotionLink
+          href={pager.next.href}
+          className="flex flex-row hover:bg-muted/60 duration-300 ease-out transition-[colors,background-color] items-center justify-center rounded-xl pr-2 pl-6 py-2 bg-muted focus-ring"
           whileHover="hover"
           whileTap={{ scale: 0.97 }}
         >
-          <Link
-            href={pager.next.href}
-            className="flex flex-row hover:bg-muted/60 duration-300 ease-out transition items-center justify-center rounded-xl pr-2 pl-6 py-2 bg-muted"
-          >
-            <span className="truncate hidden sm:block">{pager.next.title}</span>
-            <motion.span 
-              className="font-serif h-7 w-7 sm:ml-2"
-              variants={{
-                hover: {
-                  x: 5,
-                  transition: {
-                    duration: 0.3,
-                    ease: "easeOut"
-                  }
+          <span className="truncate hidden sm:block">{pager.next.title}</span>
+          <motion.span 
+            className="font-serif h-7 w-7 sm:ml-2"
+            variants={{
+              hover: {
+                x: 5,
+                transition: {
+                  duration: 0.3,
+                  ease: "easeOut"
                 }
-              }}
-            >
-              &#8594;
-            </motion.span>
-          </Link>
-        </motion.div>
+              }
+            }}
+          >
+            &#8594;
+          </motion.span>
+        </MotionLink>
       )}
     </div>
   )

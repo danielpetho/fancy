@@ -113,7 +113,7 @@ export function ComponentPreview({
     <div
       data-algolia-ignore
       className={cn(
-        "group relative flex flex-col h-full w-full ",
+        "relative flex flex-col h-full w-full ",
         className
       )}
       {...props}
@@ -123,13 +123,13 @@ export function ComponentPreview({
           <TabsList className="w-full justify-start rounded-none p-0 h-9 bg-transparent space-x-3 px-3">
             <TabsTrigger
               value="preview"
-              className="relative text-base rounded-none border-b-transparent bg-transparent px-0 font-semibold text-muted-foreground shadow-none transition-colors duration-300 ease-out hover:text-foreground data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+              className="relative text-base border-b-transparent bg-transparent px-0 font-semibold text-muted-foreground shadow-none transition-colors duration-300 ease-out hover:text-foreground data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue rounded-lg"
             >
               Demo
             </TabsTrigger>
             <TabsTrigger
               value="code"
-              className="relative text-base rounded-none border-b-transparent bg-transparent px-0 font-semibold text-muted-foreground shadow-none transition-colors duration-300 ease-out hover:text-foreground data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent"
+              className="relative text-base border-b-transparent bg-transparent px-0 font-semibold text-muted-foreground shadow-none transition-colors duration-300 ease-out hover:text-foreground data-[state=active]:font-semibold data-[state=active]:text-foreground data-[state=active]:shadow-none data-[state=active]:bg-transparent focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue rounded-lg"
             >
               Code
             </TabsTrigger>
@@ -137,7 +137,7 @@ export function ComponentPreview({
         </div>
         <TabsContent
           value="preview"
-          className="border border-black-500 flex rounded-2xl"
+          className="border border-black-500 flex rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue"
         >
           <div className="w-full flex items-center justify-center rounded-2xl min-h-[530px] overflow-hidden relative max-h-[530px]">
             {/* <div className="absolute top-4 right-4 rounded-full border">
@@ -159,7 +159,7 @@ export function ComponentPreview({
                         <Button
                           variant="outline"
                           size="sm"
-                          className="h-8 items-center flex justify-center"
+                          className="h-8 items-center flex justify-center focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue"
                         >
                           <Repeat className="mr-2 h-4 w-4" />
                           Remix

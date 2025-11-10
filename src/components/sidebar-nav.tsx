@@ -48,7 +48,7 @@ function NavItem({ item, index, pathname }: NavItemProps) {
     <motion.p key={index}>
       <Link
         href={item.href ?? "#"}
-        className="inline-block"
+        className="inline-block focus-primary"
         target={item.external ? "_blank" : ""}
         rel={item.external ? "noreferrer" : ""}
       >

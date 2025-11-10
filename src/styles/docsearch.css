@@ -683,20 +683,26 @@ svg.DocSearch-Hit-Select-Icon {
   margin: 0 0 0 16px;
   padding: 2px 8px;
   user-select: none;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  transition: all 200ms ease-out;
 }
 
 .DocSearch-Button:active,
-.DocSearch-Button:focus,
 .DocSearch-Button:hover {
   background: hsl(var(--muted));
   box-shadow: none;
   opacity: 0.75;
-  outline: none;
   transition: all 300ms ease-out;
 }
 
-.DocSearch-Button {
-  transition: all 200ms ease-out;
+.DocSearch-Button:focus,
+.DocSearch-Button:focus-visible {
+  background: hsl(var(--muted));
+  box-shadow: none;
+  opacity: 0.75;
+  outline: 2px solid var(--color-primary-blue);
+  outline-offset: 2px;
 }
 
 .DocSearch-Button-Container {

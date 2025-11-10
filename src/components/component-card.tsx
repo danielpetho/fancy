@@ -33,7 +33,7 @@ export default function ComponentCard({ component }: ComponentCardProps) {
     >
       <Link
         href={`/docs/components/${component.category}/${component.name}`}
-        className="group relative aspect-video rounded-xl overflow-hidden border block"
+        className="group relative aspect-video rounded-xl overflow-hidden border block focus-ring"
       >
         {/* Thumbnail Image */}
         <Image

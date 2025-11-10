@@ -32,7 +32,7 @@ export function DashboardTableOfContents({ toc }: TocProps) {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 p-6">
       <p className="font-medium">On This Page</p>
       <Tree tree={toc} activeItem={activeHeading} />
     </div>
@@ -102,7 +102,7 @@ function Tree({ tree, level = 1, activeItem }: TreeProps) {
                 transition: {duration: 0.3, ease: "easeOut"}
               }}
               className={cn(
-                "inline-block no-underline duration-300 transition-colors ease-out",
+                "inline-block no-underline duration-300 transition-[color] ease-out focus-outline",
                 item.url === `#${activeItem}`
                   ? "text-foreground"
                   : "text-muted-foreground"
