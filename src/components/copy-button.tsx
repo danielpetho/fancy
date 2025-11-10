@@ -4,9 +4,11 @@ import React, { useState, useRef } from 'react';
 import { Copy } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { motion, TargetAndTransition, Variants } from 'motion/react';
+import { cn } from '@/lib/utils';
 
 interface CopyButtonProps {
   onCopy: () => Promise<void> | void;
+  className?: string;
 }
 
 const copyIconVariants: Variants = {
@@ -65,7 +67,7 @@ const checkPathVariants: Variants = {
 
 const MotionButton = motion.create(Button);
 
-export const CopyButton: React.FC<CopyButtonProps> = ({ onCopy }) => {
+export const CopyButton: React.FC<CopyButtonProps> = ({ onCopy, className }) => {
   const [status, setStatus] = useState<"idle" | "copying" | "copied">("idle");
   const [backgroundState, setBackgroundState] = useState<"hidden" | "entering" | "centered" | "leaving">("hidden");
   const [entryDirection, setEntryDirection] = useState({ x: 0, y: 0 });
@@ -190,7 +192,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ onCopy }) => {
         onMouseLeave={handleMouseLeave}
         variant="ghost"
         size="icon"
-        className="relative text-muted-foreground cursor-pointer w-8 h-8 hover:text-white hover:scale-105 duration-300 transition-[scale,color,background-color,opacity] ease-out hover:bg-transparent bg-none focus:outline-none! focus-visible:ring-2! focus-visible:ring-offset-0! focus-visible:ring-white!"
+        className={cn("relative text-muted-foreground cursor-pointer w-8 h-8 hover:text-white hover:scale-105 duration-300 transition-[scale,color,background-color,opacity] ease-out hover:bg-transparent bg-none focus:outline-none! focus-visible:ring-2! focus-visible:ring-offset-0! focus-visible:ring-white!", className)}
         aria-label="Copy code"
         whileTap={{ scale: 0.9 }}
         transition={{ type: "spring", stiffness: 400, damping: 30 }}

@@ -27,7 +27,7 @@ export function DocsPager({ doc }: DocsPagerProps) {
       {pager?.prev?.href && (
         <MotionLink
           href={pager.prev.href}
-          className="items-center flex flex-row justify-center bg-muted rounded-xl pl-2 pr-6 py-2 hover:bg-muted/60 duration-300 ease-out transition focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue ring-offset-none"
+          className="items-center flex flex-row justify-center bg-muted rounded-xl pl-2 pr-6 py-2 hover:bg-muted/60 duration-300 ease-out transition-[colors,background-color] focus-ring"
           whileHover="hover"
           whileTap={{ scale: 0.97 }}
         >
@@ -51,7 +51,7 @@ export function DocsPager({ doc }: DocsPagerProps) {
       {pager?.next?.href && (
         <MotionLink
           href={pager.next.href}
-          className="flex flex-row hover:bg-muted/60 duration-300 ease-out transition items-center justify-center rounded-xl pr-2 pl-6 py-2 bg-muted focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue"
+          className="flex flex-row hover:bg-muted/60 duration-300 ease-out transition-[colors,background-color] items-center justify-center rounded-xl pr-2 pl-6 py-2 bg-muted focus-ring"
           whileHover="hover"
           whileTap={{ scale: 0.97 }}
         >

@@ -13,23 +13,23 @@ export function MainNav() {
   return (
     <nav className="flex items-center justify-between w-full gap-x-4">
       <div className="flex flex-row items-center gap-x-12">
-        <Link href="/" className="flex items-center gap-x-2">
+        <Link href="/" className="flex items-center gap-x-2 focus-primary">
           <p className=" text-2xl px-2 pb-1.5 tracking-tight font-calendas scale-y-[120%] align-text-top ">
             fancy components*
           </p>
         </Link>
         <div className="flex-row gap-x-8 text-lg  font-regular items-end hidden md:flex">
-          <Link href="/docs/introduction">
+          <Link href="/docs/introduction" className="focus-primary">
             <span
-              className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col ease-out`}
+              className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col ease-out text-center`}
               data-text="Docs"
             >
               Docs
             </span>
           </Link>
-          <Link href="/components">
+          <Link href="/components" className="focus-primary">
             <span
-              className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col ease-out`}
+              className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col ease-out text-center`}
               data-text="Components"
             >
               Components
@@ -43,16 +43,16 @@ export function MainNav() {
         </div>
         <a
           href="https://github.com/danielpetho/fancy"
-          className="block lg:hidden"
+          className="block lg:hidden focus-primary text-center"
         >
           <Icons.gitHub className="w-[18px] h-[18px]" />
         </a>
         <a
           href="https://github.com/danielpetho/fancy"
-          className="hidden lg:block"
+          className="hidden lg:block focus-primary"
         >
           <span
-            className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col text-right ease-out`}
+            className={`inline-flex font-normal border-box after:content-[attr(data-text)] after:font-black after:pointer-none after:overflow-hidden after:select-none after:invisible after:h-0 duration-300 transition-all hover:font-semibold flex-col ease-out text-center`}
             data-text="Github"
           >
             Github
