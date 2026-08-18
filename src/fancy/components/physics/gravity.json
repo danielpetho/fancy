@@ -1,5 +1,4 @@
 {
-    "additionalDependencies": [
-        "poly-decomp", "@types/matter-js"
-    ]
+  "description": "Runs a Matter.js physics simulation that turns DOM children into draggable rigid bodies which fall, collide, and settle under configurable gravity.",
+  "additionalDependencies": ["poly-decomp", "@types/matter-js"]
 }

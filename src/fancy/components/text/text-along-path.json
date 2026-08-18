@@ -1,0 +1,3 @@
+{
+  "description": "Renders text following a custom SVG path, animating its position along the path automatically over time or by tying it to scroll progress."
+}

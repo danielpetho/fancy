@@ -1,0 +1,3 @@
+{
+  "description": "Slides the current text up and out while a duplicate slides up into place, with the transition driven by scroll progress through a tracked container."
+}
