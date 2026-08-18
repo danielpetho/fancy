@@ -340,6 +340,9 @@ function generateRegistryItem(
           ],
         }
       : null),
+    ...(additionalConfig?.description && {
+      description: additionalConfig.description,
+    }),
     ...(additionalConfig?.tailwind && {
       tailwind: additionalConfig.tailwind,
     }),

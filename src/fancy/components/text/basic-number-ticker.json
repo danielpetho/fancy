@@ -1,0 +1,3 @@
+{
+  "description": "Animates a number counting from a start value to a target value over a configurable transition, with imperative start and complete callbacks."
+}

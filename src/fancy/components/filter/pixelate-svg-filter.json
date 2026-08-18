@@ -1,0 +1,3 @@
+{
+  "description": "An SVG filter definition that mosaics whatever it's applied to into large flat blocks, producing a chunky pixelated look at a configurable block size."
+}

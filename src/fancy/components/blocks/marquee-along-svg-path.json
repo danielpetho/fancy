@@ -1,0 +1,3 @@
+{
+  "description": "Loops repeated copies of its children endlessly along a custom SVG path, with optional scroll-linked speed, drag, and rolling z-index depth."
+}
