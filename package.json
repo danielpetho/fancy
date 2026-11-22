@@ -2,6 +2,9 @@
   "name": "fancy",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "26.x"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build:index": "ts-node src/scripts/build-registry-index.ts",
