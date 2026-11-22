@@ -45,7 +45,7 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
         className="top-[15%] left-[2%] md:top-[25%] md:left-[5%] "
       >
         <Link 
-          href={`${preLink}/blocks/image-trail`}
+          href={`${preLink}/image/image-trail`}
           className="-rotate-[3deg] inline-block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue"
         >
           <HoverVideo
@@ -78,7 +78,7 @@ export function HeroImages({ allComps }: { allComps: Component[] }) {
         className="top-[90%] left-[6%] md:top-[80%] md:left-[8%]"
       >
         <Link 
-          href={`${preLink}/text/gravity`}
+          href={`${preLink}/physics/gravity`}
           className="-rotate-[4deg] inline-block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary-blue"
         >
           <HoverVideo
