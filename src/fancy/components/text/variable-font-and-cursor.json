@@ -1,0 +1,3 @@
+{
+  "description": "Maps cursor x and y position within a container to two variable font axes, morphing the whole text's weight or slant as the mouse moves."
+}

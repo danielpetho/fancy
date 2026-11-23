@@ -1,0 +1,3 @@
+{
+  "description": "Moves one or more child elements along a custom SVG path, driven either automatically over time or by scroll progress, slowing on hover."
+}

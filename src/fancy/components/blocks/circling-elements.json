@@ -1,4 +1,5 @@
 {
+  "description": "Arranges child elements evenly around a circle and spins them continuously at a set radius, direction, and speed, pausable on hover.",
   "cssVars": {
     "@keyframes circling": {
       "0%": {

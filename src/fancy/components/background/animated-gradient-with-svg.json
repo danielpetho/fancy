@@ -1,4 +1,5 @@
 {
+  "description": "Fills its container with softly blurred, randomly placed and sized SVG circles that drift and pulse, forming an ambient animated gradient backdrop.",
   "cssVars": {
     "@theme inline": {
       "--animate-background-gradient": "background-gradient",

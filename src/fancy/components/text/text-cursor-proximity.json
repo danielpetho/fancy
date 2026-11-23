@@ -1,0 +1,3 @@
+{
+  "description": "Animates each letter's CSS properties based on its distance from the cursor, with linear, exponential, or gaussian falloff for a proximity-reactive effect."
+}

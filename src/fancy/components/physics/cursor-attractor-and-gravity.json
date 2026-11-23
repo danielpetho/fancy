@@ -1,5 +1,4 @@
 {
-    "additionalDependencies": [
-        "poly-decomp", "@types/matter-js"
-    ]
+  "description": "Runs a Matter.js physics simulation where draggable DOM elements are pulled toward both a fixed attractor point and the cursor whenever it is within a set radius.",
+  "additionalDependencies": ["poly-decomp", "@types/matter-js"]
 }

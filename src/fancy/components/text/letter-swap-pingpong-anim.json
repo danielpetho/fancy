@@ -1,0 +1,3 @@
+{
+  "description": "On hover, slides letters in sequence to reveal a duplicate underneath, then slides them back in the same order when the cursor leaves."
+}

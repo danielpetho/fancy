@@ -1,0 +1,3 @@
+{
+  "description": "On mount or manual trigger, reveals text left to right while a trailing window of characters scrambles through random glyphs just ahead of the reveal."
+}

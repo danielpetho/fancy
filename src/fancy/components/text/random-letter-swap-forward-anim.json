@@ -1,0 +1,3 @@
+{
+  "description": "On hover, slides each letter out to reveal a duplicate in a randomized per-letter order, playing forward once without reversing on hover-out."
+}

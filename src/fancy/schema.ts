@@ -9,6 +9,7 @@ export const registrySchema = z.record(
   z.string(),
   z.object({
     name: z.string(),
+    description: z.string().optional(), // one line summary of the component. fetched from the addition .json file next to the component .tsx file
     dependencies: z.array(z.string()).optional(), // external dependencies. inferred from the import statements, and fetched from the addition .json file next to the component .tsx file
     devDependencies: z.array(z.string()).optional(), // dev dependencies. fetched from the addition .json file next to the component .tsx file
     registryDependencies: z.array(z.string()).optional(), // other component dependencies

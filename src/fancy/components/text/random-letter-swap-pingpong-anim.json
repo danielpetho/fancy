@@ -1,0 +1,3 @@
+{
+  "description": "On hover, slides letters in a randomized order to reveal duplicates underneath, then reverses the swap back when the cursor leaves."
+}
