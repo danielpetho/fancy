@@ -1,6 +1,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { Metadata } from "next"
+import { notFound } from "next/navigation"
 import Balancer from "react-wrap-balancer"
 
 import { DocPageProps } from "@/types/types"
@@ -100,6 +101,10 @@ export function generateStaticParams() {
 export default async function DocPage(props: DocPageProps) {
   const params = await props.params
   const doc = await getDocFromParams({ params })
+
+  if (!doc) {
+    notFound()
+  }
 
   const toc = doc.toc
 
