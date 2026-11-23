@@ -68,12 +68,16 @@ const ElasticLine: React.FC<ElasticLineProps> = ({
         onComplete: () => setHasAnimatedIn(true),
       })
     }
-    x.set(dimensions.width / 2)
-    y.set(dimensions.height / 2)
+    x.jump(dimensions.width / 2)
+    y.jump(dimensions.height / 2)
   }, [dimensions, hasAnimatedIn])
 
   useEffect(() => {
     if (!isGrabbed && hasAnimatedIn) {
+      // Drop the velocity built up while following the pointer. Otherwise each
+      // grab/release adds to it and the spring eventually throws the line off screen.
+      x.jump(x.get())
+      y.jump(y.get())
       animate(x, dimensions.width / 2, transition)
       animate(y, dimensions.height / 2, transition)
     }
@@ -81,8 +85,8 @@ const ElasticLine: React.FC<ElasticLineProps> = ({
 
   useAnimationFrame(() => {
     if (isGrabbed) {
-      x.set(controlPoint.x)
-      y.set(controlPoint.y)
+      x.jump(controlPoint.x)
+      y.jump(controlPoint.y)
     }
 
     const controlX = hasAnimatedIn ? x.get() : dimensions.width / 2
