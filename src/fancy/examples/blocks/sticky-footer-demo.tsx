@@ -11,7 +11,7 @@ const Preview: React.FC = () => {
       {/* Sticky footer. The only important thing here is the z-index, the sticky position and the bottom value */}
       <div className="sticky z-0 bottom-0 left-0 w-full h-80 bg-white flex justify-center items-center">
         <div className="relative overflow-hidden w-full h-full flex justify-end px-12 text-right items-start py-12 text-primary-red">
-          <div className="flex flex-row space-x-12 sm:pace-x-16  md:space-x-24 text-sm sm:text-lg md:text-xl">
+          <div className="flex flex-row space-x-12 sm:space-x-16  md:space-x-24 text-sm sm:text-lg md:text-xl">
             <ul>
               <li className="hover:underline cursor-pointer">Home</li>
               <li className="hover:underline cursor-pointer">Docs</li>
